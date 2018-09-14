@@ -9,4 +9,14 @@ Public Class Repository
     Property ChemicalAnalysis As DbSet(Of ChemicalAnalysis)
     Property Measurements As DbSet(Of Measurement)
     Property Precipitations As DbSet(Of Precipitation)
+
+    Sub New()
+
+    End Sub
+
+    Sub New(nameOrConnectionString As String)
+        MyBase.New(nameOrConnectionString)
+
+        Database.SetInitializer(Of Repository)(New CreateDatabaseIfNotExists(Of Repository))
+    End Sub
 End Class

@@ -5,6 +5,8 @@
     Property DateMade As String
     Property Location As New Coordinate
     Property Type As WellType
+    Property Height As Double
+    Property Exists As Boolean
 
     Property Analysis As New List(Of ChemicalAnalysis)
     Property Measures As New List(Of Measurement)

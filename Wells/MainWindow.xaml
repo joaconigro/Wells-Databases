@@ -6,7 +6,70 @@
         xmlns:local="clr-namespace:Wells"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu Height="Auto" DockPanel.Dock="Top">
+            <MenuItem Name="ImportMenuItem" Header="Importar" />
+            <MenuItem Name="WellMenuItem" Header="Pozos" />
+            <MenuItem Name="GraphicsMenuItem" Header="Gráficos" />
+        </Menu>
+        <StatusBar Name="InfoStatusBar" Height="Auto" DockPanel.Dock="Bottom">
+            <StatusBarItem Name="RecordsFoundItem" Content="XX" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            <StatusBarItem Name="TextItem" Content="registros encontrados." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            <StatusBarItem Name="ExistingWellItem" Content="Pozo existente" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FlowDirection="RightToLeft" />
+        </StatusBar>
+        <Grid Name="MainGrid" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <DataGrid Name="MainDataGrid"  Grid.Row="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            <Grid  Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <GroupBox Header="Pozos/Sondeos" Width="Auto" Height="Auto" Grid.Column="0" Margin="5">
+                    <Grid Width="301" Height="Auto" Margin="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Mostrar: " Grid.Row="0" Grid.Column="0" />
+                        <ComboBox Grid.Column="1" Grid.Row="0" Margin="2"/>
+                        <Label Content="Pozo/Sondeo: " Grid.Row="1" Grid.Column="0" />
+                        <ComboBox Grid.Column="1" Grid.Row="1" Margin="2"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Mediciones" Width="Auto" Height="Auto" Grid.Column="1" Margin="5">
+                    <Grid Width="Auto" Height="Auto" Margin="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Desde: " Grid.Row="0" Grid.Column="0"/>
+                        <Label Content="Hasta: " Grid.Row="0" Grid.Column="2"/>
+                        <DatePicker Grid.Row="0" Grid.Column="1" Margin="2"/>
+                        <DatePicker Grid.Row="0" Grid.Column="3" Margin="2"/>
+                        <Label Content="Filtrar por: " Grid.Row="1" Grid.Column="0"/>
+                        <ComboBox Name="ParameterComoboBox" Grid.Row="1" Grid.Column="1" Margin="2"/>
+                        <ComboBox Name="ConditionComoboBox" Grid.Row="1" Grid.Column="2" Margin="2"/>
+                        <TextBox Name="ValueTextBox" Grid.Row="1" Grid.Column="3" Margin="2"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+
+        </Grid>
+
+
+    </DockPanel>
 </Window>
