@@ -24,8 +24,9 @@ Public Class Repository
 
     Sub New(nameOrConnectionString As String)
         MyBase.New(nameOrConnectionString)
-
-        Database.SetInitializer(Of Repository)(New CreateDatabaseIfNotExists(Of Repository))
+        Dim initializator = New CreateDatabaseIfNotExists(Of Repository)
+        Database.SetInitializer(Of Repository)(initializator)
+        initializator.InitializeDatabase(Me)
         Initialize()
     End Sub
 

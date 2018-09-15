@@ -8,8 +8,20 @@
         Title="Well Manager" Height="450" Width="800">
     <DockPanel>
         <Menu Height="Auto" DockPanel.Dock="Top">
-            <MenuItem Name="ImportMenuItem" Header="Importar" />
-            <MenuItem Name="WellMenuItem" Header="Pozos" />
+            <MenuItem Name="DatabaseMenuItem" Header="Base de datos">
+                <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." />
+                <MenuItem Name="OpenDatabaseMenuItem" Header="Abrir..." />
+            </MenuItem>
+            <MenuItem Name="WellMenuItem" Header="Pozos">
+                <MenuItem Name="NewWellMenuItem" Header="Nuevo..." />
+                <MenuItem Name="EditWellMenuItem" Header="Editar..." />
+                <MenuItem Name="ImportWellsMenuItem" Header="Importar..." />
+            </MenuItem>
+            <MenuItem Name="MeasuresMenuItem" Header="Mediciones">
+                <MenuItem Name="NewMeasureMenuItem" Header="Nueva..." />
+                <MenuItem Name="EditMeasureMenuItem" Header="Editar..." />
+                <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..." />
+            </MenuItem>
             <MenuItem Name="GraphicsMenuItem" Header="Gráficos" />
         </Menu>
         <StatusBar Name="InfoStatusBar" Height="Auto" DockPanel.Dock="Bottom">
