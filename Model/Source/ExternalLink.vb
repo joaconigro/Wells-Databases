@@ -3,5 +3,5 @@
 
     Property Link As String
     Property Well As Well
-
+    Property WellId As String
 End Class

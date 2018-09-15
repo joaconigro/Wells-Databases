@@ -5,31 +5,19 @@ Imports Wells.Persistence
 Class MainWindow
     Implements IMainWindow
 
+    Private repo As Repository
+
     Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-
-        Dim db As Repository
-
-        'Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\WellDB.mdf;Integrated Security=True
-        Dim databasefile As String
-        If Not IO.File.Exists("D:\WellDB.mdf") Then
-            Dim ofd As New Microsoft.Win32.OpenFileDialog With {.Filter = "Databases|*.mdf"}
-            If ofd.ShowDialog = True Then
-                databasefile = ofd.FileName
-                Dim conString = $"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={databasefile};Integrated Security=True"
-                db = New Repository(conString)
-            End If
-        Else
-            db = New Repository("name=WellDB")
+        If Not String.IsNullOrEmpty(My.Settings.DatabaseFilename) AndAlso IO.File.Exists(My.Settings.DatabaseFilename) Then
+            repo = New Repository(My.Settings.DatabaseFilename, False)
+            MainDataGrid.ItemsSource = repo.Wells.Values.ToList
         End If
 
-
-
-        MainDataGrid.ItemsSource = db.Wells
     End Sub
 
     Public Function OpenFileDialog(filter As String, title As String) As String Implements IMainWindow.OpenFileDialog
@@ -47,4 +35,19 @@ Class MainWindow
         End If
         Return Nothing
     End Function
+
+    Private Sub NewDatabaseMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles NewDatabaseMenuItem.Click
+        Dim filename = SaveFileDialog("Well Databases|*.mdf", "Nueva base de datos")
+        If Not String.IsNullOrEmpty(filename) Then
+            My.Settings.DatabaseFilename = filename
+            My.Settings.Save()
+            repo = New Repository(filename, True)
+            MainDataGrid.ItemsSource = repo.Wells.Values.ToList
+        End If
+    End Sub
+
+    Private Sub NewWellMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles NewWellMenuItem.Click
+        Dim w As New Well With {.DateMade = Today, .Name = "P1"}
+        repo.Add(w)
+    End Sub
 End Class
