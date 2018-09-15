@@ -18,6 +18,11 @@
         Me.Value = value
     End Sub
 
+    Sub New(element As String, value As Double, well As Well)
+        Me.New(element, value)
+        Me.Well = well
+    End Sub
+
 End Class
 
 Public Enum SampleType

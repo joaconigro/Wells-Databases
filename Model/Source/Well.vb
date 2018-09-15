@@ -10,6 +10,7 @@
 
     Property Analysis As New List(Of ChemicalAnalysis)
     Property Measures As New List(Of Measurement)
+    Property Links As New List(Of ExternalLink)
 
     ReadOnly Property FLNAMeasures As List(Of Measurement)
         Get

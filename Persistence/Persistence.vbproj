@@ -80,6 +80,10 @@
       <DependentUpon>201809141615470_New-Well-Parameters.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201809141615470_New-Well-Parameters.vb" />
+    <Compile Include="Migrations\201809151526259_Links.Designer.vb">
+      <DependentUpon>201809151526259_Links.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809151526259_Links.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -104,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809141615470_New-Well-Parameters.resx">
       <DependentUpon>201809141615470_New-Well-Parameters.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809151526259_Links.resx">
+      <DependentUpon>201809151526259_Links.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
