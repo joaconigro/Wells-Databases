@@ -1,4 +1,4 @@
-﻿<Window x:Class="MainWindow"
+﻿<Window x:Class="MainWindowView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,8 +9,11 @@
     <DockPanel>
         <Menu Height="Auto" DockPanel.Dock="Top">
             <MenuItem Name="DatabaseMenuItem" Header="Base de datos">
-                <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." />
-                <MenuItem Name="OpenDatabaseMenuItem" Header="Abrir..." />
+                <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." Command="{Binding CreateDatabaseCommand}"/>
+                <MenuItem Name="OpenDatabaseMenuItem" Header="Abrir..." Command="{Binding OpenDatabaseCommand}" />
+                <Separator></Separator>
+                <MenuItem Name="ImportDatabaseMenuItem" Header="Importar..."/>
+                <MenuItem Name="ExportDatabaseMenuItem" Header="Exportar..."/>
             </MenuItem>
             <MenuItem Name="WellMenuItem" Header="Pozos">
                 <MenuItem Name="NewWellMenuItem" Header="Nuevo..." />
@@ -34,7 +37,9 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <DataGrid Name="MainDataGrid"  Grid.Row="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5" HeadersVisibility="Column"/>
+            <DataGrid Name="MainDataGrid"  Grid.Row="0" HorizontalContentAlignment="Stretch" 
+                      VerticalContentAlignment="Stretch" Margin="5" HeadersVisibility="Column"
+                      ItemsSource="{Binding Datasource}" IsReadOnly="True"/>
             <Grid  Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

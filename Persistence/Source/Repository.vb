@@ -1,6 +1,5 @@
 ﻿Imports Wells.Model
 Imports System.Data.Entity
-Imports System.Reflection
 
 Public Class Repository
     Implements IRepository

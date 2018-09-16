@@ -75,7 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Source\Views\MainWindow.xaml">
+    <Page Include="Source\Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -83,9 +83,12 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Source\Views\IMainWindow.vb" />
-    <Compile Include="Source\Views\MainWindow.xaml.vb">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Source\Command.vb" />
+    <Compile Include="Source\VievModels\BaseViewModel.vb" />
+    <Compile Include="Source\VievModels\MainWindowViewModel.vb" />
+    <Compile Include="Source\Views\IMainWindowView.vb" />
+    <Compile Include="Source\Views\MainWindowView.xaml.vb">
+      <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -150,8 +153,6 @@
       <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Source\VievModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
