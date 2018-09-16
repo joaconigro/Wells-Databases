@@ -89,6 +89,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Source\Context.vb" />
+    <Compile Include="Source\ExternalFileManager.vb" />
     <Compile Include="Source\IRepository.vb" />
     <Compile Include="Source\Repository.vb" />
   </ItemGroup>

@@ -5,6 +5,8 @@ Public Class Repository
     Implements IRepository
 
     Private _context As Context
+    Private _fileManager As ExternalFileManager
+    Private _databasePath As String
 
     Property Wells As Dictionary(Of String, Well)
     Property WellNames As Dictionary(Of String, Well)
@@ -14,6 +16,8 @@ Public Class Repository
     Property Links As Dictionary(Of String, ExternalLink)
 
     Sub New(filename As String, create As Boolean)
+        _fileManager = New ExternalFileManager(IO.Path.GetDirectoryName(filename))
+        _databasePath = filename
         Dim conString = $"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={filename};Integrated Security=True"
         Dim initializator As IDatabaseInitializer(Of Context)
         If create Then
@@ -36,6 +40,10 @@ Public Class Repository
         Links = _context.Links.ToDictionary(Function(e) e.Id)
     End Sub
 
+    Sub Close()
+        _context?.Close()
+    End Sub
+
     Public Sub Add(entity As IBusinessObject) Implements IRepository.Add
         Dim entityType = entity.GetType
         _context.Set(entityType).Add(entity)
@@ -44,7 +52,6 @@ Public Class Repository
 
     Public Sub Update(entity As IBusinessObject) Implements IRepository.Update
         _context.Entry(entity).State = EntityState.Modified
-
     End Sub
 
     Public Sub Delete(entity As IBusinessObject) Implements IRepository.Delete

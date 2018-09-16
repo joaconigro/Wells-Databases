@@ -57,6 +57,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System" />
@@ -75,6 +76,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Source\Views\CreateDatabaseDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,6 +91,9 @@
     <Compile Include="Source\Command.vb" />
     <Compile Include="Source\VievModels\BaseViewModel.vb" />
     <Compile Include="Source\VievModels\MainWindowViewModel.vb" />
+    <Compile Include="Source\Views\CreateDatabaseDialog.xaml.vb">
+      <DependentUpon>CreateDatabaseDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Views\IMainWindowView.vb" />
     <Compile Include="Source\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>

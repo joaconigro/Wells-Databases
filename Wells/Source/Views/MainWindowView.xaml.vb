@@ -1,4 +1,6 @@
-﻿Class MainWindowView
+﻿Imports Wells
+
+Class MainWindowView
     Implements IMainWindowView
 
     Sub New()
@@ -28,5 +30,13 @@
         Return Nothing
     End Function
 
-
+    Public Function CreateDatabaseDialog(ByRef databaseName As String, ByRef path As String) As Boolean Implements IMainWindowView.CreateDatabaseDialog
+        Dim diag As New CreateDatabaseDialog()
+        If diag.ShowDialog Then
+            databaseName = diag.DatabaseName
+            path = diag.DatabasePath
+            Return True
+        End If
+        Return False
+    End Function
 End Class

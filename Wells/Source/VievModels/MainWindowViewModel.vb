@@ -11,8 +11,7 @@ Public Class MainWindowViewModel
         _window = window
 
         If Not String.IsNullOrEmpty(My.Settings.DatabaseFilename) AndAlso IO.File.Exists(My.Settings.DatabaseFilename) Then
-            repo = New Repository(My.Settings.DatabaseFilename, False)
-            Datasource = repo.Wells.Values.ToList
+            OpenDatabase(My.Settings.DatabaseFilename, False)
         End If
     End Sub
 
@@ -20,12 +19,13 @@ Public Class MainWindowViewModel
 
 
     Property CreateDatabaseCommand As ICommand = New Command(Sub()
-                                                                 Dim filename = _window.SaveFileDialog("Well Databases|*.mdf", "Nueva base de datos")
-                                                                 If Not String.IsNullOrEmpty(filename) Then
+                                                                 Dim databaseName As String = ""
+                                                                 Dim databasePath As String = ""
+                                                                 If _window.CreateDatabaseDialog(databaseName, databasePath) Then
+                                                                     Dim filename = IO.Path.Combine(databasePath, databaseName & ".mdf")
                                                                      My.Settings.DatabaseFilename = filename
                                                                      My.Settings.Save()
-                                                                     repo = New Repository(filename, True)
-                                                                     Datasource = repo.Wells.Values.ToList
+                                                                     OpenDatabase(filename, True)
                                                                  End If
                                                              End Sub)
 
@@ -34,9 +34,14 @@ Public Class MainWindowViewModel
                                                                If Not String.IsNullOrEmpty(filename) Then
                                                                    My.Settings.DatabaseFilename = filename
                                                                    My.Settings.Save()
-                                                                   repo = New Repository(filename, True)
-                                                                   Datasource = repo.Wells.Values.ToList
+                                                                   OpenDatabase(filename, False)
                                                                End If
                                                            End Sub)
+
+    Private Sub OpenDatabase(databaseFile As String, create As Boolean)
+        repo?.Close()
+        repo = New Repository(databaseFile, create)
+        Datasource = repo.Measurements.Values.ToList
+    End Sub
 
 End Class
