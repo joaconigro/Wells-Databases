@@ -47,7 +47,6 @@ Public Class Repository
     Public Sub Add(entity As IBusinessObject) Implements IRepository.Add
         Dim entityType = entity.GetType
         _context.Set(entityType).Add(entity)
-        _context.SaveChanges()
     End Sub
 
     Public Sub Update(entity As IBusinessObject) Implements IRepository.Update
@@ -58,6 +57,31 @@ Public Class Repository
         Dim entityType = entity.GetType
         _context.Set(entityType).Remove(entity)
     End Sub
+
+    Sub SaveChanges()
+        _context.SaveChanges()
+    End Sub
+
+    Function Add(well As Well) As Boolean
+        If Wells.ContainsKey(well.Id) OrElse WellNames.ContainsKey(well.Name) Then
+            Return False
+        Else
+            Wells.Add(well.Id, well)
+            WellNames.Add(well.Name, well)
+            Add(CType(well, IBusinessObject))
+            Return True
+        End If
+    End Function
+
+    Function AddRange(wells As IEnumerable(Of Well)) As List(Of Well)
+        Dim rejecteds As New List(Of Well)
+        For Each w In wells
+            If Not Add(w) Then
+                rejecteds.Add(w)
+            End If
+        Next
+        Return rejecteds
+    End Function
 
     Function FindWell(id As String) As Well
         If Wells.ContainsKey(id) Then
@@ -76,6 +100,32 @@ Public Class Repository
     Function WellExists(id As String) As Boolean
         Return Wells.ContainsKey(id)
     End Function
+
+    Function Add(measurement As Measurement) As Boolean
+        If Not WellNames.ContainsKey(measurement.WellName) OrElse Measurements.ContainsKey(measurement.Id) Then
+            Return False
+        Else
+            Measurements.Add(measurement.Id, measurement)
+            Dim well = WellNames(measurement.WellName)
+            well.Measures.Add(measurement)
+            measurement.Well = well
+            Add(CType(measurement, IBusinessObject))
+            Return True
+        End If
+    End Function
+
+    Function AddRange(measurements As IEnumerable(Of Measurement)) As List(Of Measurement)
+        Dim rejecteds As New List(Of Measurement)
+        For Each m In measurements
+            Dim i = measurements.ToList.IndexOf(m)
+            If Not Add(m) Then
+                rejecteds.Add(m)
+            End If
+            Exit For
+        Next
+        Return rejecteds
+    End Function
+
 
     Function FindChemicalAnalysis(id As String) As ChemicalAnalysis
         If ChemicalAnalysis.ContainsKey(id) Then

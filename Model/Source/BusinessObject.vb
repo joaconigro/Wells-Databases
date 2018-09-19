@@ -3,7 +3,7 @@
 Public Class BusinessObject
     Implements IBusinessObject
 
-    Public Const NullNumericValue As Double = -9999
+    Public Shared ReadOnly Property NullNumericValue As Double = -9999
 
     Protected _id As String
     Public Property Id As String Implements IBusinessObject.Id

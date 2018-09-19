@@ -18,12 +18,12 @@
             <MenuItem Name="WellMenuItem" Header="Pozos">
                 <MenuItem Name="NewWellMenuItem" Header="Nuevo..." />
                 <MenuItem Name="EditWellMenuItem" Header="Editar..." />
-                <MenuItem Name="ImportWellsMenuItem" Header="Importar..." />
+                <MenuItem Name="ImportWellsMenuItem" Header="Importar..." Command="{Binding ImportWellsFromExcelCommand}" />
             </MenuItem>
             <MenuItem Name="MeasuresMenuItem" Header="Mediciones">
                 <MenuItem Name="NewMeasureMenuItem" Header="Nueva..." />
                 <MenuItem Name="EditMeasureMenuItem" Header="Editar..." />
-                <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..." />
+                <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..."  Command="{Binding ImportMeasurementsFromExcelCommand}"/>
             </MenuItem>
             <MenuItem Name="GraphicsMenuItem" Header="Gráficos" />
         </Menu>
@@ -69,9 +69,9 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="33*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Desde: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
                         <TextBlock Text="Hasta: " Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
