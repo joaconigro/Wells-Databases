@@ -1,12 +1,18 @@
 ﻿Public Class ChemicalAnalysis
     Inherits BusinessObject
 
-    Property WellId As String
+    ReadOnly Property WellId As String
+        Get
+            Return Well?.Id
+        End Get
+    End Property
+
     Property Element As String
     Property Value As Double
     Property SampleDate As String
     Property SampleOf As SampleType
     Property Well As Well
+    Property WellName As String
 
     Sub New()
         MyBase.New()

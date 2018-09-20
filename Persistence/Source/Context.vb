@@ -18,6 +18,25 @@ Public Class Context
         MyBase.New(connectionString)
     End Sub
 
+    Sub Add(entity As IBusinessObject)
+        Dim entityType = entity.GetType
+        MyBase.Set(entityType).Add(entity)
+    End Sub
+
+    Sub AddRange(entities As IEnumerable(Of IBusinessObject))
+        Dim entityType = entities.First.GetType
+        MyBase.Set(entityType).AddRange(entities)
+    End Sub
+
+    Sub Update(entity As IBusinessObject)
+        MyBase.Entry(entity).State = EntityState.Modified
+    End Sub
+
+    Sub Delete(entity As IBusinessObject)
+        Dim entityType = entity.GetType
+        MyBase.Set(entityType).Remove(entity)
+    End Sub
+
     Sub Close()
         SaveChanges()
         Dispose()

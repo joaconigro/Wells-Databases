@@ -7,7 +7,7 @@ Public Class MainWindowViewModel
     Inherits BaseViewModel
 
     Private _window As IMainWindowView
-    Private repo As Repository
+    Private repo As Repositories
 
     Sub New(window As IMainWindowView)
         _window = window
@@ -89,7 +89,7 @@ Public Class MainWindowViewModel
         Dim wells = ExcelReader.ReadWells(workbook, sheetIndex)
 
         If wells.Any Then
-            Dim rejected = repo.AddRange(wells)
+            Dim rejected = repo.Wells.AddRange(wells)
 
             If Not rejected.Any Then
                 repo.SaveChanges()
@@ -106,7 +106,7 @@ Public Class MainWindowViewModel
         Dim measurements = ExcelReader.ReadMeasurements(workbook, sheetIndex)
 
         If measurements.Any Then
-            Dim rejected = repo.AddRange(measurements)
+            Dim rejected = repo.Measurements.AddRange(measurements)
 
             If Not rejected.Any Then
                 repo.SaveChanges()
@@ -121,8 +121,8 @@ Public Class MainWindowViewModel
 
     Private Sub OpenDatabase(databaseFile As String, create As Boolean)
         repo?.Close()
-        repo = New Repository(databaseFile, create)
-        Datasource = repo.Wells.Values.ToList
+        repo = New Repositories(databaseFile, create)
+        Datasource = repo.Measurements.All
         CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
     End Sub
 

@@ -3,7 +3,13 @@
 
     Property Link As String
     Property Well As Well
-    Property WellId As String
+    ReadOnly Property WellId As String
+        Get
+            Return Well?.Id
+        End Get
+    End Property
+
+    Property WellName As String
 
     Sub Open()
         Try

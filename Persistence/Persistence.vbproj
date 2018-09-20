@@ -88,10 +88,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Source\Repositories\ChemicalAnalysisRepository.vb" />
     <Compile Include="Source\Context.vb" />
     <Compile Include="Source\ExternalFileManager.vb" />
     <Compile Include="Source\IRepository.vb" />
-    <Compile Include="Source\Repository.vb" />
+    <Compile Include="Source\Repositories\ExternalLinksRepository.vb" />
+    <Compile Include="Source\Repositories\MeasurementsRepository.vb" />
+    <Compile Include="Source\Repositories.vb" />
+    <Compile Include="Source\Repositories\PrecipitationsRepository.vb" />
+    <Compile Include="Source\Repositories\Repository.vb" />
+    <Compile Include="Source\Repositories\WellsRepository.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
