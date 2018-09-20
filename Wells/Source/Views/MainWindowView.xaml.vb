@@ -3,6 +3,8 @@
 Class MainWindowView
     Implements IMainWindowView
 
+    Private viewModel As MainWindowViewModel
+
     Sub New()
 
         ' This call is required by the designer.
@@ -10,7 +12,15 @@ Class MainWindowView
 
 
         ' Add any initialization after the InitializeComponent() call.
-        DataContext = New MainWindowViewModel(Me)
+        StartDatePicker.SelectedDate = New Date(2000, 1, 1)
+        EndDatePicker.SelectedDate = Today
+        viewModel = New MainWindowViewModel(Me)
+        ViewWellMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 0, True, False)
+        ViewMeasurementsMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 1, True, False)
+        ViewAnalysisMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 2, True, False)
+        ViewPrecipitationsMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 3, True, False)
+
+        DataContext = viewModel
 
     End Sub
 
@@ -47,4 +57,36 @@ Class MainWindowView
         End If
         Return -1
     End Function
+
+    Private Sub ViewWellMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewWellMenuItem.Click
+        ViewWellMenuItem.IsChecked = True
+        ViewMeasurementsMenuItem.IsChecked = False
+        ViewAnalysisMenuItem.IsChecked = False
+        ViewPrecipitationsMenuItem.IsChecked = False
+        viewModel.Filter.ShowedDatasource = DatasourceType.Wells
+    End Sub
+
+    Private Sub ViewMeasurementsMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewMeasurementsMenuItem.Click
+        ViewWellMenuItem.IsChecked = False
+        ViewMeasurementsMenuItem.IsChecked = True
+        ViewAnalysisMenuItem.IsChecked = False
+        ViewPrecipitationsMenuItem.IsChecked = False
+        viewModel.Filter.ShowedDatasource = DatasourceType.Measurements
+    End Sub
+
+    Private Sub ViewAnalysisMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewAnalysisMenuItem.Click
+        ViewWellMenuItem.IsChecked = False
+        ViewMeasurementsMenuItem.IsChecked = False
+        ViewAnalysisMenuItem.IsChecked = True
+        ViewPrecipitationsMenuItem.IsChecked = False
+        viewModel.Filter.ShowedDatasource = DatasourceType.ChemicalAnalysis
+    End Sub
+
+    Private Sub ViewPrecipitationsMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewPrecipitationsMenuItem.Click
+        ViewWellMenuItem.IsChecked = False
+        ViewMeasurementsMenuItem.IsChecked = False
+        ViewAnalysisMenuItem.IsChecked = False
+        ViewPrecipitationsMenuItem.IsChecked = True
+        viewModel.Filter.ShowedDatasource = DatasourceType.Precipitations
+    End Sub
 End Class

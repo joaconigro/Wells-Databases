@@ -8,24 +8,30 @@
         Title="Well Manager" Height="450" Width="800">
     <DockPanel>
         <Menu Height="Auto" DockPanel.Dock="Top">
-            <MenuItem Name="DatabaseMenuItem" Header="Base de datos">
+            <MenuItem Name="DatabaseMenuItem" Header="Base de _datos">
                 <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." Command="{Binding CreateDatabaseCommand}"/>
                 <MenuItem Name="OpenDatabaseMenuItem" Header="Abrir..." Command="{Binding OpenDatabaseCommand}" />
                 <Separator></Separator>
                 <MenuItem Name="ImportDatabaseMenuItem" Header="Importar..."/>
                 <MenuItem Name="ExportDatabaseMenuItem" Header="Exportar..."/>
             </MenuItem>
-            <MenuItem Name="WellMenuItem" Header="Pozos">
+            <MenuItem Name="ViewMenuItem" Header="_Ver">
+                <MenuItem Name="ViewWellMenuItem" Header="Pozos/Sondeos" IsCheckable="True"/>
+                <MenuItem Name="ViewMeasurementsMenuItem" Header="Mediciones" IsCheckable="True"/>
+                <MenuItem Name="ViewAnalysisMenuItem" Header="Análisis químicos" IsCheckable="True"/>
+                <MenuItem Name="ViewPrecipitationsMenuItem" Header="Precipitaciones" IsCheckable="True"/>
+            </MenuItem>
+            <MenuItem Name="WellMenuItem" Header="_Pozos">
                 <MenuItem Name="NewWellMenuItem" Header="Nuevo..." />
                 <MenuItem Name="EditWellMenuItem" Header="Editar..." />
                 <MenuItem Name="ImportWellsMenuItem" Header="Importar..." Command="{Binding ImportWellsFromExcelCommand}" />
             </MenuItem>
-            <MenuItem Name="MeasuresMenuItem" Header="Mediciones">
+            <MenuItem Name="MeasuresMenuItem" Header="_Mediciones">
                 <MenuItem Name="NewMeasureMenuItem" Header="Nueva..." />
                 <MenuItem Name="EditMeasureMenuItem" Header="Editar..." />
                 <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..."  Command="{Binding ImportMeasurementsFromExcelCommand}"/>
             </MenuItem>
-            <MenuItem Name="GraphicsMenuItem" Header="Gráficos" />
+            <MenuItem Name="GraphicsMenuItem" Header="_Gráficos" />
         </Menu>
         <StatusBar Name="InfoStatusBar" Height="Auto" DockPanel.Dock="Bottom">
             <StatusBarItem Name="RecordsFoundItem" Content="XX" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
@@ -55,10 +61,10 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Mostrar: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" Grid.Row="0" Margin="2"/>
-                        <TextBlock Text="Pozo/Sondeo: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" Grid.Row="1" Margin="2"/>
+                        <TextBlock Text="Mostrar: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <ComboBox Grid.Column="1" Grid.Row="0" Margin="2" ItemsSource="{Binding WellFilterOptions}" SelectedIndex="{Binding Filter.WellFilter, Mode=OneWayToSource}"/>
+                        <TextBlock Text="Pozo/Sondeo: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <ComboBox Grid.Column="1" Grid.Row="1" Margin="2" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedValue="{Binding Filter.SelectedWellName, Mode=OneWayToSource}"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="Mediciones" Width="Auto" Height="Auto" Grid.Column="1" Margin="5">
@@ -73,13 +79,13 @@
                             <ColumnDefinition Width="33*"/>
                             <ColumnDefinition Width="33*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Desde: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Hasta: " Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
-                        <DatePicker Grid.Row="0" Grid.Column="1" Margin="2"/>
-                        <DatePicker Grid.Row="0" Grid.Column="3" Margin="2"/>
-                        <TextBlock Text="Filtrar por: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                        <ComboBox Name="ParameterComoboBox" Grid.Row="1" Grid.Column="1" Margin="2"/>
-                        <ComboBox Name="ConditionComoboBox" Grid.Row="1" Grid.Column="2" Margin="2"/>
+                        <TextBlock Text="Desde: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBlock Text="Hasta: " Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <DatePicker Name="StartDatePicker" Grid.Row="0" Grid.Column="1" Margin="2" SelectedDate="{Binding Filter.StartDate, Mode=OneWay}"/>
+                        <DatePicker Name="EndDatePicker" Grid.Row="0" Grid.Column="3" Margin="2" SelectedDate="{Binding Filter.EndDate, Mode=OneWay}"/>
+                        <TextBlock Text="Filtrar por: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <ComboBox Name="PropertiesComoboBox" Grid.Row="1" Grid.Column="1" Margin="2"/>
+                        <ComboBox Name="CriteriaComoboBox" Grid.Row="1" Grid.Column="2" Margin="2" ItemsSource="{Binding CriteriaFilterOptions, Mode=OneWay}"/>
                         <TextBox Name="ValueTextBox" Grid.Row="1" Grid.Column="3" Margin="2"/>
                     </Grid>
                 </GroupBox>

@@ -12,7 +12,9 @@ Public Class WellsRepository
 
     ReadOnly Property Names As List(Of String)
         Get
-            Return _names.Keys.ToList
+            Dim list = _names.Keys.ToList
+            list.Sort()
+            Return list
         End Get
     End Property
 

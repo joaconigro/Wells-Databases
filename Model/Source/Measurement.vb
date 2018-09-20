@@ -15,6 +15,12 @@
     Property Comment As String
     Property Well As Well
 
+    ReadOnly Property RealDate As Date
+        Get
+            Return Date.ParseExact(SampleDate, "dd/MM/yyyy", Nothing)
+        End Get
+    End Property
+
     ReadOnly Property HasFLNA As Boolean
         Get
             Return FLNADepth <> NullNumericValue

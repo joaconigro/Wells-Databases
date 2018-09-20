@@ -2,12 +2,50 @@
 Imports Wells.Persistence
 Imports NPOI.XSSF.UserModel
 
-
 Public Class MainWindowViewModel
     Inherits BaseViewModel
 
     Private _window As IMainWindowView
     Private repo As Repositories
+
+    Private WithEvents _Filter As BaseFilter
+    Property Filter As BaseFilter
+        Get
+            Return _Filter
+        End Get
+        Set
+            _Filter = Value
+        End Set
+    End Property
+
+    ReadOnly Property WellNames As List(Of String)
+        Get
+            Return repo?.Wells?.Names
+        End Get
+    End Property
+
+    ReadOnly Property WellFilterOptions As List(Of String)
+        Get
+            Return {"Todos", "Pozos", "Sondeos", "Por nombre", "Zona A", "Zona B", "Zona C", "Zona D"}.ToList
+        End Get
+    End Property
+
+    ReadOnly Property CriteriaFilterOptions As List(Of String)
+        Get
+            Return {"Valor exacto", "Menor que", "Menor o igual que", "Mayor que", "Mayor o igual que"}.ToList
+        End Get
+    End Property
+
+    Private _Datasource As IEnumerable(Of IBusinessObject)
+    Property Datasource As IEnumerable(Of IBusinessObject)
+        Get
+            Return _Datasource
+        End Get
+        Set
+            _Datasource = Value
+            NotifyPropertyChanged(NameOf(Datasource))
+        End Set
+    End Property
 
     Sub New(window As IMainWindowView)
         _window = window
@@ -15,10 +53,8 @@ Public Class MainWindowViewModel
         If Not String.IsNullOrEmpty(My.Settings.DatabaseFilename) AndAlso IO.File.Exists(My.Settings.DatabaseFilename) Then
             OpenDatabase(My.Settings.DatabaseFilename, False)
         End If
+
     End Sub
-
-    Property Datasource As IEnumerable(Of IBusinessObject)
-
 
     Property CreateDatabaseCommand As ICommand = New Command(Sub()
                                                                  Dim databaseName As String = ""
@@ -122,8 +158,20 @@ Public Class MainWindowViewModel
     Private Sub OpenDatabase(databaseFile As String, create As Boolean)
         repo?.Close()
         repo = New Repositories(databaseFile, create)
-        Datasource = repo.Measurements.All
+        Filter = New BaseFilter(repo) With {.ShowedDatasource = My.Settings.ShowedDatasource}
+        SetDatasource()
         CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
     End Sub
 
+    Private Sub SetDatasource() Handles _Filter.FilterChanged
+        Datasource = Filter.Apply
+    End Sub
+
 End Class
+
+Public Enum DatasourceType
+    Wells
+    Measurements
+    ChemicalAnalysis
+    Precipitations
+End Enum

@@ -111,6 +111,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Source\Command.vb" />
+    <Compile Include="Source\Filters\BaseFilter.vb" />
     <Compile Include="Source\Importers\ExcelReader.vb" />
     <Compile Include="Source\VievModels\BaseViewModel.vb" />
     <Compile Include="Source\VievModels\MainWindowViewModel.vb" />
