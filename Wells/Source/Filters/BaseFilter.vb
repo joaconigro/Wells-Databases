@@ -14,6 +14,38 @@ Public Class BaseFilter
         ZoneD
     End Enum
 
+    Private _measurementPropeties As New Dictionary(Of String, String) From {
+        {"Ninguna", "None"},
+        {"Profundidad FLNA", NameOf(Measurement.FLNADepth)},
+        {"Profundidad Agua", NameOf(Measurement.WaterDepth)},
+        {"Caudal", NameOf(Measurement.Caudal)},
+        {"Espesor FLNA", NameOf(Measurement.FLNAThickness)},
+        {"Cota Agua", NameOf(Measurement.WaterElevation)},
+        {"Cota FLNA", NameOf(Measurement.FLNAElevation)}}
+
+    Private _chemicalAnalysisPropeties As New Dictionary(Of String, String) From {
+        {"Ninguna", "None"},
+        {"Valor", NameOf(ChemicalAnalysis.Value)}}
+
+    Private _precipitationPropeties As New Dictionary(Of String, String) From {
+        {"Ninguna", "None"},
+        {"Milímetros", NameOf(Precipitation.Millimeters)}}
+
+    ReadOnly Property PropertiesNames As List(Of String)
+        Get
+            Select Case ShowedDatasource
+                Case DatasourceType.Measurements
+                    Return _measurementPropeties.Keys.ToList
+                Case DatasourceType.ChemicalAnalysis
+                    Return _chemicalAnalysisPropeties.Keys.ToList
+                Case DatasourceType.Precipitations
+                    Return _precipitationPropeties.Keys.ToList
+                Case Else
+                    Return New List(Of String)
+            End Select
+        End Get
+    End Property
+
     Public Enum MeasurementQuery
         FLNADepth
         WaterDepth
@@ -33,6 +65,8 @@ Public Class BaseFilter
 
     Event FilterChanged()
 
+    Event DatasoureceTypeChanged()
+
     Private _showedDatasource As DatasourceType
     Property ShowedDatasource As DatasourceType
         Get
@@ -44,6 +78,7 @@ Public Class BaseFilter
                 My.Settings.ShowedDatasource = Value
                 My.Settings.Save()
                 RaiseEvent FilterChanged()
+                RaiseEvent DatasoureceTypeChanged()
             End If
         End Set
     End Property
@@ -113,10 +148,71 @@ Public Class BaseFilter
         End Set
     End Property
 
+    Private _PropertyName As String
+    Property PropertyName As String
+        Get
+            Return _PropertyName
+        End Get
+        Set
+            If _PropertyName <> Value Then
+                _PropertyName = Value
+                RaiseEvent FilterChanged()
+            End If
+        End Set
+    End Property
+
+    Private _StringValue As String
+    Property StringValue As String
+        Get
+            Return _doubleValue
+        End Get
+        Set
+            If _StringValue <> Value Then
+                _StringValue = Value
+                If IsNumeric(Value) Then
+                    _doubleValue = Double.Parse(Value, Globalization.NumberStyles.Any)
+                Else
+                    _StringValue = String.Empty
+                End If
+                RaiseEvent FilterChanged()
+            End If
+        End Set
+    End Property
+
+    Private _doubleValue As Double
+
+    Private filterFunction As Func(Of Object, String, Double, Boolean)
+
+    Private _parameterFilter As CriteriaQuery
+    Property ParameterFilter As CriteriaQuery
+        Get
+            Return _parameterFilter
+        End Get
+        Set
+            If _parameterFilter <> Value Then
+                _parameterFilter = Value
+                Select Case _parameterFilter
+                    Case CriteriaQuery.ExactValue
+                        filterFunction = AddressOf ExactValue
+                    Case CriteriaQuery.LessThan
+                        filterFunction = AddressOf LessThan
+                    Case CriteriaQuery.LessOrEqualThan
+                        filterFunction = AddressOf LessOrEqualThan
+                    Case CriteriaQuery.GreaterThan
+                        filterFunction = AddressOf GreaterThan
+                    Case CriteriaQuery.GreaterOrEqualThan
+                        filterFunction = AddressOf GreaterOrEqualThan
+                End Select
+                RaiseEvent FilterChanged()
+            End If
+        End Set
+    End Property
+
     Protected _repositories As Repositories
 
     Sub New(repo As Repositories)
         _repositories = repo
+        filterFunction = AddressOf ExactValue
     End Sub
 
     Function Apply() As IEnumerable(Of IBusinessObject)
@@ -188,7 +284,43 @@ Public Class BaseFilter
                          Where m.RealDate >= StartDate AndAlso m.RealDate <= EndDate
                          Select m).ToList
 
-        Return datedList
+        If Not String.IsNullOrEmpty(_PropertyName) AndAlso _measurementPropeties(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
+            Dim filteredList = (From e In datedList
+                                Where filterFunction(e, _measurementPropeties(_PropertyName), _doubleValue)
+                                Select e).ToList
+
+            Return filteredList
+        Else
+            Return datedList
+        End If
 
     End Function
+
+
+    Private Function ExactValue(entity As Object, propertyName As String, value As Double) As Boolean
+        Dim propertyValue = CDbl(CallByName(entity, propertyName, CallType.Get))
+        Return propertyValue = value
+    End Function
+
+    Private Function LessThan(entity As Object, propertyName As String, value As Double) As Boolean
+        Dim propertyValue = CDbl(CallByName(entity, propertyName, CallType.Get))
+        Return propertyValue < value
+    End Function
+
+    Private Function LessOrEqualThan(entity As Object, propertyName As String, value As Double) As Boolean
+        Dim propertyValue = CDbl(CallByName(entity, propertyName, CallType.Get))
+        Return propertyValue <= value
+    End Function
+
+    Private Function GreaterThan(entity As Object, propertyName As String, value As Double) As Boolean
+        Dim propertyValue = CDbl(CallByName(entity, propertyName, CallType.Get))
+        Return propertyValue > value
+    End Function
+
+    Private Function GreaterOrEqualThan(entity As Object, propertyName As String, value As Double) As Boolean
+        Dim propertyValue = CDbl(CallByName(entity, propertyName, CallType.Get))
+        Return propertyValue >= value
+    End Function
+
+
 End Class

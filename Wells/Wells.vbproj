@@ -118,6 +118,7 @@
     <Compile Include="Source\Views\CreateDatabaseDialog.xaml.vb">
       <DependentUpon>CreateDatabaseDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Views\DataGridBehavior.vb" />
     <Compile Include="Source\Views\ExcelSheetsDialog.xaml.vb">
       <DependentUpon>ExcelSheetsDialog.xaml</DependentUpon>
     </Compile>

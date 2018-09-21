@@ -14,11 +14,11 @@ Public Class ExcelReader
             Dim well As New Well()
 
             well.Name = ReadCellAsString(row, 0).ToUpper
-            well.Location.X = ReadCellAsDouble(row, 1)
-            well.Location.Y = ReadCellAsDouble(row, 2)
-            well.Location.Z = ReadCellAsDouble(row, 3)
-            well.Location.Latitude = ReadCellAsDouble(row, 4)
-            well.Location.Longitude = ReadCellAsDouble(row, 5)
+            well.X = ReadCellAsDouble(row, 1)
+            well.Y = ReadCellAsDouble(row, 2)
+            well.Z = ReadCellAsDouble(row, 3)
+            well.Latitude = ReadCellAsDouble(row, 4)
+            well.Longitude = ReadCellAsDouble(row, 5)
             Dim wellType = ReadCellAsDouble(row, 6)
             well.Type = If(wellType = 1, Model.WellType.Sounding, Model.WellType.MeasurementWell)
             well.Height = ReadCellAsDouble(row, 7)
@@ -79,9 +79,14 @@ Public Class ExcelReader
         If cell IsNot Nothing Then
             Select Case cell.CellType
                 Case CellType.Numeric, CellType.Formula
-                    Return cell.DateCellValue.ToShortDateString.ToUpper
+                    Return cell.DateCellValue.ToString("dd/MM/yyyy").ToUpper
                 Case Else
-                    Return cell.StringCellValue.ToUpper
+                    Dim cellDate As Date
+                    Dim formats() As String = {"dd/MM/yyyy", "d/M/yyyy", "dd/MM/yy", "d/M/yy"}
+                    Dim ok = Date.TryParseExact(cell.StringCellValue, formats, Nothing, Globalization.DateTimeStyles.None, cellDate)
+                    If ok Then
+                        Return cellDate.ToString("dd/MM/yyyy").ToUpper
+                    End If
             End Select
         End If
         Return ""

@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Wells"
     StartupUri="Source/Views/MainWindowView.xaml"
+             Startup="AppStartUp"
 ShutdownMode="OnMainWindowClose">
     <Application.Resources>
         

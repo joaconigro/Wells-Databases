@@ -89,4 +89,8 @@ Class MainWindowView
         ViewPrecipitationsMenuItem.IsChecked = True
         viewModel.Filter.ShowedDatasource = DatasourceType.Precipitations
     End Sub
+
+    Private Sub ValueTextBox_TextChanged(sender As Object, e As TextChangedEventArgs)
+        viewModel.Filter.StringValue = ValueTextBox.Text
+    End Sub
 End Class

@@ -36,6 +36,16 @@ Public Class MainWindowViewModel
         End Get
     End Property
 
+    ReadOnly Property PropertiesNames As List(Of String)
+        Get
+            If _Filter IsNot Nothing Then
+                Return _Filter.PropertiesNames
+            Else
+                Return New List(Of String)
+            End If
+        End Get
+    End Property
+
     Private _Datasource As IEnumerable(Of IBusinessObject)
     Property Datasource As IEnumerable(Of IBusinessObject)
         Get
@@ -44,6 +54,7 @@ Public Class MainWindowViewModel
         Set
             _Datasource = Value
             NotifyPropertyChanged(NameOf(Datasource))
+            NotifyPropertyChanged(NameOf(ItemsCount))
         End Set
     End Property
 
@@ -167,6 +178,15 @@ Public Class MainWindowViewModel
         Datasource = Filter.Apply
     End Sub
 
+    Private Sub OnFilterDatasourceTypeChanged() Handles _Filter.DatasoureceTypeChanged
+        NotifyPropertyChanged(NameOf(PropertiesNames))
+    End Sub
+
+    ReadOnly Property ItemsCount As Integer
+        Get
+            Return If(_Datasource IsNot Nothing, Datasource.Count, 0)
+        End Get
+    End Property
 End Class
 
 Public Enum DatasourceType

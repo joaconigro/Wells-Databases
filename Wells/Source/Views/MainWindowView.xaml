@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells"
+        xmlns:extensions="clr-namespace:Wells.Extensions"
         mc:Ignorable="d"
         Title="Well Manager" Height="450" Width="800">
     <DockPanel>
@@ -34,7 +35,7 @@
             <MenuItem Name="GraphicsMenuItem" Header="_Gráficos" />
         </Menu>
         <StatusBar Name="InfoStatusBar" Height="Auto" DockPanel.Dock="Bottom">
-            <StatusBarItem Name="RecordsFoundItem" Content="XX" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            <StatusBarItem Name="RecordsFoundItem" Content="{Binding ItemsCount}"  Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
             <StatusBarItem Name="TextItem" Content="registros encontrados." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
             <StatusBarItem Name="ExistingWellItem" Content="Pozo existente" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FlowDirection="RightToLeft" />
         </StatusBar>
@@ -43,7 +44,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <DataGrid Name="MainDataGrid"  Grid.Row="0" HorizontalContentAlignment="Stretch" 
+            <DataGrid extensions:DataGridBehavior.UseBrowsableAttributeOnColumn="True" Name="MainDataGrid"  Grid.Row="0" HorizontalContentAlignment="Stretch" 
                       VerticalContentAlignment="Stretch" Margin="5" HeadersVisibility="Column"
                       ItemsSource="{Binding Datasource}" IsReadOnly="True"/>
             <Grid  Grid.Row="1" >
@@ -81,12 +82,15 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Desde: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <TextBlock Text="Hasta: " Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <DatePicker Name="StartDatePicker" Grid.Row="0" Grid.Column="1" Margin="2" SelectedDate="{Binding Filter.StartDate, Mode=OneWay}"/>
-                        <DatePicker Name="EndDatePicker" Grid.Row="0" Grid.Column="3" Margin="2" SelectedDate="{Binding Filter.EndDate, Mode=OneWay}"/>
+                        <DatePicker Name="StartDatePicker" Grid.Row="0" Grid.Column="1" Margin="2" SelectedDate="{Binding Filter.StartDate, Mode=OneWayToSource}"/>
+                        <DatePicker Name="EndDatePicker" Grid.Row="0" Grid.Column="3" Margin="2" SelectedDate="{Binding Filter.EndDate, Mode=OneWayToSource}"/>
                         <TextBlock Text="Filtrar por: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <ComboBox Name="PropertiesComoboBox" Grid.Row="1" Grid.Column="1" Margin="2"/>
-                        <ComboBox Name="CriteriaComoboBox" Grid.Row="1" Grid.Column="2" Margin="2" ItemsSource="{Binding CriteriaFilterOptions, Mode=OneWay}"/>
-                        <TextBox Name="ValueTextBox" Grid.Row="1" Grid.Column="3" Margin="2"/>
+                        <ComboBox Name="PropertiesComoboBox" Grid.Row="1" Grid.Column="1" Margin="2" ItemsSource="{Binding PropertiesNames, Mode=OneWay}"
+                                  SelectedValue="{Binding Filter.PropertyName, Mode=OneWayToSource}"/>
+                        <ComboBox Name="CriteriaComoboBox" Grid.Row="1" Grid.Column="2" Margin="2" ItemsSource="{Binding CriteriaFilterOptions, Mode=OneWay}"
+                                  SelectedIndex="{Binding Filter.ParameterFilter, Mode=OneWayToSource}"/>
+                        <TextBox Name="ValueTextBox" Grid.Row="1" Grid.Column="3" Margin="2" VerticalContentAlignment="Center" 
+                                 HorizontalContentAlignment="Right" TextChanged="ValueTextBox_TextChanged"/>
                     </Grid>
                 </GroupBox>
             </Grid>

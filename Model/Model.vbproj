@@ -84,7 +84,6 @@
     </Compile>
     <Compile Include="Source\BusinessObject.vb" />
     <Compile Include="Source\ChemicalAnalysis.vb" />
-    <Compile Include="Source\Coordinate.vb" />
     <Compile Include="Source\ExternalLink.vb" />
     <Compile Include="Source\Measurement.vb" />
     <Compile Include="Source\IBusinessObject.vb" />
