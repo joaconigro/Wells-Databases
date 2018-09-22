@@ -1,4 +1,5 @@
-﻿Imports Wells.Model
+﻿Imports Wells.Base
+Imports Wells.Model
 Imports Wells.Persistence
 Imports NPOI.XSSF.UserModel
 
@@ -46,6 +47,16 @@ Public Class MainWindowViewModel
         End Get
     End Property
 
+    Private _SelectedEntity As IBusinessObject
+    Property SelectedEntity As IBusinessObject
+        Get
+            Return _SelectedEntity
+        End Get
+        Set
+            _SelectedEntity = Value
+        End Set
+    End Property
+
     Private _Datasource As IEnumerable(Of IBusinessObject)
     Property Datasource As IEnumerable(Of IBusinessObject)
         Get
@@ -76,7 +87,7 @@ Public Class MainWindowViewModel
                                                                      My.Settings.Save()
                                                                      OpenDatabase(filename, True)
                                                                  End If
-                                                             End Sub)
+                                                             End Sub, Function() True, AddressOf OnError)
 
     Property OpenDatabaseCommand As ICommand = New Command(Sub()
                                                                Dim filename = _window.OpenFileDialog("Well Databases|*.mdf", "Abrir base de datos")
@@ -85,7 +96,7 @@ Public Class MainWindowViewModel
                                                                    My.Settings.Save()
                                                                    OpenDatabase(filename, False)
                                                                End If
-                                                           End Sub)
+                                                           End Sub, Function() True, AddressOf OnError)
 
     Property ImportWellsFromExcelCommand As ICommand = New Command(Sub()
                                                                        Dim wb As XSSFWorkbook = Nothing
@@ -94,9 +105,11 @@ Public Class MainWindowViewModel
                                                                        If OpenExcelFile(wb, sheetIndex) Then
                                                                            ReadWellFromExcel(wb, sheetIndex)
                                                                        End If
-                                                                   End Sub, Function()
-                                                                                Return repo IsNot Nothing
-                                                                            End Function)
+                                                                   End Sub,
+                                                                   Function()
+                                                                       Return repo IsNot Nothing
+                                                                   End Function,
+                                                                   AddressOf OnError)
 
     Property ImportMeasurementsFromExcelCommand As ICommand = New Command(Sub()
                                                                               Dim wb As XSSFWorkbook = Nothing
@@ -105,9 +118,19 @@ Public Class MainWindowViewModel
                                                                               If OpenExcelFile(wb, sheetIndex) Then
                                                                                   ReadMeasurementFromExcel(wb, sheetIndex)
                                                                               End If
-                                                                          End Sub, Function()
-                                                                                       Return repo IsNot Nothing
-                                                                                   End Function)
+                                                                          End Sub,
+                                                                          Function()
+                                                                              Return repo IsNot Nothing
+                                                                          End Function,
+                                                                          AddressOf OnError)
+
+    Property ShowedDatasourceCommand As ICommand = New Command(Sub(param)
+                                                                   _Filter.ShowedDatasource = CInt(param)
+                                                               End Sub,
+                                                               Function()
+                                                                   Return repo IsNot Nothing
+                                                               End Function,
+                                                               AddressOf OnError)
 
     Private Function OpenExcelFile(ByRef workbook As XSSFWorkbook, ByRef sheetIndex As Integer) As Boolean
         Dim filename = _window.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel")
@@ -123,11 +146,9 @@ Public Class MainWindowViewModel
                 sheetIndex = 0
             End If
 
-            If sheetIndex = -1 Then
-                Return False
+            If sheetIndex > -1 Then
+                Return True
             End If
-
-            Return True
         End If
         Return False
     End Function
@@ -137,11 +158,8 @@ Public Class MainWindowViewModel
 
         If wells.Any Then
             Dim rejected = repo.Wells.AddRange(wells)
-
-            If Not rejected.Any Then
-                repo.SaveChanges()
-            Else
-                'Mostrar reporte de rechazados
+            If rejected.Any Then
+                ExportRejectedToExcel(rejected)
             End If
             repo.SaveChanges()
         End If
@@ -154,11 +172,8 @@ Public Class MainWindowViewModel
 
         If measurements.Any Then
             Dim rejected = repo.Measurements.AddRange(measurements)
-
-            If Not rejected.Any Then
-                repo.SaveChanges()
-            Else
-                'Mostrar reporte de rechazados
+            If rejected.Any Then
+                ExportRejectedToExcel(rejected)
             End If
             repo.SaveChanges()
         End If
@@ -166,12 +181,26 @@ Public Class MainWindowViewModel
         workbook.Close()
     End Sub
 
+    Private Sub ExportRejectedToExcel(rejected As List(Of RejectedEntity))
+        If _window.ShowMessageBox($"No se pudieron importar {rejected.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados") Then
+            Dim filename = _window.SaveFileDialog("Archivos de Excel|*.xlsx", "Datos rechazados")
+            If Not String.IsNullOrEmpty(filename) Then
+                ExcelReader.ExportRejectedToExcel(rejected, filename)
+            End If
+        End If
+    End Sub
+
     Private Sub OpenDatabase(databaseFile As String, create As Boolean)
         repo?.Close()
         repo = New Repositories(databaseFile, create)
         Filter = New BaseFilter(repo) With {.ShowedDatasource = My.Settings.ShowedDatasource}
         SetDatasource()
+        EventsAfterOpenDatabase()
+    End Sub
+
+    Private Sub EventsAfterOpenDatabase()
         CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
+        CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
     End Sub
 
     Private Sub SetDatasource() Handles _Filter.FilterChanged
@@ -182,11 +211,16 @@ Public Class MainWindowViewModel
         NotifyPropertyChanged(NameOf(PropertiesNames))
     End Sub
 
+    Protected Overrides Sub ShowErrorMessage(message As String)
+        _window.ShowErrorMessageBox(message)
+    End Sub
+
     ReadOnly Property ItemsCount As Integer
         Get
             Return If(_Datasource IsNot Nothing, Datasource.Count, 0)
         End Get
     End Property
+
 End Class
 
 Public Enum DatasourceType

@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Source\WPFExtensions\MenuItemExtensions.vb" />
     <Page Include="Source\Views\CreateDatabaseDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,7 +119,7 @@
     <Compile Include="Source\Views\CreateDatabaseDialog.xaml.vb">
       <DependentUpon>CreateDatabaseDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Views\DataGridBehavior.vb" />
+    <Compile Include="Source\WPFExtensions\DataGridBehavior.vb" />
     <Compile Include="Source\Views\ExcelSheetsDialog.xaml.vb">
       <DependentUpon>ExcelSheetsDialog.xaml</DependentUpon>
     </Compile>
@@ -181,6 +182,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Base\Base.vbproj">
+      <Project>{38d4eaa1-5cc3-45bf-b2a5-7dc55aabde61}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.vbproj">
       <Project>{d502ad98-c443-4dc2-b9b3-dfdab8d877e7}</Project>
       <Name>Model</Name>

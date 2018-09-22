@@ -1,4 +1,5 @@
 ﻿Imports System.Data.Entity
+Imports Wells.Model
 
 Public Class Repositories
 
@@ -35,6 +36,21 @@ Public Class Repositories
         Precipitations = New PrecipitationsRepository(_context, Me, _context.Precipitations)
         Links = New ExternalLinksRepository(_context, Me, _context.Links)
     End Sub
+
+    Function RepositoryOf(type As Type) As IRepository(Of IBusinessObject)
+        If type = GetType(Well) Then
+            Return Wells
+        ElseIf type = GetType(Measurement) Then
+            Return Measurements
+        ElseIf type = GetType(ChemicalAnalysis) Then
+            Return ChemicalAnalysis
+        ElseIf type = GetType(Precipitation) Then
+            Return Precipitations
+        ElseIf type = GetType(ExternalLink) Then
+            Return Links
+        End If
+        Return Nothing
+    End Function
 
     Sub Close()
         _context?.Close()

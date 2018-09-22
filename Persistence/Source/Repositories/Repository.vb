@@ -20,19 +20,21 @@ Public MustInherit Class Repository(Of T As IBusinessObject)
         End Get
     End Property
 
-    MustOverride Function Add(entity As T) As Boolean Implements IRepository(Of T).Add
+    MustOverride Function Add(entity As T, ByRef reason As RejectedEntity.RejectedReasons) As Boolean Implements IRepository(Of T).Add
 
-    Function AddRange(entities As IEnumerable(Of T)) As List(Of T) Implements IRepository(Of T).AddRange
-        Dim rejecteds As New List(Of T)
+    Function AddRange(entities As IEnumerable(Of T)) As List(Of RejectedEntity) Implements IRepository(Of T).AddRange
+        Dim rejecteds As New List(Of RejectedEntity)
         Dim inserted As New List(Of T)
+        Dim reason As RejectedEntity.RejectedReasons
         For Each e In entities
-            If Add(e) Then
+            reason = RejectedEntity.RejectedReasons.None
+            If Add(e, reason) Then
                 inserted.Add(e)
             Else
-                rejecteds.Add(e)
+                Dim index = entities.ToList.IndexOf(e) + 2
+                rejecteds.Add(New RejectedEntity(e, index, reason))
             End If
         Next
-
         _context.AddRange(inserted)
 
         Return rejecteds

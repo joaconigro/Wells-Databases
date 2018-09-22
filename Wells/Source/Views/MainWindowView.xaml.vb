@@ -58,39 +58,15 @@ Class MainWindowView
         Return -1
     End Function
 
-    Private Sub ViewWellMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewWellMenuItem.Click
-        ViewWellMenuItem.IsChecked = True
-        ViewMeasurementsMenuItem.IsChecked = False
-        ViewAnalysisMenuItem.IsChecked = False
-        ViewPrecipitationsMenuItem.IsChecked = False
-        viewModel.Filter.ShowedDatasource = DatasourceType.Wells
-    End Sub
-
-    Private Sub ViewMeasurementsMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewMeasurementsMenuItem.Click
-        ViewWellMenuItem.IsChecked = False
-        ViewMeasurementsMenuItem.IsChecked = True
-        ViewAnalysisMenuItem.IsChecked = False
-        ViewPrecipitationsMenuItem.IsChecked = False
-        viewModel.Filter.ShowedDatasource = DatasourceType.Measurements
-    End Sub
-
-    Private Sub ViewAnalysisMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewAnalysisMenuItem.Click
-        ViewWellMenuItem.IsChecked = False
-        ViewMeasurementsMenuItem.IsChecked = False
-        ViewAnalysisMenuItem.IsChecked = True
-        ViewPrecipitationsMenuItem.IsChecked = False
-        viewModel.Filter.ShowedDatasource = DatasourceType.ChemicalAnalysis
-    End Sub
-
-    Private Sub ViewPrecipitationsMenuItemClicked(sender As Object, e As RoutedEventArgs) Handles ViewPrecipitationsMenuItem.Click
-        ViewWellMenuItem.IsChecked = False
-        ViewMeasurementsMenuItem.IsChecked = False
-        ViewAnalysisMenuItem.IsChecked = False
-        ViewPrecipitationsMenuItem.IsChecked = True
-        viewModel.Filter.ShowedDatasource = DatasourceType.Precipitations
-    End Sub
+    Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IMainWindowView.ShowMessageBox
+        Return MsgBox(message, MsgBoxStyle.YesNo, title) = MsgBoxResult.Yes
+    End Function
 
     Private Sub ValueTextBox_TextChanged(sender As Object, e As TextChangedEventArgs)
         viewModel.Filter.StringValue = ValueTextBox.Text
+    End Sub
+
+    Public Sub ShowErrorMessageBox(message As String) Implements IMainWindowView.ShowErrorMessageBox
+        MsgBox(message, MsgBoxStyle.Critical, "Error")
     End Sub
 End Class

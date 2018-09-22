@@ -222,9 +222,9 @@ Public Class BaseFilter
             Case DatasourceType.Measurements
                 Return MeasurementApply(_repositories.Measurements)
             Case DatasourceType.ChemicalAnalysis
-                'Datasource = repo.ChemicalAnalysis.All
-            Case DatasourceType.Precipitations
-                ' Datasource = repo.Precipitations.All
+                Return ChemicalAnalysisApply(_repositories.ChemicalAnalysis)
+            Case Else
+                Return PrecipitationsApply(_repositories.Precipitations)
         End Select
     End Function
 
@@ -292,6 +292,65 @@ Public Class BaseFilter
             Return filteredList
         Else
             Return datedList
+        End If
+
+    End Function
+
+    Private Function ChemicalAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of ChemicalAnalysis)
+        Dim list As List(Of ChemicalAnalysis)
+        Select Case WellFilter
+            Case WellQuery.All
+                list = repo.All
+            Case WellQuery.ByName
+                If String.IsNullOrEmpty(SelectedWellName) Then
+                    list = repo.All
+                Else
+                    list = (From e In repo.All
+                            Where e.Well.Name = SelectedWellName
+                            Select e).ToList
+                End If
+            Case WellQuery.OnlyMeasurementWell
+                list = (From e In repo.All
+                        Where e.Well.Type = WellType.MeasurementWell
+                        Select e).ToList
+            Case WellQuery.OnlySounding
+                list = (From e In repo.All
+                        Where e.Well.Type = WellType.Sounding
+                        Select e).ToList
+            Case Else
+                list = repo.All
+        End Select
+
+        Dim datedList = (From e In list
+                         Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                         Select e).ToList
+
+        If Not String.IsNullOrEmpty(_PropertyName) AndAlso _chemicalAnalysisPropeties(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
+            Dim filteredList = (From e In datedList
+                                Where filterFunction(e, _chemicalAnalysisPropeties(_PropertyName), _doubleValue)
+                                Select e).ToList
+
+            Return filteredList
+        Else
+            Return datedList
+        End If
+
+    End Function
+
+    Private Function PrecipitationsApply(repo As PrecipitationsRepository) As List(Of Precipitation)
+
+        Dim list = (From e In repo.All
+                    Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                    Select e).ToList
+
+        If Not String.IsNullOrEmpty(_PropertyName) AndAlso _precipitationPropeties(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
+            Dim filteredList = (From e In list
+                                Where filterFunction(e, _precipitationPropeties(_PropertyName), _doubleValue)
+                                Select e).ToList
+
+            Return filteredList
+        Else
+            Return list
         End If
 
     End Function

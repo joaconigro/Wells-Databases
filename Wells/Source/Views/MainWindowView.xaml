@@ -17,10 +17,10 @@
                 <MenuItem Name="ExportDatabaseMenuItem" Header="Exportar..."/>
             </MenuItem>
             <MenuItem Name="ViewMenuItem" Header="_Ver">
-                <MenuItem Name="ViewWellMenuItem" Header="Pozos/Sondeos" IsCheckable="True"/>
-                <MenuItem Name="ViewMeasurementsMenuItem" Header="Mediciones" IsCheckable="True"/>
-                <MenuItem Name="ViewAnalysisMenuItem" Header="Análisis químicos" IsCheckable="True"/>
-                <MenuItem Name="ViewPrecipitationsMenuItem" Header="Precipitaciones" IsCheckable="True"/>
+                <MenuItem Name="ViewWellMenuItem" Header="Pozos/Sondeos" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="0"/>
+                <MenuItem Name="ViewMeasurementsMenuItem" Header="Mediciones" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="1"/>
+                <MenuItem Name="ViewAnalysisMenuItem" Header="Análisis químicos" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="2"/>
+                <MenuItem Name="ViewPrecipitationsMenuItem" Header="Precipitaciones" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="3"/>
             </MenuItem>
             <MenuItem Name="WellMenuItem" Header="_Pozos">
                 <MenuItem Name="NewWellMenuItem" Header="Nuevo..." />
@@ -44,9 +44,18 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <DataGrid extensions:DataGridBehavior.UseBrowsableAttributeOnColumn="True" Name="MainDataGrid"  Grid.Row="0" HorizontalContentAlignment="Stretch" 
-                      VerticalContentAlignment="Stretch" Margin="5" HeadersVisibility="Column"
-                      ItemsSource="{Binding Datasource}" IsReadOnly="True"/>
+            <DataGrid extensions:DataGridBehavior.UseBrowsableAttributeOnColumn="True" Name="MainDataGrid"  Grid.Row="0" 
+                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5" HeadersVisibility="Column"
+                      ItemsSource="{Binding Datasource}" IsReadOnly="True" CanUserReorderColumns="False" SelectedItem="{Binding SelectedEntity}"
+                      HorizontalGridLinesBrush="#FFC1C1C1" VerticalGridLinesBrush="#FFC1C1C1" AlternatingRowBackground="#FFF1FFFE" SelectionMode="Single">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="FontWeight"  Value="Bold" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+            </DataGrid>
             <Grid  Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

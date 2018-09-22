@@ -18,14 +18,26 @@ Public Class WellsRepository
         End Get
     End Property
 
-    Public Overrides Function Add(entity As Well) As Boolean
-        If _entities.ContainsKey(entity.Id) OrElse _names.ContainsKey(entity.Name) Then
+    Public Overrides Function Add(entity As Well, ByRef reason As RejectedEntity.RejectedReasons) As Boolean
+        Try
+            If String.IsNullOrEmpty(entity.Name) Then
+                reason = RejectedEntity.RejectedReasons.WellNameEmpty
+                Return False
+            ElseIf _entities.ContainsKey(entity.Id) Then
+                reason = RejectedEntity.RejectedReasons.DuplicatedId
+                Return False
+            ElseIf _names.ContainsKey(entity.Name) Then
+                reason = RejectedEntity.RejectedReasons.DuplicatedName
+                Return False
+            Else
+                _entities.Add(entity.Id, entity)
+                _names.Add(entity.Name, entity)
+                Return True
+            End If
+        Catch ex As Exception
+            reason = RejectedEntity.RejectedReasons.Unknown
             Return False
-        Else
-            _entities.Add(entity.Id, entity)
-            _names.Add(entity.Name, entity)
-            Return True
-        End If
+        End Try
     End Function
 
     Function FindName(name As String) As Well

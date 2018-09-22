@@ -1,6 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Windows
-Imports System.Windows.Controls
 
 Namespace Extensions
 
@@ -39,18 +37,20 @@ Namespace Extensions
         Private Shared Sub DataGridOnAutoGeneratingColumn(sender As Object, e As DataGridAutoGeneratingColumnEventArgs)
             Dim propDesc = CType(e.PropertyDescriptor, PropertyDescriptor)
 
-            If e.PropertyType Is GetType(DateTime) Then
+            Dim changeStyle As Boolean = False
+            If e.PropertyType Is GetType(Date) Then
                 CType(e.Column, DataGridTextColumn).Binding.StringFormat = "dd/MM/yyyy"
-                Dim style = New Style(GetType(DataGridCell), e.Column.CellStyle)
-                Dim setter = New Setter(DataGridCell.HorizontalAlignmentProperty, HorizontalAlignment.Right)
-                style.Setters.Add(setter)
-                e.Column.CellStyle = style
+                changeStyle = True
             ElseIf e.PropertyType Is GetType(Double) Then
                 CType(e.Column, DataGridTextColumn).Binding.StringFormat = "N3"
-                Dim style = New Style(GetType(DataGridCell), e.Column.CellStyle)
-                Dim setter = New Setter(DataGridCell.HorizontalAlignmentProperty, HorizontalAlignment.Right)
+                changeStyle = True
+            End If
+
+            If changeStyle Then
+                Dim style = New Style(GetType(TextBlock), CType(e.Column, DataGridTextColumn).ElementStyle)
+                Dim setter = New Setter(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Right)
                 style.Setters.Add(setter)
-                e.Column.CellStyle = style
+                CType(e.Column, DataGridTextColumn).ElementStyle = style
             End If
 
             If propDesc IsNot Nothing Then

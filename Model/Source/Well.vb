@@ -44,7 +44,7 @@ Public Class Well
     Property Analysis As New List(Of ChemicalAnalysis)
 
     <Browsable(False)>
-    Property Measures As New List(Of Measurement)
+    Property Measurements As New List(Of Measurement)
 
     <Browsable(False)>
     Property Links As New List(Of ExternalLink)
