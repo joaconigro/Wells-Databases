@@ -6,14 +6,15 @@ Imports Wells.Persistence
 
 Public Class ExcelReader
 
-    Shared Function ReadWells(workbook As IWorkbook, sheetIndex As Integer) As List(Of Well)
+    Shared Function ReadWells(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Well)
         Dim sheet = workbook.GetSheetAt(sheetIndex)
         Dim row As IRow
         Dim wells As New List(Of Well)
 
         Dim indexError As Integer
         Try
-            For i = 1 To sheet.LastRowNum
+            Dim maxCount = sheet.LastRowNum
+            For i = 1 To maxCount
                 indexError = i
                 row = sheet.GetRow(i)
                 Dim well As New Well With {
@@ -34,6 +35,7 @@ Public Class ExcelReader
                 well.Bottom = ReadCellAsDouble(row, 9)
 
                 wells.Add(well)
+                progress.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
@@ -42,13 +44,14 @@ Public Class ExcelReader
         Return wells
     End Function
 
-    Shared Function ReadMeasurements(workbook As IWorkbook, sheetIndex As Integer) As List(Of Measurement)
+    Shared Function ReadMeasurements(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Measurement)
         Dim sheet = workbook.GetSheetAt(sheetIndex)
         Dim row As IRow
         Dim measurements As New List(Of Measurement)
         Dim indexError As Integer
         Try
-            For i = 1 To sheet.LastRowNum
+            Dim maxCount = sheet.LastRowNum
+            For i = 1 To maxCount
                 indexError = i
                 row = sheet.GetRow(i)
                 Dim meas As New Measurement With {
@@ -61,6 +64,7 @@ Public Class ExcelReader
                 }
 
                 measurements.Add(meas)
+                progress.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
@@ -116,6 +120,8 @@ Public Class ExcelReader
         header.CreateCell(3).SetCellValue("Prof Agua")
         header.CreateCell(4).SetCellValue("Caudal")
         header.CreateCell(5).SetCellValue("Observación")
+        header.CreateCell(6).SetCellValue("Fila original")
+        header.CreateCell(7).SetCellValue("Razón")
     End Sub
 
     Private Shared Function WriteMeasurementToExcelRow(measurement As Measurement, sheet As ISheet, rowIndex As Integer) As IRow

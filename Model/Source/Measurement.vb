@@ -78,14 +78,28 @@ Public Class Measurement
     <DisplayName("Cota Agua"), Browsable(True)>
     ReadOnly Property WaterElevation As Double
         Get
-            Return Well?.Z + Well?.Height - WaterDepth
+            If HasWater Then
+                If Well?.HasHeight Then
+                    Return Well?.Z - WaterDepth
+                Else
+                    Return Well?.Z + Well?.Height - WaterDepth
+                End If
+            End If
+            Return NullNumericValue
         End Get
     End Property
 
     <DisplayName("Cota FLNA"), Browsable(True)>
     ReadOnly Property FLNAElevation As Double
         Get
-            Return Well?.Z + Well?.Height - FLNADepth
+            If HasFLNA Then
+                If Well?.HasHeight Then
+                    Return Well?.Z - FLNADepth
+                Else
+                    Return Well?.Z + Well?.Height - FLNADepth
+                End If
+            End If
+            Return NullNumericValue
         End Get
     End Property
 End Class

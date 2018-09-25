@@ -22,18 +22,20 @@ Public MustInherit Class Repository(Of T As IBusinessObject)
 
     MustOverride Function Add(entity As T, ByRef reason As RejectedEntity.RejectedReasons) As Boolean Implements IRepository(Of T).Add
 
-    Function AddRange(entities As IEnumerable(Of T)) As List(Of RejectedEntity) Implements IRepository(Of T).AddRange
+    Function AddRange(entities As IEnumerable(Of T), progress As IProgress(Of Integer)) As List(Of RejectedEntity) Implements IRepository(Of T).AddRange
         Dim rejecteds As New List(Of RejectedEntity)
         Dim inserted As New List(Of T)
         Dim reason As RejectedEntity.RejectedReasons
-        For Each e In entities
+        Dim total = entities.Count
+        For i = 0 To total - 1
+            Dim e = entities(i)
             reason = RejectedEntity.RejectedReasons.None
             If Add(e, reason) Then
                 inserted.Add(e)
             Else
-                Dim index = entities.ToList.IndexOf(e) + 2
-                rejecteds.Add(New RejectedEntity(e, index, reason))
+                rejecteds.Add(New RejectedEntity(e, i + 2, reason))
             End If
+            progress.Report((i + 1) / total * 100)
         Next
         _context.AddRange(inserted)
 

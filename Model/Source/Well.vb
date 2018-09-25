@@ -24,7 +24,14 @@ Public Class Well
     <Browsable(False)>
     ReadOnly Property HasGeographic As Boolean
         Get
-            Return Not (Latitude = -9999 AndAlso Longitude = -9999)
+            Return Not (Latitude = NullNumericValue AndAlso Longitude = NullNumericValue)
+        End Get
+    End Property
+
+    <Browsable(False)>
+    ReadOnly Property HasHeight As Boolean
+        Get
+            Return Height <> NullNumericValue
         End Get
     End Property
 

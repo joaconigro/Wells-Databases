@@ -12,13 +12,13 @@ Class MainWindowView
 
 
         ' Add any initialization after the InitializeComponent() call.
-        StartDatePicker.SelectedDate = New Date(2000, 1, 1)
-        EndDatePicker.SelectedDate = Today
         viewModel = New MainWindowViewModel(Me)
         ViewWellMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 0, True, False)
         ViewMeasurementsMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 1, True, False)
         ViewAnalysisMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 2, True, False)
         ViewPrecipitationsMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 3, True, False)
+        StartDatePicker.SelectedDate = New Date(2000, 1, 1)
+        EndDatePicker.SelectedDate = Today
 
         DataContext = viewModel
 
@@ -59,14 +59,14 @@ Class MainWindowView
     End Function
 
     Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IMainWindowView.ShowMessageBox
-        Return MsgBox(message, MsgBoxStyle.YesNo, title) = MsgBoxResult.Yes
+        Return MessageBox.Show(message, MsgBoxStyle.YesNo, title) = MsgBoxResult.Yes
     End Function
 
     Private Sub ValueTextBox_TextChanged(sender As Object, e As TextChangedEventArgs)
-        viewModel.Filter.StringValue = ValueTextBox.Text
+        viewModel.StringValue = ValueTextBox.Text
     End Sub
 
     Public Sub ShowErrorMessageBox(message As String) Implements IMainWindowView.ShowErrorMessageBox
-        MsgBox(message, MsgBoxStyle.Critical, "Error")
+        MessageBox.Show(message, MsgBoxStyle.Critical, "Error")
     End Sub
 End Class

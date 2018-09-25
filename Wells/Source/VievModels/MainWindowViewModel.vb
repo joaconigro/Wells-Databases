@@ -1,13 +1,13 @@
-﻿Imports Wells.Base
-Imports Wells.Model
+﻿Imports Wells.Model
 Imports Wells.Persistence
 Imports NPOI.XSSF.UserModel
+Imports Wells.BaseFilter
 
 Public Class MainWindowViewModel
     Inherits BaseViewModel
 
     Private _window As IMainWindowView
-    Private repo As Repositories
+    Private _repo As Repositories
 
     Private WithEvents _Filter As BaseFilter
     Property Filter As BaseFilter
@@ -21,7 +21,7 @@ Public Class MainWindowViewModel
 
     ReadOnly Property WellNames As List(Of String)
         Get
-            Return repo?.Wells?.Names
+            Return _repo?.Wells?.Names
         End Get
     End Property
 
@@ -47,6 +47,136 @@ Public Class MainWindowViewModel
         End Get
     End Property
 
+    Private _SelectedWellFilterOption As Integer
+    Property SelectedWellFilterOption As Integer
+        Get
+            Return _SelectedWellFilterOption
+        End Get
+        Set
+            If _SelectedWellFilterOption <> Value Then
+                _SelectedWellFilterOption = Value
+                If _Filter IsNot Nothing Then
+                    _Filter.SelectedWellFilterOption = _SelectedWellFilterOption
+                End If
+            End If
+        End Set
+    End Property
+
+    Private _SelectedWellName As String
+    Property SelectedWellName As String
+        Get
+            Return _SelectedWellName
+        End Get
+        Set
+            If _SelectedWellName <> Value Then
+                _SelectedWellName = Value
+                If _Filter IsNot Nothing Then
+                    _Filter.SelectedWellName = _SelectedWellName
+                End If
+            End If
+        End Set
+    End Property
+
+    Private _WellFilter As WellQuery
+    Property WellFilter As WellQuery
+        Get
+            Return _WellFilter
+        End Get
+        Set
+            If _WellFilter <> Value Then
+                _WellFilter = Value
+                If _Filter IsNot Nothing Then
+                    _Filter.WellFilter = _WellFilter
+                End If
+            End If
+        End Set
+    End Property
+
+    Private _StartDate As Date
+    Property StartDate As Date
+        Get
+            Return _StartDate
+        End Get
+        Set
+            If _StartDate <> Value Then
+                _StartDate = Value
+                If _Filter IsNot Nothing Then
+                    _Filter.StartDate = _StartDate
+                End If
+            End If
+        End Set
+    End Property
+
+    Private _EndDate As Date
+    Property EndDate As Date
+        Get
+            Return _EndDate
+        End Get
+        Set
+            If _EndDate <> Value Then
+                _EndDate = Value
+                If _Filter IsNot Nothing Then
+                    _Filter.EndDate = _EndDate
+                End If
+            End If
+        End Set
+    End Property
+
+    Private _PropertyName As String
+    Property PropertyName As String
+        Get
+            Return _PropertyName
+        End Get
+        Set
+            If _PropertyName <> Value Then
+                _PropertyName = Value
+                If _Filter IsNot Nothing Then
+                    _Filter.PropertyName = _PropertyName
+                End If
+            End If
+        End Set
+    End Property
+
+    Private _StringValue As String
+    Property StringValue As String
+        Get
+            Return _doubleValue
+        End Get
+        Set
+            If _StringValue <> Value Then
+                _StringValue = Value
+                If IsNumeric(Value) Then
+                    _doubleValue = Double.Parse(Value, Globalization.NumberStyles.Any)
+                Else
+                    _StringValue = String.Empty
+                End If
+                If _Filter IsNot Nothing Then
+                    _Filter.StringValue = _StringValue
+                End If
+            End If
+        End Set
+    End Property
+
+    Private _doubleValue As Double
+
+    Private filterFunction As Func(Of Object, String, Double, Boolean)
+
+    Private _parameterFilter As CriteriaQuery
+    Property ParameterFilter As CriteriaQuery
+        Get
+            Return _parameterFilter
+        End Get
+        Set
+            If _parameterFilter <> Value Then
+                _parameterFilter = Value
+                If _Filter IsNot Nothing Then
+                    _Filter.ParameterFilter = _parameterFilter
+                End If
+            End If
+        End Set
+    End Property
+
+
     Private _SelectedEntity As IBusinessObject
     Property SelectedEntity As IBusinessObject
         Get
@@ -54,6 +184,7 @@ Public Class MainWindowViewModel
         End Get
         Set
             _SelectedEntity = Value
+            NotifyPropertyChanged(NameOf(WellExistsInfo))
         End Set
     End Property
 
@@ -71,6 +202,8 @@ Public Class MainWindowViewModel
 
     Sub New(window As IMainWindowView)
         _window = window
+
+        _progress = New Progress(Of Integer)(AddressOf ProgressChanged)
 
         If Not String.IsNullOrEmpty(My.Settings.DatabaseFilename) AndAlso IO.File.Exists(My.Settings.DatabaseFilename) Then
             OpenDatabase(My.Settings.DatabaseFilename, False)
@@ -107,7 +240,7 @@ Public Class MainWindowViewModel
                                                                        End If
                                                                    End Sub,
                                                                    Function()
-                                                                       Return repo IsNot Nothing
+                                                                       Return Repositories.HasProject
                                                                    End Function,
                                                                    AddressOf OnError)
 
@@ -120,7 +253,7 @@ Public Class MainWindowViewModel
                                                                               End If
                                                                           End Sub,
                                                                           Function()
-                                                                              Return repo IsNot Nothing
+                                                                              Return Repositories.HasProject
                                                                           End Function,
                                                                           AddressOf OnError)
 
@@ -128,7 +261,7 @@ Public Class MainWindowViewModel
                                                                    _Filter.ShowedDatasource = CInt(param)
                                                                End Sub,
                                                                Function()
-                                                                   Return repo IsNot Nothing
+                                                                   Return Repositories.HasProject
                                                                End Function,
                                                                AddressOf OnError)
 
@@ -153,32 +286,42 @@ Public Class MainWindowViewModel
         Return False
     End Function
 
-    Private Sub ReadWellFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
-        Dim wells = ExcelReader.ReadWells(workbook, sheetIndex)
+    Private Async Sub ReadWellFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
+        StartProgressNotifications(False, "Leyendo pozos del archivo Excel")
+        Dim wells = Await Task.Run(Function() ExcelReader.ReadWells(workbook, sheetIndex, _progress))
 
         If wells.Any Then
-            Dim rejected = repo.Wells.AddRange(wells)
+            StartProgressNotifications(False, "Importando pozos")
+            Dim rejected = Await Task.Run(Function() _repo.Wells.AddRange(wells, _progress))
+            StartProgressNotifications(True, "Guardando base de datos")
+            Await _repo.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
-            repo.SaveChanges()
         End If
 
         workbook.Close()
+        StopProgressNotifications()
+        SetDatasource()
     End Sub
 
-    Private Sub ReadMeasurementFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
-        Dim measurements = ExcelReader.ReadMeasurements(workbook, sheetIndex)
+    Private Async Sub ReadMeasurementFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
+        StartProgressNotifications(False, "Leyendo mediciones del archivo Excel")
+        Dim measurements = Await Task.Run(Function() ExcelReader.ReadMeasurements(workbook, sheetIndex, _progress))
 
         If measurements.Any Then
-            Dim rejected = repo.Measurements.AddRange(measurements)
+            StartProgressNotifications(False, "Importando mediciones")
+            Dim rejected = Await Task.Run(Function() _repo.Measurements.AddRange(measurements, _progress))
+            StartProgressNotifications(True, "Guardando base de datos")
+            Await _repo.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
-            repo.SaveChanges()
         End If
 
         workbook.Close()
+        StopProgressNotifications()
+        SetDatasource()
     End Sub
 
     Private Sub ExportRejectedToExcel(rejected As List(Of RejectedEntity))
@@ -190,17 +333,24 @@ Public Class MainWindowViewModel
         End If
     End Sub
 
-    Private Sub OpenDatabase(databaseFile As String, create As Boolean)
-        repo?.Close()
-        repo = New Repositories(databaseFile, create)
-        Filter = New BaseFilter(repo) With {.ShowedDatasource = My.Settings.ShowedDatasource}
-        SetDatasource()
+    Private Async Sub OpenDatabase(databaseFile As String, create As Boolean)
+        _repo?.Close()
+        StartProgressNotifications(True, "Abriendo la base de datos")
+        Await Task.Run(Sub() Repositories.CreateOrOpen(databaseFile, create))
+        _repo = Repositories.Instance
+        If _repo IsNot Nothing Then
+            Filter = New BaseFilter()
+            SetDatasource()
+        End If
         EventsAfterOpenDatabase()
     End Sub
 
     Private Sub EventsAfterOpenDatabase()
         CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
+        NotifyPropertyChanged(NameOf(WellNames))
+        NotifyPropertyChanged(NameOf(PropertiesNames))
+        StopProgressNotifications()
     End Sub
 
     Private Sub SetDatasource() Handles _Filter.FilterChanged
@@ -218,6 +368,21 @@ Public Class MainWindowViewModel
     ReadOnly Property ItemsCount As Integer
         Get
             Return If(_Datasource IsNot Nothing, Datasource.Count, 0)
+        End Get
+    End Property
+
+    ReadOnly Property WellExistsInfo As String
+        Get
+            If _SelectedEntity IsNot Nothing Then
+                If TypeOf _SelectedEntity Is Well Then
+                    Return If(CType(_SelectedEntity, Well).Exists, "Pozo existente", "Pozo inexistente")
+                ElseIf TypeOf _SelectedEntity Is Measurement Then
+                    Return If(CType(_SelectedEntity, Measurement).Well.Exists, "Pozo existente", "Pozo inexistente")
+                ElseIf TypeOf _SelectedEntity Is ChemicalAnalysis Then
+                    Return If(CType(_SelectedEntity, ChemicalAnalysis).Well.Exists, "Pozo existente", "Pozo inexistente")
+                End If
+            End If
+            Return String.Empty
         End Get
     End Property
 

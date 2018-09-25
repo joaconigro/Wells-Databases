@@ -210,8 +210,11 @@ Public Class BaseFilter
 
     Protected _repositories As Repositories
 
-    Sub New(repo As Repositories)
-        _repositories = repo
+    Sub New()
+        _repositories = Repositories.Instance
+        _showedDatasource = My.Settings.ShowedDatasource
+        _StartDate = New Date(2000, 1, 1)
+        _EndDate = Today
         filterFunction = AddressOf ExactValue
     End Sub
 
@@ -239,17 +242,13 @@ Public Class BaseFilter
                     Return {repo.FindName(SelectedWellName)}.ToList
                 End If
             Case WellQuery.OnlyMeasurementWell
-                Dim list = From w In repo.All
-                           Where w.Type = WellType.MeasurementWell
-                           Select w
-
-                Return list.ToList
+                Return (From w In repo.All
+                        Where w.Type = WellType.MeasurementWell
+                        Select w).ToList
             Case WellQuery.OnlySounding
-                Dim list = From w In repo.All
-                           Where w.Type = WellType.Sounding
-                           Select w
-
-                Return list.ToList
+                Return (From w In repo.All
+                        Where w.Type = WellType.Sounding
+                        Select w).ToList
             Case Else
                 Return repo.All
         End Select
@@ -355,7 +354,6 @@ Public Class BaseFilter
 
     End Function
 
-
     Private Function ExactValue(entity As Object, propertyName As String, value As Double) As Boolean
         Dim propertyValue = CDbl(CallByName(entity, propertyName, CallType.Get))
         Return propertyValue = value
@@ -380,6 +378,5 @@ Public Class BaseFilter
         Dim propertyValue = CDbl(CallByName(entity, propertyName, CallType.Get))
         Return propertyValue >= value
     End Function
-
 
 End Class

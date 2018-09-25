@@ -10,12 +10,15 @@ Public Class Context
     Property Precipitations As DbSet(Of Precipitation)
     Property Links As DbSet(Of ExternalLink)
 
+    Private _databaseName As String
+
     Sub New()
         MyBase.New()
     End Sub
 
     Sub New(connectionString As String, create As Boolean, initializator As IDatabaseInitializer(Of Context))
         MyBase.New(connectionString)
+        _databaseName = Database.Connection.Database
     End Sub
 
     Sub Add(entity As IBusinessObject)
@@ -37,8 +40,4 @@ Public Class Context
         MyBase.Set(entityType).Remove(entity)
     End Sub
 
-    Sub Close()
-        SaveChanges()
-        Dispose()
-    End Sub
 End Class

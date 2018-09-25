@@ -7,12 +7,15 @@
         xmlns:extensions="clr-namespace:Wells.Extensions"
         mc:Ignorable="d"
         Title="Well Manager" Height="450" Width="800">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <DockPanel>
         <Menu Height="Auto" DockPanel.Dock="Top">
             <MenuItem Name="DatabaseMenuItem" Header="Base de _datos">
                 <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." Command="{Binding CreateDatabaseCommand}"/>
                 <MenuItem Name="OpenDatabaseMenuItem" Header="Abrir..." Command="{Binding OpenDatabaseCommand}" />
-                <Separator></Separator>
+                <Separator/>
                 <MenuItem Name="ImportDatabaseMenuItem" Header="Importar..."/>
                 <MenuItem Name="ExportDatabaseMenuItem" Header="Exportar..."/>
             </MenuItem>
@@ -35,9 +38,18 @@
             <MenuItem Name="GraphicsMenuItem" Header="_Gráficos" />
         </Menu>
         <StatusBar Name="InfoStatusBar" Height="Auto" DockPanel.Dock="Bottom">
-            <StatusBarItem Name="RecordsFoundItem" Content="{Binding ItemsCount}"  Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-            <StatusBarItem Name="TextItem" Content="registros encontrados." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-            <StatusBarItem Name="ExistingWellItem" Content="Pozo existente" Width="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FlowDirection="RightToLeft" />
+            <StatusBarItem Name="RecordsFoundItem" Content="{Binding ItemsCount}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <StatusBarItem Name="TextItem" Content="registros encontrados." HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Separator/>
+            <StackPanel Name="ProgressStackPanel" Orientation="Horizontal" Visibility="{Binding ShowProgress, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StatusBarItem Name="ProgressInfoTextItem" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                               Content="{Binding ProcessInfo, Mode=OneWay}"/>
+                <ProgressBar Name="ProcessProgressBar" Minimum="0" Maximum="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                             Value="{Binding ProgressValue, Mode=OneWay}" IsIndeterminate="{Binding UndefinedProgress, Mode=OneWay}"
+                             MinWidth="100"/>
+            </StackPanel>            
+            <StatusBarItem Name="ExistingWellItem" Content="{Binding WellExistsInfo}" Width="Auto" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
         </StatusBar>
         <Grid Name="MainGrid" >
             <Grid.RowDefinitions>
@@ -54,7 +66,6 @@
                         <Setter Property="HorizontalContentAlignment" Value="Center" />
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
-
             </DataGrid>
             <Grid  Grid.Row="1" >
                 <Grid.ColumnDefinitions>
@@ -72,9 +83,9 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Mostrar: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <ComboBox Grid.Column="1" Grid.Row="0" Margin="2" ItemsSource="{Binding WellFilterOptions}" SelectedIndex="{Binding Filter.WellFilter, Mode=OneWayToSource}"/>
+                        <ComboBox Grid.Column="1" Grid.Row="0" Margin="2" ItemsSource="{Binding WellFilterOptions}" SelectedIndex="{Binding WellFilter, Mode=OneWayToSource}"/>
                         <TextBlock Text="Pozo/Sondeo: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <ComboBox Grid.Column="1" Grid.Row="1" Margin="2" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedValue="{Binding Filter.SelectedWellName, Mode=OneWayToSource}"/>
+                        <ComboBox Grid.Column="1" Grid.Row="1" Margin="2" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedValue="{Binding SelectedWellName, Mode=OneWayToSource}"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="Mediciones" Width="Auto" Height="Auto" Grid.Column="1" Margin="5">
@@ -91,21 +102,18 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Desde: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <TextBlock Text="Hasta: " Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <DatePicker Name="StartDatePicker" Grid.Row="0" Grid.Column="1" Margin="2" SelectedDate="{Binding Filter.StartDate, Mode=OneWayToSource}"/>
-                        <DatePicker Name="EndDatePicker" Grid.Row="0" Grid.Column="3" Margin="2" SelectedDate="{Binding Filter.EndDate, Mode=OneWayToSource}"/>
+                        <DatePicker Name="StartDatePicker" Grid.Row="0" Grid.Column="1" Margin="2" SelectedDate="{Binding StartDate, Mode=OneWayToSource}"/>
+                        <DatePicker Name="EndDatePicker" Grid.Row="0" Grid.Column="3" Margin="2" SelectedDate="{Binding EndDate, Mode=OneWayToSource}"/>
                         <TextBlock Text="Filtrar por: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <ComboBox Name="PropertiesComoboBox" Grid.Row="1" Grid.Column="1" Margin="2" ItemsSource="{Binding PropertiesNames, Mode=OneWay}"
-                                  SelectedValue="{Binding Filter.PropertyName, Mode=OneWayToSource}"/>
+                                  SelectedValue="{Binding PropertyName, Mode=OneWayToSource}"/>
                         <ComboBox Name="CriteriaComoboBox" Grid.Row="1" Grid.Column="2" Margin="2" ItemsSource="{Binding CriteriaFilterOptions, Mode=OneWay}"
-                                  SelectedIndex="{Binding Filter.ParameterFilter, Mode=OneWayToSource}"/>
+                                  SelectedIndex="{Binding ParameterFilter, Mode=OneWayToSource}"/>
                         <TextBox Name="ValueTextBox" Grid.Row="1" Grid.Column="3" Margin="2" VerticalContentAlignment="Center" 
                                  HorizontalContentAlignment="Right" TextChanged="ValueTextBox_TextChanged"/>
                     </Grid>
                 </GroupBox>
             </Grid>
-
         </Grid>
-
-
     </DockPanel>
 </Window>

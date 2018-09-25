@@ -13,7 +13,19 @@ Public Class Repositories
     Property Precipitations As PrecipitationsRepository
     Property Links As ExternalLinksRepository
 
-    Sub New(filename As String, create As Boolean)
+    Shared Property Instance As Repositories
+
+    Shared Sub CreateOrOpen(filename As String, create As Boolean)
+        Instance = New Repositories(filename, create)
+    End Sub
+
+    Shared ReadOnly Property HasProject As Boolean
+        Get
+            Return Instance IsNot Nothing
+        End Get
+    End Property
+
+    Private Sub New(filename As String, create As Boolean)
         _fileManager = New ExternalFileManager(IO.Path.GetDirectoryName(filename))
         _databasePath = filename
         Dim conString = $"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={filename};Integrated Security=True"
@@ -53,10 +65,16 @@ Public Class Repositories
     End Function
 
     Sub Close()
-        _context?.Close()
+        _context.SaveChanges()
+        _context?.Dispose()
     End Sub
 
     Sub SaveChanges()
         _context.SaveChanges()
     End Sub
+
+    Async Function SaveChangesAsync() As Task(Of Integer)
+        Return Await _context.SaveChangesAsync()
+    End Function
+
 End Class

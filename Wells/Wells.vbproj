@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Source\Converters\BoolToVisibilityConverter.vb" />
     <Compile Include="Source\WPFExtensions\MenuItemExtensions.vb" />
     <Page Include="Source\Views\CreateDatabaseDialog.xaml">
       <SubType>Designer</SubType>
