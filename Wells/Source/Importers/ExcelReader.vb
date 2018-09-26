@@ -44,6 +44,31 @@ Public Class ExcelReader
         Return wells
     End Function
 
+    Shared Function ReadPrecipitations(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Precipitation)
+        Dim sheet = workbook.GetSheetAt(sheetIndex)
+        Dim row As IRow
+        Dim precipitations As New List(Of Precipitation)
+        Dim indexError As Integer
+        Try
+            Dim maxCount = sheet.LastRowNum
+            For i = 1 To maxCount
+                indexError = i
+                row = sheet.GetRow(i)
+                Dim prec As New Precipitation With {
+                    .PrecipitationDate = ReadCellAsDateString(row, 0),
+                    .Millimeters = ReadCellAsDouble(row, 1)}
+                prec.Millimeters = If(prec.Millimeters = BusinessObject.NullNumericValue, 0, prec.Millimeters)
+
+                precipitations.Add(prec)
+                progress.Report(i / maxCount * 100)
+            Next
+        Catch ex As Exception
+            Throw New Exception("Error leyendo la fila " & indexError)
+        End Try
+
+        Return precipitations
+    End Function
+
     Shared Function ReadMeasurements(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Measurement)
         Dim sheet = workbook.GetSheetAt(sheetIndex)
         Dim row As IRow

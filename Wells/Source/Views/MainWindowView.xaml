@@ -33,7 +33,10 @@
             <MenuItem Name="MeasuresMenuItem" Header="_Mediciones">
                 <MenuItem Name="NewMeasureMenuItem" Header="Nueva..." />
                 <MenuItem Name="EditMeasureMenuItem" Header="Editar..." />
-                <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..."  Command="{Binding ImportMeasurementsFromExcelCommand}"/>
+                <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..." Command="{Binding ImportMeasurementsFromExcelCommand}"/>
+            </MenuItem>
+            <MenuItem Name="PrecipitationsMenuItem" Header="_Precipitaciones">
+                <MenuItem Name="ImportPrecipitationsMenuItem" Header="Importar..." Command="{Binding ImportPrecipitationsFromExcelCommand}"/>
             </MenuItem>
             <MenuItem Name="GraphicsMenuItem" Header="_Gráficos" />
         </Menu>

@@ -258,6 +258,19 @@ Public Class MainWindowViewModel
                                                                           End Function,
                                                                           AddressOf OnError)
 
+    Property ImportPrecipitationsFromExcelCommand As ICommand = New Command(Sub()
+                                                                                Dim wb As XSSFWorkbook = Nothing
+                                                                                Dim sheetIndex As Integer = -1
+
+                                                                                If OpenExcelFile(wb, sheetIndex) Then
+                                                                                    ReadPrecipitationsFromExcel(wb, sheetIndex)
+                                                                                End If
+                                                                            End Sub,
+                                                                          Function()
+                                                                              Return Repositories.HasProject
+                                                                          End Function,
+                                                                          AddressOf OnError)
+
     Property ShowedDatasourceCommand As ICommand = New Command(Sub(param)
                                                                    _Filter.ShowedDatasource = CInt(param)
                                                                End Sub,
@@ -354,6 +367,25 @@ Public Class MainWindowViewModel
         SetDatasource()
     End Sub
 
+    Private Async Sub ReadPrecipitationsFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
+        StartProgressNotifications(False, "Leyendo precipitaciones del archivo Excel")
+        Dim precipitations = Await Task.Run(Function() ExcelReader.ReadPrecipitations(workbook, sheetIndex, _progress))
+
+        If precipitations.Any Then
+            StartProgressNotifications(False, "Importando precipitaciones")
+            Dim rejected = Await Task.Run(Function() _repo.Precipitations.AddRange(precipitations, _progress))
+            StartProgressNotifications(True, "Guardando base de datos")
+            Await _repo.SaveChangesAsync()
+            'If rejected.Any Then
+            '    ExportRejectedToExcel(rejected)
+            'End If
+        End If
+
+        workbook.Close()
+        StopProgressNotifications()
+        SetDatasource()
+    End Sub
+
     Private Sub ExportRejectedToExcel(rejected As List(Of RejectedEntity))
         If _window.ShowMessageBox($"No se pudieron importar {rejected.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados") Then
             Dim filename = _window.SaveFileDialog("Archivos de Excel|*.xlsx", "Datos rechazados")
@@ -378,6 +410,7 @@ Public Class MainWindowViewModel
     Private Sub EventsAfterOpenDatabase()
         CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ImportMeasurementsFromExcelCommand, Command).RaiseCanExecuteChanged()
+        CType(ImportPrecipitationsFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
         CType(NewWellCommand, Command).RaiseCanExecuteChanged()
         NotifyPropertyChanged(NameOf(WellNames))

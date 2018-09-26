@@ -8,6 +8,7 @@ Public Class RejectedEntity
         WellNameEmpty
         WellNotFound
         FLNADepthGreaterThanWaterDepth
+        DuplicatedDate
         Unknown
     End Enum
 
