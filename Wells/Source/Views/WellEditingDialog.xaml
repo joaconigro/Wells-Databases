@@ -84,7 +84,10 @@
         <GroupBox Name="ContentGroupBox" Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">
             <TabControl Name="ContentTabControl">
                 <TabItem Name="MeasurementsTab" Header="Mediciones">
-                    <local:EntitiesManagerControl x:Name="MeasurementsEntityControl" ObjectsSource="{Binding Measurements, Mode=OneWay}"/>
+                    <local:EntitiesManagerControl x:Name="MeasurementsEntityControl" ObjectsSource="{Binding Measurements, Mode=OneWay}" 
+                                                  NewEntityCommand="{Binding NewMeasurementCommand, Mode=OneWay}"
+                                                  EditEntityCommand="{Binding EditMeasurementCommand, Mode=OneWay}"
+                                                  DeleteEntityCommand ="{Binding DeleteMeasurementCommand, Mode=OneWay}"/>
                 </TabItem>
                 <TabItem Name="AnalysisTab" Header="Análisis">
                     <local:EntitiesManagerControl x:Name="AnalysisEntityControl" ObjectsSource="{Binding Analysis, Mode=OneWay}"/>

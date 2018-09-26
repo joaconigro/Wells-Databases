@@ -12,12 +12,15 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ListView Name="EntitiesListview" Grid.Column="0" ItemsSource="{Binding ObjectsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" 
-                  SelectedItem="{Binding SelectedEntity}"/>
+                  SelectedItem="{Binding SelectedEntity, Mode=OneWayToSource}"/>
         <StackPanel Grid.Column="1">
-            <Button Name="NewEntityButton" Content="Nueva..." Margin="2" Padding="10 1"/>
-            <Button Name="EditEntityButton" Content="Editar..." Margin="2" Padding="10 1"/>
+            <Button Name="NewEntityButton" Content="Nueva..." Margin="2" Padding="10 1" 
+                    Command="{Binding NewEntityCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}"/>
+            <Button Name="EditEntityButton" Content="Editar..." Margin="2" Padding="10 1" 
+                    Command="{Binding EditEntityCommand,  Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"/>
             <Label Content=" "/>
-            <Button Name="RemoveEntityButton" Content="Borrar..." Margin="2" Padding="10 1"/>
+            <Button Name="RemoveEntityButton" Content="Borrar..." Margin="2" Padding="10 1" 
+                    Command="{Binding DeleteEntityCommand,  Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"/>
         </StackPanel>
     </Grid>
 </UserControl>

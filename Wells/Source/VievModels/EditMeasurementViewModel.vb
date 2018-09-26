@@ -24,7 +24,7 @@ Public Class EditMeasurementViewModel
     ReadOnly Property HasMeasurement As Boolean
     ReadOnly Property NameSelectable As Boolean
 
-    Private _measurement As Measurement
+    Property Measurement As Measurement
     Private _repo As MeasurementsRepository
     Private _well As Well
     Private _SelectedWellIndex As Integer
@@ -65,7 +65,7 @@ Public Class EditMeasurementViewModel
     End Sub
 
     Sub New(m As Measurement)
-        _measurement = m
+        Measurement = m
         HasMeasurement = True
         NameSelectable = False
         InitializeMeasurement()
@@ -74,25 +74,25 @@ Public Class EditMeasurementViewModel
     End Sub
 
     Private Sub InitializeMeasurement()
-        WellName = _measurement.WellName
-        RealDate = _measurement.RealDate
-        FLNADepth = _measurement.FLNADepth
-        WaterDepth = _measurement.WaterDepth
-        Caudal = _measurement.Caudal
-        Comment = _measurement.Comment
+        WellName = Measurement.WellName
+        RealDate = Measurement.RealDate
+        FLNADepth = Measurement.FLNADepth
+        WaterDepth = Measurement.WaterDepth
+        Caudal = Measurement.Caudal
+        Comment = Measurement.Comment
     End Sub
 
     Private Sub CreateOrEditMeasurement()
         If HasMeasurement Then
-            _measurement.Well = _well
-            _measurement.WellName = WellName
-            _measurement.SampleDate = RealDate.ToString("dd/MM/yyyy")
-            _measurement.FLNADepth = FLNADepth
-            _measurement.WaterDepth = WaterDepth
-            _measurement.Caudal = Caudal
-            _measurement.Comment = Comment
+            Measurement.Well = _well
+            Measurement.WellName = WellName
+            Measurement.SampleDate = RealDate.ToString("dd/MM/yyyy")
+            Measurement.FLNADepth = FLNADepth
+            Measurement.WaterDepth = WaterDepth
+            Measurement.Caudal = Caudal
+            Measurement.Comment = Comment
         Else
-            _measurement = New Measurement() With {
+            Measurement = New Measurement() With {
                 .Well = _well,
                 .WellName = _WellName,
                 .SampleDate = RealDate.ToString("dd/MM/yyyy"),
@@ -115,8 +115,8 @@ Public Class EditMeasurementViewModel
     End Function
 
     Private Sub RemoveAll()
-        _well.Measurements.Remove(_measurement)
-        _repo.Remove(_measurement)
+        _well.Measurements.Remove(Measurement)
+        _repo.Remove(Measurement)
     End Sub
 
     ReadOnly Property DeleteMeasurementCommand As ICommand = New Command(Sub()
@@ -134,11 +134,9 @@ Public Class EditMeasurementViewModel
     ReadOnly Property AcceptCommand As ICommand = New Command(Sub()
                                                                   CreateOrEditMeasurement()
                                                                   If HasMeasurement Then
-                                                                      _repo.Update(_measurement)
+                                                                      _repo.Update(Measurement)
                                                                   Else
-                                                                      If _repo.Add(_measurement, RejectedEntity.RejectedReasons.None) Then
-                                                                          '_well.Measurements.Add(_measurement)
-                                                                      End If
+                                                                      _repo.Add(Measurement, RejectedEntity.RejectedReasons.None)
                                                                   End If
                                                                   Repositories.Instance.SaveChanges()
                                                                   RaiseEvent CloseDialog(True)

@@ -12,9 +12,7 @@
         DataContext = vm
         _viewModel = vm
         _viewModel.View = Me
-        MeasurementsEntityControl.ObjectsSource = _viewModel.Measurements
-        AnalysisEntityControl.ObjectsSource = _viewModel.Analysis
-        ExternalLinksEntityControl.ObjectsSource = _viewModel.Links
+
         AddHandler _viewModel.CloseDialog, AddressOf CloseDialog
     End Sub
 
@@ -31,4 +29,9 @@
     Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
         MessageBox.Show(Me, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
     End Sub
+
+    Public Function ShowEditMeasurementDialog(vm As EditMeasurementViewModel) As Boolean
+        Dim diag As New EditMeasurementDialog(vm)
+        Return diag.ShowDialog()
+    End Function
 End Class

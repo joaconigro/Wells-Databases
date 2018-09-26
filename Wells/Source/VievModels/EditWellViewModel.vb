@@ -11,6 +11,8 @@ Public Class EditWellViewModel
         Set
             _WellName = Value
             CType(AcceptCommand, Command).RaiseCanExecuteChanged()
+            CType(EditMeasurementCommand, Command).RaiseCanExecuteChanged()
+            CType(NewMeasurementCommand, Command).RaiseCanExecuteChanged()
         End Set
     End Property
 
@@ -33,19 +35,32 @@ Public Class EditWellViewModel
 
     Private _well As Well
     Private _repo As WellsRepository
+    Private _measurementEditViewModel As EditMeasurementViewModel
     Private _WellName As String
+    Private _View As IView
     Event CloseDialog(result As Boolean)
 
     Property View As IView
+        Get
+            Return _View
+        End Get
+        Set
+            _View = Value
+            _measurementEditViewModel.View = _View
+        End Set
+    End Property
 
     Sub New()
         HasWell = False
         NameEditable = True
+        _well = New Well()
+        _measurementEditViewModel = New EditMeasurementViewModel(_well)
         _repo = Repositories.Instance.Wells
     End Sub
 
     Sub New(w As Well)
         _well = w
+        _measurementEditViewModel = New EditMeasurementViewModel(_well)
         HasWell = True
         NameEditable = False
         InitializeWell()
@@ -73,34 +88,22 @@ Public Class EditWellViewModel
     End Sub
 
     Private Sub CreateOrEditWell()
-        If HasWell Then
-            _well.X = X
-            _well.Y = Y
-            _well.Z = Z
-            _well.Latitude = Latitude
-            _well.Longitude = Longitude
-            _well.Type = Type
-            _well.Bottom = Bottom
-            _well.Exists = Exists
-            _well.Height = Height
-            _well.Analysis = Analysis
-            _well.Measurements = Measurements
-            _well.Links = Links
-        Else
-            _well = New Well(WellName) With {
-                .X = X,
-                .Y = Y,
-                .Z = Z,
-                .Latitude = Latitude,
-                .Longitude = Longitude,
-                .Type = Type,
-                .Bottom = Bottom,
-                .Exists = Exists,
-                .Height = Height,
-                .Analysis = Analysis,
-                .Measurements = Measurements,
-                .Links = Links}
+        If Not HasWell Then
+            _well.Name = WellName
         End If
+
+        _well.X = X
+        _well.Y = Y
+        _well.Z = Z
+        _well.Latitude = Latitude
+        _well.Longitude = Longitude
+        _well.Type = Type
+        _well.Bottom = Bottom
+        _well.Exists = Exists
+        _well.Height = Height
+        _well.Analysis = Analysis
+        _well.Measurements = Measurements
+        _well.Links = Links
     End Sub
 
     Private Function Validate()
@@ -149,6 +152,37 @@ Public Class EditWellViewModel
                                                                    AddressOf OnError)
 
     ReadOnly Property CancelCommand As ICommand = New Command(Sub() RaiseEvent CloseDialog(False))
+
+    Property NewMeasurementCommand As ICommand = New Command(Sub()
+                                                                 Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(_measurementEditViewModel)
+                                                                 If result Then
+                                                                     'Measurements.Add(_measurementEditViewModel.Measurement)
+                                                                     NotifyPropertyChanged(NameOf(Measurements))
+                                                                 End If
+                                                             End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
+    Property EditMeasurementCommand As ICommand = New Command(Sub(param)
+                                                                  If param IsNot Nothing AndAlso TypeOf param Is Measurement Then
+                                                                      Dim vm As New EditMeasurementViewModel(CType(param, Measurement))
+                                                                      Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(vm)
+                                                                      If result Then
+                                                                          NotifyPropertyChanged(NameOf(Measurements))
+                                                                      End If
+                                                                  End If
+                                                              End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
+    Property DeleteMeasurementCommand As ICommand = New Command(Sub(param)
+                                                                    If param IsNot Nothing AndAlso TypeOf param Is Measurement Then
+                                                                        Dim measurement = CType(param, Measurement)
+                                                                        _well.Measurements.Remove(measurement)
+                                                                        Repositories.Instance.Measurements.Remove(measurement)
+                                                                        Measurements.Remove(measurement)
+                                                                        NotifyPropertyChanged(NameOf(Measurements))
+                                                                    End If
+                                                                End Sub,
+                                                      Function() HasWell, AddressOf OnError)
 
     Protected Overrides Sub ShowErrorMessage(message As String)
         View.ShowErrorMessageBox(message)
