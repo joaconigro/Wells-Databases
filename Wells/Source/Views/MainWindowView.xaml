@@ -26,8 +26,8 @@
                 <MenuItem Name="ViewPrecipitationsMenuItem" Header="Precipitaciones" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="3"/>
             </MenuItem>
             <MenuItem Name="WellMenuItem" Header="_Pozos">
-                <MenuItem Name="NewWellMenuItem" Header="Nuevo..." />
-                <MenuItem Name="EditWellMenuItem" Header="Editar..." />
+                <MenuItem Name="NewWellMenuItem" Header="Nuevo..." Command="{Binding NewWellCommand}"/>
+                <MenuItem Name="EditWellMenuItem" Header="Editar..." Command="{Binding EditWellCommand}"/>
                 <MenuItem Name="ImportWellsMenuItem" Header="Importar..." Command="{Binding ImportWellsFromExcelCommand}" />
             </MenuItem>
             <MenuItem Name="MeasuresMenuItem" Header="_Mediciones">
@@ -83,7 +83,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Mostrar: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <ComboBox Grid.Column="1" Grid.Row="0" Margin="2" ItemsSource="{Binding WellFilterOptions}" SelectedIndex="{Binding WellFilter, Mode=OneWayToSource}"/>
+                        <ComboBox Grid.Column="1" Grid.Row="0" Margin="2" ItemsSource="{Binding WellFilterOptions, Mode=OneTime}" SelectedIndex="{Binding WellFilter, Mode=TwoWay}"/>
                         <TextBlock Text="Pozo/Sondeo: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <ComboBox Grid.Column="1" Grid.Row="1" Margin="2" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedValue="{Binding SelectedWellName, Mode=OneWayToSource}"/>
                     </Grid>
@@ -106,7 +106,7 @@
                         <DatePicker Name="EndDatePicker" Grid.Row="0" Grid.Column="3" Margin="2" SelectedDate="{Binding EndDate, Mode=OneWayToSource}"/>
                         <TextBlock Text="Filtrar por: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <ComboBox Name="PropertiesComoboBox" Grid.Row="1" Grid.Column="1" Margin="2" ItemsSource="{Binding PropertiesNames, Mode=OneWay}"
-                                  SelectedValue="{Binding PropertyName, Mode=OneWayToSource}"/>
+                                  SelectedValue="{Binding PropertyName, Mode=TwoWay}"/>
                         <ComboBox Name="CriteriaComoboBox" Grid.Row="1" Grid.Column="2" Margin="2" ItemsSource="{Binding CriteriaFilterOptions, Mode=OneWay}"
                                   SelectedIndex="{Binding ParameterFilter, Mode=OneWayToSource}"/>
                         <TextBox Name="ValueTextBox" Grid.Row="1" Grid.Column="3" Margin="2" VerticalContentAlignment="Center" 

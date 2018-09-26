@@ -58,15 +58,20 @@ Class MainWindowView
         Return -1
     End Function
 
-    Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IMainWindowView.ShowMessageBox
-        Return MessageBox.Show(message, MsgBoxStyle.YesNo, title) = MsgBoxResult.Yes
+    Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IView.ShowMessageBox
+        Return MessageBox.Show(Me, message, title, MessageBoxButton.YesNo, MessageBoxImage.Information) = MessageBoxResult.Yes
     End Function
 
     Private Sub ValueTextBox_TextChanged(sender As Object, e As TextChangedEventArgs)
         viewModel.StringValue = ValueTextBox.Text
     End Sub
 
-    Public Sub ShowErrorMessageBox(message As String) Implements IMainWindowView.ShowErrorMessageBox
-        MessageBox.Show(message, MsgBoxStyle.Critical, "Error")
+    Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
+        MessageBox.Show(Me, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
     End Sub
+
+    Public Function ShowEditWellDialog(vm As EditWellViewModel) As Boolean Implements IMainWindowView.ShowEditWellDialog
+        Dim diag As New WellEditingDialog(vm)
+        Return diag.ShowDialog()
+    End Function
 End Class

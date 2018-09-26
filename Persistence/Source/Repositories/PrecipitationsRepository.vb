@@ -7,6 +7,10 @@ Public Class PrecipitationsRepository
         MyBase.New(context, repositories, entities)
     End Sub
 
+    Protected Overrides Sub InternalRemove(entity As Precipitation)
+        _entities.Remove(entity.Id)
+    End Sub
+
     Public Overrides Function Add(entity As Precipitation, ByRef reason As RejectedEntity.RejectedReasons) As Boolean
         Try
             If _entities.ContainsKey(entity.Id) Then

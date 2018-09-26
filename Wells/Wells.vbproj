@@ -95,7 +95,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Source\Converters\BoolToVisibilityConverter.vb" />
+    <Compile Include="Source\Converters\DoubleStringConverter.vb" />
+    <Compile Include="Source\UserControls\EntitiesManagerControl.xaml.vb">
+      <DependentUpon>EntitiesManagerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\VievModels\EditWellViewModel.vb" />
+    <Compile Include="Source\Views\IView.vb" />
+    <Compile Include="Source\Views\WellEditingDialog.xaml.vb">
+      <DependentUpon>WellEditingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\WPFExtensions\MenuItemExtensions.vb" />
+    <Page Include="Source\UserControls\EntitiesManagerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\Views\CreateDatabaseDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +142,10 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Source\Views\WellEditingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System.Threading.Tasks" />

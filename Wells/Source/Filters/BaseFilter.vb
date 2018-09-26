@@ -12,6 +12,7 @@ Public Class BaseFilter
         ZoneB
         ZoneC
         ZoneD
+        Torches
     End Enum
 
     Private _measurementPropeties As New Dictionary(Of String, String) From {
@@ -78,6 +79,7 @@ Public Class BaseFilter
                 My.Settings.ShowedDatasource = Value
                 My.Settings.Save()
                 RaiseEvent FilterChanged()
+                ParameterFilter = 0
                 RaiseEvent DatasoureceTypeChanged()
             End If
         End Set
@@ -233,8 +235,6 @@ Public Class BaseFilter
 
     Private Function WellApply(repo As WellsRepository) As List(Of Well)
         Select Case WellFilter
-            Case WellQuery.All
-                Return repo.All
             Case WellQuery.ByName
                 If String.IsNullOrEmpty(SelectedWellName) Then
                     Return repo.All
@@ -249,6 +249,26 @@ Public Class BaseFilter
                 Return (From w In repo.All
                         Where w.Type = WellType.Sounding
                         Select w).ToList
+            Case WellQuery.ZoneA
+                Return (From w In repo.All
+                        Where Rectangle2D.ZoneA.Contains(w)
+                        Select w).ToList
+            Case WellQuery.ZoneB
+                Return (From w In repo.All
+                        Where Rectangle2D.ZoneB.Contains(w)
+                        Select w).ToList
+            Case WellQuery.ZoneC
+                Return (From w In repo.All
+                        Where Rectangle2D.ZoneC.Contains(w)
+                        Select w).ToList
+            Case WellQuery.ZoneD
+                Return (From w In repo.All
+                        Where Rectangle2D.ZoneD.Contains(w)
+                        Select w).ToList
+            Case WellQuery.Torches
+                Return (From w In repo.All
+                        Where Rectangle2D.Torches.Contains(w)
+                        Select w).ToList
             Case Else
                 Return repo.All
         End Select
@@ -257,8 +277,6 @@ Public Class BaseFilter
     Private Function MeasurementApply(repo As MeasurementsRepository) As List(Of Measurement)
         Dim list As List(Of Measurement)
         Select Case WellFilter
-            Case WellQuery.All
-                list = repo.All
             Case WellQuery.ByName
                 If String.IsNullOrEmpty(SelectedWellName) Then
                     list = repo.All
@@ -275,6 +293,26 @@ Public Class BaseFilter
                 list = (From m In repo.All
                         Where m.Well.Type = WellType.Sounding
                         Select m).ToList
+            Case WellQuery.ZoneA
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneA.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneB
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneB.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneC
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneC.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneD
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneD.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.Torches
+                list = (From e In repo.All
+                        Where Rectangle2D.Torches.Contains(e.Well)
+                        Select e).ToList
             Case Else
                 list = repo.All
         End Select
@@ -315,6 +353,26 @@ Public Class BaseFilter
             Case WellQuery.OnlySounding
                 list = (From e In repo.All
                         Where e.Well.Type = WellType.Sounding
+                        Select e).ToList
+            Case WellQuery.ZoneA
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneA.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneB
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneB.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneC
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneC.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneD
+                list = (From e In repo.All
+                        Where Rectangle2D.ZoneD.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.Torches
+                list = (From e In repo.All
+                        Where Rectangle2D.Torches.Contains(e.Well)
                         Select e).ToList
             Case Else
                 list = repo.All

@@ -27,7 +27,7 @@ Public Class MainWindowViewModel
 
     ReadOnly Property WellFilterOptions As List(Of String)
         Get
-            Return {"Todos", "Pozos", "Sondeos", "Por nombre", "Zona A", "Zona B", "Zona C", "Zona D"}.ToList
+            Return {"Todos", "Pozos", "Sondeos", "Por nombre", "Zona A", "Zona B", "Zona C", "Zona D", "Zona Antorchas"}.ToList
         End Get
     End Property
 
@@ -77,8 +77,8 @@ Public Class MainWindowViewModel
         End Set
     End Property
 
-    Private _WellFilter As WellQuery
-    Property WellFilter As WellQuery
+    Private _WellFilter As Integer
+    Property WellFilter As Integer
         Get
             Return _WellFilter
         End Get
@@ -161,8 +161,8 @@ Public Class MainWindowViewModel
 
     Private filterFunction As Func(Of Object, String, Double, Boolean)
 
-    Private _parameterFilter As CriteriaQuery
-    Property ParameterFilter As CriteriaQuery
+    Private _parameterFilter As Integer
+    Property ParameterFilter As Integer
         Get
             Return _parameterFilter
         End Get
@@ -185,6 +185,7 @@ Public Class MainWindowViewModel
         Set
             _SelectedEntity = Value
             NotifyPropertyChanged(NameOf(WellExistsInfo))
+            CType(EditWellCommand, Command).RaiseCanExecuteChanged()
         End Set
     End Property
 
@@ -264,6 +265,35 @@ Public Class MainWindowViewModel
                                                                    Return Repositories.HasProject
                                                                End Function,
                                                                AddressOf OnError)
+
+    Property NewWellCommand As ICommand = New Command(Sub()
+                                                          Dim vm As New EditWellViewModel
+                                                          _window.ShowEditWellDialog(vm)
+                                                      End Sub,
+                                                      Function()
+                                                          Return Repositories.HasProject
+                                                      End Function, AddressOf OnError)
+
+    Property EditWellCommand As ICommand = New Command(Sub()
+                                                           Dim result As Boolean = False
+                                                           If TypeOf _SelectedEntity Is Well Then
+                                                               Dim vm As New EditWellViewModel(CType(_SelectedEntity, Well))
+                                                               result = _window.ShowEditWellDialog(vm)
+                                                           ElseIf TypeOf _SelectedEntity Is Measurement Then
+                                                               Dim vm As New EditWellViewModel(CType(_SelectedEntity, Measurement).Well)
+                                                               result = _window.ShowEditWellDialog(vm)
+                                                           ElseIf TypeOf _SelectedEntity Is ChemicalAnalysis Then
+                                                               Dim vm As New EditWellViewModel(CType(_SelectedEntity, ChemicalAnalysis).Well)
+                                                               result = _window.ShowEditWellDialog(vm)
+                                                           End If
+                                                           If result Then
+                                                               NotifyPropertyChanged(NameOf(WellNames))
+                                                               SetDatasource()
+                                                           End If
+                                                       End Sub,
+                                                      Function()
+                                                          Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
+                                                      End Function, AddressOf OnError)
 
     Private Function OpenExcelFile(ByRef workbook As XSSFWorkbook, ByRef sheetIndex As Integer) As Boolean
         Dim filename = _window.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel")
@@ -347,7 +377,9 @@ Public Class MainWindowViewModel
 
     Private Sub EventsAfterOpenDatabase()
         CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
+        CType(ImportMeasurementsFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
+        CType(NewWellCommand, Command).RaiseCanExecuteChanged()
         NotifyPropertyChanged(NameOf(WellNames))
         NotifyPropertyChanged(NameOf(PropertiesNames))
         StopProgressNotifications()

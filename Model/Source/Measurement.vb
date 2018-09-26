@@ -67,10 +67,10 @@ Public Class Measurement
     <DisplayName("Espesor FLNA"), Browsable(True)>
     ReadOnly Property FLNAThickness As Double
         Get
-            If HasFLNA Then
+            If HasFLNA AndAlso HasWater Then
                 Return WaterDepth - FLNADepth
             Else
-                Return 0
+                Return NullNumericValue
             End If
         End Get
     End Property
@@ -80,9 +80,9 @@ Public Class Measurement
         Get
             If HasWater Then
                 If Well?.HasHeight Then
-                    Return Well?.Z - WaterDepth
-                Else
                     Return Well?.Z + Well?.Height - WaterDepth
+                Else
+                    Return Well?.Z - WaterDepth
                 End If
             End If
             Return NullNumericValue
@@ -94,9 +94,9 @@ Public Class Measurement
         Get
             If HasFLNA Then
                 If Well?.HasHeight Then
-                    Return Well?.Z - FLNADepth
-                Else
                     Return Well?.Z + Well?.Height - FLNADepth
+                Else
+                    Return Well?.Z - FLNADepth
                 End If
             End If
             Return NullNumericValue

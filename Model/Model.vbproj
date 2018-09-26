@@ -88,6 +88,7 @@
     <Compile Include="Source\Measurement.vb" />
     <Compile Include="Source\IBusinessObject.vb" />
     <Compile Include="Source\Precipitation.vb" />
+    <Compile Include="Source\Rectangle2D.vb" />
     <Compile Include="Source\Well.vb" />
   </ItemGroup>
   <ItemGroup>

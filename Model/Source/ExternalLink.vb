@@ -38,4 +38,14 @@ Public Class ExternalLink
             Throw New Exception("No se puede abrir el enlace externo. Más información: " & ex.Message)
         End Try
     End Sub
+
+    Sub DeleteFile()
+        Try
+            If IO.File.Exists(Link) Then
+                IO.File.Delete(Link)
+            End If
+        Catch ex As Exception
+            'Throw New Exception("No se puede borrar el enlace externo. Más información: " & ex.Message)
+        End Try
+    End Sub
 End Class

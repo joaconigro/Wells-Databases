@@ -7,6 +7,10 @@ Public Class ExternalLinksRepository
         MyBase.New(context, repositories, entities)
     End Sub
 
+    Protected Overrides Sub InternalRemove(entity As ExternalLink)
+        _entities.Remove(entity.Id)
+    End Sub
+
     Public Overrides Function Add(entity As ExternalLink, ByRef reason As RejectedEntity.RejectedReasons) As Boolean
         Try
             If String.IsNullOrEmpty(entity.WellName) Then

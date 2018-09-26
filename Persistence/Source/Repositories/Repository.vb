@@ -42,13 +42,26 @@ Public MustInherit Class Repository(Of T As IBusinessObject)
         Return rejecteds
     End Function
 
-    Sub Update(entity As IBusinessObject) Implements IRepository(Of T).Update
+    Protected MustOverride Sub InternalRemove(entity As T) Implements IRepository(Of T).InternalRemove
+
+    Sub Update(entity As T) Implements IRepository(Of T).Update
         _context.Entry(entity).State = EntityState.Modified
     End Sub
 
-    Sub Delete(entity As IBusinessObject) Implements IRepository(Of T).Delete
+    Sub Remove(entity As T) Implements IRepository(Of T).Remove
         Dim entityType = entity.GetType
+        InternalRemove(entity)
         _context.Set(entityType).Remove(entity)
+    End Sub
+
+    Sub RemoveRange(entities As IEnumerable(Of T)) Implements IRepository(Of T).RemoveRange
+        If entities.Any Then
+            Dim entityType = entities.First.GetType
+            For Each e In entities
+                InternalRemove(e)
+            Next
+            _context.Set(entityType).RemoveRange(entities)
+        End If
     End Sub
 
     Function Find(id As String) As T Implements IRepository(Of T).Find
