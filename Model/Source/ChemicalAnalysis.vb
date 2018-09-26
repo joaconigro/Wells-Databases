@@ -1,7 +1,9 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model
 
 Public Class ChemicalAnalysis
     Inherits BusinessObject
+    Implements IComparable(Of ChemicalAnalysis)
 
     <Browsable(False)>
     ReadOnly Property WellId As String
@@ -62,6 +64,15 @@ Public Class ChemicalAnalysis
         Me.Well = well
     End Sub
 
+    Public Overrides Function ToString() As String
+        Return SampleDate
+    End Function
+
+    Public Function CompareTo(other As ChemicalAnalysis) As Integer Implements IComparable(Of ChemicalAnalysis).CompareTo
+        If RealDate > other.RealDate Then Return -1
+        If RealDate = other.RealDate Then Return 0
+        Return 1
+    End Function
 End Class
 
 Public Enum SampleType

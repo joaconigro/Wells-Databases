@@ -5,4 +5,5 @@
     Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String
     Function SelectSheetDialog(sheets As List(Of String)) As Integer
     Function ShowEditWellDialog(vm As EditWellViewModel) As Boolean
+    Function ShowEditMeasurementDialog(vm As EditMeasurementViewModel) As Boolean
 End Interface

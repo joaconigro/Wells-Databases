@@ -11,7 +11,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <ListView Name="EntitiesListview" Grid.Column="0" DataContext="{Binding ElementName=EntityPanel, Path=DataContext}" SelectedItem="{Binding SelectedEntity}"/>
+        <ListView Name="EntitiesListview" Grid.Column="0" ItemsSource="{Binding ObjectsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" 
+                  SelectedItem="{Binding SelectedEntity}"/>
         <StackPanel Grid.Column="1">
             <Button Name="NewEntityButton" Content="Nueva..." Margin="2" Padding="10 1"/>
             <Button Name="EditEntityButton" Content="Editar..." Margin="2" Padding="10 1"/>

@@ -1,7 +1,9 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model
 
 Public Class Measurement
     Inherits BusinessObject
+    Implements IComparable(Of Measurement)
 
     <Browsable(False)>
     ReadOnly Property WellId As String
@@ -25,6 +27,13 @@ Public Class Measurement
         End Set
     End Property
 
+    <DisplayName("Fecha"), Browsable(True)>
+    ReadOnly Property RealDate As Date
+        Get
+            Return Date.ParseExact(SampleDate, "dd/MM/yyyy", Nothing)
+        End Get
+    End Property
+
     <Browsable(False)>
     Property SampleDate As String
 
@@ -34,36 +43,6 @@ Public Class Measurement
     <DisplayName("Profundidad Agua"), Browsable(True)>
     Property WaterDepth As Double
 
-    <DisplayName("Caudal"), Browsable(True)>
-    Property Caudal As Double
-
-    <DisplayName("Observaciones"), Browsable(True)>
-    Property Comment As String
-
-    <Browsable(False)>
-    Property Well As Well
-
-    <DisplayName("Fecha"), Browsable(True)>
-    ReadOnly Property RealDate As Date
-        Get
-            Return Date.ParseExact(SampleDate, "dd/MM/yyyy", Nothing)
-        End Get
-    End Property
-
-    <Browsable(False)>
-    ReadOnly Property HasFLNA As Boolean
-        Get
-            Return FLNADepth <> NullNumericValue
-        End Get
-    End Property
-
-    <Browsable(False)>
-    ReadOnly Property HasWater As Boolean
-        Get
-            Return WaterDepth <> NullNumericValue
-        End Get
-    End Property
-
     <DisplayName("Espesor FLNA"), Browsable(True)>
     ReadOnly Property FLNAThickness As Double
         Get
@@ -72,6 +51,20 @@ Public Class Measurement
             Else
                 Return NullNumericValue
             End If
+        End Get
+    End Property
+
+    <DisplayName("Cota FLNA"), Browsable(True)>
+    ReadOnly Property FLNAElevation As Double
+        Get
+            If HasFLNA Then
+                If Well?.HasHeight Then
+                    Return Well?.Z + Well?.Height - FLNADepth
+                Else
+                    Return Well?.Z - FLNADepth
+                End If
+            End If
+            Return NullNumericValue
         End Get
     End Property
 
@@ -89,19 +82,38 @@ Public Class Measurement
         End Get
     End Property
 
-    <DisplayName("Cota FLNA"), Browsable(True)>
-    ReadOnly Property FLNAElevation As Double
+    <DisplayName("Caudal"), Browsable(True)>
+    Property Caudal As Double
+
+    <DisplayName("Observaciones"), Browsable(True)>
+    Property Comment As String
+
+    <Browsable(False)>
+    Property Well As Well
+
+    <Browsable(False)>
+    ReadOnly Property HasFLNA As Boolean
         Get
-            If HasFLNA Then
-                If Well?.HasHeight Then
-                    Return Well?.Z + Well?.Height - FLNADepth
-                Else
-                    Return Well?.Z - FLNADepth
-                End If
-            End If
-            Return NullNumericValue
+            Return FLNADepth <> NullNumericValue
         End Get
     End Property
+
+    <Browsable(False)>
+    ReadOnly Property HasWater As Boolean
+        Get
+            Return WaterDepth <> NullNumericValue
+        End Get
+    End Property
+
+    Public Overrides Function ToString() As String
+        Return SampleDate
+    End Function
+
+    Public Function CompareTo(other As Measurement) As Integer Implements IComparable(Of Measurement).CompareTo
+        If RealDate > other.RealDate Then Return -1
+        If RealDate = other.RealDate Then Return 0
+        Return 1
+    End Function
 End Class
 
 

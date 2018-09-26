@@ -1,7 +1,9 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model
 
 Public Class Well
     Inherits BusinessObject
+    Implements IComparable(Of Well)
 
     <DisplayName("Nombre"), Browsable(True)>
     Property Name As String
@@ -94,6 +96,16 @@ Public Class Well
         MyBase.New()
         Me.Name = name
     End Sub
+
+    Public Overrides Function ToString() As String
+        Return Name
+    End Function
+
+    Public Function CompareTo(other As Well) As Integer Implements IComparable(Of Well).CompareTo
+        If Name > other.Name Then Return -1
+        If Name = other.Name Then Return 0
+        Return 1
+    End Function
 End Class
 
 Public Enum WellType

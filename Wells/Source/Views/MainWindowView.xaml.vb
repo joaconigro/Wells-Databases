@@ -74,4 +74,9 @@ Class MainWindowView
         Dim diag As New WellEditingDialog(vm)
         Return diag.ShowDialog()
     End Function
+
+    Public Function ShowEditMeasurementDialog(vm As EditMeasurementViewModel) As Boolean Implements IMainWindowView.ShowEditMeasurementDialog
+        Dim diag As New EditMeasurementDialog(vm)
+        Return diag.ShowDialog()
+    End Function
 End Class

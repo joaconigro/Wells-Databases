@@ -31,8 +31,8 @@
                 <MenuItem Name="ImportWellsMenuItem" Header="Importar..." Command="{Binding ImportWellsFromExcelCommand}" />
             </MenuItem>
             <MenuItem Name="MeasuresMenuItem" Header="_Mediciones">
-                <MenuItem Name="NewMeasureMenuItem" Header="Nueva..." />
-                <MenuItem Name="EditMeasureMenuItem" Header="Editar..." />
+                <MenuItem Name="NewMeasureMenuItem" Header="Nueva..." Command="{Binding NewMeasurementCommand}"/>
+                <MenuItem Name="EditMeasureMenuItem" Header="Editar..." Command="{Binding EditMeasurementCommand}"/>
                 <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..." Command="{Binding ImportMeasurementsFromExcelCommand}"/>
             </MenuItem>
             <MenuItem Name="PrecipitationsMenuItem" Header="_Precipitaciones">
@@ -87,11 +87,11 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Mostrar: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <ComboBox Grid.Column="1" Grid.Row="0" Margin="2" ItemsSource="{Binding WellFilterOptions, Mode=OneTime}" SelectedIndex="{Binding WellFilter, Mode=TwoWay}"/>
-                        <TextBlock Text="Pozo/Sondeo: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <ComboBox Grid.Column="1" Grid.Row="1" Margin="2" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedValue="{Binding SelectedWellName, Mode=OneWayToSource}"/>
+                        <TextBlock Text="Pozo/Sondeo: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                        <ComboBox Grid.Column="1" Grid.Row="1" Margin="2" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedValue="{Binding SelectedWellName, Mode=OneWayToSource}" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
                     </Grid>
                 </GroupBox>
-                <GroupBox Header="Mediciones" Width="Auto" Height="Auto" Grid.Column="1" Margin="5">
+                <GroupBox Header="Filtros de datos" Width="Auto" Height="Auto" Grid.Column="1" Margin="5">
                     <Grid Width="Auto" Height="Auto" Margin="2">
                         <Grid.RowDefinitions>
                             <RowDefinition/>

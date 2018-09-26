@@ -84,13 +84,13 @@
         <GroupBox Name="ContentGroupBox" Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">
             <TabControl Name="ContentTabControl">
                 <TabItem Name="MeasurementsTab" Header="Mediciones">
-                    <local:EntitiesManagerControl x:Name="MeasurementsEntityControl" DataContext="{Binding Measurements, Mode=OneWay}" />
+                    <local:EntitiesManagerControl x:Name="MeasurementsEntityControl" ObjectsSource="{Binding Measurements, Mode=OneWay}"/>
                 </TabItem>
                 <TabItem Name="AnalysisTab" Header="Análisis">
-                    <local:EntitiesManagerControl x:Name="AnalysisEntityControl" DataContext="{Binding Analysis, Mode=OneWay}"/>
+                    <local:EntitiesManagerControl x:Name="AnalysisEntityControl" ObjectsSource="{Binding Analysis, Mode=OneWay}"/>
                 </TabItem>
                 <TabItem Name="ExternalLinksTab" Header="Archivos externos">
-                    <local:EntitiesManagerControl x:Name="ExternalLinksEntityControl" DataContext="{Binding Links, Mode=OneWay}"/>
+                    <local:EntitiesManagerControl x:Name="ExternalLinksEntityControl" ObjectsSource="{Binding Links, Mode=OneWay}"/>
                 </TabItem>
             </TabControl>
         </GroupBox>

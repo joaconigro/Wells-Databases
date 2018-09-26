@@ -99,7 +99,11 @@
     <Compile Include="Source\UserControls\EntitiesManagerControl.xaml.vb">
       <DependentUpon>EntitiesManagerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\VievModels\EditMeasurementViewModel.vb" />
     <Compile Include="Source\VievModels\EditWellViewModel.vb" />
+    <Compile Include="Source\Views\EditMeasurementDialog.xaml.vb">
+      <DependentUpon>EditMeasurementDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Views\IView.vb" />
     <Compile Include="Source\Views\WellEditingDialog.xaml.vb">
       <DependentUpon>WellEditingDialog.xaml</DependentUpon>
@@ -110,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Views\CreateDatabaseDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Views\EditMeasurementDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

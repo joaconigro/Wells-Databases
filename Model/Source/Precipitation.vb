@@ -3,9 +3,6 @@
 Public Class Precipitation
     Inherits BusinessObject
 
-    <DisplayName("Milímetros"), Browsable(True)>
-    Property Millimeters As Double
-
     <Browsable(False)>
     Property PrecipitationDate As String
 
@@ -15,4 +12,7 @@ Public Class Precipitation
             Return Date.ParseExact(PrecipitationDate, "dd/MM/yyyy", Nothing)
         End Get
     End Property
+
+    <DisplayName("Milímetros"), Browsable(True)>
+    Property Millimeters As Double
 End Class

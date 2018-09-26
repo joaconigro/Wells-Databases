@@ -1,9 +1,9 @@
-﻿Public Class WellEditingDialog
+﻿Public Class EditMeasurementDialog
     Implements IView
 
-    Private _viewModel As EditWellViewModel
+    Private _viewModel As EditMeasurementViewModel
 
-    Sub New(vm As EditWellViewModel)
+    Sub New(vm As EditMeasurementViewModel)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -12,9 +12,7 @@
         DataContext = vm
         _viewModel = vm
         _viewModel.View = Me
-        MeasurementsEntityControl.ObjectsSource = _viewModel.Measurements
-        AnalysisEntityControl.ObjectsSource = _viewModel.Analysis
-        ExternalLinksEntityControl.ObjectsSource = _viewModel.Links
+
         AddHandler _viewModel.CloseDialog, AddressOf CloseDialog
     End Sub
 

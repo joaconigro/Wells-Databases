@@ -66,6 +66,10 @@ Public Class EditWellViewModel
         Analysis = _well.Analysis
         Measurements = _well.Measurements
         Links = _well.Links
+
+        Measurements.Sort()
+        Analysis.Sort()
+        Links.Sort()
     End Sub
 
     Private Sub CreateOrEditWell()
@@ -118,8 +122,6 @@ Public Class EditWellViewModel
         _repo.Remove(_well)
 
     End Sub
-
-
 
     ReadOnly Property DeleteWellCommand As ICommand = New Command(Sub()
                                                                       If View.ShowMessageBox("¿Desea eliminar este pozo? Esto borrará toda la información asociada al mismo.", "Borrar pozo") Then

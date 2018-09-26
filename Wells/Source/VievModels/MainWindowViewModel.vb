@@ -87,6 +87,7 @@ Public Class MainWindowViewModel
                 _WellFilter = Value
                 If _Filter IsNot Nothing Then
                     _Filter.WellFilter = _WellFilter
+                    NotifyPropertyChanged(NameOf(WellNamesVisible))
                 End If
             End If
         End Set
@@ -157,9 +158,16 @@ Public Class MainWindowViewModel
         End Set
     End Property
 
-    Private _doubleValue As Double
+    ReadOnly Property WellNamesVisible As Boolean
+        Get
+            If _Filter IsNot Nothing Then
+                Return _Filter.WellFilter = WellQuery.ByName
+            End If
+            Return False
+        End Get
+    End Property
 
-    Private filterFunction As Func(Of Object, String, Double, Boolean)
+    Private _doubleValue As Double
 
     Private _parameterFilter As Integer
     Property ParameterFilter As Integer
@@ -186,6 +194,7 @@ Public Class MainWindowViewModel
             _SelectedEntity = Value
             NotifyPropertyChanged(NameOf(WellExistsInfo))
             CType(EditWellCommand, Command).RaiseCanExecuteChanged()
+            CType(EditMeasurementCommand, Command).RaiseCanExecuteChanged()
         End Set
     End Property
 
@@ -281,7 +290,11 @@ Public Class MainWindowViewModel
 
     Property NewWellCommand As ICommand = New Command(Sub()
                                                           Dim vm As New EditWellViewModel
-                                                          _window.ShowEditWellDialog(vm)
+                                                          Dim result = _window.ShowEditWellDialog(vm)
+                                                          If result Then
+                                                              NotifyPropertyChanged(NameOf(WellNames))
+                                                              SetDatasource()
+                                                          End If
                                                       End Sub,
                                                       Function()
                                                           Return Repositories.HasProject
@@ -304,6 +317,39 @@ Public Class MainWindowViewModel
                                                                SetDatasource()
                                                            End If
                                                        End Sub,
+                                                      Function()
+                                                          Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
+                                                      End Function, AddressOf OnError)
+
+    Property NewMeasurementCommand As ICommand = New Command(Sub()
+                                                                 Dim vm As EditMeasurementViewModel
+                                                                 If _SelectedEntity IsNot Nothing Then
+                                                                     If TypeOf _SelectedEntity Is Well Then
+                                                                         vm = New EditMeasurementViewModel(CType(_SelectedEntity, Well))
+                                                                     Else
+                                                                         vm = New EditMeasurementViewModel()
+                                                                     End If
+                                                                 Else
+                                                                     vm = New EditMeasurementViewModel()
+                                                                 End If
+                                                                 Dim result = _window.ShowEditMeasurementDialog(vm)
+                                                                 If result Then
+                                                                     SetDatasource()
+                                                                 End If
+                                                             End Sub,
+                                                      Function()
+                                                          Return Repositories.HasProject
+                                                      End Function, AddressOf OnError)
+
+    Property EditMeasurementCommand As ICommand = New Command(Sub()
+                                                                  If TypeOf _SelectedEntity Is Measurement Then
+                                                                      Dim vm As New EditMeasurementViewModel(CType(_SelectedEntity, Measurement))
+                                                                      Dim result = _window.ShowEditMeasurementDialog(vm)
+                                                                      If result Then
+                                                                          SetDatasource()
+                                                                      End If
+                                                                  End If
+                                                              End Sub,
                                                       Function()
                                                           Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
                                                       End Function, AddressOf OnError)
@@ -413,6 +459,7 @@ Public Class MainWindowViewModel
         CType(ImportPrecipitationsFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
         CType(NewWellCommand, Command).RaiseCanExecuteChanged()
+        CType(NewMeasurementCommand, Command).RaiseCanExecuteChanged()
         NotifyPropertyChanged(NameOf(WellNames))
         NotifyPropertyChanged(NameOf(PropertiesNames))
         StopProgressNotifications()

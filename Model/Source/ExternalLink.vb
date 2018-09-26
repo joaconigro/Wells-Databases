@@ -1,7 +1,9 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model
 
 Public Class ExternalLink
     Inherits BusinessObject
+    Implements IComparable(Of ExternalLink)
 
     <DisplayName("Ruta"), Browsable(True)>
     Property Link As String
@@ -31,6 +33,10 @@ Public Class ExternalLink
         End Set
     End Property
 
+    Public Overrides Function ToString() As String
+        Return Link
+    End Function
+
     Sub Open()
         Try
             Process.Start(Link)
@@ -48,4 +54,10 @@ Public Class ExternalLink
             'Throw New Exception("No se puede borrar el enlace externo. Más información: " & ex.Message)
         End Try
     End Sub
+
+    Public Function CompareTo(other As ExternalLink) As Integer Implements IComparable(Of ExternalLink).CompareTo
+        If Link > other.Link Then Return -1
+        If Link = other.Link Then Return 0
+        Return 1
+    End Function
 End Class
