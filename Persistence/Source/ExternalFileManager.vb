@@ -3,7 +3,7 @@
 Public Class ExternalFileManager
 
     Private Const ExtraFileFolder As String = "Extra"
-    Private _projectFolder As String
+    Private ReadOnly _projectFolder As String
 
     Sub New(projectFolder As String)
         _projectFolder = projectFolder
@@ -12,15 +12,16 @@ Public Class ExternalFileManager
         End If
     End Sub
 
-    Sub Add(originalFilePath As String, databasePath As String, wellName As String)
+    Function Add(originalFilePath As String, wellName As String) As String
         Dim filename = Path.GetFileName(originalFilePath)
-        Dim destinationFolder = Path.Combine(databasePath, ExtraFileFolder, wellName)
+        Dim destinationFolder = Path.Combine(_projectFolder, ExtraFileFolder, wellName)
         If Not Directory.Exists(destinationFolder) Then
             Directory.CreateDirectory(destinationFolder)
         End If
         Dim destinationFilename = Path.Combine(destinationFolder, filename)
         File.Copy(originalFilePath, destinationFilename, True)
-    End Sub
+        Return destinationFilename
+    End Function
 
     Sub RemoveFile(filename As String)
         If File.Exists(filename) Then
@@ -32,8 +33,8 @@ Public Class ExternalFileManager
         End If
     End Sub
 
-    Sub RemoveWellFolder(databasePath As String, wellName As String)
-        Dim folderPath = Path.Combine(databasePath, ExtraFileFolder, wellName)
+    Sub RemoveWellFolder(wellName As String)
+        Dim folderPath = Path.Combine(_projectFolder, ExtraFileFolder, wellName)
         If Directory.Exists(folderPath) Then
             Try
                 Directory.Delete(folderPath, True)

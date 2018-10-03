@@ -1,5 +1,5 @@
 ﻿Imports System.ComponentModel
-Imports Wells.Model
+Imports System.IO
 
 Public Class ExternalLink
     Inherits BusinessObject
@@ -34,6 +34,9 @@ Public Class ExternalLink
     End Property
 
     Public Overrides Function ToString() As String
+        If File.Exists(Link) Then
+            Return Path.GetFileName(Link)
+        End If
         Return Link
     End Function
 
@@ -47,8 +50,8 @@ Public Class ExternalLink
 
     Sub DeleteFile()
         Try
-            If IO.File.Exists(Link) Then
-                IO.File.Delete(Link)
+            If File.Exists(Link) Then
+                File.Delete(Link)
             End If
         Catch ex As Exception
             'Throw New Exception("No se puede borrar el enlace externo. Más información: " & ex.Message)
@@ -56,8 +59,8 @@ Public Class ExternalLink
     End Sub
 
     Public Function CompareTo(other As ExternalLink) As Integer Implements IComparable(Of ExternalLink).CompareTo
-        If Link > other.Link Then Return -1
-        If Link = other.Link Then Return 0
+        If Me.ToString > other.Link.ToString Then Return -1
+        If Me.ToString = other.Link.ToString Then Return 0
         Return 1
     End Function
 End Class

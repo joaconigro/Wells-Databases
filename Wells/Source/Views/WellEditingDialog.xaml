@@ -93,7 +93,10 @@
                     <local:EntitiesManagerControl x:Name="AnalysisEntityControl" ObjectsSource="{Binding Analysis, Mode=OneWay}"/>
                 </TabItem>
                 <TabItem Name="ExternalLinksTab" Header="Archivos externos">
-                    <local:EntitiesManagerControl x:Name="ExternalLinksEntityControl" ObjectsSource="{Binding Links, Mode=OneWay}"/>
+                    <local:EntitiesManagerControl x:Name="ExternalLinksEntityControl" ObjectsSource="{Binding Links, Mode=OneWay}"
+                                                   NewEntityCommand="{Binding NewExternalLinkCommand, Mode=OneWay}"
+                                                   EditEntityCommand="{Binding OpenExternalLinkCommand, Mode=OneWay}"
+                                                   DeleteEntityCommand ="{Binding DeleteExternalLinkCommand, Mode=OneWay}"/>
                 </TabItem>
             </TabControl>
         </GroupBox>

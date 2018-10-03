@@ -29,4 +29,8 @@
     Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
         MessageBox.Show(Me, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
     End Sub
+
+    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
+        Return String.Empty
+    End Function
 End Class

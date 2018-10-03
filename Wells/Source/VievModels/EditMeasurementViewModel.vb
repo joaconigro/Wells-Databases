@@ -53,12 +53,14 @@ Public Class EditMeasurementViewModel
     Sub New()
         HasMeasurement = False
         NameSelectable = True
+        RealDate = Date.Today
         _repo = Repositories.Instance.Measurements
     End Sub
 
     Sub New(w As Well)
         HasMeasurement = False
         NameSelectable = False
+        RealDate = Date.Today
         _well = w
         _WellName = w.Name
         _repo = Repositories.Instance.Measurements

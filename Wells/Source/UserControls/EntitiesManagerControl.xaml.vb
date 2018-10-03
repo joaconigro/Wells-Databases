@@ -17,7 +17,7 @@
         End Set
     End Property
 
-    Shared ReadOnly SourceProperty As DependencyProperty =
+    Shared ReadOnly ObjectsSourceProperty As DependencyProperty =
         DependencyProperty.Register(NameOf(ObjectsSource),
                                     GetType(Object),
                                     GetType(EntitiesManagerControl),
@@ -50,6 +50,7 @@
                                     New PropertyMetadata(New Command(Sub()
 
                                                                      End Sub)))
+
     Private _SelectedEntity As Object
     Private _ObjectsSource As Object
 End Class

@@ -9,7 +9,14 @@ Public Class ExternalLinksRepository
 
     Protected Overrides Sub InternalRemove(entity As ExternalLink)
         _entities.Remove(entity.Id)
+        _repositories.FileManager.RemoveFile(entity.Link)
     End Sub
+
+    Public Overloads Function Add(entity As ExternalLink, originalFilename As String) As Boolean
+        Dim link = _repositories.FileManager.Add(originalFilename, entity.WellName)
+        entity.Link = link
+        Return Add(entity, RejectedEntity.RejectedReasons.None)
+    End Function
 
     Public Overrides Function Add(entity As ExternalLink, ByRef reason As RejectedEntity.RejectedReasons) As Boolean
         Try

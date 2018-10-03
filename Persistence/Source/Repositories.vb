@@ -4,7 +4,7 @@ Imports Wells.Model
 Public Class Repositories
 
     Private _context As Context
-    Private _fileManager As ExternalFileManager
+    Property FileManager As ExternalFileManager
     Private _databasePath As String
 
     Property Wells As WellsRepository
@@ -26,7 +26,7 @@ Public Class Repositories
     End Property
 
     Private Sub New(filename As String, create As Boolean)
-        _fileManager = New ExternalFileManager(IO.Path.GetDirectoryName(filename))
+        FileManager = New ExternalFileManager(IO.Path.GetDirectoryName(filename))
         _databasePath = filename
         Dim conString = $"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={filename};Integrated Security=True"
         Dim initializator As IDatabaseInitializer(Of Context)

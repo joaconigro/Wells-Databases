@@ -24,7 +24,7 @@ Class MainWindowView
 
     End Sub
 
-    Public Function OpenFileDialog(filter As String, title As String) As String Implements IMainWindowView.OpenFileDialog
+    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
         Dim ofd As New Microsoft.Win32.OpenFileDialog With {.Filter = filter, .Title = title}
         If ofd.ShowDialog = True Then
             Return ofd.FileName

@@ -21,6 +21,7 @@ Public Class WellsRepository
     Protected Overrides Sub InternalRemove(entity As Well)
         _entities.Remove(entity.Id)
         _names.Remove(entity.Name)
+        _repositories.FileManager.RemoveWellFolder(entity.Name)
     End Sub
 
     Public Overrides Function Add(entity As Well, ByRef reason As RejectedEntity.RejectedReasons) As Boolean

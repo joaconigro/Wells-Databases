@@ -13,6 +13,7 @@ Public Class EditWellViewModel
             CType(AcceptCommand, Command).RaiseCanExecuteChanged()
             CType(EditMeasurementCommand, Command).RaiseCanExecuteChanged()
             CType(NewMeasurementCommand, Command).RaiseCanExecuteChanged()
+            CType(NewExternalLinkCommand, Command).RaiseCanExecuteChanged()
         End Set
     End Property
 
@@ -38,7 +39,9 @@ Public Class EditWellViewModel
     Private _measurementEditViewModel As EditMeasurementViewModel
     Private _WellName As String
     Private _View As IView
+
     Event CloseDialog(result As Boolean)
+    Event MustRebind(target As String)
 
     Property View As IView
         Get
@@ -156,8 +159,8 @@ Public Class EditWellViewModel
     Property NewMeasurementCommand As ICommand = New Command(Sub()
                                                                  Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(_measurementEditViewModel)
                                                                  If result Then
-                                                                     'Measurements.Add(_measurementEditViewModel.Measurement)
-                                                                     NotifyPropertyChanged(NameOf(Measurements))
+                                                                     Measurements.Sort()
+                                                                     RaiseEvent MustRebind(NameOf(Measurements))
                                                                  End If
                                                              End Sub,
                                                       Function() HasWell, AddressOf OnError)
@@ -167,7 +170,8 @@ Public Class EditWellViewModel
                                                                       Dim vm As New EditMeasurementViewModel(CType(param, Measurement))
                                                                       Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(vm)
                                                                       If result Then
-                                                                          NotifyPropertyChanged(NameOf(Measurements))
+                                                                          Measurements.Sort()
+                                                                          RaiseEvent MustRebind(NameOf(Measurements))
                                                                       End If
                                                                   End If
                                                               End Sub,
@@ -179,9 +183,43 @@ Public Class EditWellViewModel
                                                                         _well.Measurements.Remove(measurement)
                                                                         Repositories.Instance.Measurements.Remove(measurement)
                                                                         Measurements.Remove(measurement)
-                                                                        NotifyPropertyChanged(NameOf(Measurements))
+                                                                        Measurements.Sort()
+                                                                        RaiseEvent MustRebind(NameOf(Measurements))
                                                                     End If
                                                                 End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
+    Property NewExternalLinkCommand As ICommand = New Command(Sub()
+                                                                  Dim filename = _View.OpenFileDialog("Archivos|*.*", "Elija un archivo")
+                                                                  If Not String.IsNullOrEmpty(filename) Then
+                                                                      Dim ExternalLink = New ExternalLink() With {.Well = _well, .WellName = _WellName}
+                                                                      Repositories.Instance.Links.Add(ExternalLink, filename)
+                                                                      Links.Sort()
+                                                                      RaiseEvent MustRebind(NameOf(Links))
+                                                                  End If
+                                                              End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
+    Property OpenExternalLinkCommand As ICommand = New Command(Sub(param)
+                                                                   If param IsNot Nothing AndAlso TypeOf param Is ExternalLink Then
+                                                                       Dim link = CType(param, ExternalLink)
+                                                                       link.Open()
+                                                                   End If
+                                                               End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
+    Property DeleteExternalLinkCommand As ICommand = New Command(Sub(param)
+                                                                     If param IsNot Nothing AndAlso TypeOf param Is ExternalLink Then
+                                                                         If _View.ShowMessageBox("Esto eliminará el archivo vinculado a la base de datos. ¿Desea continuar?", "Eliminar archivo") Then
+                                                                             Dim link = CType(param, ExternalLink)
+                                                                             _well.Links.Remove(link)
+                                                                             Repositories.Instance.Links.Remove(link)
+                                                                             Links.Remove(link)
+                                                                             Links.Sort()
+                                                                             RaiseEvent MustRebind(NameOf(Links))
+                                                                         End If
+                                                                     End If
+                                                                 End Sub,
                                                       Function() HasWell, AddressOf OnError)
 
     Protected Overrides Sub ShowErrorMessage(message As String)
