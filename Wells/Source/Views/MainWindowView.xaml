@@ -38,7 +38,9 @@
             <MenuItem Name="PrecipitationsMenuItem" Header="_Precipitaciones">
                 <MenuItem Name="ImportPrecipitationsMenuItem" Header="Importar..." Command="{Binding ImportPrecipitationsFromExcelCommand}"/>
             </MenuItem>
-            <MenuItem Name="GraphicsMenuItem" Header="_Gráficos" />
+            <MenuItem Name="GraphicsMenuItem" Header="_Gráficos">
+                <MenuItem Name="OpenGraphicsMenuItem" Header="Ver gráficos..." Command="{Binding OpenGraphicsViewCommand}"/>
+            </MenuItem>
         </Menu>
         <StatusBar Name="InfoStatusBar" Height="Auto" DockPanel.Dock="Bottom">
             <StatusBarItem Name="RecordsFoundItem" Content="{Binding ItemsCount}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

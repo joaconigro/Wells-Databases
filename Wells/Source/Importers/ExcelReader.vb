@@ -113,6 +113,8 @@ Public Class ExcelReader
                     ExportsRejectedWells(rejected, sheet)
                 ElseIf type = GetType(Measurement) Then
                     ExportsRejectedMeasurements(rejected, sheet)
+                ElseIf type = GetType(Precipitation) Then
+                    ExportsRejectedPrecipitations(rejected, sheet)
                 End If
 
                 wb.Write(stream)
@@ -123,6 +125,36 @@ Public Class ExcelReader
             Throw New Exception("Se produjo un error al guardar los datos")
         End Try
     End Sub
+
+    Private Shared Sub ExportsRejectedPrecipitations(rejected As List(Of RejectedEntity), sheet As ISheet)
+        WritePrecipitationHeader(sheet)
+
+        For i = 1 To rejected.Count
+            Dim r = rejected(i - 1)
+            Dim row = WritePrecipitationToExcelRow(CType(r.Entity, Precipitation), sheet, i)
+
+            row.CreateCell(2, CellType.Numeric).SetCellValue(r.OriginalRow)
+            row.CreateCell(3, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), r.Reason))
+        Next
+    End Sub
+
+    Private Shared Sub WritePrecipitationHeader(sheet As ISheet)
+        Dim header = sheet.CreateRow(0)
+
+        header.CreateCell(0).SetCellValue("Fecha")
+        header.CreateCell(1).SetCellValue("mm")
+        header.CreateCell(2).SetCellValue("Fila original")
+        header.CreateCell(3).SetCellValue("Razón")
+    End Sub
+
+    Private Shared Function WritePrecipitationToExcelRow(precip As Precipitation, sheet As ISheet, rowIndex As Integer) As IRow
+        Dim row = sheet.CreateRow(rowIndex)
+
+        row.CreateCell(0).SetCellValue(precip.PrecipitationDate)
+        row.CreateCell(1, CellType.Numeric).SetCellValue(precip.Millimeters)
+
+        Return row
+    End Function
 
     Private Shared Sub ExportsRejectedMeasurements(rejected As List(Of RejectedEntity), sheet As ISheet)
         WriteMeasurementHeader(sheet)

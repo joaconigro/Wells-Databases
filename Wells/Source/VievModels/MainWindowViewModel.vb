@@ -354,6 +354,11 @@ Public Class MainWindowViewModel
                                                           Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
                                                       End Function, AddressOf OnError)
 
+    Property OpenGraphicsViewCommand As ICommand = New Command(Sub()
+                                                                   Dim vm As New GraphicsViewModel
+                                                                   _window.OpenGraphicsView(vm)
+                                                               End Sub)
+
     Private Function OpenExcelFile(ByRef workbook As XSSFWorkbook, ByRef sheetIndex As Integer) As Boolean
         Dim filename = _window.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel")
         If Not String.IsNullOrEmpty(filename) Then
@@ -422,9 +427,9 @@ Public Class MainWindowViewModel
             Dim rejected = Await Task.Run(Function() _repo.Precipitations.AddRange(precipitations, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
             Await _repo.SaveChangesAsync()
-            'If rejected.Any Then
-            '    ExportRejectedToExcel(rejected)
-            'End If
+            If rejected.Any Then
+                ExportRejectedToExcel(rejected)
+            End If
         End If
 
         workbook.Close()

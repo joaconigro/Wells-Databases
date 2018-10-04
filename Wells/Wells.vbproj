@@ -61,6 +61,12 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.dll</HintPath>
     </Reference>
@@ -101,8 +107,12 @@
     </Compile>
     <Compile Include="Source\VievModels\EditMeasurementViewModel.vb" />
     <Compile Include="Source\VievModels\EditWellViewModel.vb" />
+    <Compile Include="Source\VievModels\GraphicsViewModel.vb" />
     <Compile Include="Source\Views\EditMeasurementDialog.xaml.vb">
       <DependentUpon>EditMeasurementDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Views\GraphicsView.xaml.vb">
+      <DependentUpon>GraphicsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Views\IView.vb" />
     <Compile Include="Source\Views\WellEditingDialog.xaml.vb">
@@ -122,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Views\ExcelSheetsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Views\GraphicsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

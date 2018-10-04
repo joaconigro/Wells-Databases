@@ -79,4 +79,9 @@ Class MainWindowView
         Dim diag As New EditMeasurementDialog(vm)
         Return diag.ShowDialog()
     End Function
+
+    Public Sub OpenGraphicsView(vm As GraphicsViewModel) Implements IMainWindowView.OpenGraphicsView
+        Dim diag As New GraphicsView(vm)
+        diag.Show()
+    End Sub
 End Class
