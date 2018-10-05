@@ -102,9 +102,11 @@
     </ApplicationDefinition>
     <Compile Include="Source\Converters\BoolToVisibilityConverter.vb" />
     <Compile Include="Source\Converters\DoubleStringConverter.vb" />
+    <Compile Include="Source\Graphics\CheckedListItem.vb" />
     <Compile Include="Source\UserControls\EntitiesManagerControl.xaml.vb">
       <DependentUpon>EntitiesManagerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Graphics\DateModel.vb" />
     <Compile Include="Source\VievModels\EditMeasurementViewModel.vb" />
     <Compile Include="Source\VievModels\EditWellViewModel.vb" />
     <Compile Include="Source\VievModels\GraphicsViewModel.vb" />

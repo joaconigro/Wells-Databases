@@ -1,14 +1,11 @@
-﻿Imports System
-Imports System.Windows.Controls
-Imports System.Windows.Media
-
-Imports Wells.Model
-
+﻿Imports Wells.Model
 Imports Wells.Persistence
 Imports LiveCharts
 Imports LiveCharts.Wpf
 Imports LiveCharts.Configurations
-Imports System.Runtime.Serialization
+Imports LiveCharts.Definitions.Series
+Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 
 Public Class GraphicsViewModel
     Inherits BaseViewModel
@@ -30,16 +27,60 @@ Public Class GraphicsViewModel
 
     Property SelectedWellName As String
 
-    Property Formatter As Func(Of Date, String)
+    Property Formatter As Func(Of Double, String)
 
     Private _well As Well
+    Private WithEvents _SelectedSerieName As CheckedListItem(Of String)
+    ReadOnly Property MeasurementPropeties As New Dictionary(Of String, String) From {
+        {"Profundidad FLNA", NameOf(Measurement.FLNADepth)},
+        {"Profundidad Agua", NameOf(Measurement.WaterDepth)},
+        {"Caudal", NameOf(Measurement.Caudal)},
+        {"Espesor FLNA", NameOf(Measurement.FLNAThickness)},
+        {"Cota Agua", NameOf(Measurement.WaterElevation)},
+        {"Cota FLNA", NameOf(Measurement.FLNAElevation)}}
+
+    Property MinimunDate As Date
+    Property MaximunDate As Date
+
+    Property Series As New ObservableCollection(Of CheckedListItem(Of String))
+    Private _seriesDictionary As New Dictionary(Of String, ISeriesView)
+
+    Property SelectedSerieName As CheckedListItem(Of String)
+        Get
+            Return _SelectedSerieName
+        End Get
+        Set
+            _SelectedSerieName = Value
+            NotifyPropertyChanged(NameOf(SelectedSerieName))
+            If SeriesCollection.Any AndAlso Not String.IsNullOrEmpty(_SelectedSerieName?.Item) Then
+                _selectedSerie = _seriesDictionary(_SelectedSerieName.Item)
+            End If
+        End Set
+    End Property
+
+    Private WithEvents _selectedSerie As ISeriesView
+
+    Private Sub SetSeriesVisibility(sender As Object, e As PropertyChangedEventArgs) Handles _SelectedSerieName.PropertyChanged
+        Dim lSeries = CType(_selectedSerie, LineSeries)
+        If CType(sender, CheckedListItem(Of String)).IsChecked Then
+            lSeries.Visibility = Visibility.Visible
+        Else
+            lSeries.Visibility = Visibility.Hidden
+        End If
+    End Sub
 
     Sub New()
+        MaximunDate = Date.Today
+        MinimunDate = Date.FromOADate(Date.Today.ToOADate - 180)
+
         Dim dateConfig = Mappers.Xy(Of DateModel)()
-        dateConfig.X(Function(dm) CDbl(dm.SampleDate.Ticks / TimeSpan.FromDays(1).Ticks))
+        dateConfig.X(Function(dm) dm.SampleDate.ToOADate)
         dateConfig.Y(Function(dm) dm.Value)
 
-        Formatter = New Func(Of Date, String)(Function(d) d.Date.ToShortDateString)
+        Formatter = New Func(Of Double, String)(Function(d)
+                                                    Dim dat = Date.FromOADate(d)
+                                                    Return dat.Date.ToShortDateString
+                                                End Function)
 
         SeriesCollection = New SeriesCollection(dateConfig)
     End Sub
@@ -53,14 +94,15 @@ Public Class GraphicsViewModel
                 Dim precipSeries As New LineSeries With {.Name = "Precipitaciones", .LineSmoothness = 0}
                 precipSeries.PointGeometry = Nothing
                 precipSeries.Fill = New SolidColorBrush(Color.FromArgb(0, 0, 0, 0))
-                Dim limit As New Date(2017, 1, 1)
                 precipSeries.Values = New ChartValues(Of DateModel)
                 Dim values = (From p In Repositories.Instance.Precipitations.All
-                              Where p.RealDate > limit
+                              Where p.RealDate >= MinimunDate AndAlso p.RealDate <= MaximunDate
                               Order By p.RealDate Ascending
                               Select New DateModel(p.RealDate, p.Millimeters)).ToList
                 precipSeries.Values.AddRange(values)
 
+                Series.Add(New CheckedListItem(Of String)(precipSeries.Name, True))
+                _seriesDictionary.Add(precipSeries.Name, precipSeries)
                 SeriesCollection.Add(precipSeries)
         End Select
     End Sub
@@ -72,14 +114,4 @@ Public Class GraphicsViewModel
     Protected Overrides Sub ShowErrorMessage(message As String)
         _window.ShowErrorMessageBox(message)
     End Sub
-
-    Public Class DateModel
-        Property SampleDate As Date
-        Property Value As Double
-
-        Sub New(sampleDate As Date, value As Double)
-            Me.SampleDate = sampleDate
-            Me.Value = value
-        End Sub
-    End Class
 End Class

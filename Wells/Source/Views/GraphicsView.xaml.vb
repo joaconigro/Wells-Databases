@@ -12,9 +12,7 @@ Public Class GraphicsView
 
         ' Add any initialization after the InitializeComponent() call.
         _viewModel = viewmodel
-        'MainChart.Series.Clear()
         DataContext = _viewModel
-
     End Sub
 
     Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox

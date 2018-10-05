@@ -357,7 +357,10 @@ Public Class MainWindowViewModel
     Property OpenGraphicsViewCommand As ICommand = New Command(Sub()
                                                                    Dim vm As New GraphicsViewModel
                                                                    _window.OpenGraphicsView(vm)
-                                                               End Sub)
+                                                               End Sub,
+                                                               Function()
+                                                                   Return Repositories.HasProject
+                                                               End Function, AddressOf OnError)
 
     Private Function OpenExcelFile(ByRef workbook As XSSFWorkbook, ByRef sheetIndex As Integer) As Boolean
         Dim filename = _window.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel")
@@ -465,6 +468,7 @@ Public Class MainWindowViewModel
         CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
         CType(NewWellCommand, Command).RaiseCanExecuteChanged()
         CType(NewMeasurementCommand, Command).RaiseCanExecuteChanged()
+        CType(OpenGraphicsViewCommand, Command).RaiseCanExecuteChanged()
         NotifyPropertyChanged(NameOf(WellNames))
         NotifyPropertyChanged(NameOf(PropertiesNames))
         StopProgressNotifications()

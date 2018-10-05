@@ -20,11 +20,13 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20*"/>
-                        <RowDefinition Height="20*"/>
-                        <RowDefinition Height="20*"/>
-                        <RowDefinition Height="20*"/>
-                        <RowDefinition Height="20*"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="De:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                     <ComboBox Name="FromComboBox" Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
@@ -34,7 +36,11 @@
                     <RadioButton Content="Análisis" Margin="2" Grid.Row="2" Grid.Column="1" GroupName="RadioButtonsGroup" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
                     <TextBlock Text="Parámetro:" Margin="2" Grid.Row="3" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                     <ComboBox Margin="2" Grid.Row="3" Grid.Column="1"/>
-                    <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="4" Grid.ColumnSpan="2" Margin="2"/>
+                    <TextBlock Text="Desde:" Margin="2" Grid.Row="4" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
+                    <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" Margin="2"/>
+                    <TextBlock Text="Hasta:" Margin="2" Grid.Row="5" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
+                    <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" Margin="2"/>
+                    <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="6" Grid.ColumnSpan="2" Margin="2"/>
                 </Grid>
             </GroupBox>
             <GroupBox Name="SeriesGroupBox" Header="Series" Margin="2" VerticalContentAlignment="Stretch">
@@ -43,8 +49,14 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <ListView  VerticalAlignment="Stretch" Margin="2" Grid.Row="0">
-
+                    <ListView  VerticalAlignment="Stretch" Margin="2" Grid.Row="0" ItemsSource="{Binding Series}" SelectedItem="{Binding SelectedSerieName, Mode=OneWayToSource}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <ListBoxItem IsSelected="{Binding IsChecked}">
+                                    <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Path=Item}" />
+                                </ListBoxItem>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListView>
                     <Button Name="RemoveSerieButton" Content="Eliminar serie" VerticalAlignment="Bottom"  Grid.Row="1" Margin="2"/>
                 </Grid>
