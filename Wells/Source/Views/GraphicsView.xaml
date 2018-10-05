@@ -7,6 +7,9 @@
         xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="Gráficos" Height="450" Width="800">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -16,8 +19,8 @@
             <GroupBox Header="Crear serie" Margin="2" DockPanel.Dock="Top" VerticalContentAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" MinWidth="90"/>
+                        <ColumnDefinition Width="*" MinWidth="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -25,22 +28,36 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        
                     </Grid.RowDefinitions>
-                    <TextBlock Text="De:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <ComboBox Name="FromComboBox" Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
-                    <TextBlock Text="Pozo:" Margin="2" Grid.Row="1" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <ComboBox Name="WellNamesComboBox" Margin="2" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedItem="{Binding SelectedWellName, Mode=OneWayToSource}"/>
-                    <RadioButton Content="Mediciones" Margin="2" Grid.Row="2" Grid.Column="0" GroupName="RadioButtonsGroup" IsChecked="{Binding UseMeasurements, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                    <RadioButton Content="Análisis" Margin="2" Grid.Row="2" Grid.Column="1" GroupName="RadioButtonsGroup" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                    <TextBlock Text="Parámetro:" Margin="2" Grid.Row="3" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <ComboBox Margin="2" Grid.Row="3" Grid.Column="1"/>
-                    <TextBlock Text="Desde:" Margin="2" Grid.Row="4" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" Margin="2"/>
-                    <TextBlock Text="Hasta:" Margin="2" Grid.Row="5" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" Margin="2"/>
-                    <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="6" Grid.ColumnSpan="2" Margin="2"/>
+                    <TextBlock Text="Desde:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
+                    <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="2"/>
+                    <TextBlock Text="Hasta:" Margin="2" Grid.Row="1" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
+                    <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="2"/>
+                    <TextBlock Text="A partir de:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
+                    <ComboBox Name="FromComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
+
+                    <Grid Name="WellOptions" Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding ShowWellOptions, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" MinWidth="90"/>
+                            <ColumnDefinition Width="*" MinWidth="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Pozo:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
+                        <ComboBox Name="WellNamesComboBox" Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedItem="{Binding SelectedWellName, Mode=OneWayToSource}"/>
+                        <RadioButton Content="Mediciones" Margin="2" Grid.Row="1" Grid.Column="0" GroupName="RadioButtonsGroup" IsChecked="{Binding UseMeasurements, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                        <RadioButton Content="Análisis" Margin="2" Grid.Row="1" Grid.Column="1" GroupName="RadioButtonsGroup" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                        <TextBlock Text="Parámetro:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
+                        <ComboBox Name="ParametersComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameterName, Mode=OneWayToSource}"/>
+                    </Grid>
+                    
+                    
+                   
+                    <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="4" Grid.ColumnSpan="2" Margin="2"/>
                 </Grid>
             </GroupBox>
             <GroupBox Name="SeriesGroupBox" Header="Series" Margin="2" VerticalContentAlignment="Stretch">
@@ -52,13 +69,13 @@
                     <ListView  VerticalAlignment="Stretch" Margin="2" Grid.Row="0" ItemsSource="{Binding Series}" SelectedItem="{Binding SelectedSerieName, Mode=OneWayToSource}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <ListBoxItem IsSelected="{Binding IsChecked}">
+                                <ListBoxItem Margin="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" IsSelected="{Binding IsChecked}">
                                     <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Path=Item}" />
                                 </ListBoxItem>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListView>
-                    <Button Name="RemoveSerieButton" Content="Eliminar serie" VerticalAlignment="Bottom"  Grid.Row="1" Margin="2"/>
+                    <Button Name="RemoveSerieButton" Content="Eliminar serie" VerticalAlignment="Bottom"  Grid.Row="1" Margin="2" Command="{Binding RemoveSeriesCommand}"/>
                 </Grid>
               
             </GroupBox>
