@@ -1,0 +1,51 @@
+Humedad	Humedad	Pérdida de peso a 105ºC	%
+pH	pH	EPA 9045 A/C	mg/kg
+HTP	DRO	EPA 8015	mg/kg
+HTP	GRO	EPA 8015	mg/kg
+HTP	MRO	EPA 8015	mg/kg
+HTP	Hidrocarburos totales (EPA 8015)	EPA 8015	mg/kg
+HTP	Hidrocarburos totales (TNRCC 1005)	TNRCC 1005	mg/kg
+HTP	Aceites y grasas	SM 5520 D	mg/kg
+Hidrocarburos Fracción alifática	> C6 - C8 (F. alifática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción alifática	> C8 - C10 (F. alifática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción alifática	> C10 - C12 (F. alifática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción alifática	> C12 - C16 (F. alifática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción alifática	> C16 - C21 (F. alifática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción alifática	> C21 - C35 (F. alifática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción aromática	> C7 - C8 (F. aromática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción aromática	> C8 - C10 (F. aromática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción aromática	> C10 - C12 (F. aromática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción aromática	> C12 - C16 (F. aromática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción aromática	> C16 - C21 (F. aromática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción aromática	> C21 - C35 (F. aromática)	TNRCC 1006	mg/kg
+BTEX	Benceno	EPA 8260	mg/Kg
+BTEX	Tolueno	EPA 8260	mg/Kg
+BTEX	Etilbenceno	EPA 8260	mg/Kg
+BTEX	Xileno (o)	EPA 8015	mg/l
+BTEX	Xileno (p-m)	EPA 8015	mg/l
+BTEX	Xileno total	EPA 8015	mg/l
+Hidrocarburos policíclicos aromáticos	Naftaleno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Acenafteno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Acenaftileno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Fluoreno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Antraceno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Fenantreno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Fluoranteno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Pireno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Benzo(a)antraceno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Criseno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Benzo(a)pireno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Benzo(b)fluoranteno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Benzo(g,h,i)perileno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Benzo(k)fluoranteno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Dibenzo(a,h)antraceno	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Indeno(1,2,3-cd)pireno	EPA 8310	mg/Kg
+Metales	Arsénico	EPA 7061 A 	mg/Kg
+Metales	Cadmio	EPA 7130/EPA 3050 B	mg/Kg
+Metales	Cobre	EPA 7210/EPA 3050 B	mg/Kg
+Metales	Cromo total	EPA 7190 / EPA 3050 B	mg/Kg
+Metales	Mercurio	EPA 7471 / EPA 3050 B	mg/Kg
+Metales	Níquel	EPA 7520 / EPA 3050 B	mg/Kg
+Metales	Plomo	EPA 7420 / EPA 3050 B	mg/Kg
+Metales	Cinc	EPA 7950 SW 846	mg/Kg
+Metales	Selenio	EPA 7741 / EPA 3050 B	mg/Kg

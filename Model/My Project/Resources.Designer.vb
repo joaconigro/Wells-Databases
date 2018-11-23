@@ -59,5 +59,67 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fisico químico	pH	SM 4500 H+ B	UpH
+        '''Fisico químico	Conductividad	SM 2510 B REVISION 2011	uS/cm
+        '''Fisico químico	Residuos Secos	SM 2540 B	mg/l
+        '''Fisico químico	Alcalinidad de Bicarbonato	SM 2320 B	mg/l
+        '''Fisico químico	Alcalinidad de Carbonato	SM 2320 B	mg/l
+        '''Fisico químico	Cloruros	SM 4500 CL B	mg/l
+        '''Fisico químico	Nitratos	SM 4500 NO3-Nitratos Revision 2011	mg/l
+        '''Fisico químico	Sulfatos	SM 4500 SO4 E	mg/l
+        '''Fisico químico	Calcio	SM 3500 CA D	mg/l
+        '''Fisico químico	Magnesio (Mg)	SM 3500 Mg E	mg/l
+        '''Fisico químico	 [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property FLNA() As String
+            Get
+                Return ResourceManager.GetString("FLNA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Humedad	Humedad	Pérdida de peso a 105ºC	%
+        '''pH	pH	EPA 9045 A/C	mg/kg
+        '''HTP	DRO	EPA 8015	mg/kg
+        '''HTP	GRO	EPA 8015	mg/kg
+        '''HTP	MRO	EPA 8015	mg/kg
+        '''HTP	Hidrocarburos totales	EPA 8015	mg/kg
+        '''HTP	Hidrocarburos totales	TNRCC 1005	mg/kg
+        '''HTP	Aceites y grasas	SM 5520 D	mg/kg
+        '''&quot;Hidrocarburos
+        ''' Fracción alifática&quot;	&gt; C6 - C8	TNRCC 1006	mg/kg
+        '''&quot;Hidrocarburos
+        ''' Fracción alifática&quot;	&gt; C8 - C10	TNRCC 1006	mg/kg
+        '''&quot;Hidrocarburos
+        ''' Fracción alifática&quot;	&gt; C10 - C12	TNRCC 1006	mg/kg
+        '''&quot;Hidrocarburos
+        ''' Fracción alifática&quot;	&gt; C12 - C16	TNRC [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property Soil() As String
+            Get
+                Return ResourceManager.GetString("Soil", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fisico químico	pH	SM 4500 H+ B	UpH
+        '''Fisico químico	Conductividad	SM 2510 B REVISION 2011	uS/cm
+        '''Fisico químico	Residuos Secos	SM 2540 B	mg/l
+        '''Fisico químico	Alcalinidad de Bicarbonato	SM 2320 B	mg/l
+        '''Fisico químico	Alcalinidad de Carbonato	SM 2320 B	mg/l
+        '''Fisico químico	Cloruros	SM 4500 CL B	mg/l
+        '''Fisico químico	Nitratos	SM 4500 NO3-Nitratos Revision 2011	mg/l
+        '''Fisico químico	Sulfatos	SM 4500 SO4 E	mg/l
+        '''Fisico químico	Calcio	SM 3500 CA D	mg/l
+        '''Fisico químico	Magnesio (Mg)	SM 3500 Mg E	mg/l
+        '''Fisico químico	 [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property Water() As String
+            Get
+                Return ResourceManager.GetString("Water", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

@@ -15,6 +15,9 @@ Public Class GraphicsViewModel
 
     ReadOnly Property FromOptions As New List(Of String) From {"Pozos", "Precipitaciones"}
 
+    ReadOnly Property SeriesDataNames As New List(Of String) From {"Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos"}
+
+
     Private _SelectedFromOption As Integer = 0
     Property SelectedFromOption As Integer
         Get
@@ -32,16 +35,28 @@ Public Class GraphicsViewModel
         End Get
     End Property
 
-    Private _UseMeasurements As Boolean = True
-    Property UseMeasurements As Boolean
+    'Private _UseMeasurements As Boolean = True
+    'Property UseMeasurements As Boolean
+    '    Get
+    '        Return _UseMeasurements
+    '    End Get
+    '    Set
+    '        _UseMeasurements = Value
+    '        NotifyPropertyChanged(NameOf(Parameters))
+    '    End Set
+    'End Property
+
+    Private _SelectedSeriesDataName As String
+    Property SelectedSeriesDataName As String
         Get
-            Return _UseMeasurements
+            Return _SelectedSeriesDataName
         End Get
         Set
-            _UseMeasurements = Value
+            _SelectedSeriesDataName = Value
             NotifyPropertyChanged(NameOf(Parameters))
         End Set
     End Property
+
 
     Private ReadOnly _measurementPropeties As New Dictionary(Of String, String) From {
         {"Profundidad FLNA", NameOf(Measurement.FLNADepth)},
@@ -51,16 +66,151 @@ Public Class GraphicsViewModel
         {"Cota Agua", NameOf(Measurement.WaterElevation)},
         {"Cota FLNA", NameOf(Measurement.FLNAElevation)}}
 
-    Private ReadOnly _chemicalAnalysisPropeties As New Dictionary(Of String, String) From {
-        {"Valor", NameOf(ChemicalAnalysis.Value)}}
+    Private _flnaAnalysisPropeties As New Dictionary(Of String, String) From {
+        {"Ninguna", "None"},
+        {"GRO", NameOf(FLNAAnalysis.GRO)},
+        {"DRO", NameOf(FLNAAnalysis.DRO)},
+        {"MRO", NameOf(FLNAAnalysis.MRO)},
+        {"Benceno", NameOf(FLNAAnalysis.Benzene)},
+        {"Tolueno", NameOf(FLNAAnalysis.Tolueno)},
+        {"Etilbenceno", NameOf(FLNAAnalysis.Ethylbenzene)},
+        {"Xilenos", NameOf(FLNAAnalysis.Xylenes)},
+        {"C6 - C8", NameOf(FLNAAnalysis.C6_C8)},
+        {"C8 - C10", NameOf(FLNAAnalysis.C8_C10)},
+        {"C10 - C12", NameOf(FLNAAnalysis.C10_C12)},
+        {"C12 - C16", NameOf(FLNAAnalysis.C12_C16)},
+        {"C16 - C21", NameOf(FLNAAnalysis.C16_C21)},
+        {"C21 - C35", NameOf(FLNAAnalysis.C21_C35)},
+        {"C17/Pristano", NameOf(FLNAAnalysis.C17_Pristano)},
+        {"C18/Fitano", NameOf(FLNAAnalysis.C18_Fitano)},
+        {"Densidad Real", NameOf(FLNAAnalysis.RealDensity)},
+        {"Viscosidad Dinámica", NameOf(FLNAAnalysis.DynamicViscosity)}}
+
+    Private _soilAnalysisPropeties As New Dictionary(Of String, String) From {
+        {"Ninguna", "None"},
+        {"Humedad", NameOf(SoilAnalysis.Humidity)},
+        {"pH", NameOf(SoilAnalysis.PH)},
+        {"DRO", NameOf(SoilAnalysis.DRO)},
+        {"GRO", NameOf(SoilAnalysis.GRO)},
+        {"MRO", NameOf(SoilAnalysis.MRO)},
+        {"Hidrocarburos totales(EPA 8015)", NameOf(SoilAnalysis.TotalHydrocarbons_EPA8015)},
+        {"Hidrocarburos totales(TNRCC 1005)", NameOf(SoilAnalysis.TotalHydrocarbons_TNRCC1005)},
+        {"Aceites y grasas", NameOf(SoilAnalysis.OilsAndFats)},
+        {"> C6 - C8 (F. alifática)", NameOf(SoilAnalysis.C6_C8Aliphatic)},
+        {"> C8 - C10 (F. alifática)", NameOf(SoilAnalysis.C8_C10Aliphatic)},
+        {"> C10 - C12 (F. alifática)", NameOf(SoilAnalysis.C10_C12Aliphatic)},
+        {"> C12 - C16 (F. alifática)", NameOf(SoilAnalysis.C12_C16Aliphatic)},
+        {"> C16 - C21 (F. alifática)", NameOf(SoilAnalysis.C16_C21Aliphatic)},
+        {"> C21 - C35 (F. alifática)", NameOf(SoilAnalysis.C21_C35Aliphatic)},
+        {"> C7 - C8 (F. aromática)", NameOf(SoilAnalysis.C7_C8Aromatic)},
+        {"> C8 - C10 (F. aromática)", NameOf(SoilAnalysis.C8_C10Aromatic)},
+        {"> C10 - C12 (F. aromática)", NameOf(SoilAnalysis.C10_C12Aromatic)},
+        {"> C12 - C16 (F. aromática)", NameOf(SoilAnalysis.C12_C16Aromatic)},
+        {"> C16 - C21 (F. aromática)", NameOf(SoilAnalysis.C16_C21Aromatic)},
+        {"> C21 - C35 (F. aromática)", NameOf(SoilAnalysis.C21_C35Aromatic)},
+        {"Benceno", NameOf(SoilAnalysis.Benzene)},
+        {"Tolueno", NameOf(SoilAnalysis.Tolueno)},
+        {"Etilbenceno", NameOf(SoilAnalysis.Ethylbenzene)},
+        {"Xileno (o)", NameOf(SoilAnalysis.XyleneO)},
+        {"Xileno (p-m)", NameOf(SoilAnalysis.XylenePM)},
+        {"Xileno total", NameOf(SoilAnalysis.TotalXylene)},
+        {"Naftaleno", NameOf(SoilAnalysis.Naphthalene)},
+        {"Acenafteno", NameOf(SoilAnalysis.Acenafthene)},
+        {"Acenaftileno", NameOf(SoilAnalysis.Acenaphthylene)},
+        {"Fluoreno", NameOf(SoilAnalysis.Fluorene)},
+        {"Antraceno", NameOf(SoilAnalysis.Anthracene)},
+        {"Fenantreno", NameOf(SoilAnalysis.Fenanthrene)},
+        {"Fluoranteno", NameOf(SoilAnalysis.Fluoranthene)},
+        {"Pireno", NameOf(SoilAnalysis.Pyrene)},
+        {"Criseno", NameOf(SoilAnalysis.Crysene)},
+        {"Benzo(a)antraceno", NameOf(SoilAnalysis.BenzoAAnthracene)},
+        {"Benzo(a)pireno", NameOf(SoilAnalysis.BenzoAPyrene)},
+        {"Benzo(b)fluoranteno", NameOf(SoilAnalysis.BenzoBFluoranthene)},
+        {"Benzo(g,h,i)perileno", NameOf(SoilAnalysis.BenzoGHIPerylene)},
+        {"Benzo(k)fluoranteno", NameOf(SoilAnalysis.BenzoKFluoranthene)},
+        {"Dibenzo(a,h)antraceno", NameOf(SoilAnalysis.DibenzoAHAnthracene)},
+        {"Indeno(1,2,3-cd)pireno", NameOf(SoilAnalysis.Indeno123CDPyrene)},
+        {"Arsénico", NameOf(SoilAnalysis.Arsenic)},
+        {"Cadmio", NameOf(SoilAnalysis.Cadmium)},
+        {"Cobre", NameOf(SoilAnalysis.Copper)},
+        {"Cromo total", NameOf(SoilAnalysis.TotalChrome)},
+        {"Mercurio", NameOf(SoilAnalysis.Mercury)},
+        {"Níquel", NameOf(SoilAnalysis.Nickel)},
+        {"Plomo", NameOf(SoilAnalysis.Lead)},
+        {"Zinc", NameOf(SoilAnalysis.Zinc)},
+        {"Selenio", NameOf(SoilAnalysis.Selenium)}}
+
+    Private _waterAnalysisPropeties As New Dictionary(Of String, String) From {
+        {"Ninguna", "None"},
+        {"pH", NameOf(WaterAnalysis.PH)},
+        {"Conductividad", NameOf(WaterAnalysis.Conductivity)},
+        {"Residuos Secos", NameOf(WaterAnalysis.DryWaste)},
+        {"Alcalinidad de Bicarbonato", NameOf(WaterAnalysis.BicarbonateAlkalinity)},
+        {"Alcalinidad de Carbonato", NameOf(WaterAnalysis.CarbonateAlkalinity)},
+        {"Cloruros", NameOf(WaterAnalysis.Chlorides)},
+        {"Nitratos", NameOf(WaterAnalysis.Nitrates)},
+        {"Sulfatos", NameOf(WaterAnalysis.Sulfates)},
+        {"Calcio", NameOf(WaterAnalysis.Calcium)},
+        {"Magnesio", NameOf(WaterAnalysis.Magnesium)},
+        {"Sulfuros Totales(HS -)", NameOf(WaterAnalysis.TotalSulfur)},
+        {"Potasio", NameOf(WaterAnalysis.Potassium)},
+        {"Sodio", NameOf(WaterAnalysis.Sodium)},
+        {"Fluoruros", NameOf(WaterAnalysis.Fluorides)},
+        {"DRO", NameOf(WaterAnalysis.DRO)},
+        {"GRO", NameOf(WaterAnalysis.GRO)},
+        {"MRO", NameOf(WaterAnalysis.MRO)},
+        {"Hidrocarburos totales(EPA 8015)", NameOf(WaterAnalysis.TotalHydrocarbons_EPA8015)},
+        {"Hidrocarburos totales(TNRCC 1005)", NameOf(WaterAnalysis.TotalHydrocarbons_TNRCC1005)},
+        {"Benceno", NameOf(WaterAnalysis.Benzene)},
+        {"Tolueno", NameOf(WaterAnalysis.Tolueno)},
+        {"Etilbenceno", NameOf(WaterAnalysis.Ethylbenzene)},
+        {"Xileno (o)", NameOf(WaterAnalysis.XyleneO)},
+        {"Xileno (p-m)", NameOf(WaterAnalysis.XylenePM)},
+        {"Xileno total", NameOf(WaterAnalysis.TotalXylene)},
+        {"Naftaleno", NameOf(WaterAnalysis.Naphthalene)},
+        {"Acenafteno", NameOf(WaterAnalysis.Acenafthene)},
+        {"Acenaftileno", NameOf(WaterAnalysis.Acenaphthylene)},
+        {"Fluoreno", NameOf(WaterAnalysis.Fluorene)},
+        {"Antraceno", NameOf(WaterAnalysis.Anthracene)},
+        {"Fenantreno", NameOf(WaterAnalysis.Fenanthrene)},
+        {"Fluoranteno", NameOf(WaterAnalysis.Fluoranthene)},
+        {"Pireno", NameOf(WaterAnalysis.Pyrene)},
+        {"Criseno", NameOf(WaterAnalysis.Crysene)},
+        {"Benzo(a)antraceno", NameOf(WaterAnalysis.BenzoAAnthracene)},
+        {"Benzo(a)pireno", NameOf(WaterAnalysis.BenzoAPyrene)},
+        {"Benzo(b)fluoranteno", NameOf(WaterAnalysis.BenzoBFluoranthene)},
+        {"Benzo(g,h,i)perileno", NameOf(WaterAnalysis.BenzoGHIPerylene)},
+        {"Benzo(k)fluoranteno", NameOf(WaterAnalysis.BenzoKFluoranthene)},
+        {"Dibenzo(a,h)antraceno", NameOf(WaterAnalysis.DibenzoAHAnthracene)},
+        {"Indeno(1,2,3-cd)pireno", NameOf(WaterAnalysis.Indeno123CDPyrene)},
+        {"Arsénico", NameOf(WaterAnalysis.Arsenic)},
+        {"Cadmio", NameOf(WaterAnalysis.Cadmium)},
+        {"Cobalto", NameOf(WaterAnalysis.Cobalt)},
+        {"Cobre", NameOf(WaterAnalysis.Copper)},
+        {"Cromo total", NameOf(WaterAnalysis.TotalChrome)},
+        {"Mercurio", NameOf(WaterAnalysis.Mercury)},
+        {"Níquel", NameOf(WaterAnalysis.Nickel)},
+        {"Plomo", NameOf(WaterAnalysis.Lead)},
+        {"Zinc", NameOf(WaterAnalysis.Zinc)},
+        {"Selenio", NameOf(WaterAnalysis.Selenium)}}
 
     ReadOnly Property Parameters As List(Of String)
         Get
-            If UseMeasurements Then
-                Return _measurementPropeties.Keys.ToList
-            Else
-                Return _chemicalAnalysisPropeties.Keys.ToList
-            End If
+            Select Case _SelectedSeriesDataName
+                Case "Mediciones"
+                    Return _measurementPropeties.Keys.ToList
+                Case "Análisis de FLNA"
+                    Return _flnaAnalysisPropeties.Keys.ToList
+                Case "Análisis de agua"
+                    Return _waterAnalysisPropeties.Keys.ToList
+                Case Else
+                    Return _soilAnalysisPropeties.Keys.ToList
+            End Select
+            'If UseMeasurements Then
+            '    Return _measurementPropeties.Keys.ToList
+            'Else
+            '    Return _chemicalAnalysisPropeties.Keys.ToList
+            'End If
         End Get
     End Property
 
@@ -73,11 +223,22 @@ Public Class GraphicsViewModel
         Set
             _SelectedParameterName = Value
             If Not String.IsNullOrEmpty(_SelectedParameterName) Then
-                If UseMeasurements Then
-                    _realParameterName = _measurementPropeties(_SelectedParameterName)
-                Else
-                    _realParameterName = _chemicalAnalysisPropeties(_SelectedParameterName)
-                End If
+                Select Case _SelectedSeriesDataName
+                    Case "Mediciones"
+                        _realParameterName = _measurementPropeties(_SelectedParameterName)
+                    Case "Análisis de FLNA"
+                        _realParameterName = _flnaAnalysisPropeties(_SelectedParameterName)
+                    Case "Análisis de agua"
+                        _realParameterName = _waterAnalysisPropeties(_SelectedParameterName)
+                    Case Else
+                        _realParameterName = _soilAnalysisPropeties(_SelectedParameterName)
+                End Select
+
+                'If UseMeasurements Then
+                '    _realParameterName = _measurementPropeties(_SelectedParameterName)
+                'Else
+                '    _realParameterName = _chemicalAnalysisPropeties(_SelectedParameterName)
+                'End If
             End If
         End Set
     End Property
@@ -170,19 +331,47 @@ Public Class GraphicsViewModel
                 title = $"{SelectedWellName} - {SelectedParameterName}"
                 CType(genericSeries, LineSeries).Title = title
                 Dim values As IEnumerable(Of Object)
-                If UseMeasurements Then
-                    values = (From m In _well.Measurements
-                              Let param = CType(CallByName(m, _realParameterName, CallType.Get), Double)
-                              Where m.RealDate >= MinimunDate AndAlso m.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                              Order By m.RealDate Ascending
-                              Select New DateModel(m.RealDate, param)).ToList
-                Else
-                    values = (From a In _well.Analysis
-                              Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
-                              Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                              Order By a.RealDate Ascending
-                              Select New DateModel(a.RealDate, param)).ToList
-                End If
+                Select Case _SelectedSeriesDataName
+                    Case "Mediciones"
+                        values = (From m In _well.Measurements
+                                  Let param = CType(CallByName(m, _realParameterName, CallType.Get), Double)
+                                  Where m.RealDate >= MinimunDate AndAlso m.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
+                                  Order By m.RealDate Ascending
+                                  Select New DateModel(m.RealDate, param)).ToList
+                    Case "Análisis de FLNA"
+                        values = (From a In _well.Analysis.FindAll(Function(a) a.SampleOf = SampleType.FLNA)
+                                  Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
+                                  Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
+                                  Order By a.RealDate Ascending
+                                  Select New DateModel(a.RealDate, param)).ToList
+                    Case "Análisis de agua"
+                        values = (From a In _well.Analysis.FindAll(Function(a) a.SampleOf = SampleType.Water)
+                                  Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
+                                  Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
+                                  Order By a.RealDate Ascending
+                                  Select New DateModel(a.RealDate, param)).ToList
+                    Case Else
+                        values = (From a In _well.Analysis.FindAll(Function(a) a.SampleOf = SampleType.Soil)
+                                  Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
+                                  Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
+                                  Order By a.RealDate Ascending
+                                  Select New DateModel(a.RealDate, param)).ToList
+                End Select
+
+
+                'If UseMeasurements Then
+                '    values = (From m In _well.Measurements
+                '              Let param = CType(CallByName(m, _realParameterName, CallType.Get), Double)
+                '              Where m.RealDate >= MinimunDate AndAlso m.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
+                '              Order By m.RealDate Ascending
+                '              Select New DateModel(m.RealDate, param)).ToList
+                'Else
+                '    values = (From a In _well.Analysis
+                '              Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
+                '              Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
+                '              Order By a.RealDate Ascending
+                '              Select New DateModel(a.RealDate, param)).ToList
+                'End If
 
                 If values.Count < 2 Then
                     Exit Sub

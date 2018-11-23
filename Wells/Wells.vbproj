@@ -49,7 +49,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <ApplicationManifest>Wells.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -110,6 +110,7 @@
     <Compile Include="Source\VievModels\EditMeasurementViewModel.vb" />
     <Compile Include="Source\VievModels\EditWellViewModel.vb" />
     <Compile Include="Source\VievModels\GraphicsViewModel.vb" />
+    <Compile Include="Source\Views\SharedBaseView.vb" />
     <Compile Include="Source\Views\EditMeasurementDialog.xaml.vb">
       <DependentUpon>EditMeasurementDialog.xaml</DependentUpon>
     </Compile>
@@ -219,6 +220,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Wells.manifest" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

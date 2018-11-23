@@ -41,23 +41,24 @@ Public Class WellEditingDialog
     End Sub
 
     Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IView.ShowMessageBox
-        Return MessageBox.Show(Me, message, title, MessageBoxButton.YesNo, MessageBoxImage.Information) = MessageBoxResult.Yes
+        Return SharedBaseView.ShowMessageBox(Me, message, title)
     End Function
 
     Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
-        MessageBox.Show(Me, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
+        SharedBaseView.ShowErrorMessageBox(Me, message)
     End Sub
+
+    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
+        Return String.Empty
+    End Function
+
+    Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
+        Return String.Empty
+    End Function
 
     Public Function ShowEditMeasurementDialog(vm As EditMeasurementViewModel) As Boolean
         Dim diag As New EditMeasurementDialog(vm)
         Return diag.ShowDialog()
     End Function
 
-    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
-        Dim ofd As New Microsoft.Win32.OpenFileDialog With {.Filter = filter, .Title = title}
-        If ofd.ShowDialog = True Then
-            Return ofd.FileName
-        End If
-        Return Nothing
-    End Function
 End Class

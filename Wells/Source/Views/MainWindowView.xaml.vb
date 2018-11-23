@@ -24,20 +24,20 @@ Class MainWindowView
 
     End Sub
 
-    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
-        Dim ofd As New Microsoft.Win32.OpenFileDialog With {.Filter = filter, .Title = title}
-        If ofd.ShowDialog = True Then
-            Return ofd.FileName
-        End If
-        Return Nothing
+    Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IView.ShowMessageBox
+        Return SharedBaseView.ShowMessageBox(Me, message, title)
     End Function
 
-    Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IMainWindowView.SaveFileDialog
-        Dim sfd As New Microsoft.Win32.SaveFileDialog With {.Filter = filter, .Title = title, .FileName = filename}
-        If sfd.ShowDialog = True Then
-            Return sfd.FileName
-        End If
-        Return Nothing
+    Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
+        SharedBaseView.ShowErrorMessageBox(Me, message)
+    End Sub
+
+    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
+        Return SharedBaseView.OpenFileDialog(filter, title)
+    End Function
+
+    Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
+        Return SharedBaseView.SaveFileDialog(filter, title, filename)
     End Function
 
     Public Function CreateDatabaseDialog(ByRef databaseName As String, ByRef path As String) As Boolean Implements IMainWindowView.CreateDatabaseDialog
@@ -57,18 +57,6 @@ Class MainWindowView
         End If
         Return -1
     End Function
-
-    Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IView.ShowMessageBox
-        Return MessageBox.Show(Me, message, title, MessageBoxButton.YesNo, MessageBoxImage.Information) = MessageBoxResult.Yes
-    End Function
-
-    Private Sub ValueTextBox_TextChanged(sender As Object, e As TextChangedEventArgs)
-        viewModel.StringValue = ValueTextBox.Text
-    End Sub
-
-    Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
-        MessageBox.Show(Me, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
-    End Sub
 
     Public Function ShowEditWellDialog(vm As EditWellViewModel) As Boolean Implements IMainWindowView.ShowEditWellDialog
         Dim diag As New WellEditingDialog(vm)

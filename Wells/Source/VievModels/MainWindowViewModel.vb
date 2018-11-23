@@ -213,6 +213,7 @@ Public Class MainWindowViewModel
     Sub New(window As IMainWindowView)
         _window = window
 
+        ChemicalAnalysis.CreateParamtersDictionary()
         _progress = New Progress(Of Integer)(AddressOf ProgressChanged)
 
         If Not String.IsNullOrEmpty(My.Settings.DatabaseFilename) AndAlso IO.File.Exists(My.Settings.DatabaseFilename) Then
@@ -512,6 +513,8 @@ End Class
 Public Enum DatasourceType
     Wells
     Measurements
-    ChemicalAnalysis
+    FLNAAnalysis
+    WaterAnalysis
+    SoilAnalysis
     Precipitations
 End Enum

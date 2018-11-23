@@ -22,8 +22,12 @@
             <MenuItem Name="ViewMenuItem" Header="_Ver">
                 <MenuItem Name="ViewWellMenuItem" Header="Pozos/Sondeos" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="0"/>
                 <MenuItem Name="ViewMeasurementsMenuItem" Header="Mediciones" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="1"/>
-                <MenuItem Name="ViewAnalysisMenuItem" Header="Análisis químicos" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="2"/>
-                <MenuItem Name="ViewPrecipitationsMenuItem" Header="Precipitaciones" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="3"/>
+                <MenuItem Name="ViewAnalysisMenuItem" Header="Análisis químicos">
+                    <MenuItem Name="ViewFLNAAnalysisMenuItem" Header="Análisis de FLNA" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="2"/>
+                    <MenuItem Name="ViewWaterAnalysisMenuItem" Header="Análisis de agua" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="3"/>
+                    <MenuItem Name="ViewSoilAnalysisMenuItem" Header="Análisis de suelo" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="4"/>
+                </MenuItem> 
+                <MenuItem Name="ViewPrecipitationsMenuItem" Header="Precipitaciones" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="5"/>
             </MenuItem>
             <MenuItem Name="WellMenuItem" Header="_Pozos">
                 <MenuItem Name="NewWellMenuItem" Header="Nuevo..." Command="{Binding NewWellCommand}"/>
@@ -43,8 +47,7 @@
             </MenuItem>
         </Menu>
         <StatusBar Name="InfoStatusBar" Height="Auto" DockPanel.Dock="Bottom">
-            <StatusBarItem Name="RecordsFoundItem" Content="{Binding ItemsCount}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <StatusBarItem Name="TextItem" Content="registros encontrados." HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <StatusBarItem Name="RecordsFoundItem" Content="{Binding ItemsCount}" ContentStringFormat="{}{0:N0} registros encontrados" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <Separator/>
             <StackPanel Name="ProgressStackPanel" Orientation="Horizontal" Visibility="{Binding ShowProgress, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -115,7 +118,7 @@
                         <ComboBox Name="CriteriaComoboBox" Grid.Row="1" Grid.Column="2" Margin="2" ItemsSource="{Binding CriteriaFilterOptions, Mode=OneWay}"
                                   SelectedIndex="{Binding ParameterFilter, Mode=OneWayToSource}"/>
                         <TextBox Name="ValueTextBox" Grid.Row="1" Grid.Column="3" Margin="2" VerticalContentAlignment="Center" 
-                                 HorizontalContentAlignment="Right" TextChanged="ValueTextBox_TextChanged"/>
+                                 HorizontalContentAlignment="Right" Text="{Binding StringValue, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                     </Grid>
                 </GroupBox>
             </Grid>

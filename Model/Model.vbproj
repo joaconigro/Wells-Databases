@@ -85,10 +85,13 @@
     <Compile Include="Source\BusinessObject.vb" />
     <Compile Include="Source\ChemicalAnalysis.vb" />
     <Compile Include="Source\ExternalLink.vb" />
+    <Compile Include="Source\FLNAAnalysis.vb" />
     <Compile Include="Source\Measurement.vb" />
     <Compile Include="Source\IBusinessObject.vb" />
     <Compile Include="Source\Precipitation.vb" />
     <Compile Include="Source\Rectangle2D.vb" />
+    <Compile Include="Source\SoilAnalysis.vb" />
+    <Compile Include="Source\WaterAnalysis.vb" />
     <Compile Include="Source\Well.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +118,15 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FLNA.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Soil.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Water.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
