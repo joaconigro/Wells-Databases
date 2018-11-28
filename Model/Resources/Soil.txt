@@ -12,7 +12,7 @@ Hidrocarburos Fracción alifática	> C10 - C12 (F. alifática)	TNRCC 1006	mg/kg
 Hidrocarburos Fracción alifática	> C12 - C16 (F. alifática)	TNRCC 1006	mg/kg
 Hidrocarburos Fracción alifática	> C16 - C21 (F. alifática)	TNRCC 1006	mg/kg
 Hidrocarburos Fracción alifática	> C21 - C35 (F. alifática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción aromática	> C7 - C8 (F. aromática)	TNRCC 1006	mg/kg
+Hidrocarburos Fracción aromática	> C6 - C8 (F. aromática)	TNRCC 1006	mg/kg
 Hidrocarburos Fracción aromática	> C8 - C10 (F. aromática)	TNRCC 1006	mg/kg
 Hidrocarburos Fracción aromática	> C10 - C12 (F. aromática)	TNRCC 1006	mg/kg
 Hidrocarburos Fracción aromática	> C12 - C16 (F. aromática)	TNRCC 1006	mg/kg

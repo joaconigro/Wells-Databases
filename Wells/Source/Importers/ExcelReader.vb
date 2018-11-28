@@ -98,6 +98,48 @@ Public Class ExcelReader
         Return measurements
     End Function
 
+    Shared Function ReadFLNAAnalysis(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of FLNAAnalysis)
+        Dim sheet = workbook.GetSheetAt(sheetIndex)
+        Dim row As IRow
+        Dim analysis As New List(Of FLNAAnalysis)
+        Dim indexError As Integer
+        Try
+            Dim maxCount = sheet.LastRowNum
+            For i = 1 To maxCount
+                indexError = i
+                row = sheet.GetRow(i)
+                Dim flna As New FLNAAnalysis With {
+                    .WellName = ReadCellAsString(row, 0).ToUpper,
+                    .SampleDate = ReadCellAsDateString(row, 1),
+                    .GRO = ReadCellAsDouble(row, 2),
+                    .DRO = ReadCellAsDouble(row, 3),
+                    .MRO = ReadCellAsDouble(row, 4),
+                    .Benzene = ReadCellAsDouble(row, 5),
+                    .Tolueno = ReadCellAsDouble(row, 6),
+                    .Ethylbenzene = ReadCellAsDouble(row, 7),
+                    .Xylenes = ReadCellAsDouble(row, 8),
+                    .C6_C8 = ReadCellAsDouble(row, 9),
+                    .C8_C10 = ReadCellAsDouble(row, 10),
+                    .C10_C12 = ReadCellAsDouble(row, 11),
+                    .C12_C16 = ReadCellAsDouble(row, 12),
+                    .C16_C21 = ReadCellAsDouble(row, 13),
+                    .C21_C35 = ReadCellAsDouble(row, 14),
+                    .C17_Pristano = ReadCellAsDouble(row, 15),
+                    .C18_Fitano = ReadCellAsDouble(row, 16),
+                    .RealDensity = ReadCellAsDouble(row, 17),
+                    .DynamicViscosity = ReadCellAsDouble(row, 18)
+                }
+
+                analysis.Add(flna)
+                progress.Report(i / maxCount * 100)
+            Next
+        Catch ex As Exception
+            Throw New Exception("Error leyendo la fila " & indexError)
+        End Try
+
+        Return analysis
+    End Function
+
     Shared Sub ExportRejectedToExcel(rejected As List(Of RejectedEntity), filename As String)
         Try
             Using stream = File.Open(filename, FileMode.Create, FileAccess.Write)
@@ -279,7 +321,16 @@ Public Class ExcelReader
                     Return cell.NumericCellValue
                 Case Else
                     Dim result As Double
-                    If Double.TryParse(cell.StringCellValue, result) Then
+                    Dim stringValue = cell.StringCellValue
+                    Dim isLowerThan As Boolean = False
+                    If stringValue.Contains("<") Then
+                        stringValue = stringValue.Replace("<", "")
+                        isLowerThan = True
+                    End If
+                    If Double.TryParse(stringValue, result) Then
+                        If isLowerThan Then
+                            result -= result * 0.1
+                        End If
                         Return result
                     End If
             End Select

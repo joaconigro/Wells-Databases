@@ -22,7 +22,7 @@
             <MenuItem Name="ViewMenuItem" Header="_Ver">
                 <MenuItem Name="ViewWellMenuItem" Header="Pozos/Sondeos" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="0"/>
                 <MenuItem Name="ViewMeasurementsMenuItem" Header="Mediciones" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="1"/>
-                <MenuItem Name="ViewAnalysisMenuItem" Header="Análisis químicos">
+                <MenuItem Name="ViewAnalysisMenuItem" Header="Análisis químicos" IsCheckable="False">
                     <MenuItem Name="ViewFLNAAnalysisMenuItem" Header="Análisis de FLNA" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="2"/>
                     <MenuItem Name="ViewWaterAnalysisMenuItem" Header="Análisis de agua" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="3"/>
                     <MenuItem Name="ViewSoilAnalysisMenuItem" Header="Análisis de suelo" extensions:MenuItemExtensions.GroupName="ViewGroup" IsCheckable="True" Command="{Binding ShowedDatasourceCommand}" CommandParameter="4"/>

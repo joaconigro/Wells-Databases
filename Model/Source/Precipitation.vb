@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model.ReflectionExtension
 
 Public Class Precipitation
     Inherits BusinessObject
@@ -15,4 +16,7 @@ Public Class Precipitation
 
     <DisplayName("Milímetros"), Browsable(True)>
     Property Millimeters As Double
+
+    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+       {GetDisplayName(Of Precipitation)(NameOf(Precipitation.Millimeters)), NameOf(Precipitation.Millimeters)}}
 End Class

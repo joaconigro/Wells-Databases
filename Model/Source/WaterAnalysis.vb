@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model.ReflectionExtension
 
 Public Class WaterAnalysis
     Inherits ChemicalAnalysis
@@ -169,4 +170,57 @@ Public Class WaterAnalysis
     Public Overrides Function GetChemicalAnalysisType(propertyName As String) As ChemicalAnalysisType
         Return WaterAnalysisTypes(propertyName)
     End Function
+
+    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.PH)), NameOf(WaterAnalysis.PH)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Conductivity)), NameOf(WaterAnalysis.Conductivity)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.DryWaste)), NameOf(WaterAnalysis.DryWaste)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BicarbonateAlkalinity)), NameOf(WaterAnalysis.BicarbonateAlkalinity)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.CarbonateAlkalinity)), NameOf(WaterAnalysis.CarbonateAlkalinity)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Chlorides)), NameOf(WaterAnalysis.Chlorides)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Nitrates)), NameOf(WaterAnalysis.Nitrates)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Sulfates)), NameOf(WaterAnalysis.Sulfates)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Calcium)), NameOf(WaterAnalysis.Calcium)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Magnesium)), NameOf(WaterAnalysis.Magnesium)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.TotalSulfur)), NameOf(WaterAnalysis.TotalSulfur)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Potassium)), NameOf(WaterAnalysis.Potassium)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Sodium)), NameOf(WaterAnalysis.Sodium)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Fluorides)), NameOf(WaterAnalysis.Fluorides)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.DRO)), NameOf(WaterAnalysis.DRO)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.GRO)), NameOf(WaterAnalysis.GRO)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.MRO)), NameOf(WaterAnalysis.MRO)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.TotalHydrocarbons_EPA8015)), NameOf(WaterAnalysis.TotalHydrocarbons_EPA8015)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.TotalHydrocarbons_TNRCC1005)), NameOf(WaterAnalysis.TotalHydrocarbons_TNRCC1005)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Benzene)), NameOf(WaterAnalysis.Benzene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Tolueno)), NameOf(WaterAnalysis.Tolueno)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Ethylbenzene)), NameOf(WaterAnalysis.Ethylbenzene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.XyleneO)), NameOf(WaterAnalysis.XyleneO)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.XylenePM)), NameOf(WaterAnalysis.XylenePM)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.TotalXylene)), NameOf(WaterAnalysis.TotalXylene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Naphthalene)), NameOf(WaterAnalysis.Naphthalene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Acenafthene)), NameOf(WaterAnalysis.Acenafthene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Acenaphthylene)), NameOf(WaterAnalysis.Acenaphthylene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Fluorene)), NameOf(WaterAnalysis.Fluorene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Anthracene)), NameOf(WaterAnalysis.Anthracene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Fenanthrene)), NameOf(WaterAnalysis.Fenanthrene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Fluoranthene)), NameOf(WaterAnalysis.Fluoranthene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Pyrene)), NameOf(WaterAnalysis.Pyrene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Crysene)), NameOf(WaterAnalysis.Crysene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoAAnthracene)), NameOf(WaterAnalysis.BenzoAAnthracene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoAPyrene)), NameOf(WaterAnalysis.BenzoAPyrene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoBFluoranthene)), NameOf(WaterAnalysis.BenzoBFluoranthene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoGHIPerylene)), NameOf(WaterAnalysis.BenzoGHIPerylene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoKFluoranthene)), NameOf(WaterAnalysis.BenzoKFluoranthene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.DibenzoAHAnthracene)), NameOf(WaterAnalysis.DibenzoAHAnthracene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Indeno123CDPyrene)), NameOf(WaterAnalysis.Indeno123CDPyrene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Arsenic)), NameOf(WaterAnalysis.Arsenic)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Cadmium)), NameOf(WaterAnalysis.Cadmium)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Copper)), NameOf(WaterAnalysis.Copper)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Cobalt)), NameOf(WaterAnalysis.Cobalt)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.TotalChrome)), NameOf(WaterAnalysis.TotalChrome)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Mercury)), NameOf(WaterAnalysis.Mercury)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Nickel)), NameOf(WaterAnalysis.Nickel)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Lead)), NameOf(WaterAnalysis.Lead)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Zinc)), NameOf(WaterAnalysis.Zinc)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Selenium)), NameOf(WaterAnalysis.Selenium)}}
 End Class

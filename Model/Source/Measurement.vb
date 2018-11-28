@@ -1,5 +1,5 @@
 ﻿Imports System.ComponentModel
-Imports Wells.Model
+Imports Wells.Model.ReflectionExtension
 
 Public Class Measurement
     Inherits BusinessObject
@@ -114,6 +114,14 @@ Public Class Measurement
         If RealDate = other.RealDate Then Return 0
         Return 1
     End Function
+
+    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+        {GetDisplayName(Of Measurement)(NameOf(Measurement.FLNADepth)), NameOf(Measurement.FLNADepth)},
+        {GetDisplayName(Of Measurement)(NameOf(Measurement.WaterDepth)), NameOf(Measurement.WaterDepth)},
+        {GetDisplayName(Of Measurement)(NameOf(Measurement.Caudal)), NameOf(Measurement.Caudal)},
+        {GetDisplayName(Of Measurement)(NameOf(Measurement.FLNAThickness)), NameOf(Measurement.FLNAThickness)},
+        {GetDisplayName(Of Measurement)(NameOf(Measurement.WaterElevation)), NameOf(Measurement.WaterElevation)},
+        {GetDisplayName(Of Measurement)(NameOf(Measurement.FLNAElevation)), NameOf(Measurement.FLNAElevation)}}
 End Class
 
 

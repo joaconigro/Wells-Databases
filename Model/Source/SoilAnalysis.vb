@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model.ReflectionExtension
 
 Public Class SoilAnalysis
     Inherits ChemicalAnalysis
@@ -55,8 +56,8 @@ Public Class SoilAnalysis
     <DisplayName("> C21 - C35 (F. alifática)"), Browsable(True)>
     Property C21_C35Aliphatic As Double
 
-    <DisplayName("> C7 - C8 (F. aromática)"), Browsable(True)>
-    Property C7_C8Aromatic As Double
+    <DisplayName("> C6 - C8 (F. aromática)"), Browsable(True)>
+    Property C6_C8Aromatic As Double
 
     <DisplayName("> C8 - C10 (F. aromática)"), Browsable(True)>
     Property C8_C10Aromatic As Double
@@ -169,4 +170,57 @@ Public Class SoilAnalysis
     Public Overrides Function GetChemicalAnalysisType(propertyName As String) As ChemicalAnalysisType
         Return SoilAnalysisTypes(propertyName)
     End Function
+
+    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Humidity)), NameOf(SoilAnalysis.Humidity)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.PH)), NameOf(SoilAnalysis.PH)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.DRO)), NameOf(SoilAnalysis.DRO)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.GRO)), NameOf(SoilAnalysis.GRO)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.MRO)), NameOf(SoilAnalysis.MRO)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.TotalHydrocarbons_EPA8015)), NameOf(SoilAnalysis.TotalHydrocarbons_EPA8015)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.TotalHydrocarbons_TNRCC1005)), NameOf(SoilAnalysis.TotalHydrocarbons_TNRCC1005)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.OilsAndFats)), NameOf(SoilAnalysis.OilsAndFats)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C6_C8Aliphatic)), NameOf(SoilAnalysis.C6_C8Aliphatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C8_C10Aliphatic)), NameOf(SoilAnalysis.C8_C10Aliphatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C10_C12Aliphatic)), NameOf(SoilAnalysis.C10_C12Aliphatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C12_C16Aliphatic)), NameOf(SoilAnalysis.C12_C16Aliphatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C16_C21Aliphatic)), NameOf(SoilAnalysis.C16_C21Aliphatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C21_C35Aliphatic)), NameOf(SoilAnalysis.C21_C35Aliphatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C6_C8Aromatic)), NameOf(SoilAnalysis.C6_C8Aromatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C8_C10Aromatic)), NameOf(SoilAnalysis.C8_C10Aromatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C10_C12Aromatic)), NameOf(SoilAnalysis.C10_C12Aromatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C12_C16Aromatic)), NameOf(SoilAnalysis.C12_C16Aromatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C16_C21Aromatic)), NameOf(SoilAnalysis.C16_C21Aromatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.C21_C35Aromatic)), NameOf(SoilAnalysis.C21_C35Aromatic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Benzene)), NameOf(SoilAnalysis.Benzene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Tolueno)), NameOf(SoilAnalysis.Tolueno)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Ethylbenzene)), NameOf(SoilAnalysis.Ethylbenzene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.XyleneO)), NameOf(SoilAnalysis.XyleneO)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.XylenePM)), NameOf(SoilAnalysis.XylenePM)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.TotalXylene)), NameOf(SoilAnalysis.TotalXylene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Naphthalene)), NameOf(SoilAnalysis.Naphthalene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Acenafthene)), NameOf(SoilAnalysis.Acenafthene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Acenaphthylene)), NameOf(SoilAnalysis.Acenaphthylene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Fluorene)), NameOf(SoilAnalysis.Fluorene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Anthracene)), NameOf(SoilAnalysis.Anthracene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Fenanthrene)), NameOf(SoilAnalysis.Fenanthrene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Fluoranthene)), NameOf(SoilAnalysis.Fluoranthene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Pyrene)), NameOf(SoilAnalysis.Pyrene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Crysene)), NameOf(SoilAnalysis.Crysene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.BenzoAAnthracene)), NameOf(SoilAnalysis.BenzoAAnthracene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.BenzoAPyrene)), NameOf(SoilAnalysis.BenzoAPyrene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.BenzoBFluoranthene)), NameOf(SoilAnalysis.BenzoBFluoranthene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.BenzoGHIPerylene)), NameOf(SoilAnalysis.BenzoGHIPerylene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.BenzoKFluoranthene)), NameOf(SoilAnalysis.BenzoKFluoranthene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.DibenzoAHAnthracene)), NameOf(SoilAnalysis.DibenzoAHAnthracene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Indeno123CDPyrene)), NameOf(SoilAnalysis.Indeno123CDPyrene)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Arsenic)), NameOf(SoilAnalysis.Arsenic)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Cadmium)), NameOf(SoilAnalysis.Cadmium)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Copper)), NameOf(SoilAnalysis.Copper)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.TotalChrome)), NameOf(SoilAnalysis.TotalChrome)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Mercury)), NameOf(SoilAnalysis.Mercury)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Nickel)), NameOf(SoilAnalysis.Nickel)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Lead)), NameOf(SoilAnalysis.Lead)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Zinc)), NameOf(SoilAnalysis.Zinc)},
+       {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Selenium)), NameOf(SoilAnalysis.Selenium)}}
 End Class

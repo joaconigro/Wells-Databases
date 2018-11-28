@@ -12,6 +12,7 @@ Public Class GraphicsView
 
         ' Add any initialization after the InitializeComponent() call.
         _viewModel = viewmodel
+        _viewModel.View = Me
         DataContext = _viewModel
     End Sub
 

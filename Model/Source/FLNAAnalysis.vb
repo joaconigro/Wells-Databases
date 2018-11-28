@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Wells.Model.ReflectionExtension
 
 Public Class FLNAAnalysis
     Inherits ChemicalAnalysis
@@ -67,4 +68,23 @@ Public Class FLNAAnalysis
     Public Overrides Function GetChemicalAnalysisType(propertyName As String) As ChemicalAnalysisType
         Return FLNAAnalysisTypes(propertyName)
     End Function
+
+    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.GRO)), NameOf(FLNAAnalysis.GRO)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.DRO)), NameOf(FLNAAnalysis.DRO)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.MRO)), NameOf(FLNAAnalysis.MRO)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.Benzene)), NameOf(FLNAAnalysis.Benzene)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.Tolueno)), NameOf(FLNAAnalysis.Tolueno)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.Ethylbenzene)), NameOf(FLNAAnalysis.Ethylbenzene)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.Xylenes)), NameOf(FLNAAnalysis.Xylenes)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C6_C8)), NameOf(FLNAAnalysis.C6_C8)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C8_C10)), NameOf(FLNAAnalysis.C8_C10)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C10_C12)), NameOf(FLNAAnalysis.C10_C12)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C12_C16)), NameOf(FLNAAnalysis.C12_C16)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C16_C21)), NameOf(FLNAAnalysis.C16_C21)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C21_C35)), NameOf(FLNAAnalysis.C21_C35)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C17_Pristano)), NameOf(FLNAAnalysis.C17_Pristano)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.C18_Fitano)), NameOf(FLNAAnalysis.C18_Fitano)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.RealDensity)), NameOf(FLNAAnalysis.RealDensity)},
+       {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.DynamicViscosity)), NameOf(FLNAAnalysis.DynamicViscosity)}}
 End Class
