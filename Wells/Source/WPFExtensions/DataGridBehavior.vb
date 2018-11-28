@@ -59,7 +59,11 @@ Namespace Extensions
                         Dim browsableAttribute = CType(att, BrowsableAttribute)
 
                         If browsableAttribute IsNot Nothing Then
-                            e.Cancel = Not browsableAttribute.Browsable
+                            Dim isBrowsable = browsableAttribute.Browsable
+                            If Not isBrowsable Then
+                                e.Cancel = Not isBrowsable
+                                Exit Sub
+                            End If
                         End If
                     End If
 

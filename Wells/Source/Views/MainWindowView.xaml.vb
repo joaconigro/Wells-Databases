@@ -15,8 +15,10 @@ Class MainWindowView
         viewModel = New MainWindowViewModel(Me)
         ViewWellMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 0, True, False)
         ViewMeasurementsMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 1, True, False)
-        ViewAnalysisMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 2, True, False)
-        ViewPrecipitationsMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 3, True, False)
+        ViewFLNAAnalysisMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 2, True, False)
+        ViewWaterAnalysisMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 3, True, False)
+        ViewSoilAnalysisMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 4, True, False)
+        ViewPrecipitationsMenuItem.IsChecked = If(My.Settings.ShowedDatasource = 5, True, False)
         StartDatePicker.SelectedDate = New Date(2000, 1, 1)
         EndDatePicker.SelectedDate = Today
 

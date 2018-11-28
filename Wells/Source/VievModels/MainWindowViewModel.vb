@@ -268,6 +268,32 @@ Public Class MainWindowViewModel
                                                                           End Function,
                                                                           AddressOf OnError)
 
+    Property ImportFLNAAnalysisFromExcelCommand As ICommand = New Command(Sub()
+                                                                              Dim wb As XSSFWorkbook = Nothing
+                                                                              Dim sheetIndex As Integer = -1
+
+                                                                              If OpenExcelFile(wb, sheetIndex) Then
+                                                                                  ReadFLNAAnalysisFromExcel(wb, sheetIndex)
+                                                                              End If
+                                                                          End Sub,
+                                                                          Function()
+                                                                              Return Repositories.HasProject
+                                                                          End Function,
+                                                                          AddressOf OnError)
+
+    Property ImportWaterAnalysisFromExcelCommand As ICommand = New Command(Sub()
+                                                                               Dim wb As XSSFWorkbook = Nothing
+                                                                               Dim sheetIndex As Integer = -1
+
+                                                                               If OpenExcelFile(wb, sheetIndex) Then
+                                                                                   ReadWaterAnalysisFromExcel(wb, sheetIndex)
+                                                                               End If
+                                                                           End Sub,
+                                                                          Function()
+                                                                              Return Repositories.HasProject
+                                                                          End Function,
+                                                                          AddressOf OnError)
+
     Property ImportPrecipitationsFromExcelCommand As ICommand = New Command(Sub()
                                                                                 Dim wb As XSSFWorkbook = Nothing
                                                                                 Dim sheetIndex As Integer = -1
@@ -422,6 +448,44 @@ Public Class MainWindowViewModel
         SetDatasource()
     End Sub
 
+    Private Async Sub ReadFLNAAnalysisFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
+        StartProgressNotifications(False, "Leyendo análisis de FLNA del archivo Excel")
+        Dim flna = Await Task.Run(Function() ExcelReader.ReadFLNAAnalysis(workbook, sheetIndex, _progress))
+
+        If flna.Any Then
+            StartProgressNotifications(False, "Importando mediciones")
+            Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(flna, _progress))
+            StartProgressNotifications(True, "Guardando base de datos")
+            Await _repo.SaveChangesAsync()
+            If rejected.Any Then
+                'ExportRejectedToExcel(rejected)
+            End If
+        End If
+
+        workbook.Close()
+        StopProgressNotifications()
+        SetDatasource()
+    End Sub
+
+    Private Async Sub ReadWaterAnalysisFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
+        StartProgressNotifications(False, "Leyendo análisis de agua del archivo Excel")
+        Dim water = Await Task.Run(Function() ExcelReader.ReadWaterAnalysis(workbook, sheetIndex, _progress))
+
+        If water.Any Then
+            StartProgressNotifications(False, "Importando mediciones")
+            Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(water, _progress))
+            StartProgressNotifications(True, "Guardando base de datos")
+            Await _repo.SaveChangesAsync()
+            If rejected.Any Then
+                'ExportRejectedToExcel(rejected)
+            End If
+        End If
+
+        workbook.Close()
+        StopProgressNotifications()
+        SetDatasource()
+    End Sub
+
     Private Async Sub ReadPrecipitationsFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
         StartProgressNotifications(False, "Leyendo precipitaciones del archivo Excel")
         Dim precipitations = Await Task.Run(Function() ExcelReader.ReadPrecipitations(workbook, sheetIndex, _progress))
@@ -465,6 +529,8 @@ Public Class MainWindowViewModel
     Private Sub EventsAfterOpenDatabase()
         CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ImportMeasurementsFromExcelCommand, Command).RaiseCanExecuteChanged()
+        CType(ImportFLNAAnalysisFromExcelCommand, Command).RaiseCanExecuteChanged()
+        CType(ImportWaterAnalysisFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ImportPrecipitationsFromExcelCommand, Command).RaiseCanExecuteChanged()
         CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
         CType(NewWellCommand, Command).RaiseCanExecuteChanged()

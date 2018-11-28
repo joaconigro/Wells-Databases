@@ -39,6 +39,10 @@
                 <MenuItem Name="EditMeasureMenuItem" Header="Editar..." Command="{Binding EditMeasurementCommand}"/>
                 <MenuItem Name="ImportMeasuresMenuItem" Header="Importar..." Command="{Binding ImportMeasurementsFromExcelCommand}"/>
             </MenuItem>
+            <MenuItem Name="ChemicalAnalysisMenuItem" Header="_Análisis químicos">
+                <MenuItem Name="ImportFLNAAnalysisMenuItem" Header="Importar análsis de FLNA..." Command="{Binding ImportFLNAAnalysisFromExcelCommand}"/>
+                <MenuItem Name="ImportWaterAnalysisMenuItem" Header="Importar análsis de agua..." Command="{Binding ImportWaterAnalysisFromExcelCommand}"/>
+            </MenuItem>
             <MenuItem Name="PrecipitationsMenuItem" Header="_Precipitaciones">
                 <MenuItem Name="ImportPrecipitationsMenuItem" Header="Importar..." Command="{Binding ImportPrecipitationsFromExcelCommand}"/>
             </MenuItem>

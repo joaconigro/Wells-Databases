@@ -251,8 +251,12 @@ Public Class BaseFilter
                 Return WellApply(_repositories.Wells)
             Case DatasourceType.Measurements
                 Return MeasurementApply(_repositories.Measurements)
-            Case DatasourceType.FLNAAnalysis, DatasourceType.SoilAnalysis, DatasourceType.WaterAnalysis
-                Return ChemicalAnalysisApply(_repositories.ChemicalAnalysis)
+            Case DatasourceType.FLNAAnalysis
+                Return FLNAAnalysisApply(_repositories.ChemicalAnalysis)
+            Case DatasourceType.WaterAnalysis
+                Return WaterAnalysisApply(_repositories.ChemicalAnalysis)
+            Case DatasourceType.SoilAnalysis
+                Return SoilAnalysisApply(_repositories.ChemicalAnalysis)
             Case Else
                 Return PrecipitationsApply(_repositories.Precipitations)
         End Select
@@ -358,22 +362,10 @@ Public Class BaseFilter
 
     End Function
 
-    Private Function ChemicalAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of ChemicalAnalysis)
-        Dim list As List(Of ChemicalAnalysis)
-        Dim dict As Dictionary(Of String, String)
-        Select Case ShowedDatasource
-            Case DatasourceType.FLNAAnalysis
-                list = repo.All.FindAll(Function(a) a.SampleOf = SampleType.FLNA).ToList
-                dict = _flnaAnalysisPropeties
-            Case DatasourceType.WaterAnalysis
-                list = repo.All.FindAll(Function(a) a.SampleOf = SampleType.Water).ToList
-                dict = _waterAnalysisPropeties
-            Case DatasourceType.SoilAnalysis
-                list = repo.All.FindAll(Function(a) a.SampleOf = SampleType.Soil).ToList
-                dict = _soilAnalysisPropeties
-            Case Else
-                Return Nothing
-        End Select
+    Private Function FLNAAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of FLNAAnalysis)
+        Dim list As List(Of FLNAAnalysis) = (From c In repo.All.FindAll(Function(a) a.SampleOf = SampleType.FLNA)
+                                             Select CType(c, FLNAAnalysis)).ToList
+        Dim dict = _flnaAnalysisPropeties
 
         Select Case WellFilter
             Case WellQuery.ByName
@@ -427,6 +419,123 @@ Public Class BaseFilter
         End If
 
     End Function
+
+    Private Function WaterAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of WaterAnalysis)
+        Dim list As List(Of WaterAnalysis) = (From c In repo.All.FindAll(Function(a) a.SampleOf = SampleType.Water)
+                                              Select CType(c, WaterAnalysis)).ToList
+        Dim dict = _waterAnalysisPropeties
+
+        Select Case WellFilter
+            Case WellQuery.ByName
+                If Not String.IsNullOrEmpty(SelectedWellName) Then
+                    list = (From e In list
+                            Where e.Well.Name = SelectedWellName
+                            Select e).ToList
+                End If
+            Case WellQuery.OnlyMeasurementWell
+                list = (From e In list
+                        Where e.Well.Type = WellType.MeasurementWell
+                        Select e).ToList
+            Case WellQuery.OnlySounding
+                list = (From e In list
+                        Where e.Well.Type = WellType.Sounding
+                        Select e).ToList
+            Case WellQuery.ZoneA
+                list = (From e In list
+                        Where Rectangle2D.ZoneA.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneB
+                list = (From e In list
+                        Where Rectangle2D.ZoneB.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneC
+                list = (From e In list
+                        Where Rectangle2D.ZoneC.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneD
+                list = (From e In list
+                        Where Rectangle2D.ZoneD.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.Torches
+                list = (From e In list
+                        Where Rectangle2D.Torches.Contains(e.Well)
+                        Select e).ToList
+        End Select
+
+        Dim datedList = (From e In list
+                         Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                         Select e).ToList
+
+        If Not String.IsNullOrEmpty(_PropertyName) AndAlso dict(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
+            Dim filteredList = (From e In datedList
+                                Where filterFunction(e, dict(_PropertyName), _doubleValue)
+                                Select e).ToList
+
+            Return filteredList
+        Else
+            Return datedList
+        End If
+
+    End Function
+
+    Private Function SoilAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of SoilAnalysis)
+        Dim list As List(Of SoilAnalysis) = (From c In repo.All.FindAll(Function(a) a.SampleOf = SampleType.Soil)
+                                             Select CType(c, SoilAnalysis)).ToList
+        Dim dict = _soilAnalysisPropeties
+
+        Select Case WellFilter
+            Case WellQuery.ByName
+                If Not String.IsNullOrEmpty(SelectedWellName) Then
+                    list = (From e In list
+                            Where e.Well.Name = SelectedWellName
+                            Select e).ToList
+                End If
+            Case WellQuery.OnlyMeasurementWell
+                list = (From e In list
+                        Where e.Well.Type = WellType.MeasurementWell
+                        Select e).ToList
+            Case WellQuery.OnlySounding
+                list = (From e In list
+                        Where e.Well.Type = WellType.Sounding
+                        Select e).ToList
+            Case WellQuery.ZoneA
+                list = (From e In list
+                        Where Rectangle2D.ZoneA.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneB
+                list = (From e In list
+                        Where Rectangle2D.ZoneB.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneC
+                list = (From e In list
+                        Where Rectangle2D.ZoneC.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.ZoneD
+                list = (From e In list
+                        Where Rectangle2D.ZoneD.Contains(e.Well)
+                        Select e).ToList
+            Case WellQuery.Torches
+                list = (From e In list
+                        Where Rectangle2D.Torches.Contains(e.Well)
+                        Select e).ToList
+        End Select
+
+        Dim datedList = (From e In list
+                         Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                         Select e).ToList
+
+        If Not String.IsNullOrEmpty(_PropertyName) AndAlso dict(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
+            Dim filteredList = (From e In datedList
+                                Where filterFunction(e, dict(_PropertyName), _doubleValue)
+                                Select e).ToList
+
+            Return filteredList
+        Else
+            Return datedList
+        End If
+
+    End Function
+
 
     Private Function PrecipitationsApply(repo As PrecipitationsRepository) As List(Of Precipitation)
 

@@ -14,6 +14,27 @@ Public Class WaterAnalysis
         SampleOf = SampleType.Water
     End Sub
 
+    <DisplayName("Pozo"), Browsable(True)>
+    Overrides Property WellName As String
+        Get
+            If Well IsNot Nothing Then
+                Return Well.Name
+            Else
+                Return _WellName
+            End If
+        End Get
+        Set
+            _WellName = Value
+        End Set
+    End Property
+
+    <DisplayName("Fecha"), Browsable(True)>
+    Overrides ReadOnly Property RealDate As Date
+        Get
+            Return Date.ParseExact(SampleDate, "dd/MM/yyyy", Nothing)
+        End Get
+    End Property
+
     <DisplayName("pH"), Browsable(True)>
     Property PH As Double
 
@@ -44,7 +65,7 @@ Public Class WaterAnalysis
     <DisplayName("Magnesio"), Browsable(True)>
     Property Magnesium As Double
 
-    <DisplayName("Sulfuros Totales(HS -)"), Browsable(True)>
+    <DisplayName("Sulfuros Totales (HS-)"), Browsable(True)>
     Property TotalSulfur As Double
 
     <DisplayName("Potasio"), Browsable(True)>
@@ -65,10 +86,10 @@ Public Class WaterAnalysis
     <DisplayName("MRO"), Browsable(True)>
     Property MRO As Double
 
-    <DisplayName("Hidrocarburos totales(EPA 8015)"), Browsable(True)>
+    <DisplayName("Hidrocarburos totales (EPA 8015)"), Browsable(True)>
     Property TotalHydrocarbons_EPA8015 As Double
 
-    <DisplayName("Hidrocarburos totales(TNRCC 1005)"), Browsable(True)>
+    <DisplayName("Hidrocarburos totales (TNRCC 1005)"), Browsable(True)>
     Property TotalHydrocarbons_TNRCC1005 As Double
 
     <DisplayName("Benceno"), Browsable(True)>
@@ -113,11 +134,11 @@ Public Class WaterAnalysis
     <DisplayName("Pireno"), Browsable(True)>
     Property Pyrene As Double
 
-    <DisplayName("Criseno"), Browsable(True)>
-    Property Crysene As Double
-
     <DisplayName("Benzo(a)antraceno"), Browsable(True)>
     Property BenzoAAnthracene As Double
+
+    <DisplayName("Criseno"), Browsable(True)>
+    Property Crysene As Double
 
     <DisplayName("Benzo(a)pireno"), Browsable(True)>
     Property BenzoAPyrene As Double
@@ -161,11 +182,11 @@ Public Class WaterAnalysis
     <DisplayName("Plomo"), Browsable(True)>
     Property Lead As Double
 
-    <DisplayName("Zinc"), Browsable(True)>
-    Property Zinc As Double
-
     <DisplayName("Selenio"), Browsable(True)>
     Property Selenium As Double
+
+    <DisplayName("Zinc"), Browsable(True)>
+    Property Zinc As Double
 
     Public Overrides Function GetChemicalAnalysisType(propertyName As String) As ChemicalAnalysisType
         Return WaterAnalysisTypes(propertyName)

@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
-Imports Wells.Model
 
 Public MustInherit Class ChemicalAnalysis
     Inherits BusinessObject
@@ -22,27 +21,10 @@ Public MustInherit Class ChemicalAnalysis
     <Browsable(False)>
     Property Well As Well
 
-    Private _WellName As String
-    <DisplayName("Pozo"), Browsable(True)>
-    Property WellName As String
-        Get
-            If Well IsNot Nothing Then
-                Return Well.Name
-            Else
-                Return _WellName
-            End If
-        End Get
-        Set
-            _WellName = Value
-        End Set
-    End Property
+    Protected _WellName As String
+    MustOverride Property WellName As String
 
-    <DisplayName("Fecha"), Browsable(True)>
-    ReadOnly Property RealDate As Date
-        Get
-            Return Date.ParseExact(SampleDate, "dd/MM/yyyy", Nothing)
-        End Get
-    End Property
+    MustOverride ReadOnly Property RealDate As Date
 
     Private Shared _FLNAAnalysisTypes As Dictionary(Of String, ChemicalAnalysisType)
     Private Shared _WaterAnalysisTypes As Dictionary(Of String, ChemicalAnalysisType)

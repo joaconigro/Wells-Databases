@@ -14,6 +14,27 @@ Public Class FLNAAnalysis
         SampleOf = SampleType.FLNA
     End Sub
 
+    <DisplayName("Pozo"), Browsable(True)>
+    Overrides Property WellName As String
+        Get
+            If Well IsNot Nothing Then
+                Return Well.Name
+            Else
+                Return _WellName
+            End If
+        End Get
+        Set
+            _WellName = Value
+        End Set
+    End Property
+
+    <DisplayName("Fecha"), Browsable(True)>
+    Overrides ReadOnly Property RealDate As Date
+        Get
+            Return Date.ParseExact(SampleDate, "dd/MM/yyyy", Nothing)
+        End Get
+    End Property
+
     <DisplayName("GRO"), Browsable(True)>
     Property GRO As Double
 

@@ -140,6 +140,82 @@ Public Class ExcelReader
         Return analysis
     End Function
 
+    Shared Function ReadWaterAnalysis(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of WaterAnalysis)
+        Dim sheet = workbook.GetSheetAt(sheetIndex)
+        Dim row As IRow
+        Dim analysis As New List(Of WaterAnalysis)
+        Dim indexError As Integer
+        Try
+            Dim maxCount = sheet.LastRowNum
+            For i = 1 To maxCount
+                indexError = i
+                row = sheet.GetRow(i)
+                Dim flna As New WaterAnalysis With {
+                    .WellName = ReadCellAsString(row, 0).ToUpper,
+                    .SampleDate = ReadCellAsDateString(row, 1),
+                    .PH = ReadCellAsDouble(row, 2),
+                    .Conductivity = ReadCellAsDouble(row, 3),
+                    .DryWaste = ReadCellAsDouble(row, 4),
+                    .BicarbonateAlkalinity = ReadCellAsDouble(row, 5),
+                    .CarbonateAlkalinity = ReadCellAsDouble(row, 6),
+                    .Chlorides = ReadCellAsDouble(row, 7),
+                    .Nitrates = ReadCellAsDouble(row, 8),
+                    .Sulfates = ReadCellAsDouble(row, 9),
+                    .Calcium = ReadCellAsDouble(row, 10),
+                    .Magnesium = ReadCellAsDouble(row, 11),
+                    .TotalSulfur = ReadCellAsDouble(row, 12),
+                    .Potassium = ReadCellAsDouble(row, 13),
+                    .Sodium = ReadCellAsDouble(row, 14),
+                    .Fluorides = ReadCellAsDouble(row, 15),
+                    .DRO = ReadCellAsDouble(row, 16),
+                    .GRO = ReadCellAsDouble(row, 17),
+                    .MRO = ReadCellAsDouble(row, 18),
+                    .TotalHydrocarbons_EPA8015 = ReadCellAsDouble(row, 19),
+                    .TotalHydrocarbons_TNRCC1005 = ReadCellAsDouble(row, 20),
+                    .Benzene = ReadCellAsDouble(row, 21),
+                    .Tolueno = ReadCellAsDouble(row, 22),
+                    .Ethylbenzene = ReadCellAsDouble(row, 23),
+                    .XyleneO = ReadCellAsDouble(row, 24),
+                    .XylenePM = ReadCellAsDouble(row, 25),
+                    .TotalXylene = ReadCellAsDouble(row, 26),
+                    .Naphthalene = ReadCellAsDouble(row, 27),
+                    .Acenafthene = ReadCellAsDouble(row, 28),
+                    .Acenaphthylene = ReadCellAsDouble(row, 29),
+                    .Fluorene = ReadCellAsDouble(row, 30),
+                    .Anthracene = ReadCellAsDouble(row, 31),
+                    .Fenanthrene = ReadCellAsDouble(row, 32),
+                    .Fluoranthene = ReadCellAsDouble(row, 33),
+                    .Pyrene = ReadCellAsDouble(row, 34),
+                    .BenzoAAnthracene = ReadCellAsDouble(row, 35),
+                    .Crysene = ReadCellAsDouble(row, 36),
+                    .BenzoAPyrene = ReadCellAsDouble(row, 37),
+                    .BenzoBFluoranthene = ReadCellAsDouble(row, 38),
+                    .BenzoGHIPerylene = ReadCellAsDouble(row, 39),
+                    .BenzoKFluoranthene = ReadCellAsDouble(row, 40),
+                    .DibenzoAHAnthracene = ReadCellAsDouble(row, 41),
+                    .Indeno123CDPyrene = ReadCellAsDouble(row, 42),
+                    .Arsenic = ReadCellAsDouble(row, 43),
+                    .Cadmium = ReadCellAsDouble(row, 44),
+                    .Cobalt = ReadCellAsDouble(row, 45),
+                    .Copper = ReadCellAsDouble(row, 46),
+                    .TotalChrome = ReadCellAsDouble(row, 47),
+                    .Mercury = ReadCellAsDouble(row, 48),
+                    .Nickel = ReadCellAsDouble(row, 49),
+                    .Lead = ReadCellAsDouble(row, 50),
+                    .Selenium = ReadCellAsDouble(row, 51),
+                    .Zinc = ReadCellAsDouble(row, 52)
+                }
+
+                analysis.Add(flna)
+                progress.Report(i / maxCount * 100)
+            Next
+        Catch ex As Exception
+            Throw New Exception("Error leyendo la fila " & indexError)
+        End Try
+
+        Return analysis
+    End Function
+
     Shared Sub ExportRejectedToExcel(rejected As List(Of RejectedEntity), filename As String)
         Try
             Using stream = File.Open(filename, FileMode.Create, FileAccess.Write)
