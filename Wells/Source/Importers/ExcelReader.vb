@@ -3,8 +3,12 @@ Imports NPOI.SS.UserModel
 Imports NPOI.XSSF.UserModel
 Imports Wells.Model
 Imports Wells.Persistence
+Imports Wells.Model.ReflectionExtension
 
 Public Class ExcelReader
+
+    Private Shared _OriginalRow As String = "Fila original"
+    Private Shared _Reason As String = "Razón"
 
     Shared Function ReadWells(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Well)
         Dim sheet = workbook.GetSheetAt(sheetIndex)
@@ -110,25 +114,14 @@ Public Class ExcelReader
                 row = sheet.GetRow(i)
                 Dim flna As New FLNAAnalysis With {
                     .WellName = ReadCellAsString(row, 0).ToUpper,
-                    .SampleDate = ReadCellAsDateString(row, 1),
-                    .GRO = ReadCellAsDouble(row, 2),
-                    .DRO = ReadCellAsDouble(row, 3),
-                    .MRO = ReadCellAsDouble(row, 4),
-                    .Benzene = ReadCellAsDouble(row, 5),
-                    .Tolueno = ReadCellAsDouble(row, 6),
-                    .Ethylbenzene = ReadCellAsDouble(row, 7),
-                    .Xylenes = ReadCellAsDouble(row, 8),
-                    .C6_C8 = ReadCellAsDouble(row, 9),
-                    .C8_C10 = ReadCellAsDouble(row, 10),
-                    .C10_C12 = ReadCellAsDouble(row, 11),
-                    .C12_C16 = ReadCellAsDouble(row, 12),
-                    .C16_C21 = ReadCellAsDouble(row, 13),
-                    .C21_C35 = ReadCellAsDouble(row, 14),
-                    .C17_Pristano = ReadCellAsDouble(row, 15),
-                    .C18_Fitano = ReadCellAsDouble(row, 16),
-                    .RealDensity = ReadCellAsDouble(row, 17),
-                    .DynamicViscosity = ReadCellAsDouble(row, 18)
+                    .SampleDate = ReadCellAsDateString(row, 1)
                 }
+
+                Dim j As Integer = 2
+                For Each p In FLNAAnalysis.Propeties.Keys.ToList
+                    CallByName(flna, FLNAAnalysis.Propeties(p), CallType.Set, ReadCellAsDouble(row, j))
+                    j += 1
+                Next
 
                 analysis.Add(flna)
                 progress.Report(i / maxCount * 100)
@@ -150,63 +143,49 @@ Public Class ExcelReader
             For i = 1 To maxCount
                 indexError = i
                 row = sheet.GetRow(i)
-                Dim flna As New WaterAnalysis With {
+                Dim water As New WaterAnalysis With {
                     .WellName = ReadCellAsString(row, 0).ToUpper,
-                    .SampleDate = ReadCellAsDateString(row, 1),
-                    .PH = ReadCellAsDouble(row, 2),
-                    .Conductivity = ReadCellAsDouble(row, 3),
-                    .DryWaste = ReadCellAsDouble(row, 4),
-                    .BicarbonateAlkalinity = ReadCellAsDouble(row, 5),
-                    .CarbonateAlkalinity = ReadCellAsDouble(row, 6),
-                    .Chlorides = ReadCellAsDouble(row, 7),
-                    .Nitrates = ReadCellAsDouble(row, 8),
-                    .Sulfates = ReadCellAsDouble(row, 9),
-                    .Calcium = ReadCellAsDouble(row, 10),
-                    .Magnesium = ReadCellAsDouble(row, 11),
-                    .TotalSulfur = ReadCellAsDouble(row, 12),
-                    .Potassium = ReadCellAsDouble(row, 13),
-                    .Sodium = ReadCellAsDouble(row, 14),
-                    .Fluorides = ReadCellAsDouble(row, 15),
-                    .DRO = ReadCellAsDouble(row, 16),
-                    .GRO = ReadCellAsDouble(row, 17),
-                    .MRO = ReadCellAsDouble(row, 18),
-                    .TotalHydrocarbons_EPA8015 = ReadCellAsDouble(row, 19),
-                    .TotalHydrocarbons_TNRCC1005 = ReadCellAsDouble(row, 20),
-                    .Benzene = ReadCellAsDouble(row, 21),
-                    .Tolueno = ReadCellAsDouble(row, 22),
-                    .Ethylbenzene = ReadCellAsDouble(row, 23),
-                    .XyleneO = ReadCellAsDouble(row, 24),
-                    .XylenePM = ReadCellAsDouble(row, 25),
-                    .TotalXylene = ReadCellAsDouble(row, 26),
-                    .Naphthalene = ReadCellAsDouble(row, 27),
-                    .Acenafthene = ReadCellAsDouble(row, 28),
-                    .Acenaphthylene = ReadCellAsDouble(row, 29),
-                    .Fluorene = ReadCellAsDouble(row, 30),
-                    .Anthracene = ReadCellAsDouble(row, 31),
-                    .Fenanthrene = ReadCellAsDouble(row, 32),
-                    .Fluoranthene = ReadCellAsDouble(row, 33),
-                    .Pyrene = ReadCellAsDouble(row, 34),
-                    .BenzoAAnthracene = ReadCellAsDouble(row, 35),
-                    .Crysene = ReadCellAsDouble(row, 36),
-                    .BenzoAPyrene = ReadCellAsDouble(row, 37),
-                    .BenzoBFluoranthene = ReadCellAsDouble(row, 38),
-                    .BenzoGHIPerylene = ReadCellAsDouble(row, 39),
-                    .BenzoKFluoranthene = ReadCellAsDouble(row, 40),
-                    .DibenzoAHAnthracene = ReadCellAsDouble(row, 41),
-                    .Indeno123CDPyrene = ReadCellAsDouble(row, 42),
-                    .Arsenic = ReadCellAsDouble(row, 43),
-                    .Cadmium = ReadCellAsDouble(row, 44),
-                    .Cobalt = ReadCellAsDouble(row, 45),
-                    .Copper = ReadCellAsDouble(row, 46),
-                    .TotalChrome = ReadCellAsDouble(row, 47),
-                    .Mercury = ReadCellAsDouble(row, 48),
-                    .Nickel = ReadCellAsDouble(row, 49),
-                    .Lead = ReadCellAsDouble(row, 50),
-                    .Selenium = ReadCellAsDouble(row, 51),
-                    .Zinc = ReadCellAsDouble(row, 52)
+                    .SampleDate = ReadCellAsDateString(row, 1)
                 }
 
-                analysis.Add(flna)
+                Dim j As Integer = 2
+                For Each p In WaterAnalysis.Propeties.Keys.ToList
+                    CallByName(water, WaterAnalysis.Propeties(p), CallType.Set, ReadCellAsDouble(row, j))
+                    j += 1
+                Next
+
+                analysis.Add(water)
+                progress.Report(i / maxCount * 100)
+            Next
+        Catch ex As Exception
+            Throw New Exception("Error leyendo la fila " & indexError)
+        End Try
+
+        Return analysis
+    End Function
+
+    Shared Function ReadSoilAnalysis(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of SoilAnalysis)
+        Dim sheet = workbook.GetSheetAt(sheetIndex)
+        Dim row As IRow
+        Dim analysis As New List(Of SoilAnalysis)
+        Dim indexError As Integer
+        Try
+            Dim maxCount = sheet.LastRowNum
+            For i = 1 To maxCount
+                indexError = i
+                row = sheet.GetRow(i)
+                Dim soil As New SoilAnalysis With {
+                    .WellName = ReadCellAsString(row, 0).ToUpper,
+                    .SampleDate = ReadCellAsDateString(row, 1)
+                }
+
+                Dim j As Integer = 2
+                For Each p In SoilAnalysis.Propeties.Keys.ToList
+                    CallByName(soil, SoilAnalysis.Propeties(p), CallType.Set, ReadCellAsDouble(row, j))
+                    j += 1
+                Next
+
+                analysis.Add(soil)
                 progress.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
@@ -233,6 +212,12 @@ Public Class ExcelReader
                     ExportsRejectedMeasurements(rejected, sheet)
                 ElseIf type = GetType(Precipitation) Then
                     ExportsRejectedPrecipitations(rejected, sheet)
+                ElseIf type = GetType(FLNAAnalysis) Then
+                    ExportsRejectedFLNAAnalysis(rejected, sheet)
+                ElseIf type = GetType(WaterAnalysis) Then
+                    ExportsRejectedWaterAnalysis(rejected, sheet)
+                ElseIf type = GetType(SoilAnalysis) Then
+                    ExportsRejectedSoilAnalysis(rejected, sheet)
                 End If
 
                 wb.Write(stream)
@@ -242,6 +227,130 @@ Public Class ExcelReader
         Catch ex As Exception
             Throw New Exception("Se produjo un error al guardar los datos")
         End Try
+    End Sub
+
+    Private Shared Sub ExportsRejectedSoilAnalysis(rejected As List(Of RejectedEntity), sheet As ISheet)
+        WriteSoilAnalysisHeader(sheet)
+
+        For i = 1 To rejected.Count
+            Dim r = rejected(i - 1)
+            WriteSoilAnalysisToExcelRow(CType(r.Entity, SoilAnalysis), sheet, i, r.OriginalRow, r.Reason)
+        Next
+    End Sub
+
+    Private Shared Sub WriteSoilAnalysisHeader(sheet As ISheet)
+        Dim header = sheet.CreateRow(0)
+
+        header.CreateCell(0).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.WellName)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.RealDate)))
+
+        Dim i As Integer = 2
+        For Each p In SoilAnalysis.Propeties.Keys.ToList
+            header.CreateCell(i).SetCellValue(p)
+            i += 1
+        Next
+
+        header.CreateCell(i).SetCellValue(_OriginalRow)
+        header.CreateCell(i + 1).SetCellValue(_Reason)
+    End Sub
+
+    Private Shared Sub WriteSoilAnalysisToExcelRow(analysis As SoilAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedEntity.RejectedReasons)
+        Dim row = sheet.CreateRow(rowIndex)
+
+        row.CreateCell(0).SetCellValue(analysis.WellName)
+        row.CreateCell(1).SetCellValue(analysis.SampleDate)
+
+        Dim i As Integer = 2
+        For Each p In SoilAnalysis.Propeties.Keys.ToList
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, SoilAnalysis.Propeties(p), CallType.Get)))
+            i += 1
+        Next
+
+        row.CreateCell(i, CellType.Numeric).SetCellValue(originalRowIndex)
+        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), reason))
+    End Sub
+
+    Private Shared Sub ExportsRejectedWaterAnalysis(rejected As List(Of RejectedEntity), sheet As ISheet)
+        WriteWaterAnalysisHeader(sheet)
+
+        For i = 1 To rejected.Count
+            Dim r = rejected(i - 1)
+            WriteWaterAnalysisToExcelRow(CType(r.Entity, WaterAnalysis), sheet, i, r.OriginalRow, r.Reason)
+        Next
+    End Sub
+
+    Private Shared Sub WriteWaterAnalysisHeader(sheet As ISheet)
+        Dim header = sheet.CreateRow(0)
+
+        header.CreateCell(0).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.WellName)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.RealDate)))
+
+        Dim i As Integer = 2
+        For Each p In WaterAnalysis.Propeties.Keys.ToList
+            header.CreateCell(i).SetCellValue(p)
+            i += 1
+        Next
+
+        header.CreateCell(i).SetCellValue(_OriginalRow)
+        header.CreateCell(i + 1).SetCellValue(_Reason)
+    End Sub
+
+    Private Shared Sub WriteWaterAnalysisToExcelRow(analysis As WaterAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedEntity.RejectedReasons)
+        Dim row = sheet.CreateRow(rowIndex)
+
+        row.CreateCell(0).SetCellValue(analysis.WellName)
+        row.CreateCell(1).SetCellValue(analysis.SampleDate)
+
+        Dim i As Integer = 2
+        For Each p In WaterAnalysis.Propeties.Keys.ToList
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, WaterAnalysis.Propeties(p), CallType.Get)))
+            i += 1
+        Next
+
+        row.CreateCell(i, CellType.Numeric).SetCellValue(originalRowIndex)
+        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), reason))
+    End Sub
+
+    Private Shared Sub ExportsRejectedFLNAAnalysis(rejected As List(Of RejectedEntity), sheet As ISheet)
+        WriteFLNAAnalysisHeader(sheet)
+
+        For i = 1 To rejected.Count
+            Dim r = rejected(i - 1)
+            WriteFLNAAnalysisToExcelRow(CType(r.Entity, FLNAAnalysis), sheet, i, r.OriginalRow, r.Reason)
+        Next
+    End Sub
+
+    Private Shared Sub WriteFLNAAnalysisHeader(sheet As ISheet)
+        Dim header = sheet.CreateRow(0)
+
+        header.CreateCell(0).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.WellName)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.RealDate)))
+
+        Dim i As Integer = 2
+        For Each p In FLNAAnalysis.Propeties.Keys.ToList
+            header.CreateCell(i).SetCellValue(p)
+            i += 1
+        Next
+
+        header.CreateCell(i).SetCellValue(_OriginalRow)
+        header.CreateCell(i + 1).SetCellValue(_Reason)
+    End Sub
+
+    Private Shared Sub WriteFLNAAnalysisToExcelRow(analysis As FLNAAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedEntity.RejectedReasons)
+        Dim row = sheet.CreateRow(rowIndex)
+
+        row.CreateCell(0).SetCellValue(analysis.WellName)
+        row.CreateCell(1).SetCellValue(analysis.SampleDate)
+
+        Dim i As Integer = 2
+        For Each p In FLNAAnalysis.Propeties.Keys.ToList
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, FLNAAnalysis.Propeties(p), CallType.Get)))
+            i += 1
+        Next
+
+        row.CreateCell(i, CellType.Numeric).SetCellValue(originalRowIndex)
+        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), reason))
+
     End Sub
 
     Private Shared Sub ExportsRejectedPrecipitations(rejected As List(Of RejectedEntity), sheet As ISheet)
@@ -259,10 +368,10 @@ Public Class ExcelReader
     Private Shared Sub WritePrecipitationHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue("Fecha")
-        header.CreateCell(1).SetCellValue("mm")
-        header.CreateCell(2).SetCellValue("Fila original")
-        header.CreateCell(3).SetCellValue("Razón")
+        header.CreateCell(0).SetCellValue(GetDisplayName(Of Precipitation)(NameOf(Precipitation.RealDate)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of Precipitation)(NameOf(Precipitation.Millimeters)))
+        header.CreateCell(2).SetCellValue(_OriginalRow)
+        header.CreateCell(3).SetCellValue(_Reason)
     End Sub
 
     Private Shared Function WritePrecipitationToExcelRow(precip As Precipitation, sheet As ISheet, rowIndex As Integer) As IRow
@@ -289,14 +398,14 @@ Public Class ExcelReader
     Private Shared Sub WriteMeasurementHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue("Pozo")
-        header.CreateCell(1).SetCellValue("Fecha")
-        header.CreateCell(2).SetCellValue("Prof FLNA")
-        header.CreateCell(3).SetCellValue("Prof Agua")
-        header.CreateCell(4).SetCellValue("Caudal")
-        header.CreateCell(5).SetCellValue("Observación")
-        header.CreateCell(6).SetCellValue("Fila original")
-        header.CreateCell(7).SetCellValue("Razón")
+        header.CreateCell(0).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.WellName)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.RealDate)))
+        header.CreateCell(2).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.FLNADepth)))
+        header.CreateCell(3).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.WaterDepth)))
+        header.CreateCell(4).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.Caudal)))
+        header.CreateCell(5).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.Comment)))
+        header.CreateCell(6).SetCellValue(_OriginalRow)
+        header.CreateCell(7).SetCellValue(_Reason)
     End Sub
 
     Private Shared Function WriteMeasurementToExcelRow(measurement As Measurement, sheet As ISheet, rowIndex As Integer) As IRow
@@ -327,18 +436,18 @@ Public Class ExcelReader
     Private Shared Sub WriteWellHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue("Nombre")
-        header.CreateCell(1).SetCellValue("X")
-        header.CreateCell(2).SetCellValue("Y")
-        header.CreateCell(3).SetCellValue("Z")
-        header.CreateCell(4).SetCellValue("Latitud")
-        header.CreateCell(5).SetCellValue("Longitud")
+        header.CreateCell(0).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Name)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.X)))
+        header.CreateCell(2).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Y)))
+        header.CreateCell(3).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Z)))
+        header.CreateCell(4).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Latitude)))
+        header.CreateCell(5).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Longitude)))
         header.CreateCell(6).SetCellValue("Tipo")
-        header.CreateCell(7).SetCellValue("Altura")
-        header.CreateCell(8).SetCellValue("Existe")
-        header.CreateCell(9).SetCellValue("Fondo")
-        header.CreateCell(10).SetCellValue("Fila original")
-        header.CreateCell(11).SetCellValue("Razón")
+        header.CreateCell(7).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Height)))
+        header.CreateCell(8).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Exists)))
+        header.CreateCell(9).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Bottom)))
+        header.CreateCell(10).SetCellValue(_OriginalRow)
+        header.CreateCell(11).SetCellValue(_Reason)
     End Sub
 
     Private Shared Function WriteWellToExcelRow(well As Well, sheet As ISheet, rowIndex As Integer) As IRow

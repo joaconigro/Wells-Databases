@@ -20,4 +20,8 @@ Public Class BusinessObject
     Sub New()
         _id = Guid.NewGuid.ToString
     End Sub
+
+    Public Function GetPropertyDisplayName(propertyName As Object) As String Implements IBusinessObject.GetPropertyDisplayName
+        Return ReflectionExtension.GetDisplayName(Me.GetType(), propertyName)
+    End Function
 End Class

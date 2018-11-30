@@ -226,8 +226,8 @@ Public Class WaterAnalysis
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Fenanthrene)), NameOf(WaterAnalysis.Fenanthrene)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Fluoranthene)), NameOf(WaterAnalysis.Fluoranthene)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Pyrene)), NameOf(WaterAnalysis.Pyrene)},
-        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Crysene)), NameOf(WaterAnalysis.Crysene)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoAAnthracene)), NameOf(WaterAnalysis.BenzoAAnthracene)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Crysene)), NameOf(WaterAnalysis.Crysene)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoAPyrene)), NameOf(WaterAnalysis.BenzoAPyrene)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoBFluoranthene)), NameOf(WaterAnalysis.BenzoBFluoranthene)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.BenzoGHIPerylene)), NameOf(WaterAnalysis.BenzoGHIPerylene)},
@@ -242,6 +242,6 @@ Public Class WaterAnalysis
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Mercury)), NameOf(WaterAnalysis.Mercury)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Nickel)), NameOf(WaterAnalysis.Nickel)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Lead)), NameOf(WaterAnalysis.Lead)},
-        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Zinc)), NameOf(WaterAnalysis.Zinc)},
-        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Selenium)), NameOf(WaterAnalysis.Selenium)}}
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Selenium)), NameOf(WaterAnalysis.Selenium)},
+        {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Zinc)), NameOf(WaterAnalysis.Zinc)}}
 End Class

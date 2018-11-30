@@ -11,4 +11,13 @@ Public Class ReflectionExtension
         Return String.Empty
     End Function
 
+    Shared Function GetDisplayName(classType As Type, propertyName As Object) As String
+        Dim member = classType.GetProperty(propertyName)
+        Dim dn = member.GetCustomAttributes(GetType(DisplayNameAttribute), False)
+        If dn IsNot Nothing Then
+            Return CType(dn.First, DisplayNameAttribute).DisplayName
+        End If
+        Return String.Empty
+    End Function
+
 End Class

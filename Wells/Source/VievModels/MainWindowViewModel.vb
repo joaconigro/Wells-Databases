@@ -294,6 +294,19 @@ Public Class MainWindowViewModel
                                                                           End Function,
                                                                           AddressOf OnError)
 
+    Property ImportSoilAnalysisFromExcelCommand As ICommand = New Command(Sub()
+                                                                              Dim wb As XSSFWorkbook = Nothing
+                                                                              Dim sheetIndex As Integer = -1
+
+                                                                              If OpenExcelFile(wb, sheetIndex) Then
+                                                                                  ReadSoilAnalysisFromExcel(wb, sheetIndex)
+                                                                              End If
+                                                                          End Sub,
+                                                                          Function()
+                                                                              Return Repositories.HasProject
+                                                                          End Function,
+                                                                          AddressOf OnError)
+
     Property ImportPrecipitationsFromExcelCommand As ICommand = New Command(Sub()
                                                                                 Dim wb As XSSFWorkbook = Nothing
                                                                                 Dim sheetIndex As Integer = -1
@@ -453,12 +466,12 @@ Public Class MainWindowViewModel
         Dim flna = Await Task.Run(Function() ExcelReader.ReadFLNAAnalysis(workbook, sheetIndex, _progress))
 
         If flna.Any Then
-            StartProgressNotifications(False, "Importando mediciones")
+            StartProgressNotifications(False, "Importando análisis")
             Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(flna, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
             Await _repo.SaveChangesAsync()
             If rejected.Any Then
-                'ExportRejectedToExcel(rejected)
+                ExportRejectedToExcel(rejected)
             End If
         End If
 
@@ -472,12 +485,31 @@ Public Class MainWindowViewModel
         Dim water = Await Task.Run(Function() ExcelReader.ReadWaterAnalysis(workbook, sheetIndex, _progress))
 
         If water.Any Then
-            StartProgressNotifications(False, "Importando mediciones")
+            StartProgressNotifications(False, "Importando análisis")
             Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(water, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
             Await _repo.SaveChangesAsync()
             If rejected.Any Then
-                'ExportRejectedToExcel(rejected)
+                ExportRejectedToExcel(rejected)
+            End If
+        End If
+
+        workbook.Close()
+        StopProgressNotifications()
+        SetDatasource()
+    End Sub
+
+    Private Async Sub ReadSoilAnalysisFromExcel(workbook As XSSFWorkbook, sheetIndex As Integer)
+        StartProgressNotifications(False, "Leyendo análisis de suelo del archivo Excel")
+        Dim soil = Await Task.Run(Function() ExcelReader.ReadSoilAnalysis(workbook, sheetIndex, _progress))
+
+        If soil.Any Then
+            StartProgressNotifications(False, "Importando análisis")
+            Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(soil, _progress))
+            StartProgressNotifications(True, "Guardando base de datos")
+            Await _repo.SaveChangesAsync()
+            If rejected.Any Then
+                ExportRejectedToExcel(rejected)
             End If
         End If
 

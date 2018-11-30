@@ -28,7 +28,7 @@ Public Class ExternalFileManager
             Try
                 File.Delete(filename)
             Catch ex As Exception
-                Throw ex
+                Throw
             End Try
         End If
     End Sub
@@ -39,7 +39,7 @@ Public Class ExternalFileManager
             Try
                 Directory.Delete(folderPath, True)
             Catch ex As Exception
-                Throw ex
+                Throw
             End Try
         End If
     End Sub
