@@ -1,7 +1,7 @@
-﻿Imports Wells
+﻿Imports LiveCharts.Wpf
 
 Public Class GraphicsView
-    Implements IView
+    Implements IGraphicsView
 
     Private _viewModel As GraphicsViewModel
 
@@ -31,4 +31,19 @@ Public Class GraphicsView
     Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
         Return String.Empty
     End Function
+
+    Public Function GetYAxis() As List(Of Axis) Implements IGraphicsView.GetYAxis
+        Return MainChart.AxisY.ToList
+    End Function
+
+    Public Function GetYAxis(axisTitle As String) As Integer Implements IGraphicsView.GetYAxis
+        If MainChart.AxisY.ToList.Exists(Function(a) a.Title = axisTitle) Then
+            Return MainChart.AxisY.ToList.FindIndex(Function(a) a.Title = axisTitle)
+        End If
+        Return -1
+    End Function
+
+    Public Sub AddAxis(axis As Axis) Implements IGraphicsView.AddAxis
+        MainChart.AxisY.Add(axis)
+    End Sub
 End Class

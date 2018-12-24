@@ -192,7 +192,7 @@ Public Class WaterAnalysis
         Return WaterAnalysisTypes(propertyName)
     End Function
 
-    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+    Shared ReadOnly Property Properties As New Dictionary(Of String, String) From {
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.PH)), NameOf(WaterAnalysis.PH)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Conductivity)), NameOf(WaterAnalysis.Conductivity)},
         {GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.DryWaste)), NameOf(WaterAnalysis.DryWaste)},

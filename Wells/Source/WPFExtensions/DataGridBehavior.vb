@@ -41,7 +41,21 @@ Namespace Extensions
             If e.PropertyType Is GetType(Date) Then
                 CType(e.Column, DataGridTextColumn).Binding.StringFormat = "dd/MM/yyyy"
                 changeStyle = True
+
+                'Dim style = New Style(GetType(TextBlock), CType(e.Column, DataGridTextColumn).ElementStyle)
+                'Dim setter = New Setter(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Right)
+                'style.Setters.Add(setter)
+                'CType(e.Column, DataGridTextColumn).ElementStyle = style
+
             ElseIf e.PropertyType Is GetType(Double) Then
+                'Dim cellTemplate As DataTemplate = Application.Current.FindResource("CellTemplate")
+                'Dim template As New DataGridTemplateColumn With {.CellTemplate = cellTemplate}
+                'Dim style = New Style(GetType(DataGridCell), template.CellStyle)
+                'Dim setter = New Setter(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Right)
+                'style.Setters.Add(setter)
+                'template.CellStyle = style
+                'e.Column = template
+
                 CType(e.Column, DataGridTextColumn).Binding.StringFormat = "N3"
                 changeStyle = True
             End If

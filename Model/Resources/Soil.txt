@@ -1,23 +1,23 @@
 Humedad	Humedad	Pérdida de peso a 105ºC	%
-pH	pH	EPA 9045 A/C	mg/kg
-HTP	DRO	EPA 8015	mg/kg
-HTP	GRO	EPA 8015	mg/kg
-HTP	MRO	EPA 8015	mg/kg
-HTP	Hidrocarburos totales (EPA 8015)	EPA 8015	mg/kg
-HTP	Hidrocarburos totales (TNRCC 1005)	TNRCC 1005	mg/kg
-HTP	Aceites y grasas	SM 5520 D	mg/kg
-Hidrocarburos Fracción alifática	> C6 - C8 (F. alifática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción alifática	> C8 - C10 (F. alifática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción alifática	> C10 - C12 (F. alifática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción alifática	> C12 - C16 (F. alifática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción alifática	> C16 - C21 (F. alifática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción alifática	> C21 - C35 (F. alifática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción aromática	> C6 - C8 (F. aromática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción aromática	> C8 - C10 (F. aromática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción aromática	> C10 - C12 (F. aromática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción aromática	> C12 - C16 (F. aromática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción aromática	> C16 - C21 (F. aromática)	TNRCC 1006	mg/kg
-Hidrocarburos Fracción aromática	> C21 - C35 (F. aromática)	TNRCC 1006	mg/kg
+pH	pH	EPA 9045 A/C	mg/Kg
+HTP	DRO	EPA 8015	mg/Kg
+HTP	GRO	EPA 8015	mg/Kg
+HTP	MRO	EPA 8015	mg/Kg
+HTP	Hidrocarburos totales (EPA 8015)	EPA 8015	mg/Kg
+HTP	Hidrocarburos totales (TNRCC 1005)	TNRCC 1005	mg/Kg
+HTP	Aceites y grasas	SM 5520 D	mg/Kg
+Hidrocarburos Fracción alifática	> C6 - C8 (F. alifática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	> C8 - C10 (F. alifática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	> C10 - C12 (F. alifática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	> C12 - C16 (F. alifática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	> C16 - C21 (F. alifática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	> C21 - C35 (F. alifática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	> C6 - C8 (F. aromática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	> C8 - C10 (F. aromática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	> C10 - C12 (F. aromática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	> C12 - C16 (F. aromática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	> C16 - C21 (F. aromática)	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	> C21 - C35 (F. aromática)	TNRCC 1006	mg/Kg
 BTEX	Benceno	EPA 8260	mg/Kg
 BTEX	Tolueno	EPA 8260	mg/Kg
 BTEX	Etilbenceno	EPA 8260	mg/Kg

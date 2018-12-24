@@ -90,7 +90,7 @@ Public Class FLNAAnalysis
         Return FLNAAnalysisTypes(propertyName)
     End Function
 
-    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+    Shared ReadOnly Property Properties As New Dictionary(Of String, String) From {
        {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.GRO)), NameOf(FLNAAnalysis.GRO)},
        {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.DRO)), NameOf(FLNAAnalysis.DRO)},
        {GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.MRO)), NameOf(FLNAAnalysis.MRO)},

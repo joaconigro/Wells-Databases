@@ -115,7 +115,7 @@ Public Class Measurement
         Return 1
     End Function
 
-    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+    Shared ReadOnly Property Properties As New Dictionary(Of String, String) From {
         {GetDisplayName(Of Measurement)(NameOf(Measurement.FLNADepth)), NameOf(Measurement.FLNADepth)},
         {GetDisplayName(Of Measurement)(NameOf(Measurement.WaterDepth)), NameOf(Measurement.WaterDepth)},
         {GetDisplayName(Of Measurement)(NameOf(Measurement.Caudal)), NameOf(Measurement.Caudal)},

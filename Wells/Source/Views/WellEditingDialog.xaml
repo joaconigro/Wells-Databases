@@ -6,23 +6,6 @@
         xmlns:local="clr-namespace:Wells"
         mc:Ignorable="d"
         Title="Edición de pozos" Height="412" Width="513">
-    <Window.Resources>
-        <local:DoubleStringConverter x:Key="DoubleConverter"/>
-        <Style TargetType="FrameworkElement" x:Key="CommonStyle">
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Width" Value="Auto"/>
-        </Style>
-        <Style BasedOn="{StaticResource CommonStyle}" TargetType="TextBlock" x:Key="TextBlockStyle">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment"  Value="Center"/>
-        </Style>
-        <Style BasedOn="{StaticResource CommonStyle}" TargetType="TextBox" x:Key="TextBoxStyle">
-            <Setter Property="HorizontalContentAlignment" Value="Right"/>
-            <Setter Property="VerticalContentAlignment"  Value="Center"/>
-        </Style>
-    </Window.Resources>
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

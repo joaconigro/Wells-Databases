@@ -7,9 +7,6 @@
         xmlns:extensions="clr-namespace:Wells.Extensions"
         mc:Ignorable="d"
         Title="Well Manager" Height="450" Width="800">
-    <Window.Resources>
-        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Window.Resources>
     <DockPanel>
         <Menu Height="Auto" DockPanel.Dock="Top">
             <MenuItem Name="DatabaseMenuItem" Header="Base de _datos">

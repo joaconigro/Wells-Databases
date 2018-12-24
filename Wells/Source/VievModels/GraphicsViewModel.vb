@@ -6,6 +6,7 @@ Imports LiveCharts.Configurations
 Imports LiveCharts.Definitions.Series
 Imports System.Collections.ObjectModel
 Imports System.ComponentModel
+Imports Xceed.Wpf.Toolkit
 
 Public Class GraphicsViewModel
     Inherits BaseViewModel
@@ -35,17 +36,6 @@ Public Class GraphicsViewModel
         End Get
     End Property
 
-    'Private _UseMeasurements As Boolean = True
-    'Property UseMeasurements As Boolean
-    '    Get
-    '        Return _UseMeasurements
-    '    End Get
-    '    Set
-    '        _UseMeasurements = Value
-    '        NotifyPropertyChanged(NameOf(Parameters))
-    '    End Set
-    'End Property
-
     Private _SelectedSeriesDataName As String
     Property SelectedSeriesDataName As String
         Get
@@ -57,25 +47,18 @@ Public Class GraphicsViewModel
         End Set
     End Property
 
-
-
     ReadOnly Property Parameters As List(Of String)
         Get
             Select Case _SelectedSeriesDataName
                 Case "Mediciones"
-                    Return Measurement.Propeties.Keys.ToList
+                    Return Measurement.Properties.Keys.ToList
                 Case "Análisis de FLNA"
-                    Return FLNAAnalysis.Propeties.Keys.ToList
+                    Return FLNAAnalysis.Properties.Keys.ToList
                 Case "Análisis de agua"
-                    Return WaterAnalysis.Propeties.Keys.ToList
+                    Return WaterAnalysis.Properties.Keys.ToList
                 Case Else
-                    Return SoilAnalysis.Propeties.Keys.ToList
+                    Return SoilAnalysis.Properties.Keys.ToList
             End Select
-            'If UseMeasurements Then
-            '    Return _measurementPropeties.Keys.ToList
-            'Else
-            '    Return _chemicalAnalysisPropeties.Keys.ToList
-            'End If
         End Get
     End Property
 
@@ -90,20 +73,14 @@ Public Class GraphicsViewModel
             If Not String.IsNullOrEmpty(_SelectedParameterName) Then
                 Select Case _SelectedSeriesDataName
                     Case "Mediciones"
-                        _realParameterName = Measurement.Propeties(_SelectedParameterName)
+                        _realParameterName = Measurement.Properties(_SelectedParameterName)
                     Case "Análisis de FLNA"
-                        _realParameterName = FLNAAnalysis.Propeties(_SelectedParameterName)
+                        _realParameterName = FLNAAnalysis.Properties(_SelectedParameterName)
                     Case "Análisis de agua"
-                        _realParameterName = WaterAnalysis.Propeties(_SelectedParameterName)
+                        _realParameterName = WaterAnalysis.Properties(_SelectedParameterName)
                     Case Else
-                        _realParameterName = SoilAnalysis.Propeties(_SelectedParameterName)
+                        _realParameterName = SoilAnalysis.Properties(_SelectedParameterName)
                 End Select
-
-                'If UseMeasurements Then
-                '    _realParameterName = _measurementPropeties(_SelectedParameterName)
-                'Else
-                '    _realParameterName = _chemicalAnalysisPropeties(_SelectedParameterName)
-                'End If
             End If
         End Set
     End Property
@@ -189,9 +166,10 @@ Public Class GraphicsViewModel
                 genericSeries = New LineSeries() With {
                 .LineSmoothness = 0,
                 .Stroke = New SolidColorBrush(seriesColor),
-                .PointGeometry = Nothing,
+                .PointGeometrySize = 8,
                 .Fill = New SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
-                .Values = New ChartValues(Of DateModel)}
+                .Values = New ChartValues(Of DateModel),
+                .StrokeDashArray = New DoubleCollection From {2}}
 
                 title = $"{SelectedWellName} - {SelectedParameterName}"
                 CType(genericSeries, LineSeries).Title = title
@@ -224,21 +202,8 @@ Public Class GraphicsViewModel
                 End Select
 
 
-                'If UseMeasurements Then
-                '    values = (From m In _well.Measurements
-                '              Let param = CType(CallByName(m, _realParameterName, CallType.Get), Double)
-                '              Where m.RealDate >= MinimunDate AndAlso m.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                '              Order By m.RealDate Ascending
-                '              Select New DateModel(m.RealDate, param)).ToList
-                'Else
-                '    values = (From a In _well.Analysis
-                '              Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
-                '              Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                '              Order By a.RealDate Ascending
-                '              Select New DateModel(a.RealDate, param)).ToList
-                'End If
-
                 If values.Count < 2 Then
+                    View.ShowErrorMessageBox("Hay menos de dos datos para representar, por lo tanto no se puede dibujar la línea.")
                     Exit Sub
                 End If
                 genericSeries.Values.AddRange(values)
@@ -256,11 +221,22 @@ Public Class GraphicsViewModel
                               Order By p.RealDate Ascending
                               Select New DateModel(p.RealDate, p.Millimeters)).ToList
 
-                If values.Count < 2 Then
+                If values.Count < 1 Then
+                    View.ShowErrorMessageBox("No hay datos para representar, por lo tanto no se dibujará la serie.")
                     Exit Sub
                 End If
                 genericSeries.Values.AddRange(values)
         End Select
+
+        Dim axis = CType(View, IGraphicsView).GetYAxis(SelectedParameterName)
+        If axis <> -1 Then
+            genericSeries.ScalesYAt = axis
+        Else
+            Dim yAxis As New LiveCharts.Wpf.Axis() With {.Title = SelectedParameterName, .Position = AxisPosition.RightTop}
+            CType(View, IGraphicsView).AddAxis(yAxis)
+            axis = CType(View, IGraphicsView).GetYAxis(SelectedParameterName)
+            genericSeries.ScalesYAt = axis
+        End If
 
         Series.Add(New CheckedListItem(Of String)(title, True))
         _seriesDictionary.Add(title, genericSeries)

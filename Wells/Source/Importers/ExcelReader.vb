@@ -118,8 +118,8 @@ Public Class ExcelReader
                 }
 
                 Dim j As Integer = 2
-                For Each p In FLNAAnalysis.Propeties.Keys.ToList
-                    CallByName(flna, FLNAAnalysis.Propeties(p), CallType.Set, ReadCellAsDouble(row, j))
+                For Each p In FLNAAnalysis.Properties.Keys.ToList
+                    CallByName(flna, FLNAAnalysis.Properties(p), CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
@@ -149,8 +149,8 @@ Public Class ExcelReader
                 }
 
                 Dim j As Integer = 2
-                For Each p In WaterAnalysis.Propeties.Keys.ToList
-                    CallByName(water, WaterAnalysis.Propeties(p), CallType.Set, ReadCellAsDouble(row, j))
+                For Each p In WaterAnalysis.Properties.Keys.ToList
+                    CallByName(water, WaterAnalysis.Properties(p), CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
@@ -180,8 +180,8 @@ Public Class ExcelReader
                 }
 
                 Dim j As Integer = 2
-                For Each p In SoilAnalysis.Propeties.Keys.ToList
-                    CallByName(soil, SoilAnalysis.Propeties(p), CallType.Set, ReadCellAsDouble(row, j))
+                For Each p In SoilAnalysis.Properties.Keys.ToList
+                    CallByName(soil, SoilAnalysis.Properties(p), CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
@@ -245,7 +245,7 @@ Public Class ExcelReader
         header.CreateCell(1).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.RealDate)))
 
         Dim i As Integer = 2
-        For Each p In SoilAnalysis.Propeties.Keys.ToList
+        For Each p In SoilAnalysis.Properties.Keys.ToList
             header.CreateCell(i).SetCellValue(p)
             i += 1
         Next
@@ -261,8 +261,8 @@ Public Class ExcelReader
         row.CreateCell(1).SetCellValue(analysis.SampleDate)
 
         Dim i As Integer = 2
-        For Each p In SoilAnalysis.Propeties.Keys.ToList
-            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, SoilAnalysis.Propeties(p), CallType.Get)))
+        For Each p In SoilAnalysis.Properties.Keys.ToList
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, SoilAnalysis.Properties(p), CallType.Get)))
             i += 1
         Next
 
@@ -286,7 +286,7 @@ Public Class ExcelReader
         header.CreateCell(1).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.RealDate)))
 
         Dim i As Integer = 2
-        For Each p In WaterAnalysis.Propeties.Keys.ToList
+        For Each p In WaterAnalysis.Properties.Keys.ToList
             header.CreateCell(i).SetCellValue(p)
             i += 1
         Next
@@ -302,8 +302,8 @@ Public Class ExcelReader
         row.CreateCell(1).SetCellValue(analysis.SampleDate)
 
         Dim i As Integer = 2
-        For Each p In WaterAnalysis.Propeties.Keys.ToList
-            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, WaterAnalysis.Propeties(p), CallType.Get)))
+        For Each p In WaterAnalysis.Properties.Keys.ToList
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, WaterAnalysis.Properties(p), CallType.Get)))
             i += 1
         Next
 
@@ -327,7 +327,7 @@ Public Class ExcelReader
         header.CreateCell(1).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.RealDate)))
 
         Dim i As Integer = 2
-        For Each p In FLNAAnalysis.Propeties.Keys.ToList
+        For Each p In FLNAAnalysis.Properties.Keys.ToList
             header.CreateCell(i).SetCellValue(p)
             i += 1
         Next
@@ -343,8 +343,8 @@ Public Class ExcelReader
         row.CreateCell(1).SetCellValue(analysis.SampleDate)
 
         Dim i As Integer = 2
-        For Each p In FLNAAnalysis.Propeties.Keys.ToList
-            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, FLNAAnalysis.Propeties(p), CallType.Get)))
+        For Each p In FLNAAnalysis.Properties.Keys.ToList
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, FLNAAnalysis.Properties(p), CallType.Get)))
             i += 1
         Next
 

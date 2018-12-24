@@ -5,11 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells"
         xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Gráficos" Height="450" Width="800">
-    <Window.Resources>
-        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -27,8 +25,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        
+                        <RowDefinition/>                        
                     </Grid.RowDefinitions>
                     <TextBlock Text="Desde:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                     <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="2"/>
@@ -36,7 +33,6 @@
                     <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="2"/>
                     <TextBlock Text="A partir de:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                     <ComboBox Name="FromComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
-
                     <Grid Name="WellOptions" Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding ShowWellOptions, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" MinWidth="90"/>
@@ -54,9 +50,6 @@
                         <TextBlock Text="Parámetro:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                         <ComboBox Name="ParametersComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameterName, Mode=OneWayToSource}"/>
                     </Grid>
-                    
-                    
-                   
                     <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="4" Grid.ColumnSpan="2" Margin="2"/>
                 </Grid>
             </GroupBox>
@@ -66,7 +59,10 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <ListView  VerticalAlignment="Stretch" Margin="2" Grid.Row="0" ItemsSource="{Binding Series}" SelectedItem="{Binding SelectedSerieName, Mode=OneWayToSource}">
+                    <wpfx:CheckListBox VerticalAlignment="Stretch" Margin="2" Grid.Row="0" ItemsSource="{Binding Series}" SelectedItem="{Binding SelectedSerieName, Mode=OneWayToSource}">
+
+                    </wpfx:CheckListBox>
+                    <!--<ListView  VerticalAlignment="Stretch" Margin="2" Grid.Row="0" ItemsSource="{Binding Series}" SelectedItem="{Binding SelectedSerieName, Mode=OneWayToSource}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <ListBoxItem Margin="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" IsSelected="{Binding IsChecked}">
@@ -74,10 +70,11 @@
                                 </ListBoxItem>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListView>
+                    </ListView>-->
                     <Button Name="RemoveSerieButton" Content="Eliminar serie" VerticalAlignment="Bottom"  Grid.Row="1" Margin="2" Command="{Binding RemoveSeriesCommand}"/>
-                </Grid>
-              
+                   
+                        
+                </Grid>              
             </GroupBox>
         </DockPanel>
         <charts:CartesianChart Name="MainChart" Grid.Column="1" Series="{Binding SeriesCollection}">

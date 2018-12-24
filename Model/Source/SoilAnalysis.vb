@@ -192,7 +192,7 @@ Public Class SoilAnalysis
         Return SoilAnalysisTypes(propertyName)
     End Function
 
-    Shared ReadOnly Property Propeties As New Dictionary(Of String, String) From {
+    Shared ReadOnly Property Properties As New Dictionary(Of String, String) From {
        {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Humidity)), NameOf(SoilAnalysis.Humidity)},
        {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.PH)), NameOf(SoilAnalysis.PH)},
        {GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.DRO)), NameOf(SoilAnalysis.DRO)},

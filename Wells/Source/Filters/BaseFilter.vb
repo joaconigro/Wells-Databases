@@ -211,7 +211,7 @@ Public Class BaseFilter
 
     Private Sub CreatePropertiesDictionaries()
         _measurementPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
-        For Each k In Measurement.Propeties
+        For Each k In Measurement.Properties
             _measurementPropeties.Add(k.Key, k.Value)
         Next
 
@@ -221,17 +221,17 @@ Public Class BaseFilter
         Next
 
         _flnaAnalysisPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
-        For Each k In FLNAAnalysis.Propeties
+        For Each k In FLNAAnalysis.Properties
             _flnaAnalysisPropeties.Add(k.Key, k.Value)
         Next
 
         _soilAnalysisPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
-        For Each k In SoilAnalysis.Propeties
+        For Each k In SoilAnalysis.Properties
             _soilAnalysisPropeties.Add(k.Key, k.Value)
         Next
 
         _waterAnalysisPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
-        For Each k In WaterAnalysis.Propeties
+        For Each k In WaterAnalysis.Properties
             _waterAnalysisPropeties.Add(k.Key, k.Value)
         Next
     End Sub
