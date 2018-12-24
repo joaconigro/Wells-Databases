@@ -49,11 +49,11 @@ Public Class WellEditingDialog
     End Sub
 
     Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
-        Return String.Empty
+        Return SharedBaseView.OpenFileDialog(filter, title)
     End Function
 
     Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
-        Return String.Empty
+        Return SharedBaseView.SaveFileDialog(filter, title, filename)
     End Function
 
     Public Function ShowEditMeasurementDialog(vm As EditMeasurementViewModel) As Boolean

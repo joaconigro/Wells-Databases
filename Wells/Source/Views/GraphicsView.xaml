@@ -50,7 +50,7 @@
                         <TextBlock Text="Pozo:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                         <ComboBox Name="WellNamesComboBox" Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedItem="{Binding SelectedWellName, Mode=OneWayToSource}"/>
                         <TextBlock Text="Serie de:" Margin="2" Grid.Row="1" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                        <ComboBox Name="SeriesDataComboBox" Margin="2" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SeriesDataNames, Mode=OneWay}" SelectedItem="{Binding SelectedWellName, Mode=OneWayToSource}"/>
+                        <ComboBox Name="SeriesDataComboBox" Margin="2" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SeriesDataNames, Mode=OneWay}" SelectedItem="{Binding SelectedSeriesDataName, Mode=OneWayToSource}"/>
                         <TextBlock Text="Parámetro:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                         <ComboBox Name="ParametersComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameterName, Mode=OneWayToSource}"/>
                     </Grid>
