@@ -123,8 +123,8 @@ Public Class GraphicsViewModel
         Set
             _SelectedSerieName = Value
             NotifyPropertyChanged(NameOf(SelectedSerieName))
-            If SeriesCollection.Any AndAlso Not String.IsNullOrEmpty(_SelectedSerieName?.Item) Then
-                _selectedSerie = _seriesDictionary(_SelectedSerieName.Item)
+            If SeriesCollection.Any AndAlso Not String.IsNullOrEmpty(_SelectedSerieName?.Name) Then
+                _selectedSerie = _seriesDictionary(_SelectedSerieName.Name)
                 CType(RemoveSeriesCommand, Command).RaiseCanExecuteChanged()
             End If
         End Set
@@ -132,11 +132,14 @@ Public Class GraphicsViewModel
 
     Private Sub SetSeriesVisibility(sender As Object, e As PropertyChangedEventArgs) Handles _SelectedSerieName.PropertyChanged
         'Dim lSeries = CType(_selectedSerie, LineSeries)
-        If CType(sender, CheckedListItem(Of String)).IsChecked Then
-            CallByName(_selectedSerie, "Visibility", CallType.Set, Visibility.Visible)
-        Else
-            CallByName(_selectedSerie, "Visibility", CallType.Set, Visibility.Hidden)
+        If _selectedSerie IsNot Nothing Then
+            If CType(sender, CheckedListItem(Of String)).IsChecked Then
+                CallByName(_selectedSerie, "Visibility", CallType.Set, Visibility.Visible)
+            Else
+                CallByName(_selectedSerie, "Visibility", CallType.Set, Visibility.Hidden)
+            End If
         End If
+
     End Sub
 
     Sub New()
@@ -272,8 +275,8 @@ Public Class GraphicsViewModel
                                                                     End Sub, Function() True, AddressOf OnError)
 
     ReadOnly Property RemoveSeriesCommand As ICommand = New Command(Sub()
-                                                                        Dim serie = _seriesDictionary(_SelectedSerieName.Item)
-                                                                        _seriesDictionary.Remove(_SelectedSerieName.Item)
+                                                                        Dim serie = _seriesDictionary(_SelectedSerieName.Name)
+                                                                        _seriesDictionary.Remove(_SelectedSerieName.Name)
                                                                         Series.Remove(_SelectedSerieName)
                                                                         SeriesCollection.Remove(serie)
                                                                         _selectedSerie = Nothing

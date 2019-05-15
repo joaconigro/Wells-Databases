@@ -4,24 +4,24 @@ Public Class CheckedListItem(Of T)
     Implements INotifyPropertyChanged
 
     Private _isChecked As Boolean
-    Private _item As T
+    Private _name As T
 
     Sub New()
 
     End Sub
 
     Sub New(item As T, isChecked As Boolean)
-        _item = item
+        _name = item
         _isChecked = isChecked
     End Sub
 
-    Property Item As T
+    Property Name As T
         Get
-            Return _item
+            Return _name
         End Get
         Set(value As T)
-            _item = value
-            NotifyPropertyChanged(NameOf(Item))
+            _name = value
+            NotifyPropertyChanged(NameOf(Name))
         End Set
     End Property
 
@@ -32,7 +32,7 @@ Public Class CheckedListItem(Of T)
         Set(value As Boolean)
             _isChecked = value
             NotifyPropertyChanged(NameOf(IsChecked))
-            RaiseEvent CheckedChanged(Item, _isChecked)
+            RaiseEvent CheckedChanged(Name, _isChecked)
         End Set
     End Property
 
@@ -43,4 +43,8 @@ Public Class CheckedListItem(Of T)
     Event CheckedChanged(sender As T, e As Boolean)
 
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Public Overrides Function ToString() As String
+        Return Name.ToString()
+    End Function
 End Class
