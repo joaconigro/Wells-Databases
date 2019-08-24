@@ -1,0 +1,18 @@
+﻿<ResourceDictionary x:Class="EnglishLanguage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d">
+
+    <!--Common-->
+    <System:String x:Key="Ok">Ok</System:String>
+    <System:String x:Key="Cancel">Cancel</System:String>
+    <System:String x:Key="Close">Close</System:String>
+    <System:String x:Key="Save">Save</System:String>
+    <System:String x:Key="Open">Open...</System:String>
+    <System:String x:Key="SaveAs">Save as...</System:String>
+    <System:String x:Key="Stop">Stop</System:String>
+    <System:String x:Key="Apply">Apply</System:String>
+</ResourceDictionary>
