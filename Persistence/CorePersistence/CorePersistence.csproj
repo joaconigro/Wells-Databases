@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wells.CorePersistence</RootNamespace>
   </PropertyGroup>
 
@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Model\StandardModel\StandardModel.csproj" />
     <ProjectReference Include="..\..\Model\YPFModel\YPFModel.csproj" />
   </ItemGroup>
 

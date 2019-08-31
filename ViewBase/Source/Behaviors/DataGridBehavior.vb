@@ -2,7 +2,7 @@
 Imports System.Windows
 Imports System.Windows.Controls
 Imports System.Windows.Data
-Imports Wells.BaseModel.Attributes
+Imports Wells.StandardModel.Attributes
 
 ''' <summary>
 ''' Using this behavior on a DataGrid will ensure to display only columns with "Browsable Attributes"

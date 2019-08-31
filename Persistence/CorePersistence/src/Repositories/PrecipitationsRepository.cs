@@ -26,5 +26,18 @@ namespace Wells.CorePersistence.Repositories
         {
             return Context.Precipitations.ToList().FirstOrDefault((c) => c.Name == name);
         }
+
+        protected override RejectedReasons OnAddingOrUpdating(Precipitation entity)
+        {
+            if (Exists(entity.Id))
+            {
+                return RejectedReasons.DuplicatedId;
+            }
+            else if (Exists((p) => p.PrecipitationDate == entity.PrecipitationDate))
+            {
+                return RejectedReasons.DuplicatedDate;
+            }
+            return RejectedReasons.None;
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Wells.BaseModel.Models;
+using Wells.StandardModel.Models;
 using System.Linq;
 
 namespace Wells.YPFModel

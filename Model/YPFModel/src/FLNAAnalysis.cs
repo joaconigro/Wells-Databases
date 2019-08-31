@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Wells.BaseModel.Models;
+using Wells.StandardModel.Models;
 
 namespace Wells.YPFModel
 {

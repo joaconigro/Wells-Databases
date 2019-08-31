@@ -1,5 +1,6 @@
-﻿Imports Wells.Model
-Imports Wells.Persistence
+﻿Imports Wells.YPFModel
+Imports Wells.CorePersistence.Repositories
+Imports Wells.ViewBase
 Imports LiveCharts
 Imports LiveCharts.Wpf
 Imports LiveCharts.Configurations
@@ -93,14 +94,14 @@ Public Class GraphicsViewModel
         Set
             _SelectedWellName = Value
             If Not String.IsNullOrEmpty(_SelectedWellName) Then
-                _well = Repositories.Instance.Wells.FindName(_SelectedWellName)
+                _well = RepositoryWrapper.Instance.Wells.FindName(_SelectedWellName)
             End If
         End Set
     End Property
 
     ReadOnly Property WellNames As List(Of String)
         Get
-            Return Repositories.Instance.Wells.Names
+            Return RepositoryWrapper.Instance.Wells.Names
         End Get
     End Property
 
@@ -219,7 +220,7 @@ Public Class GraphicsViewModel
 
                 title = "Precipitaciones"
                 CType(genericSeries, ColumnSeries).Title = title
-                Dim values = (From p In Repositories.Instance.Precipitations.All
+                Dim values = (From p In RepositoryWrapper.Instance.Precipitations.All
                               Where p.RealDate >= MinimunDate AndAlso p.RealDate <= MaximunDate
                               Order By p.RealDate Ascending
                               Select New DateModel(p.RealDate, p.Millimeters)).ToList
@@ -270,20 +271,18 @@ Public Class GraphicsViewModel
     '    Return values
     'End Function
 
-    ReadOnly Property CreateSeriesCommand As ICommand = New Command(Sub()
-                                                                        CreateSerie()
-                                                                    End Sub, Function() True, AddressOf OnError)
+    ReadOnly Property CreateSeriesCommand As ICommand = New RelayCommand(Sub()
+                                                                             CreateSerie()
+                                                                         End Sub, Function() True, AddressOf OnError)
 
-    ReadOnly Property RemoveSeriesCommand As ICommand = New Command(Sub()
-                                                                        Dim serie = _seriesDictionary(_SelectedSerieName.Name)
-                                                                        _seriesDictionary.Remove(_SelectedSerieName.Name)
-                                                                        Series.Remove(_SelectedSerieName)
-                                                                        SeriesCollection.Remove(serie)
-                                                                        _selectedSerie = Nothing
-                                                                        CType(RemoveSeriesCommand, Command).RaiseCanExecuteChanged()
-                                                                    End Sub, Function() _selectedSerie IsNot Nothing, AddressOf OnError)
+    ReadOnly Property RemoveSeriesCommand As ICommand = New RelayCommand(Sub()
+                                                                             Dim serie = _seriesDictionary(_SelectedSerieName.Name)
+                                                                             _seriesDictionary.Remove(_SelectedSerieName.Name)
+                                                                             Series.Remove(_SelectedSerieName)
+                                                                             SeriesCollection.Remove(serie)
+                                                                             _selectedSerie = Nothing
+                                                                             CType(RemoveSeriesCommand, RelayCommand).RaiseCanExecuteChanged()
+                                                                         End Sub, Function() _selectedSerie IsNot Nothing, AddressOf OnError)
 
-    Protected Overrides Sub ShowErrorMessage(message As String)
-        View.ShowErrorMessageBox(message)
-    End Sub
+
 End Class

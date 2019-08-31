@@ -29,7 +29,15 @@ namespace Wells.CorePersistence.Repositories
 
         protected override RejectedReasons OnAddingOrUpdating(Well entity)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrEmpty(entity.Name)) {
+                return RejectedReasons.WellNameEmpty;
+            } else if (Exists(entity.Id)) {
+                return RejectedReasons.DuplicatedId;
+            }
+            else if (ContainsName(entity.Name)) {
+                return RejectedReasons.DuplicatedName;
+            }
+            return RejectedReasons.None;
         }
     }
 }

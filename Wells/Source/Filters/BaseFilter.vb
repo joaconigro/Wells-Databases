@@ -1,5 +1,7 @@
-﻿Imports Wells.Model
-Imports Wells.Persistence
+﻿Imports Wells.YPFModel
+Imports Wells.CorePersistence
+Imports Wells.CorePersistence.Repositories
+Imports Wells.StandardModel.Models
 
 Public Class BaseFilter
 
@@ -207,7 +209,7 @@ Public Class BaseFilter
         End Set
     End Property
 
-    Protected _repositories As Repositories
+    Protected _repositories As RepositoryWrapper
 
     Private Sub CreatePropertiesDictionaries()
         _measurementPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
@@ -237,7 +239,7 @@ Public Class BaseFilter
     End Sub
 
     Sub New()
-        _repositories = Repositories.Instance
+        _repositories = RepositoryWrapper.Instance
         CreatePropertiesDictionaries()
         _showedDatasource = My.Settings.ShowedDatasource
         _StartDate = New Date(2000, 1, 1)
@@ -268,15 +270,15 @@ Public Class BaseFilter
                 If String.IsNullOrEmpty(SelectedWellName) Then
                     Return repo.All
                 Else
-                    Return {repo.FindName(SelectedWellName)}.ToList
+                    Return {repo.FindByName(SelectedWellName)}.ToList
                 End If
             Case WellQuery.OnlyMeasurementWell
                 Return (From w In repo.All
-                        Where w.Type = WellType.MeasurementWell
+                        Where w.WellType = WellType.MeasurementWell
                         Select w).ToList
             Case WellQuery.OnlySounding
                 Return (From w In repo.All
-                        Where w.Type = WellType.Sounding
+                        Where w.WellType = WellType.Sounding
                         Select w).ToList
             Case WellQuery.ZoneA
                 Return (From w In repo.All
@@ -316,11 +318,11 @@ Public Class BaseFilter
                 End If
             Case WellQuery.OnlyMeasurementWell
                 list = (From m In repo.All
-                        Where m.Well.Type = WellType.MeasurementWell
+                        Where m.Well.WellType = WellType.MeasurementWell
                         Select m).ToList
             Case WellQuery.OnlySounding
                 list = (From m In repo.All
-                        Where m.Well.Type = WellType.Sounding
+                        Where m.Well.WellType = WellType.Sounding
                         Select m).ToList
             Case WellQuery.ZoneA
                 list = (From e In repo.All
@@ -347,7 +349,7 @@ Public Class BaseFilter
         End Select
 
         Dim datedList = (From m In list
-                         Where m.RealDate >= StartDate AndAlso m.RealDate <= EndDate
+                         Where m.Date >= StartDate AndAlso m.Date <= EndDate
                          Select m).ToList
 
         If Not String.IsNullOrEmpty(_PropertyName) AndAlso _measurementPropeties(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
@@ -362,8 +364,8 @@ Public Class BaseFilter
 
     End Function
 
-    Private Function FLNAAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of FLNAAnalysis)
-        Dim list As List(Of FLNAAnalysis) = (From c In repo.All.FindAll(Function(a) a.SampleOf = SampleType.FLNA)
+    Private Function FLNAAnalysisApply(repo As AnalysesRepository) As List(Of FLNAAnalysis)
+        Dim list As List(Of FLNAAnalysis) = (From c In repo.FindAll(Function(a) a.SampleOf = SampleType.FLNA)
                                              Select CType(c, FLNAAnalysis)).ToList
         Dim dict = _flnaAnalysisPropeties
 
@@ -376,11 +378,11 @@ Public Class BaseFilter
                 End If
             Case WellQuery.OnlyMeasurementWell
                 list = (From e In list
-                        Where e.Well.Type = WellType.MeasurementWell
+                        Where e.Well.WellType = WellType.MeasurementWell
                         Select e).ToList
             Case WellQuery.OnlySounding
                 list = (From e In list
-                        Where e.Well.Type = WellType.Sounding
+                        Where e.Well.WellType = WellType.Sounding
                         Select e).ToList
             Case WellQuery.ZoneA
                 list = (From e In list
@@ -405,7 +407,7 @@ Public Class BaseFilter
         End Select
 
         Dim datedList = (From e In list
-                         Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                         Where e.Date >= StartDate AndAlso e.Date <= EndDate
                          Select e).ToList
 
         If Not String.IsNullOrEmpty(_PropertyName) AndAlso dict(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
@@ -420,8 +422,8 @@ Public Class BaseFilter
 
     End Function
 
-    Private Function WaterAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of WaterAnalysis)
-        Dim list As List(Of WaterAnalysis) = (From c In repo.All.FindAll(Function(a) a.SampleOf = SampleType.Water)
+    Private Function WaterAnalysisApply(repo As AnalysesRepository) As List(Of WaterAnalysis)
+        Dim list As List(Of WaterAnalysis) = (From c In repo.FindAll(Function(a) a.SampleOf = SampleType.Water)
                                               Select CType(c, WaterAnalysis)).ToList
         Dim dict = _waterAnalysisPropeties
 
@@ -434,11 +436,11 @@ Public Class BaseFilter
                 End If
             Case WellQuery.OnlyMeasurementWell
                 list = (From e In list
-                        Where e.Well.Type = WellType.MeasurementWell
+                        Where e.Well.WellType = WellType.MeasurementWell
                         Select e).ToList
             Case WellQuery.OnlySounding
                 list = (From e In list
-                        Where e.Well.Type = WellType.Sounding
+                        Where e.Well.WellType = WellType.Sounding
                         Select e).ToList
             Case WellQuery.ZoneA
                 list = (From e In list
@@ -463,7 +465,7 @@ Public Class BaseFilter
         End Select
 
         Dim datedList = (From e In list
-                         Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                         Where e.Date >= StartDate AndAlso e.Date <= EndDate
                          Select e).ToList
 
         If Not String.IsNullOrEmpty(_PropertyName) AndAlso dict(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
@@ -478,8 +480,8 @@ Public Class BaseFilter
 
     End Function
 
-    Private Function SoilAnalysisApply(repo As ChemicalAnalysisRepository) As List(Of SoilAnalysis)
-        Dim list As List(Of SoilAnalysis) = (From c In repo.All.FindAll(Function(a) a.SampleOf = SampleType.Soil)
+    Private Function SoilAnalysisApply(repo As AnalysesRepository) As List(Of SoilAnalysis)
+        Dim list As List(Of SoilAnalysis) = (From c In repo.FindAll(Function(a) a.SampleOf = SampleType.Soil)
                                              Select CType(c, SoilAnalysis)).ToList
         Dim dict = _soilAnalysisPropeties
 
@@ -492,11 +494,11 @@ Public Class BaseFilter
                 End If
             Case WellQuery.OnlyMeasurementWell
                 list = (From e In list
-                        Where e.Well.Type = WellType.MeasurementWell
+                        Where e.Well.WellType = WellType.MeasurementWell
                         Select e).ToList
             Case WellQuery.OnlySounding
                 list = (From e In list
-                        Where e.Well.Type = WellType.Sounding
+                        Where e.Well.WellType = WellType.Sounding
                         Select e).ToList
             Case WellQuery.ZoneA
                 list = (From e In list
@@ -521,7 +523,7 @@ Public Class BaseFilter
         End Select
 
         Dim datedList = (From e In list
-                         Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                         Where e.Date >= StartDate AndAlso e.Date <= EndDate
                          Select e).ToList
 
         If Not String.IsNullOrEmpty(_PropertyName) AndAlso dict(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then
@@ -540,7 +542,7 @@ Public Class BaseFilter
     Private Function PrecipitationsApply(repo As PrecipitationsRepository) As List(Of Precipitation)
 
         Dim list = (From e In repo.All
-                    Where e.RealDate >= StartDate AndAlso e.RealDate <= EndDate
+                    Where e.PrecipitationDate >= StartDate AndAlso e.PrecipitationDate <= EndDate
                     Select e).ToList
 
         If Not String.IsNullOrEmpty(_PropertyName) AndAlso _precipitationPropeties(_PropertyName) <> "None" AndAlso Not String.IsNullOrEmpty(_StringValue) Then

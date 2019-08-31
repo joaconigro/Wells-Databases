@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
-using Wells.BaseModel.Models;
+using Wells.StandardModel.Models;
 
 namespace Wells.YPFModel
 {
@@ -61,7 +61,7 @@ namespace Wells.YPFModel
                 string line = sr.ReadLine();
                 while (!string.IsNullOrEmpty(line))
                 {
-                    var split = line.Trim().Split((char)9, StringSplitOptions.RemoveEmptyEntries);
+                    var split = line.Trim().Split(new char[] {(char)9}, StringSplitOptions.RemoveEmptyEntries);
                     dict.Add(split[1], new ChemicalAnalysisType(split[1], split[0], split[3], split[2]));
                     line = sr.ReadLine();
                 }

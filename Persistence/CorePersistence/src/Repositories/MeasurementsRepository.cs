@@ -26,5 +26,26 @@ namespace Wells.CorePersistence.Repositories
         {
             return Context.Measurements.ToList().FirstOrDefault((c) => c.Name == name);
         }
+
+        protected override RejectedReasons OnAddingOrUpdating(Measurement entity)
+        {
+            if (string.IsNullOrEmpty(entity.WellName))
+            {
+                return RejectedReasons.WellNameEmpty;
+            }
+            else if (Exists(entity.Id))
+            {
+                return RejectedReasons.DuplicatedId;
+            }
+            else if (!RepositoryWrapper.Instance.Wells.ContainsName(entity.WellName))
+            {
+                return RejectedReasons.WellNotFound;
+            }
+            else if (entity.FLNADepth > entity.WaterDepth)
+            {
+                return RejectedReasons.FLNADepthGreaterThanWaterDepth;
+            }
+            return RejectedReasons.None;
+        }
     }
 }

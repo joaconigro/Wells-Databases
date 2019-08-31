@@ -1,5 +1,8 @@
-﻿Imports Wells.Model
-Imports Wells.Persistence
+﻿Imports Wells.YPFModel
+
+Imports Wells.CorePersistence
+Imports Wells.ViewBase
+Imports Wells.CorePersistence.Repositories
 
 Public Class EditWellViewModel
     Inherits BaseViewModel
@@ -10,10 +13,10 @@ Public Class EditWellViewModel
         End Get
         Set
             _WellName = Value
-            CType(AcceptCommand, Command).RaiseCanExecuteChanged()
-            CType(EditMeasurementCommand, Command).RaiseCanExecuteChanged()
-            CType(NewMeasurementCommand, Command).RaiseCanExecuteChanged()
-            CType(NewExternalLinkCommand, Command).RaiseCanExecuteChanged()
+            CType(AcceptCommand, RelayCommand).RaiseCanExecuteChanged()
+            CType(EditMeasurementCommand, RelayCommand).RaiseCanExecuteChanged()
+            CType(NewMeasurementCommand, RelayCommand).RaiseCanExecuteChanged()
+            CType(NewExternalLinkCommand, RelayCommand).RaiseCanExecuteChanged()
         End Set
     End Property
 
@@ -28,7 +31,7 @@ Public Class EditWellViewModel
     Property Bottom As Double
     Property Analysis As New List(Of ChemicalAnalysis)
     Property Measurements As New List(Of Measurement)
-    Property Links As New List(Of ExternalLink)
+    Property Links As New List(Of ExternalFile)
 
     ReadOnly Property HasWell As Boolean
     ReadOnly Property NameEditable As Boolean
@@ -58,7 +61,7 @@ Public Class EditWellViewModel
         NameEditable = True
         _well = New Well()
         _measurementEditViewModel = New EditMeasurementViewModel(_well)
-        _repo = Repositories.Instance.Wells
+        _repo = RepositoryWrapper.Instance.Wells
     End Sub
 
     Sub New(w As Well)
@@ -67,7 +70,7 @@ Public Class EditWellViewModel
         HasWell = True
         NameEditable = False
         InitializeWell()
-        _repo = Repositories.Instance.Wells
+        _repo = RepositoryWrapper.Instance.Wells
     End Sub
 
     Private Sub InitializeWell()
@@ -77,13 +80,13 @@ Public Class EditWellViewModel
         Z = _well.Z
         Latitude = _well.Latitude
         Longitude = _well.Longitude
-        Type = _well.Type
+        Type = _well.WellType
         Height = _well.Height
         Exists = _well.Exists
         Bottom = _well.Bottom
-        Analysis = _well.Analysis
+        Analysis = _well.Analyses
         Measurements = _well.Measurements
-        Links = _well.Links
+        Links = _well.Files
 
         Measurements.Sort()
         Analysis.Sort()
@@ -100,13 +103,13 @@ Public Class EditWellViewModel
         _well.Z = Z
         _well.Latitude = Latitude
         _well.Longitude = Longitude
-        _well.Type = Type
+        _well.WellType = Type
         _well.Bottom = Bottom
         _well.Exists = Exists
         _well.Height = Height
-        _well.Analysis = Analysis
+        _well.Analyses = Analysis
         _well.Measurements = Measurements
-        _well.Links = Links
+        _well.Files = Links
     End Sub
 
     Private Function Validate()
@@ -122,107 +125,103 @@ Public Class EditWellViewModel
 
     Private Sub RemoveAll()
 
-        Repositories.Instance.Measurements.RemoveRange(_well.Measurements)
-        Repositories.Instance.ChemicalAnalysis.RemoveRange(_well.Analysis)
-        Repositories.Instance.Links.RemoveRange(_well.Links)
+        RepositoryWrapper.Instance.Measurements.RemoveRange(_well.Measurements)
+        RepositoryWrapper.Instance.Analyses.RemoveRange(_well.Analyses)
+        RepositoryWrapper.Instance.ExternalFiles.RemoveRange(_well.Files)
         _repo.Remove(_well)
 
     End Sub
 
-    ReadOnly Property DeleteWellCommand As ICommand = New Command(Sub()
-                                                                      If View.ShowMessageBox("¿Desea eliminar este pozo? Esto borrará toda la información asociada al mismo.", "Borrar pozo") Then
-                                                                          RemoveAll()
-                                                                          Repositories.Instance.SaveChanges()
-                                                                          RaiseEvent CloseDialog(True)
-                                                                      End If
-                                                                  End Sub,
+    ReadOnly Property DeleteWellCommand As ICommand = New RelayCommand(Sub()
+                                                                           If View.ShowMessageBox("¿Desea eliminar este pozo? Esto borrará toda la información asociada al mismo.", "Borrar pozo") Then
+                                                                               RemoveAll()
+                                                                               RepositoryWrapper.Instance.Save()
+                                                                               RaiseEvent CloseDialog(True)
+                                                                           End If
+                                                                       End Sub,
                                                                    Function()
                                                                        Return HasWell
                                                                    End Function,
                                                                    AddressOf OnError)
 
-    ReadOnly Property AcceptCommand As ICommand = New Command(Sub()
-                                                                  CreateOrEditWell()
-                                                                  If HasWell Then
-                                                                      _repo.Update(_well)
-                                                                  Else
-                                                                      _repo.Add(_well, RejectedEntity.RejectedReasons.None)
-                                                                  End If
-                                                                  Repositories.Instance.SaveChanges()
-                                                                  RaiseEvent CloseDialog(True)
-                                                              End Sub,
+    ReadOnly Property AcceptCommand As ICommand = New RelayCommand(Sub()
+                                                                       CreateOrEditWell()
+                                                                       If HasWell Then
+                                                                           _repo.Update(_well)
+                                                                       Else
+                                                                           _repo.Add(_well)
+                                                                       End If
+                                                                       RepositoryWrapper.Instance.Save()
+                                                                       RaiseEvent CloseDialog(True)
+                                                                   End Sub,
                                                                    Function() Validate(),
                                                                    AddressOf OnError)
 
-    ReadOnly Property CancelCommand As ICommand = New Command(Sub() RaiseEvent CloseDialog(False))
 
-    Property NewMeasurementCommand As ICommand = New Command(Sub()
-                                                                 Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(_measurementEditViewModel)
-                                                                 If result Then
-                                                                     Measurements.Sort()
-                                                                     RaiseEvent MustRebind(NameOf(Measurements))
-                                                                 End If
-                                                             End Sub,
-                                                      Function() HasWell, AddressOf OnError)
-
-    Property EditMeasurementCommand As ICommand = New Command(Sub(param)
-                                                                  If param IsNot Nothing AndAlso TypeOf param Is Measurement Then
-                                                                      Dim vm As New EditMeasurementViewModel(CType(param, Measurement))
-                                                                      Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(vm)
+    Property NewMeasurementCommand As ICommand = New RelayCommand(Sub()
+                                                                      Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(_measurementEditViewModel)
                                                                       If result Then
                                                                           Measurements.Sort()
                                                                           RaiseEvent MustRebind(NameOf(Measurements))
                                                                       End If
-                                                                  End If
-                                                              End Sub,
+                                                                  End Sub,
                                                       Function() HasWell, AddressOf OnError)
 
-    Property DeleteMeasurementCommand As ICommand = New Command(Sub(param)
-                                                                    If param IsNot Nothing AndAlso TypeOf param Is Measurement Then
-                                                                        Dim measurement = CType(param, Measurement)
-                                                                        _well.Measurements.Remove(measurement)
-                                                                        Repositories.Instance.Measurements.Remove(measurement)
-                                                                        Measurements.Remove(measurement)
-                                                                        Measurements.Sort()
-                                                                        RaiseEvent MustRebind(NameOf(Measurements))
-                                                                    End If
-                                                                End Sub,
+    Property EditMeasurementCommand As ICommand = New RelayCommand(Sub(param)
+                                                                       If param IsNot Nothing AndAlso TypeOf param Is Measurement Then
+                                                                           Dim vm As New EditMeasurementViewModel(CType(param, Measurement))
+                                                                           Dim result = CType(_View, WellEditingDialog).ShowEditMeasurementDialog(vm)
+                                                                           If result Then
+                                                                               Measurements.Sort()
+                                                                               RaiseEvent MustRebind(NameOf(Measurements))
+                                                                           End If
+                                                                       End If
+                                                                   End Sub,
                                                       Function() HasWell, AddressOf OnError)
 
-    Property NewExternalLinkCommand As ICommand = New Command(Sub()
-                                                                  Dim filename = _View.OpenFileDialog("Archivos|*.*", "Elija un archivo")
-                                                                  If Not String.IsNullOrEmpty(filename) Then
-                                                                      Dim ExternalLink = New ExternalLink() With {.Well = _well, .WellName = _WellName}
-                                                                      Repositories.Instance.Links.Add(ExternalLink, filename)
-                                                                      Links.Sort()
-                                                                      RaiseEvent MustRebind(NameOf(Links))
-                                                                  End If
-                                                              End Sub,
-                                                      Function() HasWell, AddressOf OnError)
-
-    Property OpenExternalLinkCommand As ICommand = New Command(Sub(param)
-                                                                   If param IsNot Nothing AndAlso TypeOf param Is ExternalLink Then
-                                                                       Dim link = CType(param, ExternalLink)
-                                                                       link.Open()
-                                                                   End If
-                                                               End Sub,
-                                                      Function() HasWell, AddressOf OnError)
-
-    Property DeleteExternalLinkCommand As ICommand = New Command(Sub(param)
-                                                                     If param IsNot Nothing AndAlso TypeOf param Is ExternalLink Then
-                                                                         If _View.ShowMessageBox("Esto eliminará el archivo vinculado a la base de datos. ¿Desea continuar?", "Eliminar archivo") Then
-                                                                             Dim link = CType(param, ExternalLink)
-                                                                             _well.Links.Remove(link)
-                                                                             Repositories.Instance.Links.Remove(link)
-                                                                             Links.Remove(link)
-                                                                             Links.Sort()
-                                                                             RaiseEvent MustRebind(NameOf(Links))
+    Property DeleteMeasurementCommand As ICommand = New RelayCommand(Sub(param)
+                                                                         If param IsNot Nothing AndAlso TypeOf param Is Measurement Then
+                                                                             Dim measurement = CType(param, Measurement)
+                                                                             _well.Measurements.Remove(measurement)
+                                                                             RepositoryWrapper.Instance.Measurements.Remove(measurement)
+                                                                             Measurements.Remove(measurement)
+                                                                             Measurements.Sort()
+                                                                             RaiseEvent MustRebind(NameOf(Measurements))
                                                                          End If
-                                                                     End If
-                                                                 End Sub,
+                                                                     End Sub,
                                                       Function() HasWell, AddressOf OnError)
 
-    Protected Overrides Sub ShowErrorMessage(message As String)
-        View.ShowErrorMessageBox(message)
-    End Sub
+    Property NewExternalLinkCommand As ICommand = New RelayCommand(Sub()
+                                                                       Dim filename = _View.OpenFileDialog("Archivos|*.*", "Elija un archivo")
+                                                                       If Not String.IsNullOrEmpty(filename) Then
+                                                                           Dim ExternalLink = New ExternalFile() With {.Well = _well}
+                                                                           RepositoryWrapper.Instance.ExternalFiles.Add(ExternalLink, filename)
+                                                                           Links.Sort()
+                                                                           RaiseEvent MustRebind(NameOf(Links))
+                                                                       End If
+                                                                   End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
+    Property OpenExternalLinkCommand As ICommand = New RelayCommand(Sub(param)
+                                                                        If param IsNot Nothing AndAlso TypeOf param Is ExternalFile Then
+                                                                            Dim link = CType(param, ExternalFile)
+                                                                            link.Open()
+                                                                        End If
+                                                                    End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
+    Property DeleteExternalLinkCommand As ICommand = New RelayCommand(Sub(param)
+                                                                          If param IsNot Nothing AndAlso TypeOf param Is ExternalFile Then
+                                                                              If _View.ShowMessageBox("Esto eliminará el archivo vinculado a la base de datos. ¿Desea continuar?", "Eliminar archivo") Then
+                                                                                  Dim link = CType(param, ExternalFile)
+                                                                                  _well.Files.Remove(link)
+                                                                                  RepositoryWrapper.Instance.ExternalFiles.Remove(link)
+                                                                                  Links.Remove(link)
+                                                                                  Links.Sort()
+                                                                                  RaiseEvent MustRebind(NameOf(Links))
+                                                                              End If
+                                                                          End If
+                                                                      End Sub,
+                                                      Function() HasWell, AddressOf OnError)
+
 End Class

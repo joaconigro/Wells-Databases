@@ -1,13 +1,16 @@
-﻿Imports Wells.Model
-Imports Wells.Persistence
+﻿Imports Wells.YPFModel
+Imports Wells.StandardModel.Models
+Imports Wells.CorePersistence.Repositories
 Imports NPOI.XSSF.UserModel
 Imports Wells.BaseFilter
+Imports Wells.ViewBase
+Imports Wells.CorePersistence
 
 Public Class MainWindowViewModel
     Inherits BaseViewModel
 
     Private _window As IMainWindowView
-    Private _repo As Repositories
+    Private _repo As RepositoryWrapper
 
     Private WithEvents _Filter As BaseFilter
     Property Filter As BaseFilter
@@ -222,182 +225,182 @@ Public Class MainWindowViewModel
 
     End Sub
 
-    Property CreateDatabaseCommand As ICommand = New Command(Sub()
-                                                                 Dim databaseName As String = ""
-                                                                 Dim databasePath As String = ""
-                                                                 If _window.CreateDatabaseDialog(databaseName, databasePath) Then
-                                                                     Dim filename = IO.Path.Combine(databasePath, databaseName & ".mdf")
-                                                                     My.Settings.DatabaseFilename = filename
-                                                                     My.Settings.Save()
-                                                                     OpenDatabase(filename, True)
-                                                                 End If
-                                                             End Sub, Function() True, AddressOf OnError)
+    Property CreateDatabaseCommand As ICommand = New RelayCommand(Sub()
+                                                                      Dim databaseName As String = ""
+                                                                      Dim databasePath As String = ""
+                                                                      If _window.CreateDatabaseDialog(databaseName, databasePath) Then
+                                                                          Dim filename = IO.Path.Combine(databasePath, databaseName & ".mdf")
+                                                                          My.Settings.DatabaseFilename = filename
+                                                                          My.Settings.Save()
+                                                                          OpenDatabase(filename, True)
+                                                                      End If
+                                                                  End Sub, Function() True, AddressOf OnError)
 
-    Property OpenDatabaseCommand As ICommand = New Command(Sub()
-                                                               Dim filename = _window.OpenFileDialog("Well Databases|*.mdf", "Abrir base de datos")
-                                                               If Not String.IsNullOrEmpty(filename) Then
-                                                                   My.Settings.DatabaseFilename = filename
-                                                                   My.Settings.Save()
-                                                                   OpenDatabase(filename, False)
-                                                               End If
-                                                           End Sub, Function() True, AddressOf OnError)
+    Property OpenDatabaseCommand As ICommand = New RelayCommand(Sub()
+                                                                    Dim filename = _window.OpenFileDialog("Well Databases|*.mdf", "Abrir base de datos")
+                                                                    If Not String.IsNullOrEmpty(filename) Then
+                                                                        My.Settings.DatabaseFilename = filename
+                                                                        My.Settings.Save()
+                                                                        OpenDatabase(filename, False)
+                                                                    End If
+                                                                End Sub, Function() True, AddressOf OnError)
 
-    Property ImportWellsFromExcelCommand As ICommand = New Command(Sub()
-                                                                       Dim wb As XSSFWorkbook = Nothing
-                                                                       Dim sheetIndex As Integer = -1
+    Property ImportWellsFromExcelCommand As ICommand = New RelayCommand(Sub()
+                                                                            Dim wb As XSSFWorkbook = Nothing
+                                                                            Dim sheetIndex As Integer = -1
 
-                                                                       If OpenExcelFile(wb, sheetIndex) Then
-                                                                           ReadWellFromExcel(wb, sheetIndex)
-                                                                       End If
-                                                                   End Sub,
+                                                                            If OpenExcelFile(wb, sheetIndex) Then
+                                                                                ReadWellFromExcel(wb, sheetIndex)
+                                                                            End If
+                                                                        End Sub,
                                                                    Function()
                                                                        Return Repositories.HasProject
                                                                    End Function,
                                                                    AddressOf OnError)
 
-    Property ImportMeasurementsFromExcelCommand As ICommand = New Command(Sub()
-                                                                              Dim wb As XSSFWorkbook = Nothing
-                                                                              Dim sheetIndex As Integer = -1
+    Property ImportMeasurementsFromExcelCommand As ICommand = New RelayCommand(Sub()
+                                                                                   Dim wb As XSSFWorkbook = Nothing
+                                                                                   Dim sheetIndex As Integer = -1
 
-                                                                              If OpenExcelFile(wb, sheetIndex) Then
-                                                                                  ReadMeasurementFromExcel(wb, sheetIndex)
-                                                                              End If
-                                                                          End Sub,
+                                                                                   If OpenExcelFile(wb, sheetIndex) Then
+                                                                                       ReadMeasurementFromExcel(wb, sheetIndex)
+                                                                                   End If
+                                                                               End Sub,
                                                                           Function()
                                                                               Return Repositories.HasProject
                                                                           End Function,
                                                                           AddressOf OnError)
 
-    Property ImportFLNAAnalysisFromExcelCommand As ICommand = New Command(Sub()
-                                                                              Dim wb As XSSFWorkbook = Nothing
-                                                                              Dim sheetIndex As Integer = -1
+    Property ImportFLNAAnalysisFromExcelCommand As ICommand = New RelayCommand(Sub()
+                                                                                   Dim wb As XSSFWorkbook = Nothing
+                                                                                   Dim sheetIndex As Integer = -1
 
-                                                                              If OpenExcelFile(wb, sheetIndex) Then
-                                                                                  ReadFLNAAnalysisFromExcel(wb, sheetIndex)
-                                                                              End If
-                                                                          End Sub,
+                                                                                   If OpenExcelFile(wb, sheetIndex) Then
+                                                                                       ReadFLNAAnalysisFromExcel(wb, sheetIndex)
+                                                                                   End If
+                                                                               End Sub,
                                                                           Function()
                                                                               Return Repositories.HasProject
                                                                           End Function,
                                                                           AddressOf OnError)
 
-    Property ImportWaterAnalysisFromExcelCommand As ICommand = New Command(Sub()
-                                                                               Dim wb As XSSFWorkbook = Nothing
-                                                                               Dim sheetIndex As Integer = -1
+    Property ImportWaterAnalysisFromExcelCommand As ICommand = New RelayCommand(Sub()
+                                                                                    Dim wb As XSSFWorkbook = Nothing
+                                                                                    Dim sheetIndex As Integer = -1
 
-                                                                               If OpenExcelFile(wb, sheetIndex) Then
-                                                                                   ReadWaterAnalysisFromExcel(wb, sheetIndex)
-                                                                               End If
-                                                                           End Sub,
+                                                                                    If OpenExcelFile(wb, sheetIndex) Then
+                                                                                        ReadWaterAnalysisFromExcel(wb, sheetIndex)
+                                                                                    End If
+                                                                                End Sub,
                                                                           Function()
                                                                               Return Repositories.HasProject
                                                                           End Function,
                                                                           AddressOf OnError)
 
-    Property ImportSoilAnalysisFromExcelCommand As ICommand = New Command(Sub()
-                                                                              Dim wb As XSSFWorkbook = Nothing
-                                                                              Dim sheetIndex As Integer = -1
+    Property ImportSoilAnalysisFromExcelCommand As ICommand = New RelayCommand(Sub()
+                                                                                   Dim wb As XSSFWorkbook = Nothing
+                                                                                   Dim sheetIndex As Integer = -1
 
-                                                                              If OpenExcelFile(wb, sheetIndex) Then
-                                                                                  ReadSoilAnalysisFromExcel(wb, sheetIndex)
-                                                                              End If
-                                                                          End Sub,
+                                                                                   If OpenExcelFile(wb, sheetIndex) Then
+                                                                                       ReadSoilAnalysisFromExcel(wb, sheetIndex)
+                                                                                   End If
+                                                                               End Sub,
                                                                           Function()
                                                                               Return Repositories.HasProject
                                                                           End Function,
                                                                           AddressOf OnError)
 
-    Property ImportPrecipitationsFromExcelCommand As ICommand = New Command(Sub()
-                                                                                Dim wb As XSSFWorkbook = Nothing
-                                                                                Dim sheetIndex As Integer = -1
+    Property ImportPrecipitationsFromExcelCommand As ICommand = New RelayCommand(Sub()
+                                                                                     Dim wb As XSSFWorkbook = Nothing
+                                                                                     Dim sheetIndex As Integer = -1
 
-                                                                                If OpenExcelFile(wb, sheetIndex) Then
-                                                                                    ReadPrecipitationsFromExcel(wb, sheetIndex)
-                                                                                End If
-                                                                            End Sub,
+                                                                                     If OpenExcelFile(wb, sheetIndex) Then
+                                                                                         ReadPrecipitationsFromExcel(wb, sheetIndex)
+                                                                                     End If
+                                                                                 End Sub,
                                                                           Function()
                                                                               Return Repositories.HasProject
                                                                           End Function,
                                                                           AddressOf OnError)
 
-    Property ShowedDatasourceCommand As ICommand = New Command(Sub(param)
-                                                                   _Filter.ShowedDatasource = CInt(param)
-                                                               End Sub,
+    Property ShowedDatasourceCommand As ICommand = New RelayCommand(Sub(param)
+                                                                        _Filter.ShowedDatasource = CInt(param)
+                                                                    End Sub,
                                                                Function()
                                                                    Return Repositories.HasProject
                                                                End Function,
                                                                AddressOf OnError)
 
-    Property NewWellCommand As ICommand = New Command(Sub()
-                                                          Dim vm As New EditWellViewModel
-                                                          Dim result = _window.ShowEditWellDialog(vm)
-                                                          If result Then
-                                                              NotifyPropertyChanged(NameOf(WellNames))
-                                                              SetDatasource()
-                                                          End If
-                                                      End Sub,
+    Property NewWellCommand As ICommand = New RelayCommand(Sub()
+                                                               Dim vm As New EditWellViewModel
+                                                               Dim result = _window.ShowEditWellDialog(vm)
+                                                               If result Then
+                                                                   NotifyPropertyChanged(NameOf(WellNames))
+                                                                   SetDatasource()
+                                                               End If
+                                                           End Sub,
                                                       Function()
                                                           Return Repositories.HasProject
                                                       End Function, AddressOf OnError)
 
-    Property EditWellCommand As ICommand = New Command(Sub()
-                                                           Dim result As Boolean = False
-                                                           If TypeOf _SelectedEntity Is Well Then
-                                                               Dim vm As New EditWellViewModel(CType(_SelectedEntity, Well))
-                                                               result = _window.ShowEditWellDialog(vm)
-                                                           ElseIf TypeOf _SelectedEntity Is Measurement Then
-                                                               Dim vm As New EditWellViewModel(CType(_SelectedEntity, Measurement).Well)
-                                                               result = _window.ShowEditWellDialog(vm)
-                                                           ElseIf TypeOf _SelectedEntity Is ChemicalAnalysis Then
-                                                               Dim vm As New EditWellViewModel(CType(_SelectedEntity, ChemicalAnalysis).Well)
-                                                               result = _window.ShowEditWellDialog(vm)
-                                                           End If
-                                                           If result Then
-                                                               NotifyPropertyChanged(NameOf(WellNames))
-                                                               SetDatasource()
-                                                           End If
-                                                       End Sub,
+    Property EditWellCommand As ICommand = New RelayCommand(Sub()
+                                                                Dim result As Boolean = False
+                                                                If TypeOf _SelectedEntity Is Well Then
+                                                                    Dim vm As New EditWellViewModel(CType(_SelectedEntity, Well))
+                                                                    result = _window.ShowEditWellDialog(vm)
+                                                                ElseIf TypeOf _SelectedEntity Is Measurement Then
+                                                                    Dim vm As New EditWellViewModel(CType(_SelectedEntity, Measurement).Well)
+                                                                    result = _window.ShowEditWellDialog(vm)
+                                                                ElseIf TypeOf _SelectedEntity Is ChemicalAnalysis Then
+                                                                    Dim vm As New EditWellViewModel(CType(_SelectedEntity, ChemicalAnalysis).Well)
+                                                                    result = _window.ShowEditWellDialog(vm)
+                                                                End If
+                                                                If result Then
+                                                                    NotifyPropertyChanged(NameOf(WellNames))
+                                                                    SetDatasource()
+                                                                End If
+                                                            End Sub,
                                                       Function()
                                                           Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
                                                       End Function, AddressOf OnError)
 
-    Property NewMeasurementCommand As ICommand = New Command(Sub()
-                                                                 Dim vm As EditMeasurementViewModel
-                                                                 If _SelectedEntity IsNot Nothing Then
-                                                                     If TypeOf _SelectedEntity Is Well Then
-                                                                         vm = New EditMeasurementViewModel(CType(_SelectedEntity, Well))
-                                                                     Else
-                                                                         vm = New EditMeasurementViewModel()
-                                                                     End If
-                                                                 Else
-                                                                     vm = New EditMeasurementViewModel()
-                                                                 End If
-                                                                 Dim result = _window.ShowEditMeasurementDialog(vm)
-                                                                 If result Then
-                                                                     SetDatasource()
-                                                                 End If
-                                                             End Sub,
-                                                      Function()
-                                                          Return Repositories.HasProject
-                                                      End Function, AddressOf OnError)
-
-    Property EditMeasurementCommand As ICommand = New Command(Sub()
-                                                                  If TypeOf _SelectedEntity Is Measurement Then
-                                                                      Dim vm As New EditMeasurementViewModel(CType(_SelectedEntity, Measurement))
+    Property NewMeasurementCommand As ICommand = New RelayCommand(Sub()
+                                                                      Dim vm As EditMeasurementViewModel
+                                                                      If _SelectedEntity IsNot Nothing Then
+                                                                          If TypeOf _SelectedEntity Is Well Then
+                                                                              vm = New EditMeasurementViewModel(CType(_SelectedEntity, Well))
+                                                                          Else
+                                                                              vm = New EditMeasurementViewModel()
+                                                                          End If
+                                                                      Else
+                                                                          vm = New EditMeasurementViewModel()
+                                                                      End If
                                                                       Dim result = _window.ShowEditMeasurementDialog(vm)
                                                                       If result Then
                                                                           SetDatasource()
                                                                       End If
-                                                                  End If
-                                                              End Sub,
+                                                                  End Sub,
+                                                      Function()
+                                                          Return Repositories.HasProject
+                                                      End Function, AddressOf OnError)
+
+    Property EditMeasurementCommand As ICommand = New RelayCommand(Sub()
+                                                                       If TypeOf _SelectedEntity Is Measurement Then
+                                                                           Dim vm As New EditMeasurementViewModel(CType(_SelectedEntity, Measurement))
+                                                                           Dim result = _window.ShowEditMeasurementDialog(vm)
+                                                                           If result Then
+                                                                               SetDatasource()
+                                                                           End If
+                                                                       End If
+                                                                   End Sub,
                                                       Function()
                                                           Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
                                                       End Function, AddressOf OnError)
 
-    Property OpenGraphicsViewCommand As ICommand = New Command(Sub()
-                                                                   Dim vm As New GraphicsViewModel
-                                                                   _window.OpenGraphicsView(vm)
-                                                               End Sub,
+    Property OpenGraphicsViewCommand As ICommand = New RelayCommand(Sub()
+                                                                        Dim vm As New GraphicsViewModel
+                                                                        _window.OpenGraphicsView(vm)
+                                                                    End Sub,
                                                                Function()
                                                                    Return Repositories.HasProject
                                                                End Function, AddressOf OnError)
@@ -550,7 +553,7 @@ Public Class MainWindowViewModel
         _repo?.Close()
         StartProgressNotifications(True, "Abriendo la base de datos")
         Await Task.Run(Sub() Repositories.CreateOrOpen(databaseFile, create))
-        _repo = Repositories.Instance
+        _repo = RepositoryWrapper.Instance
         If _repo IsNot Nothing Then
             Filter = New BaseFilter()
             SetDatasource()
@@ -559,15 +562,15 @@ Public Class MainWindowViewModel
     End Sub
 
     Private Sub EventsAfterOpenDatabase()
-        CType(ImportWellsFromExcelCommand, Command).RaiseCanExecuteChanged()
-        CType(ImportMeasurementsFromExcelCommand, Command).RaiseCanExecuteChanged()
-        CType(ImportFLNAAnalysisFromExcelCommand, Command).RaiseCanExecuteChanged()
-        CType(ImportWaterAnalysisFromExcelCommand, Command).RaiseCanExecuteChanged()
-        CType(ImportPrecipitationsFromExcelCommand, Command).RaiseCanExecuteChanged()
-        CType(ShowedDatasourceCommand, Command).RaiseCanExecuteChanged()
-        CType(NewWellCommand, Command).RaiseCanExecuteChanged()
-        CType(NewMeasurementCommand, Command).RaiseCanExecuteChanged()
-        CType(OpenGraphicsViewCommand, Command).RaiseCanExecuteChanged()
+        CType(ImportWellsFromExcelCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(ImportMeasurementsFromExcelCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(ImportFLNAAnalysisFromExcelCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(ImportWaterAnalysisFromExcelCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(ImportPrecipitationsFromExcelCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(ShowedDatasourceCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(NewWellCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(NewMeasurementCommand, RelayCommand).RaiseCanExecuteChanged()
+        CType(OpenGraphicsViewCommand, RelayCommand).RaiseCanExecuteChanged()
         NotifyPropertyChanged(NameOf(WellNames))
         NotifyPropertyChanged(NameOf(PropertiesNames))
         StopProgressNotifications()
@@ -579,10 +582,6 @@ Public Class MainWindowViewModel
 
     Private Sub OnFilterDatasourceTypeChanged() Handles _Filter.DatasoureceTypeChanged
         NotifyPropertyChanged(NameOf(PropertiesNames))
-    End Sub
-
-    Protected Overrides Sub ShowErrorMessage(message As String)
-        _window.ShowErrorMessageBox(message)
     End Sub
 
     ReadOnly Property ItemsCount As Integer

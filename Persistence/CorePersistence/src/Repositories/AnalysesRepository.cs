@@ -26,5 +26,22 @@ namespace Wells.CorePersistence.Repositories
         {
             return Context.Analyses.ToList().FirstOrDefault((c) => c.Name == name);
         }
+
+        protected override RejectedReasons OnAddingOrUpdating(ChemicalAnalysis entity)
+        {
+            if (string.IsNullOrEmpty(entity.WellName))
+            {
+                return RejectedReasons.WellNameEmpty;
+            }
+            else if (Exists(entity.Id))
+            {
+                return RejectedReasons.DuplicatedId;
+            }
+            else if (!RepositoryWrapper.Instance.Wells.ContainsName(entity.WellName))
+            {
+                return RejectedReasons.WellNotFound;
+            }
+            return RejectedReasons.None;
+        }
     }
 }

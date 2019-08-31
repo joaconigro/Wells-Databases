@@ -1,5 +1,7 @@
-﻿Imports Wells.Model
-Imports Wells.Persistence
+﻿Imports Wells.YPFModel
+Imports Wells.CorePersistence
+Imports Wells.ViewBase
+Imports Wells.CorePersistence.Repositories
 
 Public Class EditMeasurementViewModel
     Inherits BaseViewModel
@@ -11,7 +13,7 @@ Public Class EditMeasurementViewModel
         End Get
         Set
             _WellName = Value
-            CType(AcceptCommand, Command).RaiseCanExecuteChanged()
+            CType(AcceptCommand, RelayCommand).RaiseCanExecuteChanged()
         End Set
     End Property
 
@@ -31,7 +33,7 @@ Public Class EditMeasurementViewModel
 
     ReadOnly Property WellNames As List(Of String)
         Get
-            Return Repositories.Instance?.Wells.Names
+            Return RepositoryWrapper.Instance?.Wells.Names
         End Get
     End Property
 
@@ -42,7 +44,7 @@ Public Class EditMeasurementViewModel
         Set
             _SelectedWellIndex = Value
             WellName = WellNames(_SelectedWellIndex)
-            _well = Repositories.Instance.Wells.FindName(_WellName)
+            _well = RepositoryWrapper.Instance.Wells.FindByName(_WellName)
         End Set
     End Property
 
@@ -54,7 +56,7 @@ Public Class EditMeasurementViewModel
         HasMeasurement = False
         NameSelectable = True
         RealDate = Date.Today
-        _repo = Repositories.Instance.Measurements
+        _repo = RepositoryWrapper.Instance.Measurements
     End Sub
 
     Sub New(w As Well)
@@ -63,7 +65,7 @@ Public Class EditMeasurementViewModel
         RealDate = Date.Today
         _well = w
         _WellName = w.Name
-        _repo = Repositories.Instance.Measurements
+        _repo = RepositoryWrapper.Instance.Measurements
     End Sub
 
     Sub New(m As Measurement)
@@ -72,12 +74,12 @@ Public Class EditMeasurementViewModel
         NameSelectable = False
         InitializeMeasurement()
         _well = m.Well
-        _repo = Repositories.Instance.Measurements
+        _repo = RepositoryWrapper.Instance.Measurements
     End Sub
 
     Private Sub InitializeMeasurement()
         WellName = Measurement.WellName
-        RealDate = Measurement.RealDate
+        RealDate = Measurement.Date
         FLNADepth = Measurement.FLNADepth
         WaterDepth = Measurement.WaterDepth
         Caudal = Measurement.Caudal
@@ -87,8 +89,7 @@ Public Class EditMeasurementViewModel
     Private Sub CreateOrEditMeasurement()
         If HasMeasurement Then
             Measurement.Well = _well
-            Measurement.WellName = WellName
-            Measurement.SampleDate = RealDate.ToString("dd/MM/yyyy")
+            Measurement.Date = RealDate
             Measurement.FLNADepth = FLNADepth
             Measurement.WaterDepth = WaterDepth
             Measurement.Caudal = Caudal
@@ -96,8 +97,7 @@ Public Class EditMeasurementViewModel
         Else
             Measurement = New Measurement() With {
                 .Well = _well,
-                .WellName = _WellName,
-                .SampleDate = RealDate.ToString("dd/MM/yyyy"),
+                .Date = RealDate,
                 .FLNADepth = FLNADepth,
                 .WaterDepth = WaterDepth,
                 .Caudal = Caudal,
@@ -121,34 +121,30 @@ Public Class EditMeasurementViewModel
         _repo.Remove(Measurement)
     End Sub
 
-    ReadOnly Property DeleteMeasurementCommand As ICommand = New Command(Sub()
-                                                                             If View.ShowMessageBox("¿Desea eliminar este medición?", "Borrar medición") Then
-                                                                                 RemoveAll()
-                                                                                 Repositories.Instance.SaveChanges()
-                                                                                 RaiseEvent CloseDialog(True)
-                                                                             End If
-                                                                         End Sub,
+    ReadOnly Property DeleteMeasurementCommand As ICommand = New RelayCommand(Sub()
+                                                                                  If View.ShowMessageBox("¿Desea eliminar este medición?", "Borrar medición") Then
+                                                                                      RemoveAll()
+                                                                                      RepositoryWrapper.Instance.Save()
+                                                                                      RaiseEvent CloseDialog(True)
+                                                                                  End If
+                                                                              End Sub,
                                                                    Function()
                                                                        Return HasMeasurement
                                                                    End Function,
                                                                    AddressOf OnError)
 
-    ReadOnly Property AcceptCommand As ICommand = New Command(Sub()
-                                                                  CreateOrEditMeasurement()
-                                                                  If HasMeasurement Then
-                                                                      _repo.Update(Measurement)
-                                                                  Else
-                                                                      _repo.Add(Measurement, RejectedEntity.RejectedReasons.None)
-                                                                  End If
-                                                                  Repositories.Instance.SaveChanges()
-                                                                  RaiseEvent CloseDialog(True)
-                                                              End Sub,
+    ReadOnly Property AcceptCommand As ICommand = New RelayCommand(Sub()
+                                                                       CreateOrEditMeasurement()
+                                                                       If HasMeasurement Then
+                                                                           _repo.Update(Measurement)
+                                                                       Else
+                                                                           _repo.Add(Measurement)
+                                                                       End If
+                                                                       RepositoryWrapper.Instance.Save()
+                                                                       RaiseEvent CloseDialog(True)
+                                                                   End Sub,
                                                                    Function() Validate(),
                                                                    AddressOf OnError)
 
-    ReadOnly Property CancelCommand As ICommand = New Command(Sub() RaiseEvent CloseDialog(False))
 
-    Protected Overrides Sub ShowErrorMessage(message As String)
-        View.ShowErrorMessageBox(message)
-    End Sub
 End Class

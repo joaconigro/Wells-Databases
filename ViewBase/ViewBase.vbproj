@@ -188,9 +188,17 @@
       <Project>{5ac358b4-df59-4ffa-ba1b-c7c369d4a5a4}</Project>
       <Name>Languages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Model\BaseModel\BaseModel.csproj">
-      <Project>{db4bdfec-5365-464e-bf5c-54b70f6f044b}</Project>
-      <Name>BaseModel</Name>
+    <ProjectReference Include="..\Model\StandardModel\StandardModel.csproj">
+      <Project>{7a468a1c-31c5-4085-8248-21edc6b5883e}</Project>
+      <Name>StandardModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\YPFModel\YPFModel.csproj">
+      <Project>{3005c2cc-c6a3-4a20-9539-129fb4a58288}</Project>
+      <Name>YPFModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence\CorePersistence\CorePersistence.csproj">
+      <Project>{4c33bca9-01d9-4581-b5a1-3d8a26be219c}</Project>
+      <Name>CorePersistence</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

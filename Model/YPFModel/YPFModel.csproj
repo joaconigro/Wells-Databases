@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wells.YPFModel</RootNamespace>
   </PropertyGroup>
 
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BaseModel\BaseModel.csproj" />
+    <ProjectReference Include="..\StandardModel\StandardModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

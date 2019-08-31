@@ -1,9 +1,10 @@
 ﻿Imports System.IO
 Imports NPOI.SS.UserModel
 Imports NPOI.XSSF.UserModel
-Imports Wells.Model
-Imports Wells.Persistence
+Imports Wells.YPFModel
+Imports Wells.CorePersistence
 Imports Wells.Model.ReflectionExtension
+Imports Wells.StandardModel.Models
 
 Public Class ExcelReader
 
@@ -30,7 +31,7 @@ Public Class ExcelReader
                     .Longitude = ReadCellAsDouble(row, 5)
                 }
                 Dim wellType = ReadCellAsDouble(row, 6)
-                well.Type = If(wellType = 1, Model.WellType.Sounding, Model.WellType.MeasurementWell)
+                well.WellType = If(wellType = 1, StandardModel.Models.WellType.Sounding, StandardModel.Models.WellType.MeasurementWell)
                 well.Height = ReadCellAsDouble(row, 7)
                 Dim exists = ReadCellAsString(row, 8).ToUpper
                 If Not String.IsNullOrEmpty(exists) Then
@@ -61,7 +62,7 @@ Public Class ExcelReader
                 Dim prec As New Precipitation With {
                     .PrecipitationDate = ReadCellAsDateString(row, 0),
                     .Millimeters = ReadCellAsDouble(row, 1)}
-                prec.Millimeters = If(prec.Millimeters = BusinessObject.NullNumericValue, 0, prec.Millimeters)
+                prec.Millimeters = If(prec.Millimeters = BusinessObject.NumericNullValue, 0, prec.Millimeters)
 
                 precipitations.Add(prec)
                 progress.Report(i / maxCount * 100)
@@ -85,7 +86,7 @@ Public Class ExcelReader
                 row = sheet.GetRow(i)
                 Dim meas As New Measurement With {
                     .WellName = ReadCellAsString(row, 0).ToUpper,
-                    .SampleDate = ReadCellAsDateString(row, 1),
+                    .Date = ReadCellAsDateString(row, 1),
                     .FLNADepth = ReadCellAsDouble(row, 2),
                     .WaterDepth = ReadCellAsDouble(row, 3),
                     .Caudal = ReadCellAsDouble(row, 4),
@@ -176,7 +177,7 @@ Public Class ExcelReader
                 row = sheet.GetRow(i)
                 Dim soil As New SoilAnalysis With {
                     .WellName = ReadCellAsString(row, 0).ToUpper,
-                    .SampleDate = ReadCellAsDateString(row, 1)
+                    .Date = ReadCellAsDateString(row, 1)
                 }
 
                 Dim j As Integer = 2
@@ -242,7 +243,7 @@ Public Class ExcelReader
         Dim header = sheet.CreateRow(0)
 
         header.CreateCell(0).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.RealDate)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Date)))
 
         Dim i As Integer = 2
         For Each p In SoilAnalysis.Properties.Keys.ToList
@@ -258,7 +259,7 @@ Public Class ExcelReader
         Dim row = sheet.CreateRow(rowIndex)
 
         row.CreateCell(0).SetCellValue(analysis.WellName)
-        row.CreateCell(1).SetCellValue(analysis.SampleDate)
+        row.CreateCell(1).SetCellValue(analysis.Date)
 
         Dim i As Integer = 2
         For Each p In SoilAnalysis.Properties.Keys.ToList
@@ -267,7 +268,7 @@ Public Class ExcelReader
         Next
 
         row.CreateCell(i, CellType.Numeric).SetCellValue(originalRowIndex)
-        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), reason))
+        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedReasons), reason))
     End Sub
 
     Private Shared Sub ExportsRejectedWaterAnalysis(rejected As List(Of RejectedEntity), sheet As ISheet)
@@ -283,7 +284,7 @@ Public Class ExcelReader
         Dim header = sheet.CreateRow(0)
 
         header.CreateCell(0).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.RealDate)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Date)))
 
         Dim i As Integer = 2
         For Each p In WaterAnalysis.Properties.Keys.ToList
@@ -299,7 +300,7 @@ Public Class ExcelReader
         Dim row = sheet.CreateRow(rowIndex)
 
         row.CreateCell(0).SetCellValue(analysis.WellName)
-        row.CreateCell(1).SetCellValue(analysis.SampleDate)
+        row.CreateCell(1).SetCellValue(analysis.Date)
 
         Dim i As Integer = 2
         For Each p In WaterAnalysis.Properties.Keys.ToList
@@ -308,7 +309,7 @@ Public Class ExcelReader
         Next
 
         row.CreateCell(i, CellType.Numeric).SetCellValue(originalRowIndex)
-        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), reason))
+        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedReasons), reason))
     End Sub
 
     Private Shared Sub ExportsRejectedFLNAAnalysis(rejected As List(Of RejectedEntity), sheet As ISheet)
@@ -324,7 +325,7 @@ Public Class ExcelReader
         Dim header = sheet.CreateRow(0)
 
         header.CreateCell(0).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.RealDate)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.Date)))
 
         Dim i As Integer = 2
         For Each p In FLNAAnalysis.Properties.Keys.ToList
@@ -336,11 +337,11 @@ Public Class ExcelReader
         header.CreateCell(i + 1).SetCellValue(_Reason)
     End Sub
 
-    Private Shared Sub WriteFLNAAnalysisToExcelRow(analysis As FLNAAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedEntity.RejectedReasons)
+    Private Shared Sub WriteFLNAAnalysisToExcelRow(analysis As FLNAAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedReasons)
         Dim row = sheet.CreateRow(rowIndex)
 
         row.CreateCell(0).SetCellValue(analysis.WellName)
-        row.CreateCell(1).SetCellValue(analysis.SampleDate)
+        row.CreateCell(1).SetCellValue(analysis.Date)
 
         Dim i As Integer = 2
         For Each p In FLNAAnalysis.Properties.Keys.ToList
@@ -349,7 +350,7 @@ Public Class ExcelReader
         Next
 
         row.CreateCell(i, CellType.Numeric).SetCellValue(originalRowIndex)
-        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), reason))
+        row.CreateCell(i + 1, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedReasons), reason))
 
     End Sub
 
@@ -361,14 +362,14 @@ Public Class ExcelReader
             Dim row = WritePrecipitationToExcelRow(CType(r.Entity, Precipitation), sheet, i)
 
             row.CreateCell(2, CellType.Numeric).SetCellValue(r.OriginalRow)
-            row.CreateCell(3, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), r.Reason))
+            row.CreateCell(3, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedReasons), r.Reason))
         Next
     End Sub
 
     Private Shared Sub WritePrecipitationHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue(GetDisplayName(Of Precipitation)(NameOf(Precipitation.RealDate)))
+        header.CreateCell(0).SetCellValue(GetDisplayName(Of Precipitation)(NameOf(Precipitation.PrecipitationDate)))
         header.CreateCell(1).SetCellValue(GetDisplayName(Of Precipitation)(NameOf(Precipitation.Millimeters)))
         header.CreateCell(2).SetCellValue(_OriginalRow)
         header.CreateCell(3).SetCellValue(_Reason)
@@ -391,7 +392,7 @@ Public Class ExcelReader
             Dim row = WriteMeasurementToExcelRow(CType(r.Entity, Measurement), sheet, i)
 
             row.CreateCell(6, CellType.Numeric).SetCellValue(r.OriginalRow)
-            row.CreateCell(7, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), r.Reason))
+            row.CreateCell(7, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedReasons), r.Reason))
         Next
     End Sub
 
@@ -399,7 +400,7 @@ Public Class ExcelReader
         Dim header = sheet.CreateRow(0)
 
         header.CreateCell(0).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.RealDate)))
+        header.CreateCell(1).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.Date)))
         header.CreateCell(2).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.FLNADepth)))
         header.CreateCell(3).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.WaterDepth)))
         header.CreateCell(4).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.Caudal)))
@@ -412,7 +413,7 @@ Public Class ExcelReader
         Dim row = sheet.CreateRow(rowIndex)
 
         row.CreateCell(0).SetCellValue(measurement.WellName)
-        row.CreateCell(1).SetCellValue(measurement.SampleDate)
+        row.CreateCell(1).SetCellValue(measurement.Date)
         row.CreateCell(2, CellType.Numeric).SetCellValue(measurement.FLNADepth)
         row.CreateCell(3, CellType.Numeric).SetCellValue(measurement.WaterDepth)
         row.CreateCell(4, CellType.Numeric).SetCellValue(measurement.Caudal)
@@ -429,7 +430,7 @@ Public Class ExcelReader
             Dim row = WriteWellToExcelRow(CType(r.Entity, Well), sheet, i)
 
             row.CreateCell(10, CellType.Numeric).SetCellValue(r.OriginalRow)
-            row.CreateCell(11, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedEntity.RejectedReasons), r.Reason))
+            row.CreateCell(11, CellType.String).SetCellValue([Enum].GetName(GetType(RejectedReasons), r.Reason))
         Next
     End Sub
 
@@ -459,7 +460,7 @@ Public Class ExcelReader
         row.CreateCell(3, CellType.Numeric).SetCellValue(well.Z)
         row.CreateCell(4, CellType.Numeric).SetCellValue(well.Latitude)
         row.CreateCell(5, CellType.Numeric).SetCellValue(well.Longitude)
-        row.CreateCell(6, CellType.Numeric).SetCellValue(CInt(well.Type))
+        row.CreateCell(6, CellType.Numeric).SetCellValue(CInt(well.WellType))
         row.CreateCell(7, CellType.Numeric).SetCellValue(well.Height)
         row.CreateCell(8).SetCellValue(If(well.Exists, "SI", "NO"))
         row.CreateCell(9, CellType.Numeric).SetCellValue(well.Bottom)
@@ -520,6 +521,6 @@ Public Class ExcelReader
                     End If
             End Select
         End If
-        Return BusinessObject.NullNumericValue
+        Return BusinessObject.NumericNullValue
     End Function
 End Class

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Wells.StandardModel.Models;
 
 namespace Wells.CorePersistence.Repositories
 {
@@ -32,7 +33,7 @@ namespace Wells.CorePersistence.Repositories
                     inserted.Add(e);
                 }
                 else {
-                    rejecteds.Add(new RejectedEntity(e, i + 2, reason));
+                    rejecteds.Add(new RejectedEntity(e as IBusinessObject, i + 2, reason));
                 }
                 progress.Report((i + 1) / total * 100);
             }

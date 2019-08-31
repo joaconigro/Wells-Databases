@@ -1,5 +1,5 @@
 ﻿Imports System.Globalization
-Imports LabManager.Base.Common
+Imports Wells.Base.Common
 Imports System.Windows.Data
 
 Public Class EnumDescriptionsConverter

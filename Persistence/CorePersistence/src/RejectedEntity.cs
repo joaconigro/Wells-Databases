@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Wells.BaseModel.Models;
+using Wells.StandardModel.Models;
 
 namespace Wells.CorePersistence
 {
@@ -19,13 +19,13 @@ namespace Wells.CorePersistence
 
     public enum RejectedReasons
     {
-        [DisplayName("Ninguna")] None,
-        [DisplayName("Id duplicado")] DuplicatedId,
-        [DisplayName("Nombre duplicado")] DuplicatedName,
-        [DisplayName("Pozo sin nombre")] WellNameEmpty,
-        [DisplayName("Pozo no encontrado")] WellNotFound,
-        [DisplayName("Profundidad de FLNA mayor al del agua")] FLNADepthGreaterThanWaterDepth,
-        [DisplayName("Fecha duplicada")] DuplicatedDate,
-        [DisplayName("Desconocido")] Unknown
+        [Description("Ninguna")] None,
+        [Description("Id duplicado")] DuplicatedId,
+        [Description("Nombre duplicado")] DuplicatedName,
+        [Description("Pozo sin nombre")] WellNameEmpty,
+        [Description("Pozo no encontrado")] WellNotFound,
+        [Description("Profundidad de FLNA mayor al del agua")] FLNADepthGreaterThanWaterDepth,
+        [Description("Fecha duplicada")] DuplicatedDate,
+        [Description("Desconocido")] Unknown
     }
 }

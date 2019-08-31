@@ -1,6 +1,6 @@
 ﻿Imports System.Text.RegularExpressions
 Imports FluentValidation
-Imports LabManager.DataModel.Data.Repositories
+Imports Wells.CorePersistence.Repositories
 
 Public Class EmailValidator
     Inherits AbstractValidator(Of String)
@@ -20,9 +20,9 @@ Public Class EmailValidator
     End Function
 
     Private Function MailExists(mail As String) As Boolean
-        If _CheckIfExist Then
-            Return CType(RepositoryWrapper.Instance.ClientUsersRepository, IClientUsersRepository).ContainsEmail(mail)
-        End If
+        'If _CheckIfExist Then
+        '    Return CType(RepositoryWrapper.Instance.ClientUsersRepository, IClientUsersRepository).ContainsEmail(mail)
+        'End If
         Return False
     End Function
 End Class
