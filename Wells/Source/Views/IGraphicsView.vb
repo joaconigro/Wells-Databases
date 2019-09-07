@@ -1,4 +1,5 @@
-﻿Public Interface IGraphicsView
+﻿Imports Wells.ViewBase
+Public Interface IGraphicsView
     Inherits IView
 
     Function GetYAxis() As List(Of LiveCharts.Wpf.Axis)

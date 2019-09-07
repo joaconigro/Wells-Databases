@@ -3,7 +3,6 @@ Imports NPOI.SS.UserModel
 Imports NPOI.XSSF.UserModel
 Imports Wells.YPFModel
 Imports Wells.CorePersistence
-Imports Wells.Model.ReflectionExtension
 Imports Wells.StandardModel.Models
 
 Public Class ExcelReader
@@ -74,6 +73,10 @@ Public Class ExcelReader
         Return precipitations
     End Function
 
+    Private Shared Function GetWell(wellName As String) As Well
+        Return Repositories.RepositoryWrapper.Instance.Wells.FindByName(wellName)
+    End Function
+
     Shared Function ReadMeasurements(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Measurement)
         Dim sheet = workbook.GetSheetAt(sheetIndex)
         Dim row As IRow
@@ -85,7 +88,7 @@ Public Class ExcelReader
                 indexError = i
                 row = sheet.GetRow(i)
                 Dim meas As New Measurement With {
-                    .WellName = ReadCellAsString(row, 0).ToUpper,
+                    .Well = GetWell(ReadCellAsString(row, 0).ToUpper),
                     .Date = ReadCellAsDateString(row, 1),
                     .FLNADepth = ReadCellAsDouble(row, 2),
                     .WaterDepth = ReadCellAsDouble(row, 3),
@@ -114,13 +117,13 @@ Public Class ExcelReader
                 indexError = i
                 row = sheet.GetRow(i)
                 Dim flna As New FLNAAnalysis With {
-                    .WellName = ReadCellAsString(row, 0).ToUpper,
-                    .SampleDate = ReadCellAsDateString(row, 1)
+                    .Well = GetWell(ReadCellAsString(row, 0).ToUpper),
+                    .[Date] = ReadCellAsDateString(row, 1)
                 }
 
                 Dim j As Integer = 2
                 For Each p In FLNAAnalysis.Properties.Keys.ToList
-                    CallByName(flna, FLNAAnalysis.Properties(p), CallType.Set, ReadCellAsDouble(row, j))
+                    CallByName(flna, FLNAAnalysis.Properties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
@@ -145,13 +148,13 @@ Public Class ExcelReader
                 indexError = i
                 row = sheet.GetRow(i)
                 Dim water As New WaterAnalysis With {
-                    .WellName = ReadCellAsString(row, 0).ToUpper,
-                    .SampleDate = ReadCellAsDateString(row, 1)
+                    .Well = GetWell(ReadCellAsString(row, 0).ToUpper),
+                    .[Date] = ReadCellAsDateString(row, 1)
                 }
 
                 Dim j As Integer = 2
                 For Each p In WaterAnalysis.Properties.Keys.ToList
-                    CallByName(water, WaterAnalysis.Properties(p), CallType.Set, ReadCellAsDouble(row, j))
+                    CallByName(water, WaterAnalysis.Properties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
@@ -176,13 +179,13 @@ Public Class ExcelReader
                 indexError = i
                 row = sheet.GetRow(i)
                 Dim soil As New SoilAnalysis With {
-                    .WellName = ReadCellAsString(row, 0).ToUpper,
+                    .Well = GetWell(ReadCellAsString(row, 0).ToUpper),
                     .Date = ReadCellAsDateString(row, 1)
                 }
 
                 Dim j As Integer = 2
                 For Each p In SoilAnalysis.Properties.Keys.ToList
-                    CallByName(soil, SoilAnalysis.Properties(p), CallType.Set, ReadCellAsDouble(row, j))
+                    CallByName(soil, SoilAnalysis.Properties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
@@ -242,8 +245,8 @@ Public Class ExcelReader
     Private Shared Sub WriteSoilAnalysisHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of SoilAnalysis)(NameOf(SoilAnalysis.Date)))
+        header.CreateCell(0).SetCellValue(SoilAnalysis.GetDisplayName(NameOf(SoilAnalysis.WellName)))
+        header.CreateCell(1).SetCellValue(SoilAnalysis.GetDisplayName(NameOf(SoilAnalysis.Date)))
 
         Dim i As Integer = 2
         For Each p In SoilAnalysis.Properties.Keys.ToList
@@ -255,7 +258,7 @@ Public Class ExcelReader
         header.CreateCell(i + 1).SetCellValue(_Reason)
     End Sub
 
-    Private Shared Sub WriteSoilAnalysisToExcelRow(analysis As SoilAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedEntity.RejectedReasons)
+    Private Shared Sub WriteSoilAnalysisToExcelRow(analysis As SoilAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedReasons)
         Dim row = sheet.CreateRow(rowIndex)
 
         row.CreateCell(0).SetCellValue(analysis.WellName)
@@ -263,7 +266,7 @@ Public Class ExcelReader
 
         Dim i As Integer = 2
         For Each p In SoilAnalysis.Properties.Keys.ToList
-            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, SoilAnalysis.Properties(p), CallType.Get)))
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, SoilAnalysis.Properties(p).Name, CallType.Get)))
             i += 1
         Next
 
@@ -283,8 +286,8 @@ Public Class ExcelReader
     Private Shared Sub WriteWaterAnalysisHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of WaterAnalysis)(NameOf(WaterAnalysis.Date)))
+        header.CreateCell(0).SetCellValue(WaterAnalysis.GetDisplayName(NameOf(WaterAnalysis.WellName)))
+        header.CreateCell(1).SetCellValue(WaterAnalysis.GetDisplayName(NameOf(WaterAnalysis.Date)))
 
         Dim i As Integer = 2
         For Each p In WaterAnalysis.Properties.Keys.ToList
@@ -296,7 +299,7 @@ Public Class ExcelReader
         header.CreateCell(i + 1).SetCellValue(_Reason)
     End Sub
 
-    Private Shared Sub WriteWaterAnalysisToExcelRow(analysis As WaterAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedEntity.RejectedReasons)
+    Private Shared Sub WriteWaterAnalysisToExcelRow(analysis As WaterAnalysis, sheet As ISheet, rowIndex As Integer, originalRowIndex As Integer, reason As RejectedReasons)
         Dim row = sheet.CreateRow(rowIndex)
 
         row.CreateCell(0).SetCellValue(analysis.WellName)
@@ -304,7 +307,7 @@ Public Class ExcelReader
 
         Dim i As Integer = 2
         For Each p In WaterAnalysis.Properties.Keys.ToList
-            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, WaterAnalysis.Properties(p), CallType.Get)))
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, WaterAnalysis.Properties(p).Name, CallType.Get)))
             i += 1
         Next
 
@@ -324,8 +327,8 @@ Public Class ExcelReader
     Private Shared Sub WriteFLNAAnalysisHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of FLNAAnalysis)(NameOf(FLNAAnalysis.Date)))
+        header.CreateCell(0).SetCellValue(FLNAAnalysis.GetDisplayName(NameOf(FLNAAnalysis.WellName)))
+        header.CreateCell(1).SetCellValue(FLNAAnalysis.GetDisplayName(NameOf(FLNAAnalysis.Date)))
 
         Dim i As Integer = 2
         For Each p In FLNAAnalysis.Properties.Keys.ToList
@@ -345,7 +348,7 @@ Public Class ExcelReader
 
         Dim i As Integer = 2
         For Each p In FLNAAnalysis.Properties.Keys.ToList
-            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, FLNAAnalysis.Properties(p), CallType.Get)))
+            row.CreateCell(i, CellType.Numeric).SetCellValue(CDbl(CallByName(analysis, FLNAAnalysis.Properties(p).Name, CallType.Get)))
             i += 1
         Next
 
@@ -369,8 +372,8 @@ Public Class ExcelReader
     Private Shared Sub WritePrecipitationHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue(GetDisplayName(Of Precipitation)(NameOf(Precipitation.PrecipitationDate)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of Precipitation)(NameOf(Precipitation.Millimeters)))
+        header.CreateCell(0).SetCellValue(Precipitation.GetDisplayName(NameOf(Precipitation.PrecipitationDate)))
+        header.CreateCell(1).SetCellValue(Precipitation.GetDisplayName(NameOf(Precipitation.Millimeters)))
         header.CreateCell(2).SetCellValue(_OriginalRow)
         header.CreateCell(3).SetCellValue(_Reason)
     End Sub
@@ -399,12 +402,12 @@ Public Class ExcelReader
     Private Shared Sub WriteMeasurementHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.WellName)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.Date)))
-        header.CreateCell(2).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.FLNADepth)))
-        header.CreateCell(3).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.WaterDepth)))
-        header.CreateCell(4).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.Caudal)))
-        header.CreateCell(5).SetCellValue(GetDisplayName(Of Measurement)(NameOf(Measurement.Comment)))
+        header.CreateCell(0).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.WellName)))
+        header.CreateCell(1).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.Date)))
+        header.CreateCell(2).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.FLNADepth)))
+        header.CreateCell(3).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.WaterDepth)))
+        header.CreateCell(4).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.Caudal)))
+        header.CreateCell(5).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.Comment)))
         header.CreateCell(6).SetCellValue(_OriginalRow)
         header.CreateCell(7).SetCellValue(_Reason)
     End Sub
@@ -437,16 +440,16 @@ Public Class ExcelReader
     Private Shared Sub WriteWellHeader(sheet As ISheet)
         Dim header = sheet.CreateRow(0)
 
-        header.CreateCell(0).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Name)))
-        header.CreateCell(1).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.X)))
-        header.CreateCell(2).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Y)))
-        header.CreateCell(3).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Z)))
-        header.CreateCell(4).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Latitude)))
-        header.CreateCell(5).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Longitude)))
+        header.CreateCell(0).SetCellValue(Well.GetDisplayName(NameOf(Well.Name)))
+        header.CreateCell(1).SetCellValue(Well.GetDisplayName(NameOf(Well.X)))
+        header.CreateCell(2).SetCellValue(Well.GetDisplayName(NameOf(Well.Y)))
+        header.CreateCell(3).SetCellValue(Well.GetDisplayName(NameOf(Well.Z)))
+        header.CreateCell(4).SetCellValue(Well.GetDisplayName(NameOf(Well.Latitude)))
+        header.CreateCell(5).SetCellValue(Well.GetDisplayName(NameOf(Well.Longitude)))
         header.CreateCell(6).SetCellValue("Tipo")
-        header.CreateCell(7).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Height)))
-        header.CreateCell(8).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Exists)))
-        header.CreateCell(9).SetCellValue(GetDisplayName(Of Well)(NameOf(Well.Bottom)))
+        header.CreateCell(7).SetCellValue(Well.GetDisplayName(NameOf(Well.Height)))
+        header.CreateCell(8).SetCellValue(Well.GetDisplayName(NameOf(Well.Exists)))
+        header.CreateCell(9).SetCellValue(Well.GetDisplayName(NameOf(Well.Bottom)))
         header.CreateCell(10).SetCellValue(_OriginalRow)
         header.CreateCell(11).SetCellValue(_Reason)
     End Sub

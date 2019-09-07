@@ -214,27 +214,27 @@ Public Class BaseFilter
     Private Sub CreatePropertiesDictionaries()
         _measurementPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
         For Each k In Measurement.Properties
-            _measurementPropeties.Add(k.Key, k.Value)
+            _measurementPropeties.Add(k.Key, k.Value.Name)
         Next
 
         _precipitationPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
-        For Each k In Precipitation.Propeties
-            _precipitationPropeties.Add(k.Key, k.Value)
+        For Each k In Precipitation.Properties
+            _precipitationPropeties.Add(k.Key, k.Value.Name)
         Next
 
         _flnaAnalysisPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
         For Each k In FLNAAnalysis.Properties
-            _flnaAnalysisPropeties.Add(k.Key, k.Value)
+            _flnaAnalysisPropeties.Add(k.Key, k.Value.Name)
         Next
 
         _soilAnalysisPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
         For Each k In SoilAnalysis.Properties
-            _soilAnalysisPropeties.Add(k.Key, k.Value)
+            _soilAnalysisPropeties.Add(k.Key, k.Value.Name)
         Next
 
         _waterAnalysisPropeties = New Dictionary(Of String, String) From {{"Ninguna", "None"}}
         For Each k In WaterAnalysis.Properties
-            _waterAnalysisPropeties.Add(k.Key, k.Value)
+            _waterAnalysisPropeties.Add(k.Key, k.Value.Name)
         Next
     End Sub
 
@@ -254,11 +254,11 @@ Public Class BaseFilter
             Case DatasourceType.Measurements
                 Return MeasurementApply(_repositories.Measurements)
             Case DatasourceType.FLNAAnalysis
-                Return FLNAAnalysisApply(_repositories.ChemicalAnalysis)
+                Return FLNAAnalysisApply(_repositories.Analyses)
             Case DatasourceType.WaterAnalysis
-                Return WaterAnalysisApply(_repositories.ChemicalAnalysis)
+                Return WaterAnalysisApply(_repositories.Analyses)
             Case DatasourceType.SoilAnalysis
-                Return SoilAnalysisApply(_repositories.ChemicalAnalysis)
+                Return SoilAnalysisApply(_repositories.Analyses)
             Case Else
                 Return PrecipitationsApply(_repositories.Precipitations)
         End Select

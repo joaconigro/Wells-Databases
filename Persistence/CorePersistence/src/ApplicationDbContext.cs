@@ -9,16 +9,17 @@ namespace Wells.CorePersistence
         public ApplicationDbContext(DbContextOptions options) :
         base(options)
         {
+            Database.Migrate();
         }
 
-        private readonly string connectionString;
-        private readonly bool useLazyLoading;
+        //private readonly string connectionString;
+        //private readonly bool useLazyLoading;
 
-        protected ApplicationDbContext(string connectionString, bool useLazyLoading) : base()
-        {
-            this.connectionString = connectionString;
-            this.useLazyLoading = useLazyLoading;
-        }
+        //protected ApplicationDbContext(string connectionString, bool useLazyLoading) : base()
+        //{
+        //    this.connectionString = connectionString;
+        //    this.useLazyLoading = useLazyLoading;
+        //}
         #endregion Constructor
 
 
@@ -44,15 +45,15 @@ namespace Wells.CorePersistence
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder
-                    .UseLazyLoadingProxies(useLazyLoading)
-                    .UseSqlServer(connectionString);
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder
+        //            .UseLazyLoadingProxies(useLazyLoading)
+        //            .UseSqlServer(connectionString);
+        //    }
+        //}
 
 
         public static DbContextOptions GetSQLOptions(string connectionString)

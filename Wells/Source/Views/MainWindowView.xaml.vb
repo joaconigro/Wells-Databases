@@ -1,4 +1,4 @@
-﻿Imports Wells
+﻿Imports Wells.ViewBase
 
 Class MainWindowView
     Implements IMainWindowView
@@ -34,13 +34,13 @@ Class MainWindowView
         SharedBaseView.ShowErrorMessageBox(Me, message)
     End Sub
 
-    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
-        Return SharedBaseView.OpenFileDialog(filter, title)
-    End Function
+    'Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
+    '    Return SharedBaseView.OpenFileDialog(filter, title)
+    'End Function
 
-    Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
-        Return SharedBaseView.SaveFileDialog(filter, title, filename)
-    End Function
+    'Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
+    '    Return SharedBaseView.SaveFileDialog(filter, title, filename)
+    'End Function
 
     Public Function CreateDatabaseDialog(ByRef databaseName As String, ByRef path As String) As Boolean Implements IMainWindowView.CreateDatabaseDialog
         Dim diag As New CreateDatabaseDialog() With {.Owner = Me}
@@ -74,4 +74,32 @@ Class MainWindowView
         Dim diag As New GraphicsView(vm)
         diag.Show()
     End Sub
+
+    Public Function OpenFileDialog(filter As String, title As String, Optional initialDirectory As String = "") As String Implements IView.OpenFileDialog
+        Return SharedBaseView.OpenFileDialog(filter, title, initialDirectory)
+    End Function
+
+    Public Sub ShowOkOnkyMessageBox(message As String, title As String) Implements IView.ShowOkOnkyMessageBox
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "", Optional initialDirectory As String = "") As String Implements IView.SaveFileDialog
+        Return SharedBaseView.SaveFileDialog(filter, title, filename, initialDirectory)
+    End Function
+
+    Public Function ShowInputBox(prompt As String, Optional title As String = "", Optional defaultResponse As String = "") As String Implements IView.ShowInputBox
+        Throw New NotImplementedException()
+    End Function
+
+    Public Sub CloseView(dialogResult As Boolean?) Implements IView.CloseView
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub CloseView() Implements IView.CloseView
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Function ShowFolderSelectionDialog() As String Implements IView.ShowFolderSelectionDialog
+        Throw New NotImplementedException()
+    End Function
 End Class

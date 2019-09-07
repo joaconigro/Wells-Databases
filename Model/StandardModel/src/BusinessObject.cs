@@ -38,15 +38,25 @@ namespace Wells.StandardModel.Models
 
         public virtual void OnInitialize() { }
 
-        protected Dictionary<string, PropertyInfo> GetPropertyNames(Type type)
+        public static Dictionary<string, PropertyInfo> GetBrowsableProperties(Type type)
         {
-            var list = (from p in type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
+            var dict = (from p in type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
                         let a = p.GetCustomAttribute(typeof(BrowsableAttribute)) as BrowsableAttribute
                         where (a != null && a.Browsable)
                         select ((p.GetCustomAttribute(typeof(DisplayNameAttribute)) as DisplayNameAttribute).DisplayName, p)).ToDictionary(o => o.DisplayName, o => o.p);
 
-            return list;
-        }       
+            return dict;
+        }
+
+
+        public static string GetDisplayName(Type type, string propertyName) {
+            var display = (from p in type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
+                        let a = p.GetCustomAttribute(typeof(BrowsableAttribute)) as BrowsableAttribute
+                        where (a != null && a.Browsable && p.Name == propertyName)
+                        select ((p.GetCustomAttribute(typeof(DisplayNameAttribute)) as DisplayNameAttribute).DisplayName)).FirstOrDefault();
+            return display;
+        }
+     
         #endregion
 
         public override string ToString()

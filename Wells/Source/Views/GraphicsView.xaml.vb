@@ -1,4 +1,5 @@
 ﻿Imports LiveCharts.Wpf
+Imports Wells.ViewBase
 
 Public Class GraphicsView
     Implements IGraphicsView
@@ -12,7 +13,7 @@ Public Class GraphicsView
 
         ' Add any initialization after the InitializeComponent() call.
         _viewModel = viewmodel
-        _viewModel.View = Me
+        _viewModel.SetView(Me)
         DataContext = _viewModel
     End Sub
 
@@ -24,13 +25,13 @@ Public Class GraphicsView
         SharedBaseView.ShowErrorMessageBox(Me, message)
     End Sub
 
-    Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
-        Return String.Empty
-    End Function
+    'Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
+    '    Return String.Empty
+    'End Function
 
-    Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
-        Return String.Empty
-    End Function
+    'Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
+    '    Return String.Empty
+    'End Function
 
     Public Function GetYAxis() As List(Of Axis) Implements IGraphicsView.GetYAxis
         Return MainChart.AxisY.ToList
@@ -46,4 +47,32 @@ Public Class GraphicsView
     Public Sub AddAxis(axis As Axis) Implements IGraphicsView.AddAxis
         MainChart.AxisY.Add(axis)
     End Sub
+
+    Public Function OpenFileDialog(filter As String, title As String, Optional initialDirectory As String = "") As String Implements IView.OpenFileDialog
+        Throw New NotImplementedException()
+    End Function
+
+    Public Sub ShowOkOnkyMessageBox(message As String, title As String) Implements IView.ShowOkOnkyMessageBox
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "", Optional initialDirectory As String = "") As String Implements IView.SaveFileDialog
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function ShowInputBox(prompt As String, Optional title As String = "", Optional defaultResponse As String = "") As String Implements IView.ShowInputBox
+        Throw New NotImplementedException()
+    End Function
+
+    Public Sub CloseView(dialogResult As Boolean?) Implements IView.CloseView
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub CloseView() Implements IView.CloseView
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Function ShowFolderSelectionDialog() As String Implements IView.ShowFolderSelectionDialog
+        Throw New NotImplementedException()
+    End Function
 End Class

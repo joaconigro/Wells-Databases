@@ -8,6 +8,6 @@
         AnalysesRepository Analyses { get; }
         WellsRepository Wells { get; }
 
-        void Save();
+        void SaveChanges();
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using Wells.StandardModel.Models;
 
 namespace Wells.YPFModel
@@ -169,5 +171,19 @@ namespace Wells.YPFModel
         [DisplayName("Zinc"), Browsable(true)]
         public double Zinc { get; set; }
         #endregion
+
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> Properties
+        {
+            get
+            {
+                return GetBrowsableProperties(typeof(SoilAnalysis));
+            }
+        }
+
+        public static string GetDisplayName(string propertyName)
+        {
+            return GetDisplayName(typeof(SoilAnalysis), propertyName);
+        }
     }
 }

@@ -1,13 +1,24 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
+using System.Diagnostics;
 using Wells.StandardModel.Models;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Wells.YPFModel
 {
     public class ExternalFile : BusinessObject
     {
+        public ExternalFile() : base() { }
+
+        public ExternalFile(string filename) : base()
+        {
+            Name = Path.GetFileNameWithoutExtension(filename);
+            FileExtension = Path.GetExtension(filename);
+            Data = File.ReadAllBytes(filename);
+        }
 
 
         #region Properties
@@ -23,11 +34,21 @@ namespace Wells.YPFModel
         public string FileExtension { get; set; }
 
         [Browsable(true), DisplayName("Archivo")]
-        public string CompleteFilename => Name + "." + FileExtension;
+        public string CompleteFilename => Name + FileExtension;
 
         [Required, Browsable(false)]
         public byte[] Data { get; set; }
         #endregion
+
+
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> Properties
+        {
+            get
+            {
+                return GetBrowsableProperties(typeof(ExternalFile));
+            }
+        }
 
 
         #region Lazy-Load Properties
@@ -37,7 +58,29 @@ namespace Wells.YPFModel
         [ForeignKey("WellId")]
         [Browsable(false)]
         public virtual Well Well { get; set; }
-
         #endregion
+
+
+        public void Open()
+        {
+            var file = Path.Combine(Path.GetTempPath(), CompleteFilename);
+            File.WriteAllBytes(file, Data);
+            if (File.Exists(file))
+            {
+                try
+                {
+                    Process.Start(file);
+                }
+                catch
+                {
+                    throw new System.Exception($"Error al tratar de abrir el archivo {CompleteFilename}");
+                }
+            }
+        }
+
+        public static string GetDisplayName(string propertyName)
+        {
+            return GetDisplayName(typeof(ExternalFile), propertyName);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 using Wells.YPFModel;
 
 namespace Wells.CorePersistence.Repositories
@@ -91,6 +92,7 @@ namespace Wells.CorePersistence.Repositories
             return null;
         }
 
+        public static bool IsInstatiated => instance != null;
 
         public static RepositoryWrapper Instance
         {
@@ -116,14 +118,19 @@ namespace Wells.CorePersistence.Repositories
             instance = new RepositoryWrapper(context);
         }
 
-        public static void Instantiate(ApplicationDbContext repositoryContext)
-        {
-            instance = new RepositoryWrapper(repositoryContext);
-        }
+        //public static void Instantiate(ApplicationDbContext repositoryContext)
+        //{
+        //    instance = new RepositoryWrapper(repositoryContext);
+        //}
 
-        public void Save()
+        public void SaveChanges()
         {
             Context.SaveChanges();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+           return await Context.SaveChangesAsync();
         }
     }
 }

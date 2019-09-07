@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Wells.YPFModel;
 
 namespace Wells.CorePersistence.Repositories
 {
     public class WellsRepository : RepositoryBase<Well>, IBussinessObjectRepository
     {
+        public IEnumerable<string> Names => All.Select(w => w.Name);
         public WellsRepository(ApplicationDbContext context) : base(context) { }
 
         public override bool ContainsName(string name)

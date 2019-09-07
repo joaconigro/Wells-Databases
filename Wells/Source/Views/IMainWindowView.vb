@@ -1,4 +1,5 @@
-﻿Public Interface IMainWindowView
+﻿Imports Wells.ViewBase
+Public Interface IMainWindowView
     Inherits IView
     Function CreateDatabaseDialog(ByRef databaseName As String, ByRef path As String) As Boolean
     Function SelectSheetDialog(sheets As List(Of String)) As Integer

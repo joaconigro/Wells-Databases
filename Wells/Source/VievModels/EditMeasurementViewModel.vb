@@ -50,9 +50,10 @@ Public Class EditMeasurementViewModel
 
     Event CloseDialog(result As Boolean)
 
-    Property View As IView
+    'Property View As IView
 
     Sub New()
+        MyBase.New(Nothing)
         HasMeasurement = False
         NameSelectable = True
         RealDate = Date.Today
@@ -60,6 +61,7 @@ Public Class EditMeasurementViewModel
     End Sub
 
     Sub New(w As Well)
+        MyBase.New(Nothing)
         HasMeasurement = False
         NameSelectable = False
         RealDate = Date.Today
@@ -69,6 +71,7 @@ Public Class EditMeasurementViewModel
     End Sub
 
     Sub New(m As Measurement)
+        MyBase.New(Nothing)
         Measurement = m
         HasMeasurement = True
         NameSelectable = False
@@ -121,10 +124,18 @@ Public Class EditMeasurementViewModel
         _repo.Remove(Measurement)
     End Sub
 
+    Protected Overrides Sub SetValidators()
+        Throw New NotImplementedException()
+    End Sub
+
+    Protected Overrides Sub SetCommandUpdates()
+        Throw New NotImplementedException()
+    End Sub
+
     ReadOnly Property DeleteMeasurementCommand As ICommand = New RelayCommand(Sub()
                                                                                   If View.ShowMessageBox("¿Desea eliminar este medición?", "Borrar medición") Then
                                                                                       RemoveAll()
-                                                                                      RepositoryWrapper.Instance.Save()
+                                                                                      RepositoryWrapper.Instance.SaveChanges()
                                                                                       RaiseEvent CloseDialog(True)
                                                                                   End If
                                                                               End Sub,
@@ -140,7 +151,7 @@ Public Class EditMeasurementViewModel
                                                                        Else
                                                                            _repo.Add(Measurement)
                                                                        End If
-                                                                       RepositoryWrapper.Instance.Save()
+                                                                       RepositoryWrapper.Instance.SaveChanges()
                                                                        RaiseEvent CloseDialog(True)
                                                                    End Sub,
                                                                    Function() Validate(),

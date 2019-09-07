@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using Wells.StandardModel.Models;
 
 namespace Wells.YPFModel
@@ -66,5 +68,19 @@ namespace Wells.YPFModel
         [DisplayName("Viscosidad Dinámica"), Browsable(true)]
         public double DynamicViscosity { get; set; }
         #endregion
+
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> Properties
+        {
+            get
+            {
+                return GetBrowsableProperties(typeof(FLNAAnalysis));
+            }
+        }
+
+        public static string GetDisplayName(string propertyName)
+        {
+            return GetDisplayName(typeof(FLNAAnalysis), propertyName);
+        }
     }
 }

@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Wells.StandardModel.Models;
 using System.Linq;
+using System.Reflection;
+using Wells.StandardModel.Models;
 
 namespace Wells.YPFModel
 {
     public class Well : BusinessObject
     {
+        private List<WaterAnalysis> waterAnalyses;
+        private List<SoilAnalysis> soilAnalyses;
+        private List<FLNAAnalysis> fLNAAnalyses;
         public Well() : base() { }
 
         public Well(string name) : base(name) { }
@@ -49,26 +52,35 @@ namespace Wells.YPFModel
 
 
         [Browsable(false)]
-        public List<SoilAnalysis> SoilAnalyses { get
-            {
-                return Analyses?.Where((a) => a.SampleOf == SampleType.Soil).Select((a) => a as SoilAnalysis).ToList();
-            } }
-
-        [Browsable(false)]
-        public List<WaterAnalysis> WaterAnalyses
+        public virtual List<SoilAnalysis> SoilAnalyses
         {
             get
             {
-                return Analyses?.Where((a) => a.SampleOf == SampleType.Water).Select((a) => a as WaterAnalysis).ToList();
+                if (soilAnalyses == null)
+                    return Analyses?.Where((a) => a.SampleOf == SampleType.Soil).Select((a) => a as SoilAnalysis).ToList();
+                return soilAnalyses;
             }
         }
 
         [Browsable(false)]
-        public List<FLNAAnalysis> FLNAAnalyses
+        public virtual List<WaterAnalysis> WaterAnalyses
         {
             get
             {
-                return Analyses?.Where((a) => a.SampleOf == SampleType.FLNA).Select((a) => a as FLNAAnalysis).ToList();
+                if (waterAnalyses == null)
+                    return Analyses?.Where((a) => a.SampleOf == SampleType.Water).Select((a) => a as WaterAnalysis).ToList();
+                return waterAnalyses;
+            }
+        }
+
+        [Browsable(false)]
+        public virtual List<FLNAAnalysis> FLNAAnalyses
+        {
+            get
+            {
+                if (fLNAAnalyses == null)
+                    return Analyses?.Where((a) => a.SampleOf == SampleType.FLNA).Select((a) => a as FLNAAnalysis).ToList();
+                return fLNAAnalyses;
             }
         }
 
@@ -85,6 +97,20 @@ namespace Wells.YPFModel
 
         [Browsable(false)]
         public virtual List<ExternalFile> Files { get; set; }
-#endregion
+        #endregion
+
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> Properties
+        {
+            get
+            {
+                return GetBrowsableProperties(typeof(Well));
+            }
+        }
+
+        public static string GetDisplayName(string propertyName)
+        {
+            return GetDisplayName(typeof(Well), propertyName);
+        }
     }
 }

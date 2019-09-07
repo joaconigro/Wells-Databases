@@ -10,7 +10,7 @@ Public Class MainWindowViewModel
     Inherits BaseViewModel
 
     Private _window As IMainWindowView
-    Private _repo As RepositoryWrapper
+    Private _Repository As RepositoryWrapper
 
     Private WithEvents _Filter As BaseFilter
     Property Filter As BaseFilter
@@ -24,7 +24,7 @@ Public Class MainWindowViewModel
 
     ReadOnly Property WellNames As List(Of String)
         Get
-            Return _repo?.Wells?.Names
+            Return _Repository?.Wells.Names
         End Get
     End Property
 
@@ -196,8 +196,8 @@ Public Class MainWindowViewModel
         Set
             _SelectedEntity = Value
             NotifyPropertyChanged(NameOf(WellExistsInfo))
-            CType(EditWellCommand, Command).RaiseCanExecuteChanged()
-            CType(EditMeasurementCommand, Command).RaiseCanExecuteChanged()
+            CType(EditWellCommand, RelayCommand).RaiseCanExecuteChanged()
+            CType(EditMeasurementCommand, RelayCommand).RaiseCanExecuteChanged()
         End Set
     End Property
 
@@ -213,8 +213,9 @@ Public Class MainWindowViewModel
         End Set
     End Property
 
-    Sub New(window As IMainWindowView)
-        _window = window
+    Sub New(window As IView)
+        MyBase.New(window)
+        _window = CType(window, IMainWindowView)
 
         ChemicalAnalysis.CreateParamtersDictionary()
         _progress = New Progress(Of Integer)(AddressOf ProgressChanged)
@@ -254,7 +255,7 @@ Public Class MainWindowViewModel
                                                                             End If
                                                                         End Sub,
                                                                    Function()
-                                                                       Return Repositories.HasProject
+                                                                       Return RepositoryWrapper.IsInstatiated
                                                                    End Function,
                                                                    AddressOf OnError)
 
@@ -267,7 +268,7 @@ Public Class MainWindowViewModel
                                                                                    End If
                                                                                End Sub,
                                                                           Function()
-                                                                              Return Repositories.HasProject
+                                                                              Return RepositoryWrapper.IsInstatiated
                                                                           End Function,
                                                                           AddressOf OnError)
 
@@ -280,7 +281,7 @@ Public Class MainWindowViewModel
                                                                                    End If
                                                                                End Sub,
                                                                           Function()
-                                                                              Return Repositories.HasProject
+                                                                              Return RepositoryWrapper.IsInstatiated
                                                                           End Function,
                                                                           AddressOf OnError)
 
@@ -293,7 +294,7 @@ Public Class MainWindowViewModel
                                                                                     End If
                                                                                 End Sub,
                                                                           Function()
-                                                                              Return Repositories.HasProject
+                                                                              Return RepositoryWrapper.IsInstatiated
                                                                           End Function,
                                                                           AddressOf OnError)
 
@@ -306,7 +307,7 @@ Public Class MainWindowViewModel
                                                                                    End If
                                                                                End Sub,
                                                                           Function()
-                                                                              Return Repositories.HasProject
+                                                                              Return RepositoryWrapper.IsInstatiated
                                                                           End Function,
                                                                           AddressOf OnError)
 
@@ -319,7 +320,7 @@ Public Class MainWindowViewModel
                                                                                      End If
                                                                                  End Sub,
                                                                           Function()
-                                                                              Return Repositories.HasProject
+                                                                              Return RepositoryWrapper.IsInstatiated
                                                                           End Function,
                                                                           AddressOf OnError)
 
@@ -327,7 +328,7 @@ Public Class MainWindowViewModel
                                                                         _Filter.ShowedDatasource = CInt(param)
                                                                     End Sub,
                                                                Function()
-                                                                   Return Repositories.HasProject
+                                                                   Return RepositoryWrapper.IsInstatiated
                                                                End Function,
                                                                AddressOf OnError)
 
@@ -340,7 +341,7 @@ Public Class MainWindowViewModel
                                                                End If
                                                            End Sub,
                                                       Function()
-                                                          Return Repositories.HasProject
+                                                          Return RepositoryWrapper.IsInstatiated
                                                       End Function, AddressOf OnError)
 
     Property EditWellCommand As ICommand = New RelayCommand(Sub()
@@ -361,7 +362,7 @@ Public Class MainWindowViewModel
                                                                 End If
                                                             End Sub,
                                                       Function()
-                                                          Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
+                                                          Return RepositoryWrapper.IsInstatiated AndAlso _SelectedEntity IsNot Nothing
                                                       End Function, AddressOf OnError)
 
     Property NewMeasurementCommand As ICommand = New RelayCommand(Sub()
@@ -381,7 +382,7 @@ Public Class MainWindowViewModel
                                                                       End If
                                                                   End Sub,
                                                       Function()
-                                                          Return Repositories.HasProject
+                                                          Return RepositoryWrapper.IsInstatiated
                                                       End Function, AddressOf OnError)
 
     Property EditMeasurementCommand As ICommand = New RelayCommand(Sub()
@@ -394,7 +395,7 @@ Public Class MainWindowViewModel
                                                                        End If
                                                                    End Sub,
                                                       Function()
-                                                          Return Repositories.HasProject AndAlso _SelectedEntity IsNot Nothing
+                                                          Return RepositoryWrapper.IsInstatiated AndAlso _SelectedEntity IsNot Nothing
                                                       End Function, AddressOf OnError)
 
     Property OpenGraphicsViewCommand As ICommand = New RelayCommand(Sub()
@@ -402,7 +403,7 @@ Public Class MainWindowViewModel
                                                                         _window.OpenGraphicsView(vm)
                                                                     End Sub,
                                                                Function()
-                                                                   Return Repositories.HasProject
+                                                                   Return RepositoryWrapper.IsInstatiated
                                                                End Function, AddressOf OnError)
 
     Private Function OpenExcelFile(ByRef workbook As XSSFWorkbook, ByRef sheetIndex As Integer) As Boolean
@@ -432,9 +433,9 @@ Public Class MainWindowViewModel
 
         If wells.Any Then
             StartProgressNotifications(False, "Importando pozos")
-            Dim rejected = Await Task.Run(Function() _repo.Wells.AddRange(wells, _progress))
+            Dim rejected = Await Task.Run(Function() _Repository.Wells.AddRange(wells, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
-            Await _repo.SaveChangesAsync()
+            Await _Repository.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
@@ -451,9 +452,9 @@ Public Class MainWindowViewModel
 
         If measurements.Any Then
             StartProgressNotifications(False, "Importando mediciones")
-            Dim rejected = Await Task.Run(Function() _repo.Measurements.AddRange(measurements, _progress))
+            Dim rejected = Await Task.Run(Function() _Repository.Measurements.AddRange(measurements, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
-            Await _repo.SaveChangesAsync()
+            Await _Repository.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
@@ -470,9 +471,9 @@ Public Class MainWindowViewModel
 
         If flna.Any Then
             StartProgressNotifications(False, "Importando análisis")
-            Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(flna, _progress))
+            Dim rejected = Await Task.Run(Function() _Repository.Analyses.AddRange(flna, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
-            Await _repo.SaveChangesAsync()
+            Await _Repository.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
@@ -489,9 +490,9 @@ Public Class MainWindowViewModel
 
         If water.Any Then
             StartProgressNotifications(False, "Importando análisis")
-            Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(water, _progress))
+            Dim rejected = Await Task.Run(Function() _Repository.Analyses.AddRange(water, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
-            Await _repo.SaveChangesAsync()
+            Await _Repository.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
@@ -508,9 +509,9 @@ Public Class MainWindowViewModel
 
         If soil.Any Then
             StartProgressNotifications(False, "Importando análisis")
-            Dim rejected = Await Task.Run(Function() _repo.ChemicalAnalysis.AddRange(soil, _progress))
+            Dim rejected = Await Task.Run(Function() _Repository.Analyses.AddRange(soil, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
-            Await _repo.SaveChangesAsync()
+            Await _Repository.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
@@ -527,9 +528,9 @@ Public Class MainWindowViewModel
 
         If precipitations.Any Then
             StartProgressNotifications(False, "Importando precipitaciones")
-            Dim rejected = Await Task.Run(Function() _repo.Precipitations.AddRange(precipitations, _progress))
+            Dim rejected = Await Task.Run(Function() _Repository.Precipitations.AddRange(precipitations, _progress))
             StartProgressNotifications(True, "Guardando base de datos")
-            Await _repo.SaveChangesAsync()
+            Await _Repository.SaveChangesAsync()
             If rejected.Any Then
                 ExportRejectedToExcel(rejected)
             End If
@@ -550,11 +551,12 @@ Public Class MainWindowViewModel
     End Sub
 
     Private Async Sub OpenDatabase(databaseFile As String, create As Boolean)
-        _repo?.Close()
+        ' _repo?.Close()
         StartProgressNotifications(True, "Abriendo la base de datos")
-        Await Task.Run(Sub() Repositories.CreateOrOpen(databaseFile, create))
-        _repo = RepositoryWrapper.Instance
-        If _repo IsNot Nothing Then
+        Dim conString = $"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={databaseFile};Integrated Security=True"
+        Await Task.Run(Sub() RepositoryWrapper.Instantiate(conString))
+        _Repository = RepositoryWrapper.Instance
+        If _Repository IsNot Nothing Then
             Filter = New BaseFilter()
             SetDatasource()
         End If
@@ -582,6 +584,14 @@ Public Class MainWindowViewModel
 
     Private Sub OnFilterDatasourceTypeChanged() Handles _Filter.DatasoureceTypeChanged
         NotifyPropertyChanged(NameOf(PropertiesNames))
+    End Sub
+
+    Protected Overrides Sub SetValidators()
+        Throw New NotImplementedException()
+    End Sub
+
+    Protected Overrides Sub SetCommandUpdates()
+        Throw New NotImplementedException()
     End Sub
 
     ReadOnly Property ItemsCount As Integer

@@ -8,11 +8,12 @@ Imports LiveCharts.Definitions.Series
 Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports Xceed.Wpf.Toolkit
+Imports Wells.StandardModel.Models
 
 Public Class GraphicsViewModel
     Inherits BaseViewModel
 
-    Property View As IView
+    'Property View As IView
     Private _randomGenerator As New Random()
 
     ReadOnly Property FromOptions As New List(Of String) From {"Pozos", "Precipitaciones"}
@@ -74,13 +75,13 @@ Public Class GraphicsViewModel
             If Not String.IsNullOrEmpty(_SelectedParameterName) Then
                 Select Case _SelectedSeriesDataName
                     Case "Mediciones"
-                        _realParameterName = Measurement.Properties(_SelectedParameterName)
+                        _realParameterName = Measurement.Properties(_SelectedParameterName).Name
                     Case "Análisis de FLNA"
-                        _realParameterName = FLNAAnalysis.Properties(_SelectedParameterName)
+                        _realParameterName = FLNAAnalysis.Properties(_SelectedParameterName).Name
                     Case "Análisis de agua"
-                        _realParameterName = WaterAnalysis.Properties(_SelectedParameterName)
+                        _realParameterName = WaterAnalysis.Properties(_SelectedParameterName).Name
                     Case Else
-                        _realParameterName = SoilAnalysis.Properties(_SelectedParameterName)
+                        _realParameterName = SoilAnalysis.Properties(_SelectedParameterName).Name
                 End Select
             End If
         End Set
@@ -94,7 +95,7 @@ Public Class GraphicsViewModel
         Set
             _SelectedWellName = Value
             If Not String.IsNullOrEmpty(_SelectedWellName) Then
-                _well = RepositoryWrapper.Instance.Wells.FindName(_SelectedWellName)
+                _well = RepositoryWrapper.Instance.Wells.FindByName(_SelectedWellName)
             End If
         End Set
     End Property
@@ -126,7 +127,7 @@ Public Class GraphicsViewModel
             NotifyPropertyChanged(NameOf(SelectedSerieName))
             If SeriesCollection.Any AndAlso Not String.IsNullOrEmpty(_SelectedSerieName?.Name) Then
                 _selectedSerie = _seriesDictionary(_SelectedSerieName.Name)
-                CType(RemoveSeriesCommand, Command).RaiseCanExecuteChanged()
+                CType(RemoveSeriesCommand, RelayCommand).RaiseCanExecuteChanged()
             End If
         End Set
     End Property
@@ -144,6 +145,7 @@ Public Class GraphicsViewModel
     End Sub
 
     Sub New()
+        MyBase.New(Nothing)
         MaximunDate = Date.Today
         MinimunDate = Date.FromOADate(Date.Today.ToOADate - 180)
 
@@ -182,27 +184,27 @@ Public Class GraphicsViewModel
                     Case "Mediciones"
                         values = (From m In _well.Measurements
                                   Let param = CType(CallByName(m, _realParameterName, CallType.Get), Double)
-                                  Where m.RealDate >= MinimunDate AndAlso m.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                                  Order By m.RealDate Ascending
-                                  Select New DateModel(m.RealDate, param)).ToList
+                                  Where m.Date >= MinimunDate AndAlso m.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
+                                  Order By m.Date Ascending
+                                  Select New DateModel(m.Date, param)).ToList
                     Case "Análisis de FLNA"
-                        values = (From a In _well.Analysis.FindAll(Function(a) a.SampleOf = SampleType.FLNA)
+                        values = (From a In _well.Analyses.FindAll(Function(a) a.SampleOf = SampleType.FLNA)
                                   Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
-                                  Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                                  Order By a.RealDate Ascending
-                                  Select New DateModel(a.RealDate, param)).ToList
+                                  Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
+                                  Order By a.Date Ascending
+                                  Select New DateModel(a.Date, param)).ToList
                     Case "Análisis de agua"
-                        values = (From a In _well.Analysis.FindAll(Function(a) a.SampleOf = SampleType.Water)
+                        values = (From a In _well.Analyses.FindAll(Function(a) a.SampleOf = SampleType.Water)
                                   Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
-                                  Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                                  Order By a.RealDate Ascending
-                                  Select New DateModel(a.RealDate, param)).ToList
+                                  Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
+                                  Order By a.Date Ascending
+                                  Select New DateModel(a.Date, param)).ToList
                     Case Else
-                        values = (From a In _well.Analysis.FindAll(Function(a) a.SampleOf = SampleType.Soil)
+                        values = (From a In _well.Analyses.FindAll(Function(a) a.SampleOf = SampleType.Soil)
                                   Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
-                                  Where a.RealDate >= MinimunDate AndAlso a.RealDate <= MaximunDate AndAlso param <> BusinessObject.NullNumericValue
-                                  Order By a.RealDate Ascending
-                                  Select New DateModel(a.RealDate, param)).ToList
+                                  Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
+                                  Order By a.Date Ascending
+                                  Select New DateModel(a.Date, param)).ToList
                 End Select
 
 
@@ -221,9 +223,9 @@ Public Class GraphicsViewModel
                 title = "Precipitaciones"
                 CType(genericSeries, ColumnSeries).Title = title
                 Dim values = (From p In RepositoryWrapper.Instance.Precipitations.All
-                              Where p.RealDate >= MinimunDate AndAlso p.RealDate <= MaximunDate
-                              Order By p.RealDate Ascending
-                              Select New DateModel(p.RealDate, p.Millimeters)).ToList
+                              Where p.PrecipitationDate >= MinimunDate AndAlso p.PrecipitationDate <= MaximunDate
+                              Order By p.PrecipitationDate Ascending
+                              Select New DateModel(p.PrecipitationDate, p.Millimeters)).ToList
 
                 If values.Count < 1 Then
                     View.ShowErrorMessageBox("No hay datos para representar, por lo tanto no se dibujará la serie.")
@@ -245,6 +247,14 @@ Public Class GraphicsViewModel
         Series.Add(New CheckedListItem(Of String)(title, True))
         _seriesDictionary.Add(title, genericSeries)
         SeriesCollection.Add(genericSeries)
+    End Sub
+
+    Protected Overrides Sub SetValidators()
+        Throw New NotImplementedException()
+    End Sub
+
+    Protected Overrides Sub SetCommandUpdates()
+        Throw New NotImplementedException()
     End Sub
 
     'Private Function GetValues(paramName As String) As IEnumerable(Of Object)

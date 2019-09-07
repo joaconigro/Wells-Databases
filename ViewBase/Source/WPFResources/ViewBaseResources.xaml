@@ -82,8 +82,9 @@
     <!--Behaviors-->
     <local:DataGridBehavior x:Key="ColumnBrowsableBehavior"/>
 
-   
-    
+    <!--Extensions-->
+    <local:MenuItemExtensions x:Key="MenuExtensions"/>
+
     <!--Images-->
     <BitmapImage x:Key="HomeImage" UriSource="pack://application:,,,/AppResources;component/Source/Images/HomeImage.png"/>
 </ResourceDictionary>

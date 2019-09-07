@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using Wells.StandardModel.Models;
 
 namespace Wells.YPFModel
 {
     public class Measurement : BusinessObject
     {
-
+        public Measurement() : base() { }
 
         #region Properties
         [Required]
@@ -108,6 +110,21 @@ namespace Wells.YPFModel
             if (Date > (other as Measurement).Date) return -1;
             if (Date == (other as Measurement).Date) return 0;
             return 1;
+        }
+
+
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> Properties
+        {
+            get
+            {
+                return GetBrowsableProperties(typeof(Measurement));
+            }
+        }
+
+        public static string GetDisplayName(string propertyName)
+        {
+            return GetDisplayName(typeof(Measurement), propertyName);
         }
     }
 }

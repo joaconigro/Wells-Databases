@@ -1,4 +1,6 @@
-﻿Public Class EntitiesManagerControl
+﻿Imports Wells.ViewBase
+
+Public Class EntitiesManagerControl
     Property SelectedEntity As Object
         Get
             Return _SelectedEntity
@@ -28,9 +30,9 @@
         DependencyProperty.Register(NameOf(NewEntityCommand),
                                     GetType(ICommand),
                                     GetType(EntitiesManagerControl),
-                                    New PropertyMetadata(New Command(Sub()
+                                    New PropertyMetadata(New RelayCommand(Sub()
 
-                                                                     End Sub)))
+                                                                          End Sub)))
 
 
     Property EditEntityCommand As ICommand
@@ -38,18 +40,18 @@
         DependencyProperty.Register(NameOf(EditEntityCommand),
                                     GetType(ICommand),
                                     GetType(EntitiesManagerControl),
-                                    New PropertyMetadata(New Command(Sub()
+                                    New PropertyMetadata(New RelayCommand(Sub()
 
-                                                                     End Sub)))
+                                                                          End Sub)))
 
     Property DeleteEntityCommand As ICommand
     Shared ReadOnly DeleteEntityCommandProperty As DependencyProperty =
         DependencyProperty.Register(NameOf(DeleteEntityCommand),
                                     GetType(ICommand),
                                     GetType(EntitiesManagerControl),
-                                    New PropertyMetadata(New Command(Sub()
+                                    New PropertyMetadata(New RelayCommand(Sub()
 
-                                                                     End Sub)))
+                                                                          End Sub)))
 
     Private _SelectedEntity As Object
     Private _ObjectsSource As Object
