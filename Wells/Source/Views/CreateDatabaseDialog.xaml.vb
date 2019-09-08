@@ -24,7 +24,7 @@
     End Property
 
     Private Sub Validate()
-        If Not String.IsNullOrEmpty(_DatabaseName) AndAlso Not String.IsNullOrEmpty(_DatabasePath) Then
+        If Not String.IsNullOrEmpty(_DatabaseName) Then ' AndAlso Not String.IsNullOrEmpty(_DatabasePath) Then
             OkButton.IsEnabled = True
         Else
             OkButton.IsEnabled = False

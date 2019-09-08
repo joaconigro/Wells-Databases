@@ -301,7 +301,7 @@ Public Class BaseFilter
                         Where Rectangle2D.Torches.Contains(w)
                         Select w).ToList
             Case Else
-                Return repo.All
+                Return repo.All.ToList
         End Select
     End Function
 
@@ -345,7 +345,7 @@ Public Class BaseFilter
                         Where Rectangle2D.Torches.Contains(e.Well)
                         Select e).ToList
             Case Else
-                list = repo.All
+                list = repo.All.ToList
         End Select
 
         Dim datedList = (From m In list

@@ -13,7 +13,7 @@ Public Class ExcelReader
     Shared Function ReadWells(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Well)
         Dim sheet = workbook.GetSheetAt(sheetIndex)
         Dim row As IRow
-        Dim wells As New List(Of Well)
+        Dim wells As New Dictionary(Of String, Well)
 
         Dim indexError As Integer
         Try
@@ -38,14 +38,16 @@ Public Class ExcelReader
                 End If
                 well.Bottom = ReadCellAsDouble(row, 9)
 
-                wells.Add(well)
+                If Not wells.ContainsKey(well.Name) AndAlso Not String.IsNullOrEmpty(well.Name) Then
+                    wells.Add(well.Name, well)
+                End If
                 progress.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
         End Try
 
-        Return wells
+        Return wells.Values.ToList
     End Function
 
     Shared Function ReadPrecipitations(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Precipitation)
@@ -74,7 +76,10 @@ Public Class ExcelReader
     End Function
 
     Private Shared Function GetWell(wellName As String) As Well
-        Return Repositories.RepositoryWrapper.Instance.Wells.FindByName(wellName)
+        If Not String.IsNullOrEmpty(wellName) AndAlso Repositories.RepositoryWrapper.Instance.Wells.Wells.ContainsKey(wellName) Then
+            Return Repositories.RepositoryWrapper.Instance.Wells.Wells(wellName)
+        End If
+        Return Nothing
     End Function
 
     Shared Function ReadMeasurements(workbook As IWorkbook, sheetIndex As Integer, progress As IProgress(Of Integer)) As List(Of Measurement)
@@ -96,7 +101,9 @@ Public Class ExcelReader
                     .Comment = ReadCellAsString(row, 5)
                 }
 
-                measurements.Add(meas)
+                If meas.Well IsNot Nothing Then
+                    measurements.Add(meas)
+                End If
                 progress.Report(i / maxCount * 100)
             Next
         Catch ex As Exception

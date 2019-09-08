@@ -42,11 +42,11 @@ Class MainWindowView
     '    Return SharedBaseView.SaveFileDialog(filter, title, filename)
     'End Function
 
-    Public Function CreateDatabaseDialog(ByRef databaseName As String, ByRef path As String) As Boolean Implements IMainWindowView.CreateDatabaseDialog
+    Public Function CreateDatabaseDialog(ByRef databaseName As String) As Boolean Implements IMainWindowView.CreateDatabaseDialog
         Dim diag As New CreateDatabaseDialog() With {.Owner = Me}
         If diag.ShowDialog Then
             databaseName = diag.DatabaseName
-            path = diag.DatabasePath
+            'Path = diag.DatabasePath
             Return True
         End If
         Return False

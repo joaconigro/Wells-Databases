@@ -113,8 +113,10 @@ namespace Wells.CorePersistence.Repositories
 
         public static void Instantiate(string connectionString)
         {
-            DbContextOptions options = ApplicationDbContext.GetSQLOptions(connectionString);
-            var context = new ApplicationDbContext(options);
+            ApplicationDbContext.ConnectionString = connectionString;
+            //DbContextOptions options = ApplicationDbContext.GetSQLOptions(connectionString);
+            var context = new ApplicationDbContext();
+            context.Database.Migrate();
             instance = new RepositoryWrapper(context);
         }
 

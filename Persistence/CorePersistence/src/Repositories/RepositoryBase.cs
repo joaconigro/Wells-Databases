@@ -19,47 +19,53 @@ namespace Wells.CorePersistence.Repositories
             Context.Set<T>().Add(entity);
         }
 
-        public List<RejectedEntity> AddRange(IEnumerable<T> entities, IProgress<int> progress)
+        public void AddRange(IEnumerable<T> entities)
         {
-            var rejecteds = new List<RejectedEntity>();
-            var inserted = new List<T>();
-            RejectedReasons reason;
-            int total = entities.Count();
-            for (int i = 0; i < total; i++)
-            {
-                var e = entities.ElementAt(i);
-                reason = RejectedReasons.None;
-                if (OnAddingOrUpdating(e) == RejectedReasons.None) {
-                    inserted.Add(e);
-                }
-                else {
-                    rejecteds.Add(new RejectedEntity(e as IBusinessObject, i + 2, reason));
-                }
-                progress.Report((i + 1) / total * 100);
-            }
+            //var rejecteds = new List<RejectedEntity>();
+            //var inserted = new List<T>();
+            //RejectedReasons reason;
+            //int total = entities.Count();
+            //for (int i = 0; i < total; i++)
+            //{
+            //    var e = entities.ElementAt(i);
+            //    reason = RejectedReasons.None;
+            //    if (OnAddingOrUpdating(e) == RejectedReasons.None) {
+            //        inserted.Add(e);
+            //    }
+            //    else {
+            //        rejecteds.Add(new RejectedEntity(e as IBusinessObject, i + 2, reason));
+            //    }
+            //    progress.Report((i + 1) / total * 100);
+            //}
 
-            Context.Set<T>().AddRange(inserted);
-
-            return rejecteds;
+            Context.Set<T>().AddRange(entities);
+            OnAddingOrUpdating();
+            //return rejecteds;
 
         }
 
-
-        public IEnumerable<T> All => Context.Set<T>().ToList();
-
-        public bool Exists(Predicate<T> predicate)
+        public async void AddRangeAsync(IEnumerable<T> entities)
         {
-            return Context.Set<T>().ToList().Exists(predicate);
+            await Context.Set<T>().AddRangeAsync(entities);
+            OnAddingOrUpdating();
         }
 
-        public T Find(Predicate<T> predicate)
+        public IQueryable<T> All => Context.Set<T>().AsQueryable();
+
+        public bool Exists(Func<T, bool> predicate)
         {
-            return Context.Set<T>().ToList().Find(predicate);
+            var obj = Find(predicate);
+            return obj != null;
         }
 
-        public IEnumerable<T> FindAll(Predicate<T> predicate)
+        public T Find(Func<T, bool> predicate)
         {
-            return Context.Set<T>().ToList().FindAll(predicate).AsQueryable();
+            return All.FirstOrDefault(predicate);
+        }
+
+        public IQueryable<T> FindAll(Func<T, bool> predicate)
+        {
+            return All.Where(predicate).AsQueryable();
         }
 
         public void Remove(T entity)
@@ -87,6 +93,6 @@ namespace Wells.CorePersistence.Repositories
         public abstract bool ContainsName(string name);
         public abstract bool Exists(string id);
 
-        protected abstract RejectedReasons OnAddingOrUpdating(T entity);
+        protected virtual void OnAddingOrUpdating() { }
     }
 }

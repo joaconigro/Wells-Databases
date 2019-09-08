@@ -24,7 +24,7 @@ Public Class MainWindowViewModel
 
     ReadOnly Property WellNames As List(Of String)
         Get
-            Return _Repository?.Wells.Names
+            Return _Repository?.Wells.Names.ToList
         End Get
     End Property
 
@@ -220,7 +220,7 @@ Public Class MainWindowViewModel
         ChemicalAnalysis.CreateParamtersDictionary()
         _progress = New Progress(Of Integer)(AddressOf ProgressChanged)
 
-        If Not String.IsNullOrEmpty(My.Settings.DatabaseFilename) AndAlso IO.File.Exists(My.Settings.DatabaseFilename) Then
+        If Not String.IsNullOrEmpty(My.Settings.DatabaseFilename) Then ' AndAlso IO.File.Exists(My.Settings.DatabaseFilename) Then
             OpenDatabase(My.Settings.DatabaseFilename, False)
         End If
 
@@ -228,9 +228,9 @@ Public Class MainWindowViewModel
 
     Property CreateDatabaseCommand As ICommand = New RelayCommand(Sub()
                                                                       Dim databaseName As String = ""
-                                                                      Dim databasePath As String = ""
-                                                                      If _window.CreateDatabaseDialog(databaseName, databasePath) Then
-                                                                          Dim filename = IO.Path.Combine(databasePath, databaseName & ".mdf")
+                                                                      ' Dim databasePath As String = ""
+                                                                      If _window.CreateDatabaseDialog(databaseName) Then
+                                                                          Dim filename = IO.Path.Combine(databaseName & ".mdf")
                                                                           My.Settings.DatabaseFilename = filename
                                                                           My.Settings.Save()
                                                                           OpenDatabase(filename, True)
@@ -240,9 +240,9 @@ Public Class MainWindowViewModel
     Property OpenDatabaseCommand As ICommand = New RelayCommand(Sub()
                                                                     Dim filename = _window.OpenFileDialog("Well Databases|*.mdf", "Abrir base de datos")
                                                                     If Not String.IsNullOrEmpty(filename) Then
-                                                                        My.Settings.DatabaseFilename = filename
+                                                                        My.Settings.DatabaseFilename = IO.Path.GetFileName(filename)
                                                                         My.Settings.Save()
-                                                                        OpenDatabase(filename, False)
+                                                                        OpenDatabase(My.Settings.DatabaseFilename, False)
                                                                     End If
                                                                 End Sub, Function() True, AddressOf OnError)
 
@@ -433,7 +433,10 @@ Public Class MainWindowViewModel
 
         If wells.Any Then
             StartProgressNotifications(False, "Importando pozos")
-            Dim rejected = Await Task.Run(Function() _Repository.Wells.AddRange(wells, _progress))
+            Dim rejected = Await Task.Run(Function()
+                                              _Repository.Wells.AddRange(wells)
+                                              Return New List(Of RejectedEntity)
+                                          End Function)
             StartProgressNotifications(True, "Guardando base de datos")
             Await _Repository.SaveChangesAsync()
             If rejected.Any Then
@@ -452,7 +455,10 @@ Public Class MainWindowViewModel
 
         If measurements.Any Then
             StartProgressNotifications(False, "Importando mediciones")
-            Dim rejected = Await Task.Run(Function() _Repository.Measurements.AddRange(measurements, _progress))
+            Dim rejected = Await Task.Run(Function()
+                                              _Repository.Measurements.AddRange(measurements)
+                                              Return New List(Of RejectedEntity)
+                                          End Function)
             StartProgressNotifications(True, "Guardando base de datos")
             Await _Repository.SaveChangesAsync()
             If rejected.Any Then
@@ -471,7 +477,10 @@ Public Class MainWindowViewModel
 
         If flna.Any Then
             StartProgressNotifications(False, "Importando análisis")
-            Dim rejected = Await Task.Run(Function() _Repository.Analyses.AddRange(flna, _progress))
+            Dim rejected = Await Task.Run(Function()
+                                              _Repository.Analyses.AddRange(flna)
+                                              Return New List(Of RejectedEntity)
+                                          End Function)
             StartProgressNotifications(True, "Guardando base de datos")
             Await _Repository.SaveChangesAsync()
             If rejected.Any Then
@@ -490,7 +499,10 @@ Public Class MainWindowViewModel
 
         If water.Any Then
             StartProgressNotifications(False, "Importando análisis")
-            Dim rejected = Await Task.Run(Function() _Repository.Analyses.AddRange(water, _progress))
+            Dim rejected = Await Task.Run(Function()
+                                              _Repository.Analyses.AddRange(water)
+                                              Return New List(Of RejectedEntity)
+                                          End Function)
             StartProgressNotifications(True, "Guardando base de datos")
             Await _Repository.SaveChangesAsync()
             If rejected.Any Then
@@ -509,7 +521,10 @@ Public Class MainWindowViewModel
 
         If soil.Any Then
             StartProgressNotifications(False, "Importando análisis")
-            Dim rejected = Await Task.Run(Function() _Repository.Analyses.AddRange(soil, _progress))
+            Dim rejected = Await Task.Run(Function()
+                                              _Repository.Analyses.AddRange(soil)
+                                              Return New List(Of RejectedEntity)
+                                          End Function)
             StartProgressNotifications(True, "Guardando base de datos")
             Await _Repository.SaveChangesAsync()
             If rejected.Any Then
@@ -528,7 +543,10 @@ Public Class MainWindowViewModel
 
         If precipitations.Any Then
             StartProgressNotifications(False, "Importando precipitaciones")
-            Dim rejected = Await Task.Run(Function() _Repository.Precipitations.AddRange(precipitations, _progress))
+            Dim rejected = Await Task.Run(Function()
+                                              _Repository.Precipitations.AddRange(precipitations)
+                                              Return New List(Of RejectedEntity)
+                                          End Function)
             StartProgressNotifications(True, "Guardando base de datos")
             Await _Repository.SaveChangesAsync()
             If rejected.Any Then
@@ -551,16 +569,21 @@ Public Class MainWindowViewModel
     End Sub
 
     Private Async Sub OpenDatabase(databaseFile As String, create As Boolean)
-        ' _repo?.Close()
-        StartProgressNotifications(True, "Abriendo la base de datos")
-        Dim conString = $"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={databaseFile};Integrated Security=True"
-        Await Task.Run(Sub() RepositoryWrapper.Instantiate(conString))
-        _Repository = RepositoryWrapper.Instance
-        If _Repository IsNot Nothing Then
-            Filter = New BaseFilter()
-            SetDatasource()
-        End If
-        EventsAfterOpenDatabase()
+        Try
+            ' _repo?.Close()
+            StartProgressNotifications(True, "Abriendo la base de datos")
+            Dim conString = $"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={databaseFile};Integrated Security=True"
+            Await Task.Run(Sub() RepositoryWrapper.Instantiate(conString))
+            _Repository = RepositoryWrapper.Instance
+            If _Repository IsNot Nothing Then
+                Filter = New BaseFilter()
+                SetDatasource()
+            End If
+            EventsAfterOpenDatabase()
+        Catch ex As Exception
+            OnError(ex)
+        End Try
+
     End Sub
 
     Private Sub EventsAfterOpenDatabase()

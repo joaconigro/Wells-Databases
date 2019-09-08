@@ -9,10 +9,12 @@ namespace Wells.CorePersistence
         public ApplicationDbContext(DbContextOptions options) :
         base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
-        //private readonly string connectionString;
+        public ApplicationDbContext() : base() { }
+
+        public static string ConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=WellsDB.mdf;Integrated Security=True";
         //private readonly bool useLazyLoading;
 
         //protected ApplicationDbContext(string connectionString, bool useLazyLoading) : base()
@@ -45,15 +47,15 @@ namespace Wells.CorePersistence
 
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder
-        //            .UseLazyLoadingProxies(useLazyLoading)
-        //            .UseSqlServer(connectionString);
-        //    }
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(ConnectionString);
+            }
+        }
 
 
         public static DbContextOptions GetSQLOptions(string connectionString)
