@@ -33,9 +33,13 @@ Public Class WellEditingDialog
         Select Case target
             Case NameOf(_viewModel.Measurements)
                 MeasurementsEntityControl.EntitiesListview.Items.Refresh()
-            Case NameOf(_viewModel.Analysis)
-                AnalysisEntityControl.EntitiesListview.Items.Refresh()
-            Case NameOf(_viewModel.Links)
+            Case NameOf(_viewModel.SoilAnalyses)
+                SoilAnalysisEntityControl.EntitiesListview.Items.Refresh()
+            Case NameOf(_viewModel.WaterAnalyses)
+                WaterAnalysisEntityControl.EntitiesListview.Items.Refresh()
+            Case NameOf(_viewModel.FLNAAnalyses)
+                FLNAAnalysisEntityControl.EntitiesListview.Items.Refresh()
+            Case NameOf(_viewModel.Files)
                 ExternalLinksEntityControl.EntitiesListview.Items.Refresh()
         End Select
     End Sub

@@ -4,7 +4,7 @@
     xmlns:local="clr-namespace:Wells.ViewBase">
 
     <!--Icon-->
-    <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/AppResources;component/Source/Icons/LaTe.ico"/>
+    <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/AppResources;component/Source/Icons/Icon.ico"/>
 
     <!--SystemTypes-->
     <s:Boolean x:Key="True">True</s:Boolean>
@@ -16,8 +16,13 @@
         <Setter Property="Icon" Value="{StaticResource AppIcon}"/>
     </Style>
 
+    <Style x:Key="ResizableDialogStyle" BasedOn="{StaticResource WindowsStyle}" TargetType="Window">
+        <Setter Property="ShowInTaskbar" Value="False"/>
+    </Style>
+    
     <Style x:Key="DialogStyle" BasedOn="{StaticResource WindowsStyle}" TargetType="Window">
         <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="SizeToContent" Value="WidthAndHeight"/>
         <Setter Property="ShowInTaskbar" Value="False"/>
     </Style>
     
@@ -53,6 +58,7 @@
     <Style x:Key="DataGridColmunHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <!--<Setter Property="Background" Value="Chocolate"/>-->
     </Style>
 
     <Style BasedOn="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" x:Key="VerticalSeparator" TargetType="Separator">
@@ -67,10 +73,6 @@
         <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
 
-    <!--<Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    </Style>-->
-    
 
     <!--Converters-->
     <local:DoubleStringConverter x:Key="DoubleConverter"/>
@@ -79,9 +81,11 @@
     <local:BoolToHiddenVisibilityConverter x:Key="BoolToHiddenVisibilityConverter"/>
     <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
 
+    
     <!--Behaviors-->
     <local:DataGridBehavior x:Key="ColumnBrowsableBehavior"/>
 
+    
     <!--Extensions-->
     <local:MenuItemExtensions x:Key="MenuExtensions"/>
 

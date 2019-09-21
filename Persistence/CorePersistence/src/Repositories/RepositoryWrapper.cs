@@ -11,10 +11,13 @@ namespace Wells.CorePersistence.Repositories
         private PrecipitationsRepository precipitations;
         private ExternalFilesRepository externalFiles;
         private MeasurementsRepository measurements;
-        private AnalysesRepository analyses;
+        private SoilAnalysesRepository soilAnalyses;
+        private WaterAnalysesRepository waterAnalyses;
+        private FLNAAnalysesRepository fLNAAnalyses;
         private WellsRepository wells;
 
         private static RepositoryWrapper instance;
+        
 
         public PrecipitationsRepository Precipitations
         {
@@ -46,13 +49,33 @@ namespace Wells.CorePersistence.Repositories
             }
         }
 
-        public AnalysesRepository Analyses
+        public SoilAnalysesRepository SoilAnalyses
         {
             get
             {
-                if (analyses == null)
-                    analyses = new AnalysesRepository(Context);
-                return analyses;
+                if (soilAnalyses == null)
+                    soilAnalyses = new SoilAnalysesRepository(Context);
+                return soilAnalyses;
+            }
+        }
+
+        public WaterAnalysesRepository WaterAnalyses
+        {
+            get
+            {
+                if (waterAnalyses == null)
+                    waterAnalyses = new WaterAnalysesRepository(Context);
+                return waterAnalyses;
+            }
+        }
+
+        public FLNAAnalysesRepository FLNAAnalyses
+        {
+            get
+            {
+                if (fLNAAnalyses == null)
+                    fLNAAnalyses = new FLNAAnalysesRepository(Context);
+                return fLNAAnalyses;
             }
         }
 
@@ -73,9 +96,17 @@ namespace Wells.CorePersistence.Repositories
             {
                 return Wells;
             }
-            else if (typeof(T) == typeof(ChemicalAnalysis))
+            else if (typeof(T) == typeof(SoilAnalysis))
             {
-                return Analyses;
+                return SoilAnalyses;
+            }
+            else if (typeof(T) == typeof(WaterAnalysis))
+            {
+                return WaterAnalyses;
+            }
+            else if (typeof(T) == typeof(FLNAAnalysis))
+            {
+                return FLNAAnalyses;
             }
             else if (typeof(T) == typeof(Measurement))
             {

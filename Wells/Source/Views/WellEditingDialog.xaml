@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells"
         mc:Ignorable="d"
-        Title="Edición de pozos" Height="412" Width="513">
-    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2">
+        Title="Edición de pozos" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" Width="500" Height="400">
+    <Grid Margin="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -16,52 +16,52 @@
         <GroupBox Name="WellAttributesGroupBox" Header="Atributos del pozo" Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="50*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Name="WellNameTextBlock" Text="Nombre:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Name="WellNameTextBox" Style="{StaticResource TextBoxStyle}" HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding NameEditable}" Text="{Binding WellName, Mode=TwoWay}"/>
-                <CheckBox Name="ExistsCheckBox" Content="Existe" Style="{StaticResource CommonStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="5" IsChecked="{Binding Exists, Mode=TwoWay}"/>
+                <TextBox Name="WellNameTextBox" Style="{StaticResource MarginStyle}" HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding NameEditable}" Text="{Binding WellName, Mode=TwoWay}"/>
+                <CheckBox Name="ExistsCheckBox" Content="Existe" Style="{StaticResource MarginStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="5" IsChecked="{Binding Exists, Mode=TwoWay}"/>
                 <TextBlock Name="WellTypeTextBlock" Text="Tipo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
-                <ComboBox Name="WellTypeComboBox" Style="{StaticResource CommonStyle}" Grid.Row="0" Grid.Column="3" ItemsSource="{Binding WellTypes, Mode=OneWay}" SelectedIndex="{Binding Type, Mode=TwoWay}"/>
+                <ComboBox Name="WellTypeComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" ItemsSource="{Binding WellTypes, Mode=OneWay}" SelectedIndex="{Binding Type, Mode=TwoWay}"/>
                 <TextBlock Name="HeightTextBlock" Text="Altura:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="HeightTextBox" Style="{StaticResource TextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Height, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"/>
+                <TextBox Name="HeightTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Height, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="BottomTextBlock" Text="Fondo:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="BottomTextBox" Style="{StaticResource TextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{Binding Bottom, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"/>
+                <TextBox Name="BottomTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{Binding Bottom, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
             </Grid>
         </GroupBox>
         <GroupBox Name="WellCoordinatesGroupBox" Header="Coordenadas" Grid.Row="1">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="50*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Name="XTextBlock" Text="X:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Name="XTextBox" Style="{StaticResource TextBoxStyle}" Grid.Row="0" Grid.Column="1" Text="{Binding X, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"/>
+                <TextBox Name="XTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="1" Text="{Binding X, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="YTextBlock" Text="Y:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
-                <TextBox Name="YTextBox" Style="{StaticResource TextBoxStyle}" Grid.Row="0" Grid.Column="3" Text="{Binding Y, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"/>
+                <TextBox Name="YTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="3" Text="{Binding Y, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="ZTextBlock" Text="Z:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="4"/>
-                <TextBox Name="ZTextBox" Style="{StaticResource TextBoxStyle}" Grid.Row="0" Grid.Column="5" Text="{Binding Z, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"/>
+                <TextBox Name="ZTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="5" Text="{Binding Z, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="LatitudeTextBlock" Text="Latitud:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="LatitudeTextBox" Style="{StaticResource TextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"/>
+                <TextBox Name="LatitudeTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
                 <TextBlock Name="LongitudTextBlock" Text="Longitud:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="LongitudTextBox" Style="{StaticResource TextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{Binding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}}"/>
+                <TextBox Name="LongitudTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{Binding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
             </Grid>
         </GroupBox>
         <GroupBox Name="ContentGroupBox" Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">
@@ -72,8 +72,14 @@
                                                   EditEntityCommand="{Binding EditMeasurementCommand, Mode=OneWay}"
                                                   DeleteEntityCommand ="{Binding DeleteMeasurementCommand, Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Name="AnalysisTab" Header="Análisis">
-                    <local:EntitiesManagerControl x:Name="AnalysisEntityControl" ObjectsSource="{Binding Analysis, Mode=OneWay}"/>
+                <TabItem Name="SoilAnalysesTab" Header="Análisis de suelo">
+                    <local:EntitiesManagerControl x:Name="SoilAnalysisEntityControl" ObjectsSource="{Binding SoilAnalyses, Mode=OneWay}"/>
+                </TabItem>
+                <TabItem Name="WaterAnalysisTab" Header="Análisis de agua">
+                    <local:EntitiesManagerControl x:Name="WaterAnalysisEntityControl" ObjectsSource="{Binding WaterAnalyses, Mode=OneWay}"/>
+                </TabItem>
+                <TabItem Name="FLNAAnalysisTab" Header="Análisis FLNA">
+                    <local:EntitiesManagerControl x:Name="FLNAAnalysisEntityControl" ObjectsSource="{Binding FLNAAnalyses, Mode=OneWay}"/>
                 </TabItem>
                 <TabItem Name="ExternalLinksTab" Header="Archivos externos">
                     <local:EntitiesManagerControl x:Name="ExternalLinksEntityControl" ObjectsSource="{Binding Links, Mode=OneWay}"
@@ -90,9 +96,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Name="DeleteWellButton" Content="Borrar pozo" Style="{StaticResource CommonStyle}" Grid.Column="0" Padding="10 1" Command="{Binding DeleteWellCommand}"/>
-            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource CommonStyle}" Grid.Column="2" Padding="10 1" Command="{Binding AcceptCommand}"/>
-            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource CommonStyle}" Grid.Column="3" Padding="10 1" Command="{Binding CancelCommand}"/>
+            <Button Name="DeleteWellButton" Content="Borrar pozo" Style="{StaticResource ButtonStyle}" Grid.Column="0" Command="{Binding DeleteWellCommand}"/>
+            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding AcceptCommand}"/>
+            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="3" Command="{Binding CancelCommand}"/>
         </Grid>
     </Grid>
 </Window>

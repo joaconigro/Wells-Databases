@@ -6,8 +6,54 @@
         xmlns:local="clr-namespace:Wells"
         xmlns:extensions="clr-namespace:Wells.ViewBase;assembly=ViewBase"
         mc:Ignorable="d"
-        Title="Well Manager" Height="450" Width="800">
+        Title="Well Manager" Style="{StaticResource WindowsStyle}" Height="450" Width="800" ContentRendered="AfterContentRendered">
     <DockPanel>
+        <Menu DockPanel.Dock="Top"  Margin="0 4">
+            <MenuItem Name="DatabaseMenuItem" Header="Base de _datos">
+                <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." Command="{Binding CreateDatabaseCommand}"/>
+                <MenuItem Name="OpenDatabaseMenuItem" Header="Abrir..." Command="{Binding OpenDatabaseCommand}" />
+                <Separator/>
+                <MenuItem Name="ImportDatabaseMenuItem" Header="Importar..."/>
+                <MenuItem Name="ExportDatabaseMenuItem" Header="Exportar..."/>
+            </MenuItem>
+            <MenuItem Name="GraphicsMenuItem" Header="_Gráficos">
+                <MenuItem Name="OpenGraphicsMenuItem" Header="Ver gráficos..." Command="{Binding OpenGraphicsViewCommand}"/>
+            </MenuItem>
+        </Menu>
+        <Grid Style="{StaticResource MarginStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TabControl Grid.Row="0" Style="{StaticResource MarginStyle}">
+                <TabItem Header="Pozos" >
+                    <local:EntitiesControl x:Name="WellsControl"/>
+                </TabItem>
+
+                <TabItem Header="Mediciones" >
+                    <local:EntitiesControl x:Name="MeasurementsControl"/>
+                </TabItem>
+
+                <TabItem Header="Análisis de agua" >
+                    <local:EntitiesControl x:Name="WaterAnalysesControl"/>
+                </TabItem>
+
+                <TabItem Header="Análisis de suelo" >
+                    <local:EntitiesControl x:Name="SoilAnalysesControl"/>
+                </TabItem>
+
+                <TabItem Header="Análisis de FLNA" >
+                    <local:EntitiesControl x:Name="FLNAAnalysesControl"/>
+                </TabItem>
+
+                <TabItem Header="Precipitaciones" >
+                    <local:EntitiesControl x:Name="PrecipitationsControl"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
+    
+    <!--<DockPanel>
         <Menu Height="Auto" DockPanel.Dock="Top">
             <MenuItem Name="DatabaseMenuItem" Header="Base de _datos">
                 <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." Command="{Binding CreateDatabaseCommand}"/>
@@ -125,5 +171,5 @@
                 </GroupBox>
             </Grid>
         </Grid>
-    </DockPanel>
+    </DockPanel>-->
 </Window>

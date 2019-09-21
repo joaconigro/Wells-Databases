@@ -19,12 +19,7 @@ namespace Wells.StandardModel.Models
         {
             Id = Guid.NewGuid().ToString();
         }
-
-        public BusinessObject(string name) :
-            this()
-        {
-            Name = name;
-        }
+             
         #endregion
 
         #region IBusinessObject implementation
@@ -32,10 +27,7 @@ namespace Wells.StandardModel.Models
         [Browsable(false), Required]
         public string Id { get; set; }
 
-        [Browsable(true), DisplayName("Nombre"), SortIndex(0)]
-        public string Name { get; set; }
-
-
+       
         public virtual void OnInitialize() { }
 
         public static Dictionary<string, PropertyInfo> GetBrowsableProperties(Type type)
@@ -56,18 +48,10 @@ namespace Wells.StandardModel.Models
                         select ((p.GetCustomAttribute(typeof(DisplayNameAttribute)) as DisplayNameAttribute).DisplayName)).FirstOrDefault();
             return display;
         }
-     
+
         #endregion
 
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        public virtual int CompareTo(IBusinessObject other)
-        {
-            return Name.CompareTo(other.Name);
-        }
+        public abstract int CompareTo(IBusinessObject other);       
     }
 
     public enum WellType

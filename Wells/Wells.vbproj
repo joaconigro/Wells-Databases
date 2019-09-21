@@ -223,14 +223,38 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Source\Filters\BooleanFilter.vb" />
+    <Compile Include="Source\Filters\DateRangeFilter.vb" />
+    <Compile Include="Source\Filters\EnumFilter.vb" />
+    <Compile Include="Source\Filters\FilterCollection.vb" />
+    <Compile Include="Source\Filters\FilterFactory.vb" />
+    <Compile Include="Source\Filters\IBaseFilter.vb" />
+    <Compile Include="Source\Filters\NumericFilter.vb" />
+    <Compile Include="Source\Filters\StringFilter.vb" />
+    <Compile Include="Source\Filters\WellFilter.vb" />
     <Compile Include="Source\Graphics\CheckedListItem.vb" />
+    <Compile Include="Source\UserControls\EntitiesControl.xaml.vb">
+      <DependentUpon>EntitiesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\UserControls\EntitiesManagerControl.xaml.vb">
       <DependentUpon>EntitiesManagerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Graphics\DateModel.vb" />
     <Compile Include="Source\VievModels\EditMeasurementViewModel.vb" />
     <Compile Include="Source\VievModels\EditWellViewModel.vb" />
+    <Compile Include="Source\VievModels\EntitiesViewModel.vb" />
+    <Compile Include="Source\VievModels\FilterViewModel.vb" />
     <Compile Include="Source\VievModels\GraphicsViewModel.vb" />
+    <Compile Include="Source\VievModels\IEntitiesViewModel.vb" />
+    <Compile Include="Source\VievModels\FLNAAnalysesViewModel.vb" />
+    <Compile Include="Source\VievModels\PrecipitationsViewModel.vb" />
+    <Compile Include="Source\VievModels\WaterAnalysesViewModel.vb" />
+    <Compile Include="Source\VievModels\SoilAnalysesViewModel.vb" />
+    <Compile Include="Source\VievModels\MeasurementsViewModel.vb" />
+    <Compile Include="Source\VievModels\WellsViewModel.vb" />
+    <Compile Include="Source\Views\FilterEditingView.xaml.vb">
+      <DependentUpon>FilterEditingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Views\IGraphicsView.vb" />
     <Compile Include="Source\Views\EditMeasurementDialog.xaml.vb">
       <DependentUpon>EditMeasurementDialog.xaml</DependentUpon>
@@ -238,9 +262,16 @@
     <Compile Include="Source\Views\GraphicsView.xaml.vb">
       <DependentUpon>GraphicsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Views\WaitingView.xaml.vb">
+      <DependentUpon>WaitingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Views\WellEditingDialog.xaml.vb">
       <DependentUpon>WellEditingDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="Source\UserControls\EntitiesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Source\UserControls\EntitiesManagerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -256,6 +287,10 @@
     <Page Include="Source\Views\ExcelSheetsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Views\FilterEditingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Source\Views\GraphicsView.xaml">
       <SubType>Designer</SubType>
@@ -283,6 +318,10 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Source\Views\WaitingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Source\Views\WellEditingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -349,10 +388,6 @@
     <ProjectReference Include="..\Base\Base.vbproj">
       <Project>{38d4eaa1-5cc3-45bf-b2a5-7dc55aabde61}</Project>
       <Name>Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Languages\Languages.vbproj">
-      <Project>{5ac358b4-df59-4ffa-ba1b-c7c369d4a5a4}</Project>
-      <Name>Languages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\StandardModel\StandardModel.csproj">
       <Project>{7a468a1c-31c5-4085-8248-21edc6b5883e}</Project>

@@ -43,6 +43,7 @@ Public MustInherit Class BaseViewModel
         If view IsNot Nothing Then
             SetView(view)
         End If
+        _progress = New Progress(Of Integer)(AddressOf ProgressChanged)
     End Sub
 
     Sub SetView(view As IView)

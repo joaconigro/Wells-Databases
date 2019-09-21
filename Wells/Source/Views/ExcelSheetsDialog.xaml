@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells"
         mc:Ignorable="d"
-        Title="Hojas del archivo Excel" Height="84.263" Width="314.144" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
-    <StackPanel VerticalAlignment="Stretch" Margin="2">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Seleccione una hoja para importar: " Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <ComboBox Name="SheetsComoboBox" IsEditable="False" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Width="Auto"
+        Title="Hojas del archivo Excel" WindowStartupLocation="CenterScreen" Style="{StaticResource DialogStyle}" MinWidth="350">
+    <StackPanel Margin="2">
+        <DockPanel>
+            <TextBlock Text="Seleccione una hoja para importar: " Style="{StaticResource MarginStyle}"/>
+            <ComboBox Name="SheetsComoboBox" IsEditable="False" Style="{StaticResource MarginStyle}"
                       SelectedIndex="{Binding SelectedSheet}"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="2">
-            <Button Name="OkButtom" Content=" Aceptar " Margin="2" Padding="2"/>
-            <Button Name="CanelButtom" Content=" Cancelar " Margin="2" Padding="2"/>
+        </DockPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Name="OkButtom" Content="Aceptar" Style="{StaticResource ButtonStyle}"/>
+            <Button Name="CanelButtom" Content="Cancelar" Style="{StaticResource ButtonStyle}"/>
         </StackPanel>
     </StackPanel>
 </Window>

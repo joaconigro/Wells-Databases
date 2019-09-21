@@ -9,7 +9,7 @@ namespace Wells.CorePersistence.Repositories
 
         public override bool ContainsName(string name)
         {
-            return Exists((c) => c.Name == name);
+            return true; // Exists((c) => c.Name == name);
         }
 
         public override bool Exists(string id)
@@ -24,20 +24,9 @@ namespace Wells.CorePersistence.Repositories
 
         public override Precipitation FindByName(string name)
         {
-            return Find((c) => c.Name == name);
+            return null; // Find((c) => c.Name == name);
         }
 
-        //protected override RejectedReasons OnAddingOrUpdating(Precipitation entity)
-        //{
-        //    if (Exists(entity.Id))
-        //    {
-        //        return RejectedReasons.DuplicatedId;
-        //    }
-        //    else if (Exists((p) => p.PrecipitationDate == entity.PrecipitationDate))
-        //    {
-        //        return RejectedReasons.DuplicatedDate;
-        //    }
-        //    return RejectedReasons.None;
-        //}
+      
     }
 }

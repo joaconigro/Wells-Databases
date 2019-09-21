@@ -6,16 +6,18 @@ Public Class RelayCommand
     Private ReadOnly _Execute As Action(Of Object)
     Private ReadOnly _CanExecute As Func(Of Object, Boolean) = Function(parameters) True
     Private ReadOnly _OnError As Action(Of Exception)
+    Private ReadOnly _Finally As Action
 
     Sub New(execute As Action(Of Object), canExecute As Func(Of Object, Boolean))
         _Execute = execute
         _CanExecute = canExecute
     End Sub
 
-    Sub New(execute As Action(Of Object), canExecute As Func(Of Object, Boolean), onError As Action(Of Exception))
+    Sub New(execute As Action(Of Object), canExecute As Func(Of Object, Boolean), onError As Action(Of Exception), Optional [finally] As Action = Nothing)
         _Execute = execute
         _CanExecute = canExecute
         _OnError = onError
+        _Finally = [finally]
     End Sub
 
     Sub New(execute As Action(Of Object))
@@ -34,6 +36,8 @@ Public Class RelayCommand
                 Else
                     _OnError(ex)
                 End If
+            Finally
+                _Finally?.Invoke
             End Try
         End If
     End Sub

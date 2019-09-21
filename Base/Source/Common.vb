@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports System.Reflection
-Imports Wells.Languages
 
 Public Module Common
     ''' <summary>
@@ -8,7 +7,7 @@ Public Module Common
     ''' </summary>
     ''' <param name="enumType"></param>
     ''' <returns></returns>
-    Public Function EnumDescriptionsToList(enumType As Type, useTranslation As Boolean) As List(Of String)
+    Public Function EnumDescriptionsToList(enumType As Type) As List(Of String)
         Dim descriptions As New List(Of String)
         Dim names = [Enum].GetNames(enumType).ToList
         For Each name In names
@@ -17,11 +16,7 @@ Public Module Common
                         DescriptionAttribute)
 
             If attr IsNot Nothing Then
-                If useTranslation Then
-                    descriptions.Add(ResourceFinder.FindResource(attr.Description))
-                Else
-                    descriptions.Add(attr.Description)
-                End If
+                descriptions.Add(attr.Description)
             Else
                 descriptions.Add(name)
             End If
@@ -35,18 +30,14 @@ Public Module Common
     ''' </summary>
     ''' <param name="e">Valor de una enumeración</param>
     ''' <returns></returns>
-    Public Function GetEnumDescription(e As [Enum], useTranslation As Boolean) As String
+    Public Function GetEnumDescription(e As [Enum]) As String
         Dim t As Type = e.GetType()
         Dim attr = CType(t.GetField([Enum].GetName(t, e)).
                         GetCustomAttribute(GetType(DescriptionAttribute)),
                         DescriptionAttribute)
 
         If attr IsNot Nothing Then
-            If useTranslation Then
-                Return ResourceFinder.FindResource(attr.Description)
-            Else
-                Return attr.Description
-            End If
+            Return attr.Description
         Else
             Return e.ToString
         End If
@@ -57,8 +48,8 @@ Public Module Common
     ''' </summary>
     ''' <param name="enumType">Tipo de enumeración</param>
     ''' <returns></returns>
-    Public Function GetEnumDescription(enumType As Type, value As Integer, useTranslation As Boolean) As String
-        Return EnumDescriptionsToList(enumType, useTranslation)(value)
+    Public Function GetEnumDescription(enumType As Type, value As Integer) As String
+        Return EnumDescriptionsToList(enumType)(value)
     End Function
 
     Public Function IsNumericType(aType As Type) As Boolean

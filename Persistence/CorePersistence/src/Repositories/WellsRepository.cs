@@ -6,7 +6,7 @@ namespace Wells.CorePersistence.Repositories
 {
     public class WellsRepository : RepositoryBase<Well>, IBussinessObjectRepository
     {
-        public List<string> Names => Wells.Keys.ToList();
+        public List<string> Names => Wells.Keys.OrderBy(s => s).ToList();
 
         private Dictionary<string, Well> _Wells;
 
@@ -46,15 +46,6 @@ namespace Wells.CorePersistence.Repositories
         protected override void OnAddingOrUpdating()
         {
             _Wells = null;
-            //if (string.IsNullOrEmpty(entity.Name)) {
-            //    return RejectedReasons.WellNameEmpty;
-            //} else if (Exists(entity.Id)) {
-            //    return RejectedReasons.DuplicatedId;
-            //}
-            //else if (ContainsName(entity.Name)) {
-            //    return RejectedReasons.DuplicatedName;
-            //}
-            //return RejectedReasons.None;
         }
     }
 }

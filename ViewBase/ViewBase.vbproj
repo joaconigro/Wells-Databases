@@ -153,6 +153,7 @@
     <Compile Include="Source\Validators\EmptyStringValidator.vb" />
     <Compile Include="Source\Validators\IValidationProvider.vb" />
     <Compile Include="Source\Validators\NullObjectValidator.vb" />
+    <Compile Include="Source\Validators\NumericFunctionValidator.vb" />
     <Compile Include="Source\ViewInterfaces\IView.vb" />
     <Compile Include="Source\ViewModel\BaseViewModel.vb" />
     <Compile Include="Source\WPFExtensions\MenuItemExtensions.vb" />
@@ -187,10 +188,6 @@
     <ProjectReference Include="..\Base\Base.vbproj">
       <Project>{b6fed7e9-aadd-4249-ba93-f4feadc5d82b}</Project>
       <Name>Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Languages\Languages.vbproj">
-      <Project>{5ac358b4-df59-4ffa-ba1b-c7c369d4a5a4}</Project>
-      <Name>Languages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\StandardModel\StandardModel.csproj">
       <Project>{7a468a1c-31c5-4085-8248-21edc6b5883e}</Project>

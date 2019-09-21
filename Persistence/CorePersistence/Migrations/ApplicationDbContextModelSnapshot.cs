@@ -19,32 +19,6 @@ namespace Wells.CorePersistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Wells.YPFModel.ChemicalAnalysis", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("SampleOf");
-
-                    b.Property<string>("WellId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WellId");
-
-                    b.ToTable("ChemicalAnalysis");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ChemicalAnalysis");
-                });
-
             modelBuilder.Entity("Wells.YPFModel.ExternalFile", b =>
                 {
                     b.Property<string>("Id")
@@ -66,6 +40,61 @@ namespace Wells.CorePersistence.Migrations
                     b.HasIndex("WellId");
 
                     b.ToTable("ExternalFiles");
+                });
+
+            modelBuilder.Entity("Wells.YPFModel.FLNAAnalysis", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Benzene");
+
+                    b.Property<double>("C10_C12");
+
+                    b.Property<double>("C12_C16");
+
+                    b.Property<double>("C16_C21");
+
+                    b.Property<double>("C17_Pristano");
+
+                    b.Property<double>("C18_Fitano");
+
+                    b.Property<double>("C21_C35");
+
+                    b.Property<double>("C6_C8");
+
+                    b.Property<double>("C8_C10");
+
+                    b.Property<double>("DRO");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<double>("DynamicViscosity");
+
+                    b.Property<double>("Ethylbenzene");
+
+                    b.Property<double>("GRO");
+
+                    b.Property<double>("MRO");
+
+                    b.Property<string>("Name");
+
+                    b.Property<double>("RealDensity");
+
+                    b.Property<int>("SampleOf");
+
+                    b.Property<double>("Tolueno");
+
+                    b.Property<string>("WellId")
+                        .IsRequired();
+
+                    b.Property<double>("Xylenes");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WellId");
+
+                    b.ToTable("FLNAAnalyses");
                 });
 
             modelBuilder.Entity("Wells.YPFModel.Measurement", b =>
@@ -111,84 +140,10 @@ namespace Wells.CorePersistence.Migrations
                     b.ToTable("Precipitations");
                 });
 
-            modelBuilder.Entity("Wells.YPFModel.Well", b =>
+            modelBuilder.Entity("Wells.YPFModel.SoilAnalysis", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<double>("Bottom");
-
-                    b.Property<bool>("Exists");
-
-                    b.Property<double>("Height");
-
-                    b.Property<double>("Latitude");
-
-                    b.Property<double>("Longitude");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("WellType");
-
-                    b.Property<double>("X");
-
-                    b.Property<double>("Y");
-
-                    b.Property<double>("Z");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Wells");
-                });
-
-            modelBuilder.Entity("Wells.YPFModel.FLNAAnalysis", b =>
-                {
-                    b.HasBaseType("Wells.YPFModel.ChemicalAnalysis");
-
-                    b.Property<double>("Benzene");
-
-                    b.Property<double>("C10_C12");
-
-                    b.Property<double>("C12_C16");
-
-                    b.Property<double>("C16_C21");
-
-                    b.Property<double>("C17_Pristano");
-
-                    b.Property<double>("C18_Fitano");
-
-                    b.Property<double>("C21_C35");
-
-                    b.Property<double>("C6_C8");
-
-                    b.Property<double>("C8_C10");
-
-                    b.Property<double>("DRO");
-
-                    b.Property<double>("DynamicViscosity");
-
-                    b.Property<double>("Ethylbenzene");
-
-                    b.Property<double>("GRO");
-
-                    b.Property<double>("MRO");
-
-                    b.Property<double>("RealDensity");
-
-                    b.Property<double>("Tolueno");
-
-                    b.Property<string>("WellId1");
-
-                    b.Property<double>("Xylenes");
-
-                    b.HasIndex("WellId1");
-
-                    b.HasDiscriminator().HasValue("FLNAAnalysis");
-                });
-
-            modelBuilder.Entity("Wells.YPFModel.SoilAnalysis", b =>
-                {
-                    b.HasBaseType("Wells.YPFModel.ChemicalAnalysis");
 
                     b.Property<double>("Acenafthene");
 
@@ -198,8 +153,7 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Arsenic");
 
-                    b.Property<double>("Benzene")
-                        .HasColumnName("SoilAnalysis_Benzene");
+                    b.Property<double>("Benzene");
 
                     b.Property<double>("BenzoAAnthracene");
 
@@ -241,13 +195,13 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Crysene");
 
-                    b.Property<double>("DRO")
-                        .HasColumnName("SoilAnalysis_DRO");
+                    b.Property<double>("DRO");
+
+                    b.Property<DateTime>("Date");
 
                     b.Property<double>("DibenzoAHAnthracene");
 
-                    b.Property<double>("Ethylbenzene")
-                        .HasColumnName("SoilAnalysis_Ethylbenzene");
+                    b.Property<double>("Ethylbenzene");
 
                     b.Property<double>("Fenanthrene");
 
@@ -255,8 +209,7 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Fluorene");
 
-                    b.Property<double>("GRO")
-                        .HasColumnName("SoilAnalysis_GRO");
+                    b.Property<double>("GRO");
 
                     b.Property<double>("Humidity");
 
@@ -264,10 +217,11 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Lead");
 
-                    b.Property<double>("MRO")
-                        .HasColumnName("SoilAnalysis_MRO");
+                    b.Property<double>("MRO");
 
                     b.Property<double>("Mercury");
+
+                    b.Property<string>("Name");
 
                     b.Property<double>("Naphthalene");
 
@@ -279,10 +233,11 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Pyrene");
 
+                    b.Property<int>("SampleOf");
+
                     b.Property<double>("Selenium");
 
-                    b.Property<double>("Tolueno")
-                        .HasColumnName("SoilAnalysis_Tolueno");
+                    b.Property<double>("Tolueno");
 
                     b.Property<double>("TotalChrome");
 
@@ -292,8 +247,8 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("TotalXylene");
 
-                    b.Property<string>("WellId1")
-                        .HasColumnName("SoilAnalysis_WellId1");
+                    b.Property<string>("WellId")
+                        .IsRequired();
 
                     b.Property<double>("XyleneO");
 
@@ -301,49 +256,41 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Zinc");
 
-                    b.HasIndex("WellId1");
+                    b.HasKey("Id");
 
-                    b.HasDiscriminator().HasValue("SoilAnalysis");
+                    b.HasIndex("WellId");
+
+                    b.ToTable("SoilAnalyses");
                 });
 
             modelBuilder.Entity("Wells.YPFModel.WaterAnalysis", b =>
                 {
-                    b.HasBaseType("Wells.YPFModel.ChemicalAnalysis");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<double>("Acenafthene")
-                        .HasColumnName("WaterAnalysis_Acenafthene");
+                    b.Property<double>("Acenafthene");
 
-                    b.Property<double>("Acenaphthylene")
-                        .HasColumnName("WaterAnalysis_Acenaphthylene");
+                    b.Property<double>("Acenaphthylene");
 
-                    b.Property<double>("Anthracene")
-                        .HasColumnName("WaterAnalysis_Anthracene");
+                    b.Property<double>("Anthracene");
 
-                    b.Property<double>("Arsenic")
-                        .HasColumnName("WaterAnalysis_Arsenic");
+                    b.Property<double>("Arsenic");
 
-                    b.Property<double>("Benzene")
-                        .HasColumnName("WaterAnalysis_Benzene");
+                    b.Property<double>("Benzene");
 
-                    b.Property<double>("BenzoAAnthracene")
-                        .HasColumnName("WaterAnalysis_BenzoAAnthracene");
+                    b.Property<double>("BenzoAAnthracene");
 
-                    b.Property<double>("BenzoAPyrene")
-                        .HasColumnName("WaterAnalysis_BenzoAPyrene");
+                    b.Property<double>("BenzoAPyrene");
 
-                    b.Property<double>("BenzoBFluoranthene")
-                        .HasColumnName("WaterAnalysis_BenzoBFluoranthene");
+                    b.Property<double>("BenzoBFluoranthene");
 
-                    b.Property<double>("BenzoGHIPerylene")
-                        .HasColumnName("WaterAnalysis_BenzoGHIPerylene");
+                    b.Property<double>("BenzoGHIPerylene");
 
-                    b.Property<double>("BenzoKFluoranthene")
-                        .HasColumnName("WaterAnalysis_BenzoKFluoranthene");
+                    b.Property<double>("BenzoKFluoranthene");
 
                     b.Property<double>("BicarbonateAlkalinity");
 
-                    b.Property<double>("Cadmium")
-                        .HasColumnName("WaterAnalysis_Cadmium");
+                    b.Property<double>("Cadmium");
 
                     b.Property<double>("Calcium");
 
@@ -355,120 +302,132 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Conductivity");
 
-                    b.Property<double>("Copper")
-                        .HasColumnName("WaterAnalysis_Copper");
+                    b.Property<double>("Copper");
 
-                    b.Property<double>("Crysene")
-                        .HasColumnName("WaterAnalysis_Crysene");
+                    b.Property<double>("Crysene");
 
-                    b.Property<double>("DRO")
-                        .HasColumnName("WaterAnalysis_DRO");
+                    b.Property<double>("DRO");
 
-                    b.Property<double>("DibenzoAHAnthracene")
-                        .HasColumnName("WaterAnalysis_DibenzoAHAnthracene");
+                    b.Property<DateTime>("Date");
+
+                    b.Property<double>("DibenzoAHAnthracene");
 
                     b.Property<double>("DryWaste");
 
-                    b.Property<double>("Ethylbenzene")
-                        .HasColumnName("WaterAnalysis_Ethylbenzene");
+                    b.Property<double>("Ethylbenzene");
 
-                    b.Property<double>("Fenanthrene")
-                        .HasColumnName("WaterAnalysis_Fenanthrene");
+                    b.Property<double>("Fenanthrene");
 
-                    b.Property<double>("Fluoranthene")
-                        .HasColumnName("WaterAnalysis_Fluoranthene");
+                    b.Property<double>("Fluoranthene");
 
-                    b.Property<double>("Fluorene")
-                        .HasColumnName("WaterAnalysis_Fluorene");
+                    b.Property<double>("Fluorene");
 
                     b.Property<double>("Fluorides");
 
-                    b.Property<double>("GRO")
-                        .HasColumnName("WaterAnalysis_GRO");
+                    b.Property<double>("GRO");
 
-                    b.Property<double>("Indeno123CDPyrene")
-                        .HasColumnName("WaterAnalysis_Indeno123CDPyrene");
+                    b.Property<double>("Indeno123CDPyrene");
 
-                    b.Property<double>("Lead")
-                        .HasColumnName("WaterAnalysis_Lead");
+                    b.Property<double>("Lead");
 
-                    b.Property<double>("MRO")
-                        .HasColumnName("WaterAnalysis_MRO");
+                    b.Property<double>("MRO");
 
                     b.Property<double>("Magnesium");
 
-                    b.Property<double>("Mercury")
-                        .HasColumnName("WaterAnalysis_Mercury");
+                    b.Property<double>("Mercury");
 
-                    b.Property<double>("Naphthalene")
-                        .HasColumnName("WaterAnalysis_Naphthalene");
+                    b.Property<string>("Name");
 
-                    b.Property<double>("Nickel")
-                        .HasColumnName("WaterAnalysis_Nickel");
+                    b.Property<double>("Naphthalene");
+
+                    b.Property<double>("Nickel");
 
                     b.Property<double>("Nitrates");
 
-                    b.Property<double>("PH")
-                        .HasColumnName("WaterAnalysis_PH");
+                    b.Property<double>("PH");
 
                     b.Property<double>("Potassium");
 
-                    b.Property<double>("Pyrene")
-                        .HasColumnName("WaterAnalysis_Pyrene");
+                    b.Property<double>("Pyrene");
 
-                    b.Property<double>("Selenium")
-                        .HasColumnName("WaterAnalysis_Selenium");
+                    b.Property<int>("SampleOf");
+
+                    b.Property<double>("Selenium");
 
                     b.Property<double>("Sodium");
 
                     b.Property<double>("Sulfates");
 
-                    b.Property<double>("Tolueno")
-                        .HasColumnName("WaterAnalysis_Tolueno");
+                    b.Property<double>("Tolueno");
 
-                    b.Property<double>("TotalChrome")
-                        .HasColumnName("WaterAnalysis_TotalChrome");
+                    b.Property<double>("TotalChrome");
 
-                    b.Property<double>("TotalHydrocarbons_EPA8015")
-                        .HasColumnName("WaterAnalysis_TotalHydrocarbons_EPA8015");
+                    b.Property<double>("TotalHydrocarbons_EPA8015");
 
-                    b.Property<double>("TotalHydrocarbons_TNRCC1005")
-                        .HasColumnName("WaterAnalysis_TotalHydrocarbons_TNRCC1005");
+                    b.Property<double>("TotalHydrocarbons_TNRCC1005");
 
                     b.Property<double>("TotalSulfur");
 
-                    b.Property<double>("TotalXylene")
-                        .HasColumnName("WaterAnalysis_TotalXylene");
+                    b.Property<double>("TotalXylene");
 
-                    b.Property<string>("WellId1")
-                        .HasColumnName("WaterAnalysis_WellId1");
+                    b.Property<string>("WellId")
+                        .IsRequired();
 
-                    b.Property<double>("XyleneO")
-                        .HasColumnName("WaterAnalysis_XyleneO");
+                    b.Property<double>("XyleneO");
 
-                    b.Property<double>("XylenePM")
-                        .HasColumnName("WaterAnalysis_XylenePM");
+                    b.Property<double>("XylenePM");
 
-                    b.Property<double>("Zinc")
-                        .HasColumnName("WaterAnalysis_Zinc");
+                    b.Property<double>("Zinc");
 
-                    b.HasIndex("WellId1");
+                    b.HasKey("Id");
 
-                    b.HasDiscriminator().HasValue("WaterAnalysis");
+                    b.HasIndex("WellId");
+
+                    b.ToTable("WaterAnalyses");
                 });
 
-            modelBuilder.Entity("Wells.YPFModel.ChemicalAnalysis", b =>
+            modelBuilder.Entity("Wells.YPFModel.Well", b =>
                 {
-                    b.HasOne("Wells.YPFModel.Well", "Well")
-                        .WithMany("Analyses")
-                        .HasForeignKey("WellId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Bottom");
+
+                    b.Property<bool>("Exists");
+
+                    b.Property<double>("Height");
+
+                    b.Property<double>("Latitude");
+
+                    b.Property<double>("Longitude");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("WellType");
+
+                    b.Property<double>("X");
+
+                    b.Property<double>("Y");
+
+                    b.Property<double>("Z");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wells");
                 });
 
             modelBuilder.Entity("Wells.YPFModel.ExternalFile", b =>
                 {
                     b.HasOne("Wells.YPFModel.Well", "Well")
                         .WithMany("Files")
+                        .HasForeignKey("WellId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Wells.YPFModel.FLNAAnalysis", b =>
+                {
+                    b.HasOne("Wells.YPFModel.Well", "Well")
+                        .WithMany("FLNAAnalyses")
                         .HasForeignKey("WellId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -481,25 +440,20 @@ namespace Wells.CorePersistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Wells.YPFModel.FLNAAnalysis", b =>
-                {
-                    b.HasOne("Wells.YPFModel.Well")
-                        .WithMany("FLNAAnalyses")
-                        .HasForeignKey("WellId1");
-                });
-
             modelBuilder.Entity("Wells.YPFModel.SoilAnalysis", b =>
                 {
-                    b.HasOne("Wells.YPFModel.Well")
+                    b.HasOne("Wells.YPFModel.Well", "Well")
                         .WithMany("SoilAnalyses")
-                        .HasForeignKey("WellId1");
+                        .HasForeignKey("WellId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Wells.YPFModel.WaterAnalysis", b =>
                 {
-                    b.HasOne("Wells.YPFModel.Well")
+                    b.HasOne("Wells.YPFModel.Well", "Well")
                         .WithMany("WaterAnalyses")
-                        .HasForeignKey("WellId1");
+                        .HasForeignKey("WellId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -93,9 +93,7 @@ namespace Wells.YPFModel
 
         public override int CompareTo(IBusinessObject other)
         {
-            if (Date > (other as Measurement).Date) return -1;
-            if (Date == (other as Measurement).Date) return 0;
-            return 1;
+            return Date.CompareTo((other as ChemicalAnalysis).Date);
         }
     }
 }

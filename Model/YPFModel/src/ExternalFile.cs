@@ -20,6 +20,8 @@ namespace Wells.YPFModel
             Data = File.ReadAllBytes(filename);
         }
 
+        [Browsable(true), DisplayName("Nombre")]
+        public string Name { get; set; }
 
         #region Properties
         [Required]
@@ -76,6 +78,11 @@ namespace Wells.YPFModel
                     throw new System.Exception($"Error al tratar de abrir el archivo {CompleteFilename}");
                 }
             }
+        }
+
+        public override int CompareTo(IBusinessObject other)
+        {
+            return Name.CompareTo((other as ExternalFile).Name);
         }
 
         public static string GetDisplayName(string propertyName)

@@ -54,7 +54,7 @@
                     <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="2"/>
                     <TextBlock Text="A partir de:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
                     <ComboBox Name="FromComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
-                    <Grid Name="WellOptions" Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding ShowWellOptions, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                    <Grid Name="WellOptions" Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding ShowWellOptions, Converter={StaticResource BoolToCollapsedVisibilityConverter}, Mode=OneWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" MinWidth="90"/>
                             <ColumnDefinition Width="*" MinWidth="150"/>

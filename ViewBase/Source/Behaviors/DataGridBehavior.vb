@@ -89,7 +89,7 @@ Public Class DataGridBehavior
         End If
 
         If e.PropertyType.IsEnum Then
-            CType(e.Column, DataGridComboBoxColumn).ItemsSource = Base.Common.EnumDescriptionsToList(e.PropertyType, False)
+            CType(e.Column, DataGridComboBoxColumn).ItemsSource = Base.Common.EnumDescriptionsToList(e.PropertyType)
             Dim propPath = CType(e.Column, DataGridComboBoxColumn).SortMemberPath
             CType(e.Column, DataGridComboBoxColumn).SelectedItemBinding = New Binding With {
                     .Path = New PropertyPath(propPath),

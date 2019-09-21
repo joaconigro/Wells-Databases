@@ -1,6 +1,4 @@
 ﻿Imports Wells.YPFModel
-
-Imports Wells.CorePersistence
 Imports Wells.ViewBase
 Imports Wells.CorePersistence.Repositories
 
@@ -29,9 +27,11 @@ Public Class EditWellViewModel
     Property Height As Double
     Property Exists As Boolean
     Property Bottom As Double
-    Property Analysis As New List(Of ChemicalAnalysis)
+    Property SoilAnalyses As New List(Of SoilAnalysis)
+    Property WaterAnalyses As New List(Of WaterAnalysis)
+    Property FLNAAnalyses As New List(Of FLNAAnalysis)
     Property Measurements As New List(Of Measurement)
-    Property Links As New List(Of ExternalFile)
+    Property Files As New List(Of ExternalFile)
 
     ReadOnly Property HasWell As Boolean
     ReadOnly Property NameEditable As Boolean
@@ -86,13 +86,17 @@ Public Class EditWellViewModel
         Height = _well.Height
         Exists = _well.Exists
         Bottom = _well.Bottom
-        Analysis = _well.Analyses
+        SoilAnalyses = _well.SoilAnalyses
+        WaterAnalyses = _well.WaterAnalyses
+        FLNAAnalyses = _well.FLNAAnalyses
         Measurements = _well.Measurements
-        Links = _well.Files
+        Files = _well.Files
 
         Measurements.Sort()
-        Analysis.Sort()
-        Links.Sort()
+        SoilAnalyses.Sort()
+        WaterAnalyses.Sort()
+        FLNAAnalyses.Sort()
+        Files.Sort()
     End Sub
 
     Private Sub CreateOrEditWell()
@@ -109,12 +113,14 @@ Public Class EditWellViewModel
         _well.Bottom = Bottom
         _well.Exists = Exists
         _well.Height = Height
-        _well.Analyses = Analysis
+        _well.SoilAnalyses = SoilAnalyses
+        _well.WaterAnalyses = WaterAnalyses
+        _well.FLNAAnalyses = FLNAAnalyses
         _well.Measurements = Measurements
-        _well.Files = Links
+        _well.Files = Files
     End Sub
 
-    Private Function Validate()
+    Private Function IsValidWell()
         If HasWell Then
             Return True
         Else
@@ -128,7 +134,9 @@ Public Class EditWellViewModel
     Private Sub RemoveAll()
 
         RepositoryWrapper.Instance.Measurements.RemoveRange(_well.Measurements)
-        RepositoryWrapper.Instance.Analyses.RemoveRange(_well.Analyses)
+        RepositoryWrapper.Instance.SoilAnalyses.RemoveRange(_well.SoilAnalyses)
+        RepositoryWrapper.Instance.WaterAnalyses.RemoveRange(_well.WaterAnalyses)
+        RepositoryWrapper.Instance.FLNAAnalyses.RemoveRange(_well.FLNAAnalyses)
         RepositoryWrapper.Instance.ExternalFiles.RemoveRange(_well.Files)
         _repo.Remove(_well)
 
@@ -164,7 +172,7 @@ Public Class EditWellViewModel
                                                                        RepositoryWrapper.Instance.SaveChanges()
                                                                        RaiseEvent CloseDialog(True)
                                                                    End Sub,
-                                                                   Function() Validate(),
+                                                                   Function() IsValidWell(),
                                                                    AddressOf OnError)
 
 
@@ -206,8 +214,8 @@ Public Class EditWellViewModel
                                                                        If Not String.IsNullOrEmpty(filename) Then
                                                                            Dim ExternalLink = New ExternalFile(filename) With {.Well = _well}
                                                                            RepositoryWrapper.Instance.ExternalFiles.Add(ExternalLink)
-                                                                           Links.Sort()
-                                                                           RaiseEvent MustRebind(NameOf(Links))
+                                                                           Files.Sort()
+                                                                           RaiseEvent MustRebind(NameOf(Files))
                                                                        End If
                                                                    End Sub,
                                                       Function() HasWell, AddressOf OnError)
@@ -226,9 +234,9 @@ Public Class EditWellViewModel
                                                                                   Dim link = CType(param, ExternalFile)
                                                                                   _well.Files.Remove(link)
                                                                                   RepositoryWrapper.Instance.ExternalFiles.Remove(link)
-                                                                                  Links.Remove(link)
-                                                                                  Links.Sort()
-                                                                                  RaiseEvent MustRebind(NameOf(Links))
+                                                                                  Files.Remove(link)
+                                                                                  Files.Sort()
+                                                                                  RaiseEvent MustRebind(NameOf(Files))
                                                                               End If
                                                                           End If
                                                                       End Sub,

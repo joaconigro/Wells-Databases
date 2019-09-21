@@ -5,22 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Wells"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Name="EntityPanel">
+             d:DesignHeight="450" d:DesignWidth="800" Name="EntityPanel" Background="#FFF0F0F0">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ListView Name="EntitiesListview" Grid.Column="0" ItemsSource="{Binding ObjectsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" 
-                  SelectedItem="{Binding SelectedEntity, Mode=OneWayToSource}"/>
-        <StackPanel Grid.Column="1">
-            <Button Name="NewEntityButton" Content="Nueva..." Margin="2" Padding="10 1" 
-                    Command="{Binding NewEntityCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}"/>
-            <Button Name="EditEntityButton" Content="Editar..." Margin="2" Padding="10 1" 
-                    Command="{Binding EditEntityCommand,  Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"/>
-            <Label Content=" "/>
-            <Button Name="RemoveEntityButton" Content="Borrar..." Margin="2" Padding="10 1" 
+                  SelectedItem="{Binding SelectedEntity, Mode=OneWayToSource}" Style="{StaticResource MarginStyle}"/>
+        <DockPanel Grid.Column="1">
+            <Button Name="RemoveEntityButton" Content="Borrar..." Style="{StaticResource ButtonStyle}" DockPanel.Dock="Bottom"
                     Command="{Binding DeleteEntityCommand,  Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"/>
-        </StackPanel>
+
+            <StackPanel DockPanel.Dock="Top">
+                <Button Name="NewEntityButton" Content="Nueva..." Style="{StaticResource ButtonStyle}"
+                    Command="{Binding NewEntityCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}"/>
+                <Button Name="EditEntityButton" Content="Editar..." Style="{StaticResource ButtonStyle}"
+                    Command="{Binding EditEntityCommand,  Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"/>
+            </StackPanel>
+           
+        </DockPanel>
     </Grid>
 </UserControl>

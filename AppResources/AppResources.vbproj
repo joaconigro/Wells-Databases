@@ -178,16 +178,12 @@
       <Project>{b6fed7e9-aadd-4249-ba93-f4feadc5d82b}</Project>
       <Name>Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Languages\Languages.vbproj">
-      <Project>{5ac358b4-df59-4ffa-ba1b-c7c369d4a5a4}</Project>
-      <Name>Languages</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Source\Icons\LaTe.ico" />
+    <Resource Include="Source\Icons\Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

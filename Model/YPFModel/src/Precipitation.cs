@@ -11,9 +11,7 @@ namespace Wells.YPFModel
     {
 
         public Precipitation() : base() { }
-
-        public Precipitation(string name) : base(name) { }
-
+        
         #region Properties
         [Required, DisplayName("Fecha"), Browsable(true)]
         public DateTime PrecipitationDate { get; set; }
@@ -29,6 +27,11 @@ namespace Wells.YPFModel
             {
                 return GetBrowsableProperties(typeof(Precipitation));
             }
+        }
+
+        public override int CompareTo(IBusinessObject other)
+        {
+            return PrecipitationDate.CompareTo((other as Precipitation).PrecipitationDate);
         }
 
         public static string GetDisplayName(string propertyName)

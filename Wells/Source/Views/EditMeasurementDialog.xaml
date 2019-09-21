@@ -5,9 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells"
         mc:Ignorable="d"
-        Title="Edición de medición" Height="235" Width="556">
+        Title="Edición de medición" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" Width="700" Height="300">
     <DockPanel Margin="2">
-        <GroupBox Name="PropertiesGroupBox" Header="Propiedades" VerticalAlignment="Stretch" DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="DeleteWellButton" Content="Borrar medición" Style="{StaticResource ButtonStyle}" Grid.Column="0" Padding="10 1" Command="{Binding DeleteMeasurementCommand}"/>
+            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Padding="10 1" Command="{Binding AcceptCommand}"/>
+            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="3" Padding="10 1" Command="{Binding CancelCommand}"/>
+        </Grid>
+
+        <GroupBox Name="PropertiesGroupBox" Header="Propiedades">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -23,32 +35,21 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Name="SelectedWellTextBlock" Text="Pozo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <ComboBox Name="WellsComboBox" Style="{StaticResource CommonStyle}" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedIndex="{Binding SelectedWellIndex, Mode=TwoWay}"
+                <ComboBox Name="WellsComboBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedIndex="{Binding SelectedWellIndex, Mode=TwoWay}"
                           IsEnabled="{Binding NameSelectable}" Grid.Row="0" Grid.Column="1"/>
                 <TextBlock Name="DateTextBlock" Text="Fecha:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
-                <DatePicker Name="MeasurementDatePicker" Style="{StaticResource CommonStyle}" Grid.Row="0" Grid.Column="3" SelectedDate="{Binding RealDate, Mode=TwoWay}"/>
+                <DatePicker Name="MeasurementDatePicker" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" SelectedDate="{Binding RealDate, Mode=TwoWay}"/>
                 <TextBlock Name="FLNADepthTextBlock" Text="Profundidad FLNA:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="FLNADepthTextBox" Style="{StaticResource TextBoxStyle}" Text="{Binding FLNADepth, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+                <TextBox Name="FLNADepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding FLNADepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
                 <TextBlock Name="WaterDepthTextBlock" Text="Profundidad agua:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="WaterDepthTextBox" Style="{StaticResource TextBoxStyle}" Text="{Binding WaterDepth, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
+                <TextBox Name="WaterDepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding WaterDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
                 <TextBlock Name="CaudalTextBlock" Text="Caudal:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="4"/>
-                <TextBox Name="CaudalTextBox" Style="{StaticResource TextBoxStyle}" Text="{Binding Caudal, Converter={StaticResource DoubleConverter}, Mode=TwoWay}" Grid.Row="1" Grid.Column="5"/>
+                <TextBox Name="CaudalTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding Caudal, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="5"/>
                 <TextBlock Name="CommentTextBlock" Text="Observaciones:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
-                <TextBox Name="CommentTextBox" Margin="2" Text="{Binding Comment, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" 
-                         AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="80" 
+                <TextBox Name="CommentTextBox" Margin="4" Text="{Binding Comment, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" 
+                         AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="100" 
                          VerticalAlignment="Stretch" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"/>
             </Grid>
         </GroupBox>
-        <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button Name="DeleteWellButton" Content="Borrar medición" Style="{StaticResource CommonStyle}" Grid.Column="0" Padding="10 1" Command="{Binding DeleteMeasurementCommand}"/>
-            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource CommonStyle}" Grid.Column="2" Padding="10 1" Command="{Binding AcceptCommand}"/>
-            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource CommonStyle}" Grid.Column="3" Padding="10 1" Command="{Binding CancelCommand}"/>
-        </Grid>
     </DockPanel>
 </Window>

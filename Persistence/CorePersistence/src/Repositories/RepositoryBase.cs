@@ -20,28 +20,9 @@ namespace Wells.CorePersistence.Repositories
         }
 
         public void AddRange(IEnumerable<T> entities)
-        {
-            //var rejecteds = new List<RejectedEntity>();
-            //var inserted = new List<T>();
-            //RejectedReasons reason;
-            //int total = entities.Count();
-            //for (int i = 0; i < total; i++)
-            //{
-            //    var e = entities.ElementAt(i);
-            //    reason = RejectedReasons.None;
-            //    if (OnAddingOrUpdating(e) == RejectedReasons.None) {
-            //        inserted.Add(e);
-            //    }
-            //    else {
-            //        rejecteds.Add(new RejectedEntity(e as IBusinessObject, i + 2, reason));
-            //    }
-            //    progress.Report((i + 1) / total * 100);
-            //}
-
+        {        
             Context.Set<T>().AddRange(entities);
             OnAddingOrUpdating();
-            //return rejecteds;
-
         }
 
         public async void AddRangeAsync(IEnumerable<T> entities)

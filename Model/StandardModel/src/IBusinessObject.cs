@@ -8,9 +8,6 @@ namespace Wells.StandardModel.Models
         [Required]
         string Id { get; set; }
 
-        [Required]
-        string Name { get; set; }
-
         void OnInitialize();
     }
 }

@@ -67,9 +67,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         '''</summary>
-        Friend Shared ReadOnly Property LaTe() As System.Drawing.Icon
+        Friend Shared ReadOnly Property Icon() As System.Drawing.Icon
             Get
-                Dim obj As Object = ResourceManager.GetObject("LaTe", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
             End Get
         End Property

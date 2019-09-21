@@ -108,7 +108,7 @@ Public Class EditMeasurementViewModel
         End If
     End Sub
 
-    Private Function Validate()
+    Private Function IsValidMeasurement()
         If HasMeasurement Then
             Return True
         Else
@@ -154,7 +154,7 @@ Public Class EditMeasurementViewModel
                                                                        RepositoryWrapper.Instance.SaveChanges()
                                                                        RaiseEvent CloseDialog(True)
                                                                    End Sub,
-                                                                   Function() Validate(),
+                                                                   Function() IsValidMeasurement(),
                                                                    AddressOf OnError)
 
 

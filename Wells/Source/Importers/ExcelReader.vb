@@ -41,7 +41,7 @@ Public Class ExcelReader
                 If Not wells.ContainsKey(well.Name) AndAlso Not String.IsNullOrEmpty(well.Name) Then
                     wells.Add(well.Name, well)
                 End If
-                progress.Report(i / maxCount * 100)
+                progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
@@ -66,7 +66,7 @@ Public Class ExcelReader
                 prec.Millimeters = If(prec.Millimeters = BusinessObject.NumericNullValue, 0, prec.Millimeters)
 
                 precipitations.Add(prec)
-                progress.Report(i / maxCount * 100)
+                progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
@@ -104,7 +104,7 @@ Public Class ExcelReader
                 If meas.Well IsNot Nothing Then
                     measurements.Add(meas)
                 End If
-                progress.Report(i / maxCount * 100)
+                progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
@@ -135,7 +135,7 @@ Public Class ExcelReader
                 Next
 
                 analysis.Add(flna)
-                progress.Report(i / maxCount * 100)
+                progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
@@ -166,7 +166,7 @@ Public Class ExcelReader
                 Next
 
                 analysis.Add(water)
-                progress.Report(i / maxCount * 100)
+                progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)
@@ -197,7 +197,7 @@ Public Class ExcelReader
                 Next
 
                 analysis.Add(soil)
-                progress.Report(i / maxCount * 100)
+                progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
             Throw New Exception("Error leyendo la fila " & indexError)

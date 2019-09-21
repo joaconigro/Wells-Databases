@@ -124,11 +124,5 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Languages\Languages.vbproj">
-      <Project>{5ac358b4-df59-4ffa-ba1b-c7c369d4a5a4}</Project>
-      <Name>Languages</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

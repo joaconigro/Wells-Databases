@@ -188,19 +188,19 @@ Public Class GraphicsViewModel
                                   Order By m.Date Ascending
                                   Select New DateModel(m.Date, param)).ToList
                     Case "Análisis de FLNA"
-                        values = (From a In _well.Analyses.FindAll(Function(a) a.SampleOf = SampleType.FLNA)
+                        values = (From a In _well.FLNAAnalyses
                                   Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
                                   Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
                                   Order By a.Date Ascending
                                   Select New DateModel(a.Date, param)).ToList
                     Case "Análisis de agua"
-                        values = (From a In _well.Analyses.FindAll(Function(a) a.SampleOf = SampleType.Water)
+                        values = (From a In _well.WaterAnalyses
                                   Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
                                   Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
                                   Order By a.Date Ascending
                                   Select New DateModel(a.Date, param)).ToList
                     Case Else
-                        values = (From a In _well.Analyses.FindAll(Function(a) a.SampleOf = SampleType.Soil)
+                        values = (From a In _well.SoilAnalyses
                                   Let param = CType(CallByName(a, _realParameterName, CallType.Get), Double)
                                   Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
                                   Order By a.Date Ascending
