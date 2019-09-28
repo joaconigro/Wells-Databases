@@ -98,7 +98,7 @@
             </Grid.ColumnDefinitions>
             <Button Name="DeleteWellButton" Content="Borrar pozo" Style="{StaticResource ButtonStyle}" Grid.Column="0" Command="{Binding DeleteWellCommand}"/>
             <Button Name="OkButton" Content="Aceptar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding AcceptCommand}"/>
-            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="3" Command="{Binding CancelCommand}"/>
+            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="3" Command="{Binding CloseModalViewCommand}" CommandParameter="{StaticResource False}"/>
         </Grid>
     </Grid>
 </Window>

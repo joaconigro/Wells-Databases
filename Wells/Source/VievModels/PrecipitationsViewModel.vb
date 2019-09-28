@@ -110,5 +110,6 @@ Public Class PrecipitationsViewModel
 
         End If
         workbook.Close()
+        CloseWaitingMessage()
     End Sub
 End Class

@@ -135,8 +135,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Source\Behaviors\DataGridBehavior.vb" />
+    <Compile Include="Source\Behaviors\DataGridColumnBrowsableBehavior.vb" />
     <Compile Include="Source\Converters\BoolToCollapsedVisibilityConverter.vb" />
+    <Compile Include="Source\Converters\HiddenVisibilityToBoolConverter.vb" />
     <Compile Include="Source\Converters\BoolToHiddenVisibilityConverter.vb" />
     <Compile Include="Source\Converters\DoubleStringConverter.vb" />
     <Compile Include="Source\Converters\EnumDescriptionsConverter.vb" />
@@ -144,11 +145,9 @@
     <Compile Include="Source\Converters\InverseBooleanConverter.vb" />
     <Compile Include="Source\Converters\EnumValueConverter.vb" />
     <Compile Include="Source\Others\AsyncCommand.vb" />
-    <Compile Include="Source\Others\CheckedListItem.vb" />
     <Compile Include="Source\Others\CultureAwareBinding.vb" />
     <Compile Include="Source\Others\RelayCommand.vb" />
     <Compile Include="Source\Others\SharedBaseView.vb" />
-    <Compile Include="Source\Validators\EmailValidator.vb" />
     <Compile Include="Source\Validators\EmptyListValidator.vb" />
     <Compile Include="Source\Validators\EmptyStringValidator.vb" />
     <Compile Include="Source\Validators\IValidationProvider.vb" />
@@ -156,7 +155,6 @@
     <Compile Include="Source\Validators\NumericFunctionValidator.vb" />
     <Compile Include="Source\ViewInterfaces\IView.vb" />
     <Compile Include="Source\ViewModel\BaseViewModel.vb" />
-    <Compile Include="Source\WPFExtensions\MenuItemExtensions.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

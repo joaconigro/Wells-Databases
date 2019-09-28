@@ -20,7 +20,6 @@ Public Class EditMeasurementViewModel
     Property RealDate As Date
     Property FLNADepth As Double
     Property WaterDepth As Double
-    Property Caudal As Double
     Property Comment As String
 
     ReadOnly Property HasMeasurement As Boolean
@@ -85,7 +84,6 @@ Public Class EditMeasurementViewModel
         RealDate = Measurement.Date
         FLNADepth = Measurement.FLNADepth
         WaterDepth = Measurement.WaterDepth
-        Caudal = Measurement.Caudal
         Comment = Measurement.Comment
     End Sub
 
@@ -95,7 +93,6 @@ Public Class EditMeasurementViewModel
             Measurement.Date = RealDate
             Measurement.FLNADepth = FLNADepth
             Measurement.WaterDepth = WaterDepth
-            Measurement.Caudal = Caudal
             Measurement.Comment = Comment
         Else
             Measurement = New Measurement() With {
@@ -103,7 +100,6 @@ Public Class EditMeasurementViewModel
                 .Date = RealDate,
                 .FLNADepth = FLNADepth,
                 .WaterDepth = WaterDepth,
-                .Caudal = Caudal,
                 .Comment = Comment}
         End If
     End Sub

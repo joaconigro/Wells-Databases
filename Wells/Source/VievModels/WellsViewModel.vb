@@ -84,6 +84,7 @@ Public Class WellsViewModel
                                                                                                 If OpenExcelFile(wb, sheetIndex) Then
                                                                                                     ReadExcelFile(wb, sheetIndex)
                                                                                                     UpdateEntites()
+
                                                                                                 End If
                                                                                             End Sub, Function() IsNewCommandEnabled, AddressOf OnError, AddressOf CloseWaitingMessage)
 
@@ -115,7 +116,7 @@ Public Class WellsViewModel
         End If
 
         workbook.Close()
-
+        CloseWaitingMessage()
     End Sub
 
     Protected Overrides Sub CreateWellFilter()

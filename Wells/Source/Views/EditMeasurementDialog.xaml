@@ -14,9 +14,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Name="DeleteWellButton" Content="Borrar medición" Style="{StaticResource ButtonStyle}" Grid.Column="0" Padding="10 1" Command="{Binding DeleteMeasurementCommand}"/>
-            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Padding="10 1" Command="{Binding AcceptCommand}"/>
-            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="3" Padding="10 1" Command="{Binding CancelCommand}"/>
+            <Button Name="DeleteWellButton" Content="Borrar medición" Style="{StaticResource ButtonStyle}" Grid.Column="0" Command="{Binding DeleteMeasurementCommand}"/>
+            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding AcceptCommand}"/>
+            <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="3" Command="{Binding CloseModalViewCommand}" CommandParameter="{StaticResource False}"/>
         </Grid>
 
         <GroupBox Name="PropertiesGroupBox" Header="Propiedades">
@@ -31,8 +31,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>-->
                 </Grid.ColumnDefinitions>
                 <TextBlock Name="SelectedWellTextBlock" Text="Pozo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
                 <ComboBox Name="WellsComboBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedIndex="{Binding SelectedWellIndex, Mode=TwoWay}"
@@ -43,8 +43,8 @@
                 <TextBox Name="FLNADepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding FLNADepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
                 <TextBlock Name="WaterDepthTextBlock" Text="Profundidad agua:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
                 <TextBox Name="WaterDepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding WaterDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
-                <TextBlock Name="CaudalTextBlock" Text="Caudal:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="4"/>
-                <TextBox Name="CaudalTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding Caudal, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="5"/>
+                <!--<TextBlock Name="CaudalTextBlock" Text="Caudal:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="4"/>
+                <TextBox Name="CaudalTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding Caudal, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="5"/>-->
                 <TextBlock Name="CommentTextBlock" Text="Observaciones:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
                 <TextBox Name="CommentTextBox" Margin="4" Text="{Binding Comment, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" 
                          AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="100" 

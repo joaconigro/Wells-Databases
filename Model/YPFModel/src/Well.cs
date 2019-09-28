@@ -20,7 +20,7 @@ namespace Wells.YPFModel
         [DisplayName("Y"), Browsable(true)]
         public double Y { get; set; }
 
-        [DisplayName("Cota"), Browsable(true)]
+        [DisplayName("Cota (m.s.n.m.)"), Browsable(true)]
         public double Z { get; set; }
 
         [DisplayName("Latitud"), Browsable(true)]
@@ -29,10 +29,10 @@ namespace Wells.YPFModel
         [DisplayName("Longitud"), Browsable(true)]
         public double Longitude { get; set; }
 
-        [DisplayName("Altura"), Browsable(true)]
+        [DisplayName("Altura del brocal (m)"), Browsable(true)]
         public double Height { get; set; }
 
-        [DisplayName("Fondo"), Browsable(true)]
+        [DisplayName("Fondo (m.b.b.p.)"), Browsable(true)]
         public double Bottom { get; set; }
 
         [Browsable(false)]

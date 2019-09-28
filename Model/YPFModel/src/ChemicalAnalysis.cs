@@ -25,11 +25,7 @@ namespace Wells.YPFModel
 
 
         [DisplayName("Fecha"), Browsable(true)]
-        public DateTime Date { get; set; }
-
-
-        [Browsable(false)]
-        public SampleType SampleOf { get; set; }
+        public DateTime Date { get; set; }      
         #endregion
 
 
@@ -62,7 +58,7 @@ namespace Wells.YPFModel
                 while (!string.IsNullOrEmpty(line))
                 {
                     var split = line.Trim().Split(new char[] {(char)9}, StringSplitOptions.RemoveEmptyEntries);
-                    dict.Add(split[1], new ChemicalAnalysisType(split[1], split[0], split[3], split[2]));
+                    dict.Add(split[1], new ChemicalAnalysisType(split[1], split[0], split[2], split[3]));
                     line = sr.ReadLine();
                 }
             }

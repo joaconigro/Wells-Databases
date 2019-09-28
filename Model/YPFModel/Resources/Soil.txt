@@ -1,51 +1,51 @@
-Humedad	Humedad	Pérdida de peso a 105ºC	%
-pH	pH	EPA 9045 A/C	mg/Kg
+Humedad	Humidity	Pérdida de peso a 105ºC	%
+pH	PH	EPA 9045 A/C	mg/Kg
 HTP	DRO	EPA 8015	mg/Kg
 HTP	GRO	EPA 8015	mg/Kg
 HTP	MRO	EPA 8015	mg/Kg
-HTP	Hidrocarburos totales (EPA 8015)	EPA 8015	mg/Kg
-HTP	Hidrocarburos totales (TNRCC 1005)	TNRCC 1005	mg/Kg
-HTP	Aceites y grasas	SM 5520 D	mg/Kg
-Hidrocarburos Fracción alifática	> C6 - C8 (F. alifática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción alifática	> C8 - C10 (F. alifática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción alifática	> C10 - C12 (F. alifática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción alifática	> C12 - C16 (F. alifática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción alifática	> C16 - C21 (F. alifática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción alifática	> C21 - C35 (F. alifática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción aromática	> C6 - C8 (F. aromática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción aromática	> C8 - C10 (F. aromática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción aromática	> C10 - C12 (F. aromática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción aromática	> C12 - C16 (F. aromática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción aromática	> C16 - C21 (F. aromática)	TNRCC 1006	mg/Kg
-Hidrocarburos Fracción aromática	> C21 - C35 (F. aromática)	TNRCC 1006	mg/Kg
-BTEX	Benceno	EPA 8260	mg/Kg
+HTP	TotalHydrocarbons_EPA8015	EPA 8015	mg/Kg
+HTP	TotalHydrocarbons_TNRCC1005	TNRCC 1005	mg/Kg
+HTP	OilsAndFats	SM 5520 D	mg/Kg
+Hidrocarburos Fracción alifática	C6_C8Aliphatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	C8_C10Aliphatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	C10_C12Aliphatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	C12_C16Aliphatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	C16_C21Aliphatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción alifática	C21_C35Aliphatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	C6_C8Aromatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	C8_C10Aromatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	C10_C12Aromatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	C12_C16Aromatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	C16_C21Aromatic	TNRCC 1006	mg/Kg
+Hidrocarburos Fracción aromática	C21_C35Aromatic	TNRCC 1006	mg/Kg
+BTEX	Benzene	EPA 8260	mg/Kg
 BTEX	Tolueno	EPA 8260	mg/Kg
-BTEX	Etilbenceno	EPA 8260	mg/Kg
-BTEX	Xileno (o)	EPA 8015	mg/l
-BTEX	Xileno (p-m)	EPA 8015	mg/l
-BTEX	Xileno total	EPA 8015	mg/l
-Hidrocarburos policíclicos aromáticos	Naftaleno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Acenafteno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Acenaftileno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Fluoreno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Antraceno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Fenantreno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Fluoranteno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Pireno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Benzo(a)antraceno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Criseno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Benzo(a)pireno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Benzo(b)fluoranteno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Benzo(g,h,i)perileno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Benzo(k)fluoranteno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Dibenzo(a,h)antraceno	EPA 8310	mg/Kg
-Hidrocarburos policíclicos aromáticos	Indeno(1,2,3-cd)pireno	EPA 8310	mg/Kg
-Metales	Arsénico	EPA 7061 A 	mg/Kg
-Metales	Cadmio	EPA 7130/EPA 3050 B	mg/Kg
-Metales	Cobre	EPA 7210/EPA 3050 B	mg/Kg
-Metales	Cromo total	EPA 7190 / EPA 3050 B	mg/Kg
-Metales	Mercurio	EPA 7471 / EPA 3050 B	mg/Kg
-Metales	Níquel	EPA 7520 / EPA 3050 B	mg/Kg
-Metales	Plomo	EPA 7420 / EPA 3050 B	mg/Kg
-Metales	Cinc	EPA 7950 SW 846	mg/Kg
-Metales	Selenio	EPA 7741 / EPA 3050 B	mg/Kg
+BTEX	Ethylbenzene	EPA 8260	mg/Kg
+BTEX	XyleneO	EPA 8015	mg/l
+BTEX	XylenePM	EPA 8015	mg/l
+BTEX	TotalXylene	EPA 8015	mg/l
+Hidrocarburos policíclicos aromáticos	Naphthalene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Acenafthene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Acenaphthylene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Fluorene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Anthracene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Fenanthrene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Fluoranthene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Pyrene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	BenzoAAnthracene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Crysene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	BenzoAPyrene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	BenzoBFluoranthene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	BenzoGHIPerylene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	BenzoKFluoranthene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	DibenzoAHAnthracene	EPA 8310	mg/Kg
+Hidrocarburos policíclicos aromáticos	Indeno123CDPyrene	EPA 8310	mg/Kg
+Metales	Arsenic	EPA 7061 A 	mg/Kg
+Metales	Cadmium	EPA 7130/EPA 3050 B	mg/Kg
+Metales	Copper	EPA 7210/EPA 3050 B	mg/Kg
+Metales	TotalChrome	EPA 7190 / EPA 3050 B	mg/Kg
+Metales	Mercury	EPA 7471 / EPA 3050 B	mg/Kg
+Metales	Nickel	EPA 7520 / EPA 3050 B	mg/Kg
+Metales	Lead	EPA 7420 / EPA 3050 B	mg/Kg
+Metales	Zinc	EPA 7950 SW 846	mg/Kg
+Metales	Selenium	EPA 7741 / EPA 3050 B	mg/Kg

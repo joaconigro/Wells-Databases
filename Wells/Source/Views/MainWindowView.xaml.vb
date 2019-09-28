@@ -113,8 +113,8 @@ Class MainWindowView
                                               End Sub)
     End Sub
 
-    Public Sub OpenGraphicsView(vm As GraphicsViewModel) Implements IMainWindowView.OpenGraphicsView
-        Dim diag As New GraphicsView(vm)
+    Public Sub OpenGraphicsView() Implements IMainWindowView.OpenGraphicsView
+        Dim diag As New GraphicsView()
         diag.Show()
     End Sub
 

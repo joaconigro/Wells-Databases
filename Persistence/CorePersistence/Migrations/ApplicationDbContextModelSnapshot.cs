@@ -77,11 +77,7 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("MRO");
 
-                    b.Property<string>("Name");
-
                     b.Property<double>("RealDensity");
-
-                    b.Property<int>("SampleOf");
 
                     b.Property<double>("Tolueno");
 
@@ -102,15 +98,11 @@ namespace Wells.CorePersistence.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("Caudal");
-
                     b.Property<string>("Comment");
 
                     b.Property<DateTime>("Date");
 
                     b.Property<double>("FLNADepth");
-
-                    b.Property<string>("Name");
 
                     b.Property<double>("WaterDepth");
 
@@ -130,8 +122,6 @@ namespace Wells.CorePersistence.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<double>("Millimeters");
-
-                    b.Property<string>("Name");
 
                     b.Property<DateTime>("PrecipitationDate");
 
@@ -221,8 +211,6 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Mercury");
 
-                    b.Property<string>("Name");
-
                     b.Property<double>("Naphthalene");
 
                     b.Property<double>("Nickel");
@@ -232,8 +220,6 @@ namespace Wells.CorePersistence.Migrations
                     b.Property<double>("PH");
 
                     b.Property<double>("Pyrene");
-
-                    b.Property<int>("SampleOf");
 
                     b.Property<double>("Selenium");
 
@@ -336,8 +322,6 @@ namespace Wells.CorePersistence.Migrations
 
                     b.Property<double>("Mercury");
 
-                    b.Property<string>("Name");
-
                     b.Property<double>("Naphthalene");
 
                     b.Property<double>("Nickel");
@@ -349,10 +333,6 @@ namespace Wells.CorePersistence.Migrations
                     b.Property<double>("Potassium");
 
                     b.Property<double>("Pyrene");
-
-                    b.Property<int>("SampleOf");
-
-                    b.Property<double>("Selenium");
 
                     b.Property<double>("Sodium");
 

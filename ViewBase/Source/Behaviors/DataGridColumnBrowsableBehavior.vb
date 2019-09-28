@@ -7,12 +7,12 @@ Imports Wells.StandardModel.Attributes
 ''' <summary>
 ''' Using this behavior on a DataGrid will ensure to display only columns with "Browsable Attributes"
 ''' </summary>
-Public Class DataGridBehavior
+Public Class DataGridColumnBrowsableBehavior
 
     Public Shared ReadOnly UseBrowsableAttributeOnColumnProperty As DependencyProperty =
             DependencyProperty.RegisterAttached("UseBrowsableAttributeOnColumn",
             GetType(Boolean),
-            GetType(DataGridBehavior),
+            GetType(DataGridColumnBrowsableBehavior),
             New UIPropertyMetadata(False, AddressOf UseBrowsableAttributeOnColumnChanged))
 
 

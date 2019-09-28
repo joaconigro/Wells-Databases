@@ -48,8 +48,7 @@ Public Class MainWindowViewModel
 
 
     Property OpenGraphicsViewCommand As ICommand = New RelayCommand(Sub()
-                                                                        Dim vm As New GraphicsViewModel
-                                                                        _Window.OpenGraphicsView(vm)
+                                                                        _Window.OpenGraphicsView()
                                                                     End Sub,
                                                                Function()
                                                                    Return RepositoryWrapper.IsInstatiated

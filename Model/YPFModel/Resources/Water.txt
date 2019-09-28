@@ -1,50 +1,50 @@
-Fisico químico	pH	SM 4500 H+ B	UpH
-Fisico químico	Conductividad	SM 2510 B REVISION 2011	uS/cm
-Fisico químico	Residuos Secos	SM 2540 B	mg/l
-Fisico químico	Alcalinidad de Bicarbonato	SM 2320 B	mg/l
-Fisico químico	Alcalinidad de Carbonato	SM 2320 B	mg/l
-Fisico químico	Cloruros	SM 4500 CL B	mg/l
-Fisico químico	Nitratos	SM 4500 NO3-Nitratos Revision 2011	mg/l
-Fisico químico	Sulfatos	SM 4500 SO4 E	mg/l
-Fisico químico	Calcio	SM 3500 CA D	mg/l
-Fisico químico	Magnesio (Mg)	SM 3500 Mg E	mg/l
-Fisico químico	Sulfuros Totales (HS-)	SM 4500 S E	mg/l
-Fisico químico	Potasio	SM 3500 K B	mg/l
-Fisico químico	Sodio	SM 3500 NA B	mg/l
-Fisico químico	Fluoruros	SM 4500 F D	mg/l
+Fisico químico	PH	SM 4500 H+ B	UpH
+Fisico químico	Conductivity	SM 2510 B REVISION 2011	uS/cm
+Fisico químico	DryWaste	SM 2540 B	mg/l
+Fisico químico	BicarbonateAlkalinity	SM 2320 B	mg/l
+Fisico químico	CarbonateAlkalinity	SM 2320 B	mg/l
+Fisico químico	Chlorides	SM 4500 CL B	mg/l
+Fisico químico	Nitrates	SM 4500 NO3-Nitratos Revision 2011	mg/l
+Fisico químico	Sulfates	SM 4500 SO4 E	mg/l
+Fisico químico	Calcium	SM 3500 CA D	mg/l
+Fisico químico	Magnesium	SM 3500 Mg E	mg/l
+Fisico químico	TotalSulfur	SM 4500 S E	mg/l
+Fisico químico	Potassium	SM 3500 K B	mg/l
+Fisico químico	Sodium	SM 3500 NA B	mg/l
+Fisico químico	Fluorides	SM 4500 F D	mg/l
 HTP	DRO	EPA 8015	mg/l
 HTP	GRO	EPA 8015	mg/l
 HTP	MRO	EPA 8015	mg/l
-HTP	Hidrocarburos totales (EPA 8015)	EPA 8015	mg/l
-HTP	Hidrocarburos totales (TNRCC 1005)	TNRCC 1005	mg/l
-BTEX	Benceno	EPA 8015	mg/l
+HTP	TotalHydrocarbons_EPA8015	EPA 8015	mg/l
+HTP	TotalHydrocarbons_TNRCC1005	TNRCC 1005	mg/l
+BTEX	Benzene	EPA 8015	mg/l
 BTEX	Tolueno	EPA 8015	mg/l
-BTEX	Etilbenceno	EPA 8015	mg/l
-BTEX	Xileno (o)	EPA 8015	mg/l
-BTEX	Xileno (p-m)	EPA 8015	mg/l
-BTEX	Xileno total	EPA 8015	mg/l
-Hidrocarburos policíclicos aromáticos	Naftaleno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Acenafteno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Acenaftileno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Fluoreno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Antraceno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Fenantreno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Fluoranteno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Pireno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Benzo(a)antraceno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Criseno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Benzo(a)pireno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Benzo(b)fluoranteno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Benzo(g,h,i)perileno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Benzo(k)fluoranteno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Dibenzo(a,h)antraceno	EPA 8100	mg/l
-Hidrocarburos policíclicos aromáticos	Indeno(1,2,3-cd)pireno	EPA 8100	mg/l
-Metales	Arsénico(As)	SM 3114 As C	mg/l
-Metales	Cadmio (Cd)	SM 3111 Cd B	mg/l
-Metales	Cobalto (Co)	SM 3111 Co B	mg/l
-Metales	Cobre (Cu)	SM 3111 Cu B	mg/l
-Metales	Cromo Total (Cr)	SM 3111 Cr B	mg/l
-Metales	Mercurio (Hg)	SM 3112 Hg B	mg/l
-Metales	Niquel 	SM 3111 Ni B	mg/l
-Metales	Plomo (Pb)	SM 3111 	mg/l
-Metales	Cinc (Zn)	SM 3111 Zn B	mg/l
+BTEX	Ethylbenzene	EPA 8015	mg/l
+BTEX	XyleneO	EPA 8015	mg/l
+BTEX	XylenePM	EPA 8015	mg/l
+BTEX	TotalXylene	EPA 8015	mg/l
+Hidrocarburos policíclicos aromáticos	Naphthalene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Acenafthene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Acenaphthylene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Fluorene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Anthracene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Fenanthrene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Fluoranthene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Pyrene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	BenzoAAnthracene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Crysene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	BenzoAPyrene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	BenzoBFluoranthene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	BenzoGHIPerylene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	BenzoKFluoranthene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	DibenzoAHAnthracene	EPA 8100	mg/l
+Hidrocarburos policíclicos aromáticos	Indeno123CDPyrene	EPA 8100	mg/l
+Metales	Arsenic	SM 3114 As C	mg/l
+Metales	Cadmium	SM 3111 Cd B	mg/l
+Metales	Cobalt	SM 3111 Co B	mg/l
+Metales	Copper	SM 3111 Cu B	mg/l
+Metales	TotalChrome	SM 3111 Cr B	mg/l
+Metales	Mercury	SM 3112 Hg B	mg/l
+Metales	Nickel 	SM 3111 Ni B	mg/l
+Metales	Lead	SM 3111 	mg/l
+Metales	Zinc	SM 3111 Zn B	mg/l

@@ -15,56 +15,48 @@ Public Class EditMeasurementDialog
         _viewModel = vm
         _viewModel.SetView(Me)
 
-        AddHandler _viewModel.CloseDialog, AddressOf CloseDialog
     End Sub
 
-    Sub CloseDialog(result As Boolean)
-        RemoveHandler _viewModel.CloseDialog, AddressOf CloseDialog
-        DialogResult = result
+
+#Region "IView implementation"
+    Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
+        SharedBaseView.ShowErrorMessageBox(Me, message)
+    End Sub
+
+    Public Sub ShowOkOnkyMessageBox(message As String, title As String) Implements IView.ShowOkOnkyMessageBox
+        SharedBaseView.ShowOkOnkyMessageBox(Me, message, title)
+    End Sub
+
+    Public Sub CloseView(dialogResult As Boolean?) Implements IView.CloseView
+        Me.DialogResult = dialogResult
         Close()
     End Sub
+
+    Public Sub CloseView() Implements IView.CloseView
+        Close()
+    End Sub
+
+    Public Function OpenFileDialog(filter As String, title As String, Optional initialDirectory As String = "") As String Implements IView.OpenFileDialog
+        Return SharedBaseView.OpenFileDialog(filter, title, initialDirectory)
+    End Function
 
     Public Function ShowMessageBox(message As String, title As String) As Boolean Implements IView.ShowMessageBox
         Return SharedBaseView.ShowMessageBox(Me, message, title)
     End Function
 
-    Public Sub ShowErrorMessageBox(message As String) Implements IView.ShowErrorMessageBox
-        SharedBaseView.ShowErrorMessageBox(Me, message)
-    End Sub
-
-    'Public Function OpenFileDialog(filter As String, title As String) As String Implements IView.OpenFileDialog
-    '    Return String.Empty
-    'End Function
-
-    'Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "") As String Implements IView.SaveFileDialog
-    '    Return String.Empty
-    'End Function
-
-    Public Function OpenFileDialog(filter As String, title As String, Optional initialDirectory As String = "") As String Implements IView.OpenFileDialog
-        Throw New NotImplementedException()
-    End Function
-
-    Public Sub ShowOkOnkyMessageBox(message As String, title As String) Implements IView.ShowOkOnkyMessageBox
-        Throw New NotImplementedException()
-    End Sub
-
     Public Function SaveFileDialog(filter As String, title As String, Optional filename As String = "", Optional initialDirectory As String = "") As String Implements IView.SaveFileDialog
-        Throw New NotImplementedException()
+        Return SharedBaseView.SaveFileDialog(filter, title, filename, initialDirectory)
     End Function
 
     Public Function ShowInputBox(prompt As String, Optional title As String = "", Optional defaultResponse As String = "") As String Implements IView.ShowInputBox
-        Throw New NotImplementedException()
+        Return SharedBaseView.ShowInputBox(prompt, title, defaultResponse)
     End Function
-
-    Public Sub CloseView(dialogResult As Boolean?) Implements IView.CloseView
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Sub CloseView() Implements IView.CloseView
-        Throw New NotImplementedException()
-    End Sub
 
     Public Function ShowFolderSelectionDialog() As String Implements IView.ShowFolderSelectionDialog
-        Throw New NotImplementedException()
+        Return SharedBaseView.ShowFolderSelectionDialog()
     End Function
+
+
+#End Region
+
 End Class

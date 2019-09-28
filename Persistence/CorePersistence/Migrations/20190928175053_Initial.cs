@@ -12,7 +12,6 @@ namespace Wells.CorePersistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     PrecipitationDate = table.Column<DateTime>(nullable: false),
                     Millimeters = table.Column<double>(nullable: false)
                 },
@@ -68,10 +67,8 @@ namespace Wells.CorePersistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    SampleOf = table.Column<int>(nullable: false),
                     GRO = table.Column<double>(nullable: false),
                     DRO = table.Column<double>(nullable: false),
                     MRO = table.Column<double>(nullable: false),
@@ -106,12 +103,10 @@ namespace Wells.CorePersistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     FLNADepth = table.Column<double>(nullable: false),
                     WaterDepth = table.Column<double>(nullable: false),
-                    Caudal = table.Column<double>(nullable: false),
                     Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -130,10 +125,8 @@ namespace Wells.CorePersistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    SampleOf = table.Column<int>(nullable: false),
                     Humidity = table.Column<double>(nullable: false),
                     PH = table.Column<double>(nullable: false),
                     GRO = table.Column<double>(nullable: false),
@@ -202,10 +195,8 @@ namespace Wells.CorePersistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    SampleOf = table.Column<int>(nullable: false),
                     PH = table.Column<double>(nullable: false),
                     Conductivity = table.Column<double>(nullable: false),
                     DryWaste = table.Column<double>(nullable: false),
@@ -255,7 +246,6 @@ namespace Wells.CorePersistence.Migrations
                     Mercury = table.Column<double>(nullable: false),
                     Nickel = table.Column<double>(nullable: false),
                     Lead = table.Column<double>(nullable: false),
-                    Selenium = table.Column<double>(nullable: false),
                     Zinc = table.Column<double>(nullable: false)
                 },
                 constraints: table =>

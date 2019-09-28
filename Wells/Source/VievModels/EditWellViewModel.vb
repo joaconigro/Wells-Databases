@@ -43,7 +43,6 @@ Public Class EditWellViewModel
     Private _WellName As String
     ' Private _View As IView
 
-    Event CloseDialog(result As Boolean)
     Event MustRebind(target As String)
 
     'Property View As IView
@@ -154,7 +153,7 @@ Public Class EditWellViewModel
                                                                            If View.ShowMessageBox("¿Desea eliminar este pozo? Esto borrará toda la información asociada al mismo.", "Borrar pozo") Then
                                                                                RemoveAll()
                                                                                RepositoryWrapper.Instance.SaveChanges()
-                                                                               RaiseEvent CloseDialog(True)
+                                                                               CloseModalViewCommand.Execute(True)
                                                                            End If
                                                                        End Sub,
                                                                    Function()
@@ -170,7 +169,7 @@ Public Class EditWellViewModel
                                                                            _repo.Add(_well)
                                                                        End If
                                                                        RepositoryWrapper.Instance.SaveChanges()
-                                                                       RaiseEvent CloseDialog(True)
+                                                                       CloseModalViewCommand.Execute(True)
                                                                    End Sub,
                                                                    Function() IsValidWell(),
                                                                    AddressOf OnError)

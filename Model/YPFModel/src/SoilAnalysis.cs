@@ -7,9 +7,9 @@ namespace Wells.YPFModel
 {
     public class SoilAnalysis : ChemicalAnalysis
     {
-        public SoilAnalysis() : base() { SampleOf = SampleType.Soil; }
+        public SoilAnalysis() : base() { }
 
-        public SoilAnalysis(Well well) : base(well) { SampleOf = SampleType.Soil; }
+        public SoilAnalysis(Well well) : base(well) { }
 
         public override ChemicalAnalysisType GetChemicalAnalysisType(string propertyName)
         {
@@ -18,157 +18,157 @@ namespace Wells.YPFModel
 
 
         #region Properties
-        [DisplayName("Humedad"), Browsable(true)]
+        [DisplayName("Humedad (%)"), Browsable(true)]
         public double Humidity { get; set; }
 
-        [DisplayName("pH"), Browsable(true)]
+        [DisplayName("pH (mg/Kg)"), Browsable(true)]
         public double PH { get; set; }
 
-        [DisplayName("GRO"), Browsable(true)]
+        [DisplayName("GRO (mg/Kg)"), Browsable(true)]
         public double GRO { get; set; }
 
-        [DisplayName("DRO"), Browsable(true)]
+        [DisplayName("DRO (mg/Kg)"), Browsable(true)]
         public double DRO { get; set; }
 
-        [DisplayName("MRO"), Browsable(true)]
+        [DisplayName("MRO (mg/Kg)"), Browsable(true)]
         public double MRO { get; set; }
 
-        [DisplayName("Hidrocarburos totales (EPA 8015)"), Browsable(true)]
+        [DisplayName("Hidrocarburos totales (EPA 8015) (mg/Kg)"), Browsable(true)]
         public double TotalHydrocarbons_EPA8015 { get; set; }
 
-        [DisplayName("Hidrocarburos totales (TNRCC 1005)"), Browsable(true)]
+        [DisplayName("Hidrocarburos totales (TNRCC 1005) (mg/Kg)"), Browsable(true)]
         public double TotalHydrocarbons_TNRCC1005 { get; set; }
 
-        [DisplayName("Aceites y grasas"), Browsable(true)]
+        [DisplayName("Aceites y grasas (mg/Kg)"), Browsable(true)]
         public double OilsAndFats { get; set; }
 
-        [DisplayName("> C6 - C8 (F. alifática)"), Browsable(true)]
+        [DisplayName("> C6 - C8 (F. alifática) (mg/Kg)"), Browsable(true)]
         public double C6_C8Aliphatic { get; set; }
 
-        [DisplayName("> C8 - C10 (F. alifática)"), Browsable(true)]
+        [DisplayName("> C8 - C10 (F. alifática) (mg/Kg)"), Browsable(true)]
         public double C8_C10Aliphatic { get; set; }
 
-        [DisplayName("> C10 - C12 (F. alifática)"), Browsable(true)]
+        [DisplayName("> C10 - C12 (F. alifática) (mg/Kg)"), Browsable(true)]
         public double C10_C12Aliphatic { get; set; }
 
-        [DisplayName("> C12 - C16 (F. alifática)"), Browsable(true)]
+        [DisplayName("> C12 - C16 (F. alifática) (mg/Kg)"), Browsable(true)]
         public double C12_C16Aliphatic { get; set; }
 
-        [DisplayName("> C16 - C21 (F. alifática)"), Browsable(true)]
+        [DisplayName("> C16 - C21 (F. alifática) (mg/Kg)"), Browsable(true)]
         public double C16_C21Aliphatic { get; set; }
 
-        [DisplayName("> C21 - C35 (F. alifática)"), Browsable(true)]
+        [DisplayName("> C21 - C35 (F. alifática) (mg/Kg)"), Browsable(true)]
         public double C21_C35Aliphatic { get; set; }
 
-        [DisplayName("> C6 - C8 (F. aromática)"), Browsable(true)]
+        [DisplayName("> C6 - C8 (F. aromática) (mg/Kg)"), Browsable(true)]
         public double C6_C8Aromatic { get; set; }
 
-        [DisplayName("> C8 - C10 (F. aromática)"), Browsable(true)]
+        [DisplayName("> C8 - C10 (F. aromática) (mg/Kg)"), Browsable(true)]
         public double C8_C10Aromatic { get; set; }
 
-        [DisplayName("> C10 - C12 (F. aromática)"), Browsable(true)]
+        [DisplayName("> C10 - C12 (F. aromática) (mg/Kg)"), Browsable(true)]
         public double C10_C12Aromatic { get; set; }
 
-        [DisplayName("> C12 - C16 (F. aromática)"), Browsable(true)]
+        [DisplayName("> C12 - C16 (F. aromática) (mg/Kg)"), Browsable(true)]
         public double C12_C16Aromatic { get; set; }
 
-        [DisplayName("> C16 - C21 (F. aromática)"), Browsable(true)]
+        [DisplayName("> C16 - C21 (F. aromática) (mg/Kg)"), Browsable(true)]
         public double C16_C21Aromatic { get; set; }
 
-        [DisplayName("> C21 - C35 (F. aromática)"), Browsable(true)]
+        [DisplayName("> C21 - C35 (F. aromática) (mg/Kg)"), Browsable(true)]
         public double C21_C35Aromatic { get; set; }
 
-        [DisplayName("Benceno"), Browsable(true)]
+        [DisplayName("Benceno (mg/Kg)"), Browsable(true)]
         public double Benzene { get; set; }
 
-        [DisplayName("Tolueno"), Browsable(true)]
+        [DisplayName("Tolueno (mg/Kg)"), Browsable(true)]
         public double Tolueno { get; set; }
 
-        [DisplayName("Etilbenceno"), Browsable(true)]
+        [DisplayName("Etilbenceno (mg/Kg)"), Browsable(true)]
         public double Ethylbenzene { get; set; }
 
-        [DisplayName("Xileno (o)"), Browsable(true)]
+        [DisplayName("Xileno (o) (mg/l)"), Browsable(true)]
         public double XyleneO { get; set; }
 
-        [DisplayName("Xileno (p-m)"), Browsable(true)]
+        [DisplayName("Xileno (p-m) (mg/l)"), Browsable(true)]
         public double XylenePM { get; set; }
 
-        [DisplayName("Xileno total"), Browsable(true)]
+        [DisplayName("Xileno total (mg/l)"), Browsable(true)]
         public double TotalXylene { get; set; }
 
-        [DisplayName("Naftaleno"), Browsable(true)]
+        [DisplayName("Naftaleno (mg/Kg)"), Browsable(true)]
         public double Naphthalene { get; set; }
 
-        [DisplayName("Acenafteno"), Browsable(true)]
+        [DisplayName("Acenafteno (mg/Kg)"), Browsable(true)]
         public double Acenafthene { get; set; }
 
-        [DisplayName("Acenaftileno"), Browsable(true)]
+        [DisplayName("Acenaftileno (mg/Kg)"), Browsable(true)]
         public double Acenaphthylene { get; set; }
 
-        [DisplayName("Fluoreno"), Browsable(true)]
+        [DisplayName("Fluoreno (mg/Kg)"), Browsable(true)]
         public double Fluorene { get; set; }
 
-        [DisplayName("Antraceno"), Browsable(true)]
+        [DisplayName("Antraceno (mg/Kg)"), Browsable(true)]
         public double Anthracene { get; set; }
 
-        [DisplayName("Fenantreno"), Browsable(true)]
+        [DisplayName("Fenantreno (mg/Kg)"), Browsable(true)]
         public double Fenanthrene { get; set; }
 
-        [DisplayName("Fluoranteno"), Browsable(true)]
+        [DisplayName("Fluoranteno (mg/Kg)"), Browsable(true)]
         public double Fluoranthene { get; set; }
 
-        [DisplayName("Pireno"), Browsable(true)]
+        [DisplayName("Pireno (mg/Kg)"), Browsable(true)]
         public double Pyrene { get; set; }
 
-        [DisplayName("Criseno"), Browsable(true)]
+        [DisplayName("Criseno (mg/Kg)"), Browsable(true)]
         public double Crysene { get; set; }
 
-        [DisplayName("Benzo(a)antraceno"), Browsable(true)]
+        [DisplayName("Benzo(a)antraceno (mg/Kg)"), Browsable(true)]
         public double BenzoAAnthracene { get; set; }
 
-        [DisplayName("Benzo(a)pireno"), Browsable(true)]
+        [DisplayName("Benzo(a)pireno (mg/Kg)"), Browsable(true)]
         public double BenzoAPyrene { get; set; }
 
-        [DisplayName("Benzo(b)fluoranteno"), Browsable(true)]
+        [DisplayName("Benzo(b)fluoranteno (mg/Kg)"), Browsable(true)]
         public double BenzoBFluoranthene { get; set; }
 
-        [DisplayName("Benzo(g,h,i)perileno"), Browsable(true)]
+        [DisplayName("Benzo(g,h,i)perileno (mg/Kg)"), Browsable(true)]
         public double BenzoGHIPerylene { get; set; }
 
-        [DisplayName("Benzo(k)fluoranteno"), Browsable(true)]
+        [DisplayName("Benzo(k)fluoranteno (mg/Kg)"), Browsable(true)]
         public double BenzoKFluoranthene { get; set; }
 
-        [DisplayName("Dibenzo(a,h)antraceno"), Browsable(true)]
+        [DisplayName("Dibenzo(a,h)antraceno (mg/Kg)"), Browsable(true)]
         public double DibenzoAHAnthracene { get; set; }
 
-        [DisplayName("Indeno(1,2,3-cd)pireno"), Browsable(true)]
+        [DisplayName("Indeno(1,2,3-cd)pireno (mg/Kg)"), Browsable(true)]
         public double Indeno123CDPyrene { get; set; }
 
-        [DisplayName("Arsénico"), Browsable(true)]
+        [DisplayName("Arsénico (mg/Kg)"), Browsable(true)]
         public double Arsenic { get; set; }
 
-        [DisplayName("Cadmio"), Browsable(true)]
+        [DisplayName("Cadmio (mg/Kg)"), Browsable(true)]
         public double Cadmium { get; set; }
 
-        [DisplayName("Cobre"), Browsable(true)]
+        [DisplayName("Cobre (mg/Kg)"), Browsable(true)]
         public double Copper { get; set; }
 
-        [DisplayName("Cromo total"), Browsable(true)]
+        [DisplayName("Cromo total (mg/Kg)"), Browsable(true)]
         public double TotalChrome { get; set; }
 
-        [DisplayName("Mercurio"), Browsable(true)]
+        [DisplayName("Mercurio (mg/Kg)"), Browsable(true)]
         public double Mercury { get; set; }
 
-        [DisplayName("Níquel"), Browsable(true)]
+        [DisplayName("Níquel (mg/Kg)"), Browsable(true)]
         public double Nickel { get; set; }
 
-        [DisplayName("Plomo"), Browsable(true)]
+        [DisplayName("Plomo (mg/Kg)"), Browsable(true)]
         public double Lead { get; set; }
 
-        [DisplayName("Selenio"), Browsable(true)]
+        [DisplayName("Selenio (mg/Kg)"), Browsable(true)]
         public double Selenium { get; set; }
 
-        [DisplayName("Zinc"), Browsable(true)]
+        [DisplayName("Zinc (mg/Kg)"), Browsable(true)]
         public double Zinc { get; set; }
         #endregion
 
@@ -184,6 +184,11 @@ namespace Wells.YPFModel
         public static string GetDisplayName(string propertyName)
         {
             return GetDisplayName(typeof(SoilAnalysis), propertyName);
+        }
+
+        public static string GetChemicalAnalysisUnits(string propertyName)
+        {
+            return SoilAnalysisTypes[propertyName].Unit;
         }
     }
 }

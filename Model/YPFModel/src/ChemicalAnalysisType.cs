@@ -2,14 +2,14 @@
 {
     public struct ChemicalAnalysisType
     {
-        public string Parameter;
+        public string PropertyName;
         public string Group;
         public string Unit;
         public string Technique;
 
-        public ChemicalAnalysisType(string parameter, string group, string unit, string technique)
+        public ChemicalAnalysisType(string propertyName, string group, string technique, string unit)
         {
-            Parameter = parameter;
+            PropertyName = propertyName;
             Group = group;
             Unit = unit;
             Technique = technique;

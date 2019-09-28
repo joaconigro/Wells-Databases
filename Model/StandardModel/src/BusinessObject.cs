@@ -59,11 +59,4 @@ namespace Wells.StandardModel.Models
         [Description("Pozo")] MeasurementWell,
         [Description("Sondeo")] Sounding
     }
-
-    public enum SampleType
-    {
-        [Description("Agua")] Water,
-        [Description("FLNA")] FLNA,
-        [Description("Suelo")] Soil
-    }
 }

@@ -3,39 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Wells"
         xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Gráficos" Height="450" Width="800">
-    <Window.Resources>
-        <ControlTemplate x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
-            <StackPanel >
-                <CheckBox />
-                <TextBlock />
-            </StackPanel>
-            <ControlTemplate.Triggers>
-                <!--<Trigger Property="Button.IsMouseOver" Value="True">
-                    <Setter TargetName="OuterCircle" Property="Stroke" Value="LightBlue"/>
-                </Trigger>
-                <Trigger Property="Button.IsPressed" Value="True">
-                    <Setter Property="RenderTransform">
-                        <Setter.Value>
-                            <ScaleTransform ScaleX=".9" ScaleY=".9"/>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="RenderTransformOrigin" Value=".5,.5"/>
-                </Trigger>-->
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-    </Window.Resources>
+        Title="Gráficos" Height="500" Width="800" Style="{StaticResource WindowsStyle}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Margin="2" >
-            <GroupBox Header="Crear serie" Margin="2" DockPanel.Dock="Top" VerticalContentAlignment="Center">
+        <DockPanel Style="{StaticResource MarginStyle}">
+            <GroupBox Header="Crear serie" Style="{StaticResource MarginStyle}" DockPanel.Dock="Top" VerticalContentAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="90"/>
@@ -48,12 +25,12 @@
                         <RowDefinition/>
                         <RowDefinition/>                        
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Desde:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="2"/>
-                    <TextBlock Text="Hasta:" Margin="2" Grid.Row="1" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="2"/>
-                    <TextBlock Text="A partir de:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                    <ComboBox Name="FromComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
+                    <TextBlock Text="Desde:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0" />
+                    <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource MarginStyle}"/>
+                    <TextBlock Text="Hasta:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                    <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Style="{StaticResource MarginStyle}"/>
+                    <TextBlock Text="A partir de:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
+                    <ComboBox Name="FromComboBox" Style="{StaticResource MarginStyle}" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
                     <Grid Name="WellOptions" Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding ShowWellOptions, Converter={StaticResource BoolToCollapsedVisibilityConverter}, Mode=OneWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" MinWidth="90"/>
@@ -64,43 +41,38 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Pozo:" Margin="2" Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                        <ComboBox Name="WellNamesComboBox" Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedItem="{Binding SelectedWellName, Mode=OneWayToSource}"/>
-                        <TextBlock Text="Serie de:" Margin="2" Grid.Row="1" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                        <ComboBox Name="SeriesDataComboBox" Margin="2" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SeriesDataNames, Mode=OneWay}" SelectedItem="{Binding SelectedSeriesDataName, Mode=OneWayToSource}"/>
-                        <TextBlock Text="Parámetro:" Margin="2" Grid.Row="2" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"/>
-                        <ComboBox Name="ParametersComboBox" Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameterName, Mode=OneWayToSource}"/>
+                        <TextBlock Text="Pozo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
+                        <ComboBox Name="WellNamesComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedItem="{Binding SelectedWellName, Mode=OneWayToSource}"/>
+                        <TextBlock Text="Serie de:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                        <ComboBox Name="SeriesDataComboBox" Style="{StaticResource MarginStyle}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SeriesDataNames, Mode=OneWay}" SelectedItem="{Binding SelectedSeriesDataName, Mode=OneWayToSource}"/>
+                        <TextBlock Text="Parámetro:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
+                        <ComboBox Name="ParametersComboBox" Style="{StaticResource MarginStyle}" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameterName, Mode=OneWayToSource}"/>
                     </Grid>
-                    <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="4" Grid.ColumnSpan="2" Margin="2"/>
+                    <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource ButtonStyle}"/>
                 </Grid>
             </GroupBox>
-            <GroupBox Name="SeriesGroupBox" Header="Series" Margin="2" VerticalContentAlignment="Stretch">
-                <Grid VerticalAlignment="Stretch">
+            
+            <GroupBox Name="SeriesGroupBox" Header="Series" Style="{StaticResource MarginStyle}">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <!--<wpfx:CheckListBox VerticalAlignment="Stretch" Margin="2" Grid.Row="0" ItemsSource="{Binding Series}" SelectedMemberPath="IsChecked" DisplayMemberPath="Item" SelectedItem="{Binding SelectedSerieName, Mode=OneWayToSource}">
-
-                    </wpfx:CheckListBox>-->
-                    <ListView  VerticalAlignment="Stretch" Margin="2" Grid.Row="0" ItemsSource="{Binding Series}" SelectedItem="{Binding SelectedSerieName, Mode=OneWayToSource}" DisplayMemberPath="Name" SelectedValuePath="IsChecked">
-                        <!--<ListBox.ItemTemplate>
+                    </Grid.RowDefinitions>                    
+                    <ListBox  Style="{StaticResource MarginStyle}" ItemsSource="{Binding SeriesCollection}" SelectedItem="{Binding SelectedSerie}" Grid.Row="0">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <ListBoxItem Template="{StaticResource ListBoxItemTemplate}" IsSelected="{Binding IsChecked}">
-                                    <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Path=Item}" />
-                                </ListBoxItem>
+                                <CheckBox IsChecked="{Binding Visibility, Converter={StaticResource HiddenVisibilityToBoolConverter}}" Content="{Binding Title}"/>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>-->
-                    </ListView>
-                    <Button Name="RemoveSerieButton" Content="Eliminar serie" VerticalAlignment="Bottom"  Grid.Row="1" Margin="2" Command="{Binding RemoveSeriesCommand}"/>
-                   
-                        
+                        </ListBox.ItemTemplate>
+                    </ListBox>                   
+                    <Button Name="RemoveSerieButton" Content="Eliminar serie" Grid.Row="1" Style="{StaticResource ButtonStyle}" Command="{Binding RemoveSeriesCommand}"/>
                 </Grid>              
             </GroupBox>
         </DockPanel>
-        <charts:CartesianChart Name="MainChart" Grid.Column="1" Series="{Binding SeriesCollection}">
+        <charts:CartesianChart Name="MainChart" Grid.Column="1" Series="{Binding SeriesCollection}" Zoom="X" Hoverable="False" DisableAnimations="True"
+                               BorderBrush="DarkGray" BorderThickness="1" Margin="5" Background="White">
             <charts:CartesianChart.AxisX>
-                <charts:Axis LabelFormatter="{Binding Formatter}"/>
+                <charts:Axis LabelFormatter="{Binding XFormatter}"/>
             </charts:CartesianChart.AxisX>
         </charts:CartesianChart>
     </Grid>

@@ -119,6 +119,7 @@ Public Class WaterAnalysesViewModel
 
         End If
         workbook.Close()
+        CloseWaitingMessage()
     End Sub
 
     Overrides ReadOnly Property WellExistsInfo As String

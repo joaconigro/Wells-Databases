@@ -7,9 +7,9 @@ namespace Wells.YPFModel
 {
     public class WaterAnalysis : ChemicalAnalysis
     {
-        public WaterAnalysis() : base() { SampleOf = SampleType.Water; }
+        public WaterAnalysis() : base() { }
 
-        public WaterAnalysis(Well well) : base(well) { SampleOf = SampleType.Water; }
+        public WaterAnalysis(Well well) : base(well) { }
 
         public override ChemicalAnalysisType GetChemicalAnalysisType(string propertyName)
         {
@@ -17,157 +17,154 @@ namespace Wells.YPFModel
         }
 
         #region Properties
-        [DisplayName("pH"), Browsable(true)]
+        [DisplayName("pH (UpH)"), Browsable(true)]
         public double PH { get; set; }
 
-        [DisplayName("Conductividad"), Browsable(true)]
+        [DisplayName("Conductividad (uS/cm)"), Browsable(true)]
         public double Conductivity { get; set; }
 
-        [DisplayName("Residuos Secos"), Browsable(true)]
+        [DisplayName("Residuos Secos (mg/l)"), Browsable(true)]
         public double DryWaste { get; set; }
 
-        [DisplayName("Alcalinidad de Bicarbonato"), Browsable(true)]
+        [DisplayName("Alcalinidad de Bicarbonato (mg/l)"), Browsable(true)]
         public double BicarbonateAlkalinity { get; set; }
 
-        [DisplayName("Alcalinidad de Carbonato"), Browsable(true)]
+        [DisplayName("Alcalinidad de Carbonato (mg/l)"), Browsable(true)]
         public double CarbonateAlkalinity { get; set; }
 
-        [DisplayName("Cloruros"), Browsable(true)]
+        [DisplayName("Cloruros (mg/l)"), Browsable(true)]
         public double Chlorides { get; set; }
 
-        [DisplayName("Nitratos"), Browsable(true)]
+        [DisplayName("Nitratos (mg/l)"), Browsable(true)]
         public double Nitrates { get; set; }
 
-        [DisplayName("Sulfatos"), Browsable(true)]
+        [DisplayName("Sulfatos (mg/l)"), Browsable(true)]
         public double Sulfates { get; set; }
 
-        [DisplayName("Calcio"), Browsable(true)]
+        [DisplayName("Calcio (mg/l)"), Browsable(true)]
         public double Calcium { get; set; }
 
-        [DisplayName("Magnesio"), Browsable(true)]
+        [DisplayName("Magnesio (mg/l)"), Browsable(true)]
         public double Magnesium { get; set; }
 
-        [DisplayName("Sulfuros Totales (HS-)"), Browsable(true)]
+        [DisplayName("Sulfuros Totales (HS-) (mg/l)"), Browsable(true)]
         public double TotalSulfur { get; set; }
 
-        [DisplayName("Potasio"), Browsable(true)]
+        [DisplayName("Potasio (mg/l)"), Browsable(true)]
         public double Potassium { get; set; }
 
-        [DisplayName("Sodio"), Browsable(true)]
+        [DisplayName("Sodio (mg/l)"), Browsable(true)]
         public double Sodium { get; set; }
 
-        [DisplayName("Fluoruros"), Browsable(true)]
+        [DisplayName("Fluoruros (mg/l)"), Browsable(true)]
         public double Fluorides { get; set; }
 
-        [DisplayName("DRO"), Browsable(true)]
+        [DisplayName("DRO (mg/l)"), Browsable(true)]
         public double DRO { get; set; }
 
-        [DisplayName("GRO"), Browsable(true)]
+        [DisplayName("GRO (mg/l)"), Browsable(true)]
         public double GRO { get; set; }
 
-        [DisplayName("MRO"), Browsable(true)]
+        [DisplayName("MRO (mg/l)"), Browsable(true)]
         public double MRO { get; set; }
 
-        [DisplayName("Hidrocarburos totales (EPA 8015)"), Browsable(true)]
+        [DisplayName("Hidrocarburos totales (EPA 8015) (mg/l)"), Browsable(true)]
         public double TotalHydrocarbons_EPA8015 { get; set; }
 
-        [DisplayName("Hidrocarburos totales (TNRCC 1005)"), Browsable(true)]
+        [DisplayName("Hidrocarburos totales (TNRCC 1005) (mg/l)"), Browsable(true)]
         public double TotalHydrocarbons_TNRCC1005 { get; set; }
 
-        [DisplayName("Benceno"), Browsable(true)]
+        [DisplayName("Benceno (mg/l)"), Browsable(true)]
         public double Benzene { get; set; }
 
-        [DisplayName("Tolueno"), Browsable(true)]
+        [DisplayName("Tolueno (mg/l)"), Browsable(true)]
         public double Tolueno { get; set; }
 
-        [DisplayName("Etilbenceno"), Browsable(true)]
+        [DisplayName("Etilbenceno (mg/l)"), Browsable(true)]
         public double Ethylbenzene { get; set; }
 
-        [DisplayName("Xileno (o)"), Browsable(true)]
+        [DisplayName("Xileno (o) (mg/l)"), Browsable(true)]
         public double XyleneO { get; set; }
 
-        [DisplayName("Xileno (p-m)"), Browsable(true)]
+        [DisplayName("Xileno (p-m) (mg/l)"), Browsable(true)]
         public double XylenePM { get; set; }
 
-        [DisplayName("Xileno total"), Browsable(true)]
+        [DisplayName("Xileno total (mg/l)"), Browsable(true)]
         public double TotalXylene { get; set; }
 
-        [DisplayName("Naftaleno"), Browsable(true)]
+        [DisplayName("Naftaleno (mg/l)"), Browsable(true)]
         public double Naphthalene { get; set; }
 
-        [DisplayName("Acenafteno"), Browsable(true)]
+        [DisplayName("Acenafteno (mg/l)"), Browsable(true)]
         public double Acenafthene { get; set; }
 
-        [DisplayName("Acenaftileno"), Browsable(true)]
+        [DisplayName("Acenaftileno (mg/l)"), Browsable(true)]
         public double Acenaphthylene { get; set; }
 
-        [DisplayName("Fluoreno"), Browsable(true)]
+        [DisplayName("Fluoreno (mg/l)"), Browsable(true)]
         public double Fluorene { get; set; }
 
-        [DisplayName("Antraceno"), Browsable(true)]
+        [DisplayName("Antraceno (mg/l)"), Browsable(true)]
         public double Anthracene { get; set; }
 
-        [DisplayName("Fenantreno"), Browsable(true)]
+        [DisplayName("Fenantreno (mg/l)"), Browsable(true)]
         public double Fenanthrene { get; set; }
 
-        [DisplayName("Fluoranteno"), Browsable(true)]
+        [DisplayName("Fluoranteno (mg/l)"), Browsable(true)]
         public double Fluoranthene { get; set; }
 
-        [DisplayName("Pireno"), Browsable(true)]
+        [DisplayName("Pireno (mg/l)"), Browsable(true)]
         public double Pyrene { get; set; }
 
-        [DisplayName("Benzo(a)antraceno"), Browsable(true)]
+        [DisplayName("Benzo(a)antraceno (mg/l)"), Browsable(true)]
         public double BenzoAAnthracene { get; set; }
 
-        [DisplayName("Criseno"), Browsable(true)]
+        [DisplayName("Criseno (mg/l)"), Browsable(true)]
         public double Crysene { get; set; }
 
-        [DisplayName("Benzo(a)pireno"), Browsable(true)]
+        [DisplayName("Benzo(a)pireno (mg/l)"), Browsable(true)]
         public double BenzoAPyrene { get; set; }
 
-        [DisplayName("Benzo(b)fluoranteno"), Browsable(true)]
+        [DisplayName("Benzo(b)fluoranteno (mg/l)"), Browsable(true)]
         public double BenzoBFluoranthene { get; set; }
 
-        [DisplayName("Benzo(g,h,i)perileno"), Browsable(true)]
+        [DisplayName("Benzo(g,h,i)perileno (mg/l)"), Browsable(true)]
         public double BenzoGHIPerylene { get; set; }
 
-        [DisplayName("Benzo(k)fluoranteno"), Browsable(true)]
+        [DisplayName("Benzo(k)fluoranteno (mg/l)"), Browsable(true)]
         public double BenzoKFluoranthene { get; set; }
 
-        [DisplayName("Dibenzo(a,h)antraceno"), Browsable(true)]
+        [DisplayName("Dibenzo(a,h)antraceno (mg/l)"), Browsable(true)]
         public double DibenzoAHAnthracene { get; set; }
 
-        [DisplayName("Indeno(1,2,3-cd)pireno"), Browsable(true)]
+        [DisplayName("Indeno(1,2,3-cd)pireno (mg/l)"), Browsable(true)]
         public double Indeno123CDPyrene { get; set; }
 
-        [DisplayName("Arsénico"), Browsable(true)]
+        [DisplayName("Arsénico (mg/l)"), Browsable(true)]
         public double Arsenic { get; set; }
 
-        [DisplayName("Cadmio"), Browsable(true)]
+        [DisplayName("Cadmio (mg/l)"), Browsable(true)]
         public double Cadmium { get; set; }
 
-        [DisplayName("Cobalto"), Browsable(true)]
+        [DisplayName("Cobalto (mg/l)"), Browsable(true)]
         public double Cobalt { get; set; }
 
-        [DisplayName("Cobre"), Browsable(true)]
+        [DisplayName("Cobre (mg/l)"), Browsable(true)]
         public double Copper { get; set; }
 
-        [DisplayName("Cromo total"), Browsable(true)]
+        [DisplayName("Cromo total (mg/l)"), Browsable(true)]
         public double TotalChrome { get; set; }
 
-        [DisplayName("Mercurio"), Browsable(true)]
+        [DisplayName("Mercurio (mg/l)"), Browsable(true)]
         public double Mercury { get; set; }
 
-        [DisplayName("Níquel"), Browsable(true)]
+        [DisplayName("Níquel (mg/l)"), Browsable(true)]
         public double Nickel { get; set; }
 
-        [DisplayName("Plomo"), Browsable(true)]
+        [DisplayName("Plomo (mg/l)"), Browsable(true)]
         public double Lead { get; set; }
 
-        [DisplayName("Selenio"), Browsable(true)]
-        public double Selenium { get; set; }
-
-        [DisplayName("Zinc"), Browsable(true)]
+        [DisplayName("Zinc (mg/l)"), Browsable(true)]
         public double Zinc { get; set; }
         #endregion
 
@@ -184,6 +181,11 @@ namespace Wells.YPFModel
         public static string GetDisplayName(string propertyName)
         {
             return GetDisplayName(typeof(WaterAnalysis), propertyName);
+        }
+
+        public static string GetChemicalAnalysisUnits(string propertyName)
+        {
+            return WaterAnalysisTypes[propertyName].Unit;
         }
     }
 }

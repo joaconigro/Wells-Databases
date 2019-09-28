@@ -97,8 +97,7 @@ Public Class ExcelReader
                     .Date = ReadCellAsDateString(row, 1),
                     .FLNADepth = ReadCellAsDouble(row, 2),
                     .WaterDepth = ReadCellAsDouble(row, 3),
-                    .Caudal = ReadCellAsDouble(row, 4),
-                    .Comment = ReadCellAsString(row, 5)
+                    .Comment = ReadCellAsString(row, 4)
                 }
 
                 If meas.Well IsNot Nothing Then
@@ -413,10 +412,9 @@ Public Class ExcelReader
         header.CreateCell(1).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.Date)))
         header.CreateCell(2).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.FLNADepth)))
         header.CreateCell(3).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.WaterDepth)))
-        header.CreateCell(4).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.Caudal)))
-        header.CreateCell(5).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.Comment)))
-        header.CreateCell(6).SetCellValue(_OriginalRow)
-        header.CreateCell(7).SetCellValue(_Reason)
+        header.CreateCell(4).SetCellValue(Measurement.GetDisplayName(NameOf(Measurement.Comment)))
+        header.CreateCell(5).SetCellValue(_OriginalRow)
+        header.CreateCell(6).SetCellValue(_Reason)
     End Sub
 
     Private Shared Function WriteMeasurementToExcelRow(measurement As Measurement, sheet As ISheet, rowIndex As Integer) As IRow
@@ -426,8 +424,7 @@ Public Class ExcelReader
         row.CreateCell(1).SetCellValue(measurement.Date)
         row.CreateCell(2, CellType.Numeric).SetCellValue(measurement.FLNADepth)
         row.CreateCell(3, CellType.Numeric).SetCellValue(measurement.WaterDepth)
-        row.CreateCell(4, CellType.Numeric).SetCellValue(measurement.Caudal)
-        row.CreateCell(5).SetCellValue(measurement.Comment)
+        row.CreateCell(4).SetCellValue(measurement.Comment)
 
         Return row
     End Function

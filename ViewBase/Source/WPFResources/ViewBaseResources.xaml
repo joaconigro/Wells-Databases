@@ -80,15 +80,13 @@
     <local:BoolToCollapsedVisibilityConverter x:Key="BoolToCollapsedVisibilityConverter"/>
     <local:BoolToHiddenVisibilityConverter x:Key="BoolToHiddenVisibilityConverter"/>
     <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    <local:HiddenVisibilityToBoolConverter x:Key="HiddenVisibilityToBoolConverter"/>
 
-    
+
     <!--Behaviors-->
-    <local:DataGridBehavior x:Key="ColumnBrowsableBehavior"/>
+    <local:DataGridColumnBrowsableBehavior x:Key="ColumnBrowsableBehavior"/>
 
-    
-    <!--Extensions-->
-    <local:MenuItemExtensions x:Key="MenuExtensions"/>
-
+   
     <!--Images-->
     <BitmapImage x:Key="HomeImage" UriSource="pack://application:,,,/AppResources;component/Source/Images/HomeImage.png"/>
 </ResourceDictionary>

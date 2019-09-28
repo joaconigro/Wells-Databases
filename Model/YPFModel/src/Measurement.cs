@@ -26,11 +26,11 @@ namespace Wells.YPFModel
         public DateTime Date { get; set; }
 
 
-        [DisplayName("Profundidad FLNA"), Browsable(true)]
+        [DisplayName("Profundidad FLNA (m)"), Browsable(true)]
         public double FLNADepth { get; set; }
 
 
-        [DisplayName("Profundidad Agua"), Browsable(true)]
+        [DisplayName("Profundidad Agua (m)"), Browsable(true)]
         public double WaterDepth { get; set; }
 
 
@@ -41,7 +41,7 @@ namespace Wells.YPFModel
         [Browsable(false)]
         public bool HasFLNA => FLNADepth != NumericNullValue;
 
-        [DisplayName("Espesor FLNA"), Browsable(true)]
+        [DisplayName("Espesor FLNA (m)"), Browsable(true)]
         public double FLNAThickness
         {
             get
@@ -52,7 +52,7 @@ namespace Wells.YPFModel
         }
 
 
-        [DisplayName("Cota FLNA"), Browsable(true)]
+        [DisplayName("Cota FLNA (m)"), Browsable(true)]
         public double FLNAElevation
         {
             get
@@ -67,7 +67,7 @@ namespace Wells.YPFModel
         }
 
 
-        [DisplayName("Cota Agua"), Browsable(true)]
+        [DisplayName("Cota Agua (m)"), Browsable(true)]
         public double WaterElevation
         {
             get
@@ -81,8 +81,8 @@ namespace Wells.YPFModel
             }
         }
 
-        [DisplayName("Caudal"), Browsable(true)]
-        public double Caudal { get; set; }
+        //[DisplayName("Caudal"), Browsable(true)]
+        //public double Caudal { get; set; }
 
         [DisplayName("Observaciones"), Browsable(true)]
         public string Comment { get; set; }
