@@ -112,4 +112,8 @@ Public Class PrecipitationsViewModel
         workbook.Close()
         CloseWaitingMessage()
     End Sub
+
+    Public Overrides Function GetContextMenu() As ContextMenu
+        Return Nothing
+    End Function
 End Class

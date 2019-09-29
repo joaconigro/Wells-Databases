@@ -130,4 +130,8 @@ Public Class WaterAnalysesViewModel
             Return String.Empty
         End Get
     End Property
+
+    Public Overrides Function GetContextMenu() As ContextMenu
+        Return Nothing
+    End Function
 End Class

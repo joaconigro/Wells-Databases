@@ -181,6 +181,15 @@ namespace Wells.YPFModel
             }
         }
 
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> DoubleProperties
+        {
+            get
+            {
+                return GetDoubleBrowsableProperties(typeof(SoilAnalysis));
+            }
+        }
+
         public static string GetDisplayName(string propertyName)
         {
             return GetDisplayName(typeof(SoilAnalysis), propertyName);

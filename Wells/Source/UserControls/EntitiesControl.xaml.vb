@@ -9,14 +9,27 @@ Public Class EntitiesControl
 
     Public ReadOnly Property MainWindow As IMainWindowView Implements IEntitiesControl.MainWindow
 
+    Property RowContextMenu As ContextMenu
+        Get
+            Return GetValue(RowContextMenuProperty)
+        End Get
+        Set(value As ContextMenu)
+            SetValue(RowContextMenuProperty, value)
+        End Set
+    End Property
+
+    Public Shared ReadOnly RowContextMenuProperty As DependencyProperty =
+        DependencyProperty.Register(NameOf(RowContextMenu),
+                                    GetType(ContextMenu),
+                                    GetType(EntitiesControl),
+                                    New PropertyMetadata(Nothing))
+
     Sub SetViewModel(vm As IEntitiesViewModel)
         _Window = Window.GetWindow(Me)
         _MainWindow = CType(Window, IMainWindowView)
         DataContext = vm
         CType(vm, BaseViewModel).SetView(Me)
-
-
-        'SetBinding(EditEntityCommandProperty, New Binding(NameOf(IEntitiesViewModel.EditEntityCommand)) With {.Source = vm})
+        RowContextMenu = vm.GetContextMenu()
     End Sub
 
 
@@ -66,21 +79,6 @@ Public Class EntitiesControl
     Public Sub ForceListBoxItemsRefresh() Implements IEntitiesControl.ForceListBoxItemsRefresh
         FiltersListBox.Items.Refresh()
     End Sub
-
-    'Property EditEntityCommand As ICommand
-    '    Get
-    '        Return GetValue(EditEntityCommandProperty)
-    '    End Get
-    '    Set(value As ICommand)
-    '        SetValue(EditEntityCommandProperty, value)
-    '    End Set
-    'End Property
-
-    'Public Shared ReadOnly EditEntityCommandProperty As DependencyProperty =
-    '    DependencyProperty.Register(NameOf(EditEntityCommand),
-    '                                GetType(ICommand),
-    '                                GetType(EntitiesControl),
-    '                                New PropertyMetadata(Nothing))
 
     Private Sub OnRowEditing(sender As Object, e As DataGridRowEditEndingEventArgs)
         Dim dg = CType(sender, DataGrid)

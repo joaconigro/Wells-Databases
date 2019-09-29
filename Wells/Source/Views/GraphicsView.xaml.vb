@@ -1,4 +1,5 @@
 ﻿Imports LiveCharts.Wpf
+Imports Wells
 Imports Wells.ViewBase
 
 Public Class GraphicsView
@@ -73,5 +74,14 @@ Public Class GraphicsView
         MainChart.AxisY.Add(axis)
     End Sub
 
+    Public Sub ResetZoom() Implements IGraphicsView.ResetZoom
+        X.MinValue = Double.NaN
+        X.MaxValue = Double.NaN
+        Y.MinValue = Double.NaN
+        Y.MaxValue = Double.NaN
+    End Sub
 
+    Public Sub RemoveAxis(axisIndex As Integer) Implements IGraphicsView.RemoveAxis
+        MainChart.AxisY.RemoveAt(axisIndex)
+    End Sub
 End Class

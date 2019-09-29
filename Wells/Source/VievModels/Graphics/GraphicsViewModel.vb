@@ -46,13 +46,13 @@ Public Class GraphicsViewModel
         Get
             Select Case _SelectedSeriesDataName
                 Case "Mediciones"
-                    Return Measurement.Properties.Keys.ToList
+                    Return Measurement.DoubleProperties.Keys.ToList
                 Case "Análisis de FLNA"
-                    Return FLNAAnalysis.Properties.Keys.ToList
+                    Return FLNAAnalysis.DoubleProperties.Keys.ToList
                 Case "Análisis de agua"
-                    Return WaterAnalysis.Properties.Keys.ToList
+                    Return WaterAnalysis.DoubleProperties.Keys.ToList
                 Case Else
-                    Return SoilAnalysis.Properties.Keys.ToList
+                    Return SoilAnalysis.DoubleProperties.Keys.ToList
             End Select
         End Get
     End Property
@@ -128,6 +128,7 @@ Public Class GraphicsViewModel
                                                                          End Sub, Function() True, AddressOf OnError)
 
     ReadOnly Property RemoveSeriesCommand As ICommand = New RelayCommand(Sub()
+                                                                             OnRemovingSeries(SelectedSerie)
                                                                              SeriesCollection.Remove(SelectedSerie)
                                                                              SelectedSerie = Nothing
                                                                          End Sub, Function() SelectedSerie IsNot Nothing, AddressOf OnError)

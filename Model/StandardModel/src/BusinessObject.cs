@@ -49,6 +49,19 @@ namespace Wells.StandardModel.Models
             return display;
         }
 
+        protected static Dictionary<string, PropertyInfo> GetBrowsablePropertiesOfType(Type type, Type propertyType)
+        {
+            var dict = GetBrowsableProperties(type).Where(kp => kp.Value.PropertyType == propertyType)
+                       .ToDictionary(kp => kp.Key, kp => kp.Value);
+            return dict;
+        }
+
+        public static Dictionary<string, PropertyInfo> GetDoubleBrowsableProperties(Type type)
+        {
+            var dict = GetBrowsablePropertiesOfType(type, typeof(double));
+            return dict;
+        }
+
         #endregion
 
         public abstract int CompareTo(IBusinessObject other);       

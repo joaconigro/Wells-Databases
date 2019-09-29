@@ -178,6 +178,15 @@ namespace Wells.YPFModel
             }
         }
 
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> DoubleProperties
+        {
+            get
+            {
+                return GetDoubleBrowsableProperties(typeof(WaterAnalysis));
+            }
+        }
+
         public static string GetDisplayName(string propertyName)
         {
             return GetDisplayName(typeof(WaterAnalysis), propertyName);

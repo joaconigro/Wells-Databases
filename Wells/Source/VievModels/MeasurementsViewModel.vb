@@ -130,4 +130,14 @@ Public Class MeasurementsViewModel
             Return String.Empty
         End Get
     End Property
+
+    Public Overrides Function GetContextMenu() As ContextMenu
+        Dim menu = New ContextMenu()
+        Dim editMenuItem As New MenuItem() With {.Header = "Editar...", .Command = EditEntityCommand}
+        Dim removeMenuItem As New MenuItem() With {.Header = "Eliminar", .Command = RemoveEntityCommand}
+        menu.Items.Add(editMenuItem)
+        menu.Items.Add(New Separator)
+        menu.Items.Add(removeMenuItem)
+        Return menu
+    End Function
 End Class

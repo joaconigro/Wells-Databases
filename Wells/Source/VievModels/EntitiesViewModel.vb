@@ -3,6 +3,7 @@ Imports Wells.CorePersistence.Repositories
 Imports System.Reflection
 Imports Wells.Base.Common
 Imports NPOI.XSSF.UserModel
+Imports Wells
 
 Public MustInherit Class EntitiesViewModel(Of T)
     Inherits BaseViewModel
@@ -276,4 +277,6 @@ Public MustInherit Class EntitiesViewModel(Of T)
         End If
         Return False
     End Function
+
+    Public MustOverride Function GetContextMenu() As ContextMenu Implements IEntitiesViewModel.GetContextMenu
 End Class

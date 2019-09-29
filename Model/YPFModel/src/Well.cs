@@ -79,6 +79,15 @@ namespace Wells.YPFModel
             }
         }
 
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> DoubleProperties
+        {
+            get
+            {
+                return GetDoubleBrowsableProperties(typeof(Well));
+            }
+        }
+
         public override int CompareTo(IBusinessObject other)
         {
             return Name.CompareTo((other as Well).Name);

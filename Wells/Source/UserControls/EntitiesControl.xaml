@@ -7,16 +7,11 @@
              xmlns:viewbase="clr-namespace:Wells.ViewBase;assembly=ViewBase"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Name="EntityControl" Background="#FFF0F0F0">
-    <!--<UserControl.Resources>
-        <ContextMenu  x:Key="RowMenu" DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EntitiesControl}}}">
-            <MenuItem Header="Editar" Command="{Binding EditEntityCommand}"/>
-            <Separator/>
-            <MenuItem Header="Eliminar" Command="{Binding RemoveEntityCommand}"/>
-        </ContextMenu>
-        <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
-            <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />           
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Setter Property="ContextMenu" Value="{Binding Path=RowContextMenu, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />           
         </Style>
-    </UserControl.Resources>-->
+    </UserControl.Resources>
     <Grid Style="{StaticResource MarginStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -36,7 +31,7 @@
         </DockPanel>
 
         <DataGrid x:Name="EntitiesDataGrid" ItemsSource="{Binding Entities}" Style="{StaticResource DataGridStyle}" viewbase:DataGridColumnBrowsableBehavior.UseBrowsableAttributeOnColumn="True" 
-                  SelectedItem="{Binding SelectedEntity}" IsReadOnly="True" ColumnHeaderStyle="{StaticResource DataGridColmunHeaderStyle}" Grid.Row="1" CanUserAddRows="False"/>
+                  SelectedItem="{Binding SelectedEntity}" SelectionMode="Extended" IsReadOnly="True" ColumnHeaderStyle="{StaticResource DataGridColmunHeaderStyle}" Grid.Row="1" CanUserAddRows="False"/>
 
 
         <GridSplitter Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ShowsPreview="True" Panel.ZIndex="1"/>

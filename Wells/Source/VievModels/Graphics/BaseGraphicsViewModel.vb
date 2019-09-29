@@ -13,12 +13,35 @@ Public MustInherit Class BaseGraphicsViewModel
     Inherits BaseViewModel
 
     Protected _Dialog As IGraphicsView
-
+    Private _MinimunDate As Date
     Private _RandomGenerator As New Random()
-    Property MinimunDate As Date
-    Property MaximunDate As Date
-
     Private _SelectedSerie As ISeriesView
+    Private _MaximunDate As Date
+    Protected _SeriesInfo As New Dictionary(Of ISeriesView, SeriesInfo)
+
+    Property MinimunDate As Date
+        Get
+            Return _MinimunDate
+        End Get
+        Set
+            If Value < _MaximunDate Then
+                SetValue(_MinimunDate, Value)
+                UpdateSeries()
+            End If
+        End Set
+    End Property
+
+    Property MaximunDate As Date
+        Get
+            Return _MaximunDate
+        End Get
+        Set
+            If Value > _MinimunDate Then
+                SetValue(_MaximunDate, Value)
+                UpdateSeries()
+            End If
+        End Set
+    End Property
 
     Property SelectedSerie As ISeriesView
         Get
@@ -30,15 +53,46 @@ Public MustInherit Class BaseGraphicsViewModel
         End Set
     End Property
 
+    ReadOnly Property MinimumY As Double
+        Get
+            Dim minValues As New List(Of Double)
+            For Each s In SeriesCollection
+                Dim values = s.Values.GetPoints(s)
+                If values.Any Then
+                    minValues.Add(values.Min(Function(cp) cp.Y))
+                End If
+            Next
+            If minValues.Any Then
+                Return minValues.Min
+            End If
+            Return Double.NaN
+        End Get
+    End Property
+
+    ReadOnly Property MaximumY As Double
+        Get
+            Dim maxValues As New List(Of Double)
+            For Each s In SeriesCollection
+                Dim values = s.Values.GetPoints(s)
+                If values.Any Then
+                    maxValues.Add(values.Max(Function(cp) cp.Y))
+                End If
+            Next
+            If maxValues.Any Then
+                Return maxValues.Max
+            End If
+            Return Double.NaN
+        End Get
+    End Property
+
     Property XFormatter As Func(Of Double, String)
     Property YFormatter As Func(Of Double, String)
     Property SeriesCollection As SeriesCollection
 
-
     Sub New(view As IView)
         MyBase.New(view)
-        MaximunDate = Date.Today
-        MinimunDate = Today.Subtract(TimeSpan.FromDays(180))
+        _MaximunDate = Date.Today
+        _MinimunDate = Today.Subtract(TimeSpan.FromDays(180))
 
         Dim dateConfig = Mappers.Xy(Of DateModel)()
         dateConfig.X(Function(dm) dm.SampleDate.ToOADate)
@@ -67,11 +121,29 @@ Public MustInherit Class BaseGraphicsViewModel
         End If
     End Sub
 
+    Protected Sub OnRemovingSeries(aSeries As ISeriesView)
+        _SeriesInfo.Remove(aSeries)
+        Dim removeAxis = Not _SeriesInfo.Keys.Where(Function(s) s.ScalesYAt = aSeries.ScalesYAt).Any
+        If removeAxis Then
+            _Dialog.RemoveAxis(aSeries.ScalesYAt)
+        End If
+    End Sub
+
     Protected Function CreateSeriesFromMeasurements(well As Well, parameter As String) As ISeriesView
         Dim series = CreateLineSeries()
         series.Title = $"{well.Name} - {parameter}"
 
         Dim propertyName = Measurement.Properties(parameter).Name
+        Dim values = GetMeasurementsValues(well, propertyName, parameter)
+
+        SetAxis(series, "metros")
+
+        series.Values.AddRange(values)
+        _SeriesInfo.Add(series, New SeriesInfo(well, propertyName, parameter, AddressOf GetMeasurementsValues))
+        Return series
+    End Function
+
+    Private Function GetMeasurementsValues(well As Well, propertyName As String, parameter As String) As List(Of DateModel)
         Dim values = (From m In well.Measurements
                       Let param = CType(CallByName(m, propertyName, CallType.Get), Double)
                       Where m.Date >= MinimunDate AndAlso m.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
@@ -81,11 +153,7 @@ Public MustInherit Class BaseGraphicsViewModel
         If values.Count < 2 Then
             Throw New Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.")
         End If
-
-        SetAxis(series, "m")
-
-        series.Values.AddRange(values)
-        Return series
+        Return values
     End Function
 
     Protected Function CreateSeriesFromSoilAnalyses(well As Well, parameter As String) As ISeriesView
@@ -93,15 +161,7 @@ Public MustInherit Class BaseGraphicsViewModel
         series.Title = $"{well.Name} - {parameter}"
 
         Dim propertyName = SoilAnalysis.Properties(parameter).Name
-        Dim values = (From a In well.SoilAnalyses
-                      Let param = CType(CallByName(a, parameter, CallType.Get), Double)
-                      Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
-                      Order By a.Date Ascending
-                      Select New DateModel(a.Date, param)).ToList
-
-        If values.Count < 2 Then
-            Throw New Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.")
-        End If
+        Dim values = GetSoilAnalysesValues(well, propertyName, parameter)
 
         Dim units = SoilAnalysis.GetChemicalAnalysisUnits(propertyName)
         If Not String.IsNullOrEmpty(units) Then
@@ -109,7 +169,21 @@ Public MustInherit Class BaseGraphicsViewModel
         End If
 
         series.Values.AddRange(values)
+        _SeriesInfo.Add(series, New SeriesInfo(well, propertyName, parameter, AddressOf GetSoilAnalysesValues))
         Return series
+    End Function
+
+    Private Function GetSoilAnalysesValues(well As Well, propertyName As String, parameter As String) As List(Of DateModel)
+        Dim values = (From a In well.SoilAnalyses
+                      Let param = CType(CallByName(a, propertyName, CallType.Get), Double)
+                      Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
+                      Order By a.Date Ascending
+                      Select New DateModel(a.Date, param)).ToList
+
+        If values.Count < 2 Then
+            Throw New Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.")
+        End If
+        Return values
     End Function
 
     Protected Function CreateSeriesFromWaterAnalyses(well As Well, parameter As String) As ISeriesView
@@ -117,15 +191,7 @@ Public MustInherit Class BaseGraphicsViewModel
         series.Title = $"{well.Name} - {parameter}"
 
         Dim propertyName = WaterAnalysis.Properties(parameter).Name
-        Dim values = (From a In well.WaterAnalyses
-                      Let param = CType(CallByName(a, parameter, CallType.Get), Double)
-                      Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
-                      Order By a.Date Ascending
-                      Select New DateModel(a.Date, param)).ToList
-
-        If values.Count < 2 Then
-            Throw New Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.")
-        End If
+        Dim values = GetWaterAnalysesValues(well, propertyName, parameter)
 
         Dim units = WaterAnalysis.GetChemicalAnalysisUnits(propertyName)
         If Not String.IsNullOrEmpty(units) Then
@@ -133,17 +199,13 @@ Public MustInherit Class BaseGraphicsViewModel
         End If
 
         series.Values.AddRange(values)
+        _SeriesInfo.Add(series, New SeriesInfo(well, propertyName, parameter, AddressOf GetWaterAnalysesValues))
         Return series
     End Function
 
-
-    Protected Function CreateSeriesFromFLNAAnalyses(well As Well, parameter As String) As ISeriesView
-        Dim series = CreateLineSeries()
-        series.Title = $"{well.Name} - {parameter}"
-
-        Dim propertyName = FLNAAnalysis.Properties(parameter).Name
-        Dim values = (From a In well.FLNAAnalyses
-                      Let param = CType(CallByName(a, parameter, CallType.Get), Double)
+    Private Function GetWaterAnalysesValues(well As Well, propertyName As String, parameter As String) As List(Of DateModel)
+        Dim values = (From a In well.WaterAnalyses
+                      Let param = CType(CallByName(a, propertyName, CallType.Get), Double)
                       Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
                       Order By a.Date Ascending
                       Select New DateModel(a.Date, param)).ToList
@@ -151,6 +213,15 @@ Public MustInherit Class BaseGraphicsViewModel
         If values.Count < 2 Then
             Throw New Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.")
         End If
+        Return values
+    End Function
+
+    Protected Function CreateSeriesFromFLNAAnalyses(well As Well, parameter As String) As ISeriesView
+        Dim series = CreateLineSeries()
+        series.Title = $"{well.Name} - {parameter}"
+
+        Dim propertyName = FLNAAnalysis.Properties(parameter).Name
+        Dim values = GetFLNAAnalysesValues(well, propertyName, parameter)
 
         Dim units = FLNAAnalysis.GetChemicalAnalysisUnits(propertyName)
         If Not String.IsNullOrEmpty(units) Then
@@ -158,13 +229,36 @@ Public MustInherit Class BaseGraphicsViewModel
         End If
 
         series.Values.AddRange(values)
+        _SeriesInfo.Add(series, New SeriesInfo(well, propertyName, parameter, AddressOf GetFLNAAnalysesValues))
         Return series
+    End Function
+
+    Private Function GetFLNAAnalysesValues(well As Well, propertyName As String, parameter As String) As List(Of DateModel)
+        Dim values = (From a In well.FLNAAnalyses
+                      Let param = CType(CallByName(a, propertyName, CallType.Get), Double)
+                      Where a.Date >= MinimunDate AndAlso a.Date <= MaximunDate AndAlso param <> BusinessObject.NumericNullValue
+                      Order By a.Date Ascending
+                      Select New DateModel(a.Date, param)).ToList
+
+        If values.Count < 2 Then
+            Throw New Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.")
+        End If
+        Return values
     End Function
 
     Protected Function CreateSeriesFromPrecipitations() As ISeriesView
         Dim series = CreateColumnSeries()
         series.Title = "Precipitaciones"
 
+        Dim values = GetPrecipitationsValues()
+        SetAxis(series, "mm")
+
+        series.Values.AddRange(values)
+        _SeriesInfo.Add(series, New SeriesInfo(AddressOf GetPrecipitationsValues))
+        Return series
+    End Function
+
+    Private Function GetPrecipitationsValues() As List(Of DateModel)
         Dim values = (From p In RepositoryWrapper.Instance.Precipitations.All
                       Where p.PrecipitationDate >= MinimunDate AndAlso p.PrecipitationDate <= MaximunDate
                       Order By p.PrecipitationDate Ascending
@@ -173,12 +267,7 @@ Public MustInherit Class BaseGraphicsViewModel
         If values.Count < 1 Then
             Throw New Exception("No hay datos de precipitaciones para representar, por lo tanto no se dibujará la serie.")
         End If
-
-        series.Values.AddRange(values)
-
-        SetAxis(series, "mm")
-
-        Return series
+        Return values
     End Function
 
     Private Function CreateLineSeries() As LineSeries
@@ -206,4 +295,48 @@ Public MustInherit Class BaseGraphicsViewModel
         Return columnSeries
     End Function
 
+    Protected Sub UpdateSeries()
+        For Each s In SeriesCollection
+            s.Values.Clear()
+            s.Values.AddRange(_SeriesInfo(s).GetValues)
+        Next
+        _Dialog.ResetZoom()
+        NotifyPropertyChanged(NameOf(MinimumY))
+        NotifyPropertyChanged(NameOf(MaximumY))
+    End Sub
+
+    Protected Structure SeriesInfo
+        ReadOnly Property Well As Well
+        ReadOnly Property PropertyName As String
+        ReadOnly Property ParameterName As String
+        ReadOnly Property GetWellValuesFunc As Func(Of Well, String, String, List(Of DateModel))
+        ReadOnly Property GetPrecipitationValuesFunc As Func(Of List(Of DateModel))
+        ReadOnly Property IsFromWell As Boolean
+
+        Sub New(well As Well, propertyName As String, parameterName As String, func As Func(Of Well, String, String, List(Of DateModel)))
+            Me.Well = well
+            Me.PropertyName = propertyName
+            Me.ParameterName = parameterName
+            GetWellValuesFunc = func
+            GetPrecipitationValuesFunc = Nothing
+            IsFromWell = True
+        End Sub
+
+        Sub New(func As Func(Of List(Of DateModel)))
+            Well = Nothing
+            PropertyName = String.Empty
+            ParameterName = String.Empty
+            GetWellValuesFunc = Nothing
+            GetPrecipitationValuesFunc = func
+            IsFromWell = False
+        End Sub
+
+        Function GetValues() As List(Of DateModel)
+            If IsFromWell Then
+                Return GetWellValuesFunc.Invoke(Well, PropertyName, ParameterName)
+            Else
+                Return GetPrecipitationValuesFunc.Invoke
+            End If
+        End Function
+    End Structure
 End Class

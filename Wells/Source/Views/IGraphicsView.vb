@@ -4,4 +4,6 @@ Public Interface IGraphicsView
 
     Function GetYAxisIndex(axisTitle As String) As Integer
     Sub AddAxis(axis As LiveCharts.Wpf.Axis)
+    Sub RemoveAxis(axisIndex As Integer)
+    Sub ResetZoom()
 End Interface

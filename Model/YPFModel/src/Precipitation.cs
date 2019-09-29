@@ -29,6 +29,15 @@ namespace Wells.YPFModel
             }
         }
 
+        [Browsable(false)]
+        public static Dictionary<string, PropertyInfo> DoubleProperties
+        {
+            get
+            {
+                return GetDoubleBrowsableProperties(typeof(Precipitation));
+            }
+        }
+
         public override int CompareTo(IBusinessObject other)
         {
             return PrecipitationDate.CompareTo((other as Precipitation).PrecipitationDate);

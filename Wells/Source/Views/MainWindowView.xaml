@@ -6,7 +6,28 @@
         xmlns:local="clr-namespace:Wells"
         xmlns:extensions="clr-namespace:Wells.ViewBase;assembly=ViewBase"
         mc:Ignorable="d"
-        Title="Well Manager" Style="{StaticResource WindowsStyle}" Height="450" Width="800" ContentRendered="AfterContentRendered">
+        Title="Well Manager" Style="{StaticResource WindowsStyle}" WindowState="Maximized" Height="450" Width="800" ContentRendered="AfterContentRendered">
+    <!--<Window.Resources>
+        <ContextMenu  x:Key="WellsContextMenu" DataContext="{Binding Path=DataContext, ElementName=WellsControl}">
+            <MenuItem Header="Editar..." Command="{Binding EditEntityCommand}"/>
+            <Separator/>
+            <MenuItem Header="Gráficos">
+                <MenuItem Header="HTP vs tiempo" Command="{Binding EditEntityCommand}"/>
+                <MenuItem Header="As vs tiempo" Command="{Binding EditEntityCommand}"/>
+                <MenuItem Header="NO&#8323; vs tiempo" Command="{Binding EditEntityCommand}"/>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Header="Eliminar" Command="{Binding RemoveEntityCommand}"/>
+        </ContextMenu>
+
+        <ContextMenu  x:Key="MeasurementsContextMenu" DataContext="{Binding Path=DataContext, ElementName=MeasurementsControl}">
+            <MenuItem Header="Editar..." Command="{Binding EditEntityCommand}"/>
+            <Separator/>
+            <MenuItem Header="Eliminar" Command="{Binding RemoveEntityCommand}"/>
+        </ContextMenu>
+    </Window.Resources>-->
+    
+    
     <DockPanel>
         <Menu DockPanel.Dock="Top"  Margin="0 4">
             <MenuItem Name="DatabaseMenuItem" Header="Base de _datos">
