@@ -1,19 +1,15 @@
-﻿Imports LiveCharts.Wpf
-Imports Wells
-Imports Wells.ViewBase
+﻿Imports Wells.ViewBase
+Public Class CreatePremadeGraphicView
+    Implements IView
 
-Public Class GraphicsView
-    Implements IGraphicsView
-
-    Private _ViewModel As GraphicsViewModel
+    Private _ViewModel As CreatePremadeGraphicViewModel
 
     Sub New()
-
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        _ViewModel = New GraphicsViewModel(Me)
+        _ViewModel = New CreatePremadeGraphicViewModel(Me)
         DataContext = _ViewModel
     End Sub
 
@@ -56,32 +52,4 @@ Public Class GraphicsView
     End Function
 #End Region
 
-    Public Function GetYAxisIndex(axisTitle As String) As Integer Implements IGraphicsView.GetYAxisIndex
-        If MainChart.AxisY.ToList.Exists(Function(a) a.Title = axisTitle) Then
-            Return MainChart.AxisY.ToList.FindIndex(Function(a) a.Title = axisTitle)
-        Else
-            If MainChart.AxisY.ToList.Count = 1 Then
-                If String.IsNullOrEmpty(MainChart.AxisY(0).Title) Then
-                    MainChart.AxisY(0).Title = axisTitle
-                    Return 0
-                End If
-            End If
-        End If
-        Return -1
-    End Function
-
-    Public Sub AddAxis(axis As Axis) Implements IGraphicsView.AddAxis
-        MainChart.AxisY.Add(axis)
-    End Sub
-
-    Public Sub ResetZoom() Implements IGraphicsView.ResetZoom
-        X.MinValue = Double.NaN
-        X.MaxValue = Double.NaN
-        Y.MinValue = Double.NaN
-        Y.MaxValue = Double.NaN
-    End Sub
-
-    Public Sub RemoveAxis(axisIndex As Integer) Implements IGraphicsView.RemoveAxis
-        MainChart.AxisY.RemoveAt(axisIndex)
-    End Sub
 End Class

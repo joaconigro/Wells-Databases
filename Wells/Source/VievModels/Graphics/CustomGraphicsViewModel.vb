@@ -4,7 +4,7 @@ Imports Wells.ViewBase
 Imports LiveCharts
 Imports LiveCharts.Definitions.Series
 
-Public Class GraphicsViewModel
+Public Class CustomGraphicsViewModel
     Inherits BaseGraphicsViewModel
 
     Private _SelectedFromOption As Integer = 0
@@ -97,13 +97,13 @@ Public Class GraphicsViewModel
             Case 0
                 Select Case _SelectedSeriesDataName
                     Case "Mediciones"
-                        genericSeries = CreateSeriesFromMeasurements(_well, SelectedParameterName)
+                        genericSeries = CreateSeriesFromMeasurements(_Well, SelectedParameterName)
                     Case "Análisis de FLNA"
-                        genericSeries = CreateSeriesFromFLNAAnalyses(_well, SelectedParameterName)
+                        genericSeries = CreateSeriesFromFLNAAnalyses(_Well, SelectedParameterName)
                     Case "Análisis de agua"
-                        genericSeries = CreateSeriesFromWaterAnalyses(_well, SelectedParameterName)
+                        genericSeries = CreateSeriesFromWaterAnalyses(_Well, SelectedParameterName)
                     Case Else
-                        genericSeries = CreateSeriesFromSoilAnalyses(_well, SelectedParameterName)
+                        genericSeries = CreateSeriesFromSoilAnalyses(_Well, SelectedParameterName)
                 End Select
             Case 1
                 genericSeries = CreateSeriesFromPrecipitations()
@@ -133,5 +133,8 @@ Public Class GraphicsViewModel
                                                                              SelectedSerie = Nothing
                                                                          End Sub, Function() SelectedSerie IsNot Nothing, AddressOf OnError)
 
+    ReadOnly Property SaveChartImageCommand As ICommand = New RelayCommand(Sub()
+                                                                               _Dialog.SaveChartImage()
+                                                                           End Sub, Function() True, AddressOf OnError)
 
 End Class

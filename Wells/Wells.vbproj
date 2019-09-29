@@ -78,9 +78,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.4.0\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -217,7 +223,8 @@
     <Compile Include="Source\Filters\NumericFilter.vb" />
     <Compile Include="Source\Filters\StringFilter.vb" />
     <Compile Include="Source\Filters\WellFilter.vb" />
-    <Compile Include="Source\Graphics\CheckedListItem.vb" />
+    <Compile Include="Source\Graphics\PremadeSeriesInfo.vb" />
+    <Compile Include="Source\Graphics\PremadeSeriesInfoCollection.vb" />
     <Compile Include="Source\UserControls\EntitiesControl.xaml.vb">
       <DependentUpon>EntitiesControl.xaml</DependentUpon>
     </Compile>
@@ -230,7 +237,9 @@
     <Compile Include="Source\VievModels\EntitiesViewModel.vb" />
     <Compile Include="Source\VievModels\FilterViewModel.vb" />
     <Compile Include="Source\VievModels\Graphics\BaseGraphicsViewModel.vb" />
-    <Compile Include="Source\VievModels\Graphics\GraphicsViewModel.vb" />
+    <Compile Include="Source\VievModels\Graphics\CreatePremadeGraphicViewModel.vb" />
+    <Compile Include="Source\VievModels\Graphics\CustomGraphicsViewModel.vb" />
+    <Compile Include="Source\VievModels\Graphics\PremadeGraphicsViewModel.vb" />
     <Compile Include="Source\VievModels\IEntitiesViewModel.vb" />
     <Compile Include="Source\VievModels\FLNAAnalysesViewModel.vb" />
     <Compile Include="Source\VievModels\PrecipitationsViewModel.vb" />
@@ -241,12 +250,18 @@
     <Compile Include="Source\Views\FilterEditingView.xaml.vb">
       <DependentUpon>FilterEditingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Views\IGraphicsView.vb" />
+    <Compile Include="Source\Views\Graphics\CreatePremadeGraphicView.xaml.vb">
+      <DependentUpon>CreatePremadeGraphicView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Views\Graphics\IGraphicsView.vb" />
     <Compile Include="Source\Views\EditMeasurementDialog.xaml.vb">
       <DependentUpon>EditMeasurementDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Views\GraphicsView.xaml.vb">
-      <DependentUpon>GraphicsView.xaml</DependentUpon>
+    <Compile Include="Source\Views\Graphics\CustomGraphicsView.xaml.vb">
+      <DependentUpon>CustomGraphicsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Views\Graphics\PremadeGraphicsView.xaml.vb">
+      <DependentUpon>PremadeGraphicsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Views\WaitingView.xaml.vb">
       <DependentUpon>WaitingView.xaml</DependentUpon>
@@ -278,7 +293,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\Views\GraphicsView.xaml">
+    <Page Include="Source\Views\Graphics\CreatePremadeGraphicView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Views\Graphics\CustomGraphicsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -304,6 +323,10 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Source\Views\Graphics\PremadeGraphicsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\Views\WaitingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -392,7 +415,9 @@
       <Name>ViewBase</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

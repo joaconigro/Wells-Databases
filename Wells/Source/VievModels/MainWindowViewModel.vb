@@ -23,6 +23,7 @@ Public Class MainWindowViewModel
         _window = CType(window, IMainWindowView)
 
         ChemicalAnalysis.CreateParamtersDictionary()
+        Initialize()
     End Sub
 
     Property CreateDatabaseCommand As ICommand = New RelayCommand(Sub()
@@ -54,6 +55,10 @@ Public Class MainWindowViewModel
                                                                    Return RepositoryWrapper.IsInstatiated
                                                                End Function, AddressOf OnError)
 
+    Property OpenCreatePremadeGraphicViewCommand As ICommand = New RelayCommand(Sub()
+                                                                                    _Window.OpenCreatePremadeGraphicView()
+                                                                                End Sub,
+                                                               Function() True, AddressOf OnError)
 
 
     Private Sub ExportRejectedToExcel(rejected As List(Of RejectedEntity))
@@ -82,11 +87,11 @@ Public Class MainWindowViewModel
 
 
     Protected Overrides Sub SetValidators()
-        Throw New NotImplementedException()
+
     End Sub
 
     Protected Overrides Sub SetCommandUpdates()
-        Throw New NotImplementedException()
+
     End Sub
 
 

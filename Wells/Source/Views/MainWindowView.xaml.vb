@@ -1,4 +1,5 @@
-﻿Imports Wells.ViewBase
+﻿Imports Wells
+Imports Wells.ViewBase
 
 Class MainWindowView
     Implements IMainWindowView
@@ -114,7 +115,7 @@ Class MainWindowView
     End Sub
 
     Public Sub OpenGraphicsView() Implements IMainWindowView.OpenGraphicsView
-        Dim diag As New GraphicsView()
+        Dim diag As New CustomGraphicsView()
         diag.Show()
     End Sub
 
@@ -127,5 +128,15 @@ Class MainWindowView
         Dim diag As New EditMeasurementDialog(vm) With {.Owner = Me}
         Return diag.ShowDialog()
     End Function
+
+    Public Sub OpenCreatePremadeGraphicView() Implements IMainWindowView.OpenCreatePremadeGraphicView
+        Dim diag = New CreatePremadeGraphicView() With {.Owner = Me}
+        diag.ShowDialog()
+    End Sub
+
+    Public Sub OpenGraphicsView(well As YPFModel.Well, series As PremadeSeriesInfoCollection) Implements IMainWindowView.OpenGraphicsView
+        Dim diag = New PremadeGraphicsView(well, series) With {.Owner = Me}
+        diag.Show()
+    End Sub
 #End Region
 End Class

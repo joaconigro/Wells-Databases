@@ -5,8 +5,6 @@ Imports LiveCharts
 Imports LiveCharts.Wpf
 Imports LiveCharts.Configurations
 Imports LiveCharts.Definitions.Series
-Imports System.Collections.ObjectModel
-Imports System.ComponentModel
 Imports Wells.StandardModel.Models
 
 Public MustInherit Class BaseGraphicsViewModel
@@ -53,38 +51,6 @@ Public MustInherit Class BaseGraphicsViewModel
         End Set
     End Property
 
-    ReadOnly Property MinimumY As Double
-        Get
-            Dim minValues As New List(Of Double)
-            For Each s In SeriesCollection
-                Dim values = s.Values.GetPoints(s)
-                If values.Any Then
-                    minValues.Add(values.Min(Function(cp) cp.Y))
-                End If
-            Next
-            If minValues.Any Then
-                Return minValues.Min
-            End If
-            Return Double.NaN
-        End Get
-    End Property
-
-    ReadOnly Property MaximumY As Double
-        Get
-            Dim maxValues As New List(Of Double)
-            For Each s In SeriesCollection
-                Dim values = s.Values.GetPoints(s)
-                If values.Any Then
-                    maxValues.Add(values.Max(Function(cp) cp.Y))
-                End If
-            Next
-            If maxValues.Any Then
-                Return maxValues.Max
-            End If
-            Return Double.NaN
-        End Get
-    End Property
-
     Property XFormatter As Func(Of Double, String)
     Property YFormatter As Func(Of Double, String)
     Property SeriesCollection As SeriesCollection
@@ -100,7 +66,7 @@ Public MustInherit Class BaseGraphicsViewModel
 
         XFormatter = New Func(Of Double, String)(Function(d)
                                                      Dim dat = Date.FromOADate(d)
-                                                     Return dat.Date.ToShortDateString
+                                                     Return dat.Date.ToString("dd/MM/yy")
                                                  End Function)
 
         YFormatter = New Func(Of Double, String)(Function(d) d.ToString("N2"))
@@ -114,7 +80,7 @@ Public MustInherit Class BaseGraphicsViewModel
         If axis <> -1 Then
             aSeries.ScalesYAt = axis
         Else
-            Dim yAxis As New Axis() With {.Title = units, .Position = AxisPosition.RightTop, .LabelFormatter = YFormatter}
+            Dim yAxis As New Axis() With {.Title = units, .Position = AxisPosition.RightTop, .LabelFormatter = YFormatter, .FontSize = 12}
             _Dialog.AddAxis(yAxis)
             axis = _Dialog.GetYAxisIndex(units)
             aSeries.ScalesYAt = axis
@@ -266,7 +232,15 @@ Public MustInherit Class BaseGraphicsViewModel
 
         If values.Count < 1 Then
             Throw New Exception("No hay datos de precipitaciones para representar, por lo tanto no se dibujará la serie.")
+        ElseIf values.Count > 200 Then
+            Dim aStep = Math.Max(1, values.Count \ 150)
+            Dim newValues As New List(Of DateModel)
+            For i = 0 To values.Count - 1 Step aStep
+                newValues.Add(values(i))
+            Next
+            Return newValues
         End If
+
         Return values
     End Function
 
@@ -288,7 +262,8 @@ Public MustInherit Class BaseGraphicsViewModel
         Dim seriesColor = Color.FromArgb(255, _RandomGenerator.Next(0, 255), _RandomGenerator.Next(0, 255), _RandomGenerator.Next(0, 255))
 
         Dim columnSeries = New ColumnSeries() With {
-                .PointGeometry = Nothing,
+                .PointGeometry = New RectangleGeometry(New Rect(New Size(8, 8))),
+                .ColumnPadding = 0,
                 .Fill = New SolidColorBrush(seriesColor),
                 .Values = New ChartValues(Of DateModel)}
 
@@ -300,9 +275,7 @@ Public MustInherit Class BaseGraphicsViewModel
             s.Values.Clear()
             s.Values.AddRange(_SeriesInfo(s).GetValues)
         Next
-        _Dialog.ResetZoom()
-        NotifyPropertyChanged(NameOf(MinimumY))
-        NotifyPropertyChanged(NameOf(MaximumY))
+        _Dialog?.ResetZoom()
     End Sub
 
     Protected Structure SeriesInfo

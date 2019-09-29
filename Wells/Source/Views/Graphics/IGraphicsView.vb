@@ -6,4 +6,5 @@ Public Interface IGraphicsView
     Sub AddAxis(axis As LiveCharts.Wpf.Axis)
     Sub RemoveAxis(axisIndex As Integer)
     Sub ResetZoom()
+    Sub SaveChartImage(Optional filename As String = "")
 End Interface

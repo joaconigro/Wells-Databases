@@ -30,15 +30,16 @@
     
     <DockPanel>
         <Menu DockPanel.Dock="Top"  Margin="0 4">
-            <MenuItem Name="DatabaseMenuItem" Header="Base de _datos">
-                <MenuItem Name="NewDatabaseMenuItem" Header="Nueva..." Command="{Binding CreateDatabaseCommand}"/>
-                <MenuItem Name="OpenDatabaseMenuItem" Header="Abrir..." Command="{Binding OpenDatabaseCommand}" />
+            <MenuItem Header="Base de _datos">
+                <MenuItem Header="Nueva..." Command="{Binding CreateDatabaseCommand}"/>
+                <MenuItem Header="Abrir..." Command="{Binding OpenDatabaseCommand}" />
                 <Separator/>
-                <MenuItem Name="ImportDatabaseMenuItem" Header="Importar..."/>
-                <MenuItem Name="ExportDatabaseMenuItem" Header="Exportar..."/>
+                <MenuItem Header="Importar..."/>
+                <MenuItem Header="Exportar..."/>
             </MenuItem>
-            <MenuItem Name="GraphicsMenuItem" Header="_Gráficos">
-                <MenuItem Name="OpenGraphicsMenuItem" Header="Ver gráficos..." Command="{Binding OpenGraphicsViewCommand}"/>
+            <MenuItem Header="_Gráficos">
+                <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
+                <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
             </MenuItem>
         </Menu>
         <Grid Style="{StaticResource MarginStyle}">

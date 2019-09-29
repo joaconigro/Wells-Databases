@@ -2,6 +2,8 @@
 Imports Wells.YPFModel
 Imports Wells.ViewBase
 Imports NPOI.XSSF.UserModel
+Imports System.IO
+Imports System.Xml.Serialization
 
 Public Class WellsViewModel
     Inherits EntitiesViewModel(Of Well)
@@ -9,6 +11,7 @@ Public Class WellsViewModel
     Private _Entities As IQueryable(Of Well)
     Private _SelectedEntity As Well
     Private _SelectedEntities As IEnumerable(Of Well)
+    Private ReadOnly _PremadeGraphics As List(Of PremadeSeriesInfoCollection)
 
     Sub New()
         MyBase.New(Nothing)
@@ -18,6 +21,7 @@ Public Class WellsViewModel
         Initialize()
         _Entities = _Repository.Wells.All
         _ShowWellPanel = True
+        _PremadeGraphics = ReadPremadeGraphics()
     End Sub
 
     Public Overrides ReadOnly Property Entities As IEnumerable(Of Well)
@@ -95,6 +99,11 @@ Public Class WellsViewModel
                                                                                               End If
                                                                                           End Sub, Function() SelectedEntity IsNot Nothing AndAlso IsRemoveCommandEnabled, AddressOf OnError)
 
+    ReadOnly Property OpenPremadeGraphicCommand As ICommand = New RelayCommand(Sub(param)
+                                                                                   Dim pg = CType(param, PremadeSeriesInfoCollection)
+                                                                                   _Control.MainWindow.OpenGraphicsView(SelectedEntity, pg)
+                                                                               End Sub, Function() True, AddressOf OnError)
+
     Private Sub UpdateEntites()
         _Entities = _Repository.Wells.All
         NotifyPropertyChanged(NameOf(Entities))
@@ -130,8 +139,32 @@ Public Class WellsViewModel
         Dim removeMenuItem As New MenuItem() With {.Header = "Eliminar", .Command = RemoveEntityCommand}
         menu.Items.Add(editMenuItem)
         menu.Items.Add(New Separator)
+
+        Dim graphicsMenuItem As New MenuItem() With {.Header = "Gráficos"}
+        For Each pg In _PremadeGraphics
+            Dim aMenuItem As New MenuItem() With {.Header = pg.Title, .Command = OpenPremadeGraphicCommand, .CommandParameter = pg}
+            graphicsMenuItem.Items.Add(aMenuItem)
+        Next
+        menu.Items.Add(graphicsMenuItem)
+
+        menu.Items.Add(New Separator)
         menu.Items.Add(removeMenuItem)
         Return menu
+    End Function
+
+    Private Function ReadPremadeGraphics() As List(Of PremadeSeriesInfoCollection)
+        Dim filename = Path.Combine(Directory.GetCurrentDirectory, "PremadeGraphics.wpg")
+
+        If File.Exists(filename) Then
+            Dim serializer As New XmlSerializer(GetType(List(Of PremadeSeriesInfoCollection)))
+            Dim entities As List(Of PremadeSeriesInfoCollection) = Nothing
+            Using reader As New IO.StreamReader(filename)
+                entities = CType(serializer.Deserialize(reader), List(Of PremadeSeriesInfoCollection))
+            End Using
+
+            Return entities
+        End If
+        Return Nothing
     End Function
 
     Overrides ReadOnly Property WellExistsInfo As String

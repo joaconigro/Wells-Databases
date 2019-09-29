@@ -1,17 +1,22 @@
-﻿<Window x:Class="GraphicsView"
+﻿<Window x:Class="CustomGraphicsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:Wells"
         mc:Ignorable="d"
         Title="Gráficos" MinHeight="600" MinWidth="800" Style="{StaticResource WindowsStyle}">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="113*"/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Style="{StaticResource MarginStyle}">
+        <DockPanel Style="{StaticResource MarginStyle}" Grid.RowSpan="2">
             <GroupBox Header="Crear serie" Style="{StaticResource MarginStyle}" DockPanel.Dock="Top" MinHeight="200">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -23,7 +28,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>                        
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Desde:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0" />
                     <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource MarginStyle}"/>
@@ -51,31 +56,34 @@
                     <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource ButtonStyle}"/>
                 </Grid>
             </GroupBox>
-            
+            <Button Content="Guardar imagen" Style="{StaticResource ButtonStyle}" Command="{Binding SaveChartImageCommand}" DockPanel.Dock="Bottom"/>
             <GroupBox Name="SeriesGroupBox" Header="Series" Style="{StaticResource MarginStyle}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>                    
+                    </Grid.RowDefinitions>
                     <ListBox  Style="{StaticResource MarginStyle}" ItemsSource="{Binding SeriesCollection}" SelectedItem="{Binding SelectedSerie}" Grid.Row="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding Visibility, Converter={StaticResource HiddenVisibilityToBoolConverter}}" Content="{Binding Title}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>                   
+                    </ListBox>
                     <Button Name="RemoveSerieButton" Content="Eliminar serie" Grid.Row="1" Style="{StaticResource ButtonStyle}" Command="{Binding RemoveSeriesCommand}"/>
-                </Grid>              
+                </Grid>
             </GroupBox>
         </DockPanel>
-        <charts:CartesianChart Name="MainChart" Grid.Column="1" Series="{Binding SeriesCollection}" Zoom="X" Hoverable="False" DisableAnimations="True"
-                               BorderBrush="DarkGray" BorderThickness="1" Margin="5" Background="White">
+        <charts:CartesianChart Name="MainChart" Grid.Column="1" Series="{Binding SeriesCollection}" Zoom="X" Pan="X" Hoverable="False" DisableAnimations="True"
+                               BorderBrush="DarkGray" BorderThickness="1" Margin="5" Background="White" LegendLocation="Top" Grid.RowSpan="2">
+            <charts:CartesianChart.ChartLegend>
+                <charts:DefaultLegend BulletSize="8" Orientation="Horizontal"/>
+            </charts:CartesianChart.ChartLegend>
             <charts:CartesianChart.AxisX>
-                <charts:Axis Name="X" LabelFormatter="{Binding XFormatter}"/>
+                <charts:Axis Name="X" LabelFormatter="{Binding XFormatter}" FontSize="12"/>
             </charts:CartesianChart.AxisX>
             <charts:CartesianChart.AxisY>
-                <charts:Axis Name="Y" MinValue="{Binding MinimumY}" MaxValue="{Binding MaximumY}" LabelFormatter="{Binding YFormatter}"/>
+                <charts:Axis Name="Y" LabelFormatter="{Binding YFormatter}" FontSize="12"/>
             </charts:CartesianChart.AxisY>
         </charts:CartesianChart>
     </Grid>

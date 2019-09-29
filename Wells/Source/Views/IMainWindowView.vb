@@ -6,6 +6,8 @@ Public Interface IMainWindowView
     Sub ShowWaitingMessage(message As String)
     Sub CloseWaitingMessage()
     Sub OpenGraphicsView()
+    Sub OpenGraphicsView(well As YPFModel.Well, series As PremadeSeriesInfoCollection)
+    Sub OpenCreatePremadeGraphicView()
     Function OpenEditEntityDialog(vm As EditWellViewModel) As Boolean
     Function OpenEditEntityDialog(vm As EditMeasurementViewModel) As Boolean
 End Interface
