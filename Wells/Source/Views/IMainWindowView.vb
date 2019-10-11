@@ -10,4 +10,6 @@ Public Interface IMainWindowView
     Sub OpenCreatePremadeGraphicView()
     Function OpenEditEntityDialog(vm As EditWellViewModel) As Boolean
     Function OpenEditEntityDialog(vm As EditMeasurementViewModel) As Boolean
+
+    Event PremadeGraphicsChanged()
 End Interface

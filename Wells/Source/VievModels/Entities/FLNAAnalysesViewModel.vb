@@ -3,59 +3,35 @@ Imports Wells.YPFModel
 Imports Wells.ViewBase
 Imports NPOI.XSSF.UserModel
 
-Public Class WaterAnalysesViewModel
-    Inherits EntitiesViewModel(Of WaterAnalysis)
+Public Class FLNAAnalysesViewModel
+    Inherits EntitiesViewModel(Of FLNAAnalysis)
 
-    Private _Entities As IQueryable(Of WaterAnalysis)
-    Private _SelectedEntity As WaterAnalysis
-    Private _SelectedEntities As IEnumerable(Of WaterAnalysis)
+    Private _SelectedEntity As FLNAAnalysis
+    Private _SelectedEntities As IEnumerable(Of FLNAAnalysis)
 
     Sub New()
         MyBase.New(Nothing)
         IsNewCommandEnabled = False
         IsRemoveCommandEnabled = True
-        FilterCollection = New FilterCollection(Of WaterAnalysis)
+        FilterCollection = New FilterCollection(Of FLNAAnalysis)
         Initialize()
-        _Entities = _Repository.WaterAnalyses.All
+        _Entities = _Repository.FLNAAnalyses.All
         _ShowWellPanel = True
     End Sub
 
-    Public Overrides ReadOnly Property Entities As IEnumerable(Of WaterAnalysis)
-        Get
-            If FilterCollection?.Any Then
-                Dim l = FilterCollection.Apply(_Entities)
-                _EntitiesCount = l.Count
-                NotifyEntityCount()
-                Return l.ToList
-            End If
-            _EntitiesCount = _Entities.Count
-            NotifyEntityCount()
-            Return _Entities.ToList
-        End Get
-    End Property
-
     Public Overrides ReadOnly Property FilterProperties As Dictionary(Of String, PropertyInfo)
         Get
-            Return WaterAnalysis.Properties
+            Return FLNAAnalysis.Properties
         End Get
     End Property
 
-    Public Overrides Property SelectedEntity As WaterAnalysis
+    Public Overrides Property SelectedEntity As FLNAAnalysis
         Get
             Return _SelectedEntity
         End Get
         Set
             SetValue(_SelectedEntity, Value)
             NotifyPropertyChanged(NameOf(WellExistsInfo))
-        End Set
-    End Property
-
-    Public Overrides Property SelectedEntities As IEnumerable(Of WaterAnalysis)
-        Get
-            Return _SelectedEntities
-        End Get
-        Set
-            SetValue(_SelectedEntities, Value)
         End Set
     End Property
 
@@ -89,29 +65,29 @@ Public Class WaterAnalysesViewModel
 
     Public Overrides ReadOnly Property RemoveEntityCommand As ICommand = New RelayCommand(Sub()
                                                                                               If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar") Then
-                                                                                                  _Repository.WaterAnalyses.Remove(SelectedEntity)
+                                                                                                  _Repository.FLNAAnalyses.Remove(SelectedEntity)
                                                                                                   UpdateEntites()
                                                                                               End If
                                                                                           End Sub, Function() SelectedEntity IsNot Nothing AndAlso IsRemoveCommandEnabled, AddressOf OnError)
 
     Protected Overrides Sub CreateWellFilter()
-        Dim wellFilter = New WellFilter(Of WaterAnalysis)(_Repository.WaterAnalyses, False, WellType, WellProperty, SelectedWellName)
+        Dim wellFilter = New WellFilter(Of FLNAAnalysis)(_Repository.FLNAAnalyses, False, WellType, WellProperty, SelectedWellName)
         OnCreatingFilter(wellFilter)
     End Sub
 
     Private Sub UpdateEntites()
-        _Entities = _Repository.WaterAnalyses.All
+        _Entities = _Repository.FLNAAnalyses.All
         NotifyPropertyChanged(NameOf(Entities))
     End Sub
 
     Private Async Sub ReadExcelFile(workbook As XSSFWorkbook, sheetIndex As Integer)
-        ShowWaitingMessage("Leyendo análisis de agua del archivo Excel...")
-        Dim water = Await Task.Run(Function() ExcelReader.ReadWaterAnalysis(workbook, sheetIndex, _progress))
+        ShowWaitingMessage("Leyendo análisis de FLNA del archivo Excel...")
+        Dim flna = Await Task.Run(Function() ExcelReader.ReadFLNAAnalysis(workbook, sheetIndex, _progress))
         CloseWaitingMessage()
 
-        If water.Any Then
+        If flna.Any Then
             ShowWaitingMessage("Importando análisis...")
-            Await Task.Run(Sub() _Repository.WaterAnalyses.AddRangeAsync(water))
+            Await Task.Run(Sub() _Repository.FLNAAnalyses.AddRangeAsync(flna))
             CloseWaitingMessage()
 
             ShowWaitingMessage("Guardando base de datos...")

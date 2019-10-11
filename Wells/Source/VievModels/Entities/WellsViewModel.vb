@@ -8,10 +8,9 @@ Imports System.Xml.Serialization
 Public Class WellsViewModel
     Inherits EntitiesViewModel(Of Well)
 
-    Private _Entities As IQueryable(Of Well)
     Private _SelectedEntity As Well
     Private _SelectedEntities As IEnumerable(Of Well)
-    Private ReadOnly _PremadeGraphics As List(Of PremadeSeriesInfoCollection)
+    Private _PremadeGraphics As List(Of PremadeSeriesInfoCollection)
 
     Sub New()
         MyBase.New(Nothing)
@@ -24,19 +23,10 @@ Public Class WellsViewModel
         _PremadeGraphics = ReadPremadeGraphics()
     End Sub
 
-    Public Overrides ReadOnly Property Entities As IEnumerable(Of Well)
-        Get
-            If FilterCollection?.Any Then
-                Dim l = FilterCollection.Apply(_Entities)
-                _EntitiesCount = l.Count
-                NotifyEntityCount()
-                Return l.ToList
-            End If
-            _EntitiesCount = _Entities.Count
-            NotifyEntityCount()
-            Return _Entities.ToList
-        End Get
-    End Property
+    Protected Overrides Sub OnSetView(view As IView)
+        MyBase.OnSetView(view)
+        AddHandler _Control.MainWindow.PremadeGraphicsChanged, AddressOf OnPremadeGraphicsChanged
+    End Sub
 
     Public Overrides ReadOnly Property FilterProperties As Dictionary(Of String, PropertyInfo)
         Get
@@ -51,15 +41,6 @@ Public Class WellsViewModel
         Set
             SetValue(_SelectedEntity, Value)
             NotifyPropertyChanged(NameOf(WellExistsInfo))
-        End Set
-    End Property
-
-    Public Overrides Property SelectedEntities As IEnumerable(Of Well)
-        Get
-            Return _SelectedEntities
-        End Get
-        Set
-            SetValue(_SelectedEntities, Value)
         End Set
     End Property
 
@@ -166,6 +147,11 @@ Public Class WellsViewModel
         End If
         Return Nothing
     End Function
+
+    Private Sub OnPremadeGraphicsChanged()
+        _PremadeGraphics = ReadPremadeGraphics()
+        _Control.UpdateRowContextMenu()
+    End Sub
 
     Overrides ReadOnly Property WellExistsInfo As String
         Get

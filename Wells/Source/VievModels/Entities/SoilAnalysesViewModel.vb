@@ -3,44 +3,29 @@ Imports Wells.YPFModel
 Imports Wells.ViewBase
 Imports NPOI.XSSF.UserModel
 
-Public Class MeasurementsViewModel
-    Inherits EntitiesViewModel(Of Measurement)
+Public Class SoilAnalysesViewModel
+    Inherits EntitiesViewModel(Of SoilAnalysis)
 
-    Private _Entities As IQueryable(Of Measurement)
-    Private _SelectedEntity As Measurement
-    Private _SelectedEntities As IEnumerable(Of Measurement)
+    Private _SelectedEntity As SoilAnalysis
+    Private _SelectedEntities As IEnumerable(Of SoilAnalysis)
 
     Sub New()
         MyBase.New(Nothing)
-        IsNewCommandEnabled = True
+        IsNewCommandEnabled = False
         IsRemoveCommandEnabled = True
-        FilterCollection = New FilterCollection(Of Measurement)
+        FilterCollection = New FilterCollection(Of SoilAnalysis)
         Initialize()
-        _Entities = _Repository.Measurements.All
+        _Entities = _Repository.SoilAnalyses.All
         _ShowWellPanel = True
     End Sub
 
-    Public Overrides ReadOnly Property Entities As IEnumerable(Of Measurement)
-        Get
-            If FilterCollection?.Any Then
-                Dim l = FilterCollection.Apply(_Entities)
-                _EntitiesCount = l.Count
-                NotifyEntityCount()
-                Return l.ToList
-            End If
-            _EntitiesCount = _Entities.Count
-            NotifyEntityCount()
-            Return _Entities.ToList
-        End Get
-    End Property
-
     Public Overrides ReadOnly Property FilterProperties As Dictionary(Of String, PropertyInfo)
         Get
-            Return Measurement.Properties
+            Return SoilAnalysis.Properties
         End Get
     End Property
 
-    Public Overrides Property SelectedEntity As Measurement
+    Public Overrides Property SelectedEntity As SoilAnalysis
         Get
             Return _SelectedEntity
         End Get
@@ -49,21 +34,11 @@ Public Class MeasurementsViewModel
             NotifyPropertyChanged(NameOf(WellExistsInfo))
         End Set
     End Property
-
-    Public Overrides Property SelectedEntities As IEnumerable(Of Measurement)
-        Get
-            Return _SelectedEntities
-        End Get
-        Set
-            SetValue(_SelectedEntities, Value)
-        End Set
-    End Property
-
     Public Overrides ReadOnly Property EditEntityCommand As ICommand = New RelayCommand(Sub()
-                                                                                            Dim vm As New EditMeasurementViewModel(SelectedEntity)
-                                                                                            If _Control.MainWindow.OpenEditEntityDialog(vm) Then
-                                                                                                UpdateEntites()
-                                                                                            End If
+                                                                                            'Dim vm As New EditMeasurementViewModel(SelectedEntity)
+                                                                                            'If _Control.MainWindow.OpenEditEntityDialog(vm) Then
+                                                                                            '    UpdateEntites()
+                                                                                            'End If
                                                                                         End Sub, Function() SelectedEntity IsNot Nothing, AddressOf OnError)
 
     Public Overrides ReadOnly Property IsNewCommandEnabled As Boolean
@@ -71,10 +46,10 @@ Public Class MeasurementsViewModel
     Public Overrides ReadOnly Property IsRemoveCommandEnabled As Boolean
 
     Public Overrides ReadOnly Property NewEntityCommand As ICommand = New RelayCommand(Sub()
-                                                                                           Dim vm As New EditMeasurementViewModel()
-                                                                                           If _Control.MainWindow.OpenEditEntityDialog(vm) Then
-                                                                                               UpdateEntites()
-                                                                                           End If
+                                                                                           'Dim vm As New EditMeasurementViewModel()
+                                                                                           'If _Control.MainWindow.OpenEditEntityDialog(vm) Then
+                                                                                           '    UpdateEntites()
+                                                                                           'End If
                                                                                        End Sub, Function() IsNewCommandEnabled, AddressOf OnError)
 
     Public Overrides ReadOnly Property ImportEntitiesCommand As ICommand = New RelayCommand(Sub()
@@ -88,30 +63,30 @@ Public Class MeasurementsViewModel
                                                                                             End Sub, Function() IsNewCommandEnabled, AddressOf OnError, AddressOf CloseWaitingMessage)
 
     Public Overrides ReadOnly Property RemoveEntityCommand As ICommand = New RelayCommand(Sub()
-                                                                                              If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar esta medición?", "Eliminar") Then
-                                                                                                  _Repository.Measurements.Remove(SelectedEntity)
+                                                                                              If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar") Then
+                                                                                                  _Repository.SoilAnalyses.Remove(SelectedEntity)
                                                                                                   UpdateEntites()
                                                                                               End If
                                                                                           End Sub, Function() SelectedEntity IsNot Nothing AndAlso IsRemoveCommandEnabled, AddressOf OnError)
 
     Protected Overrides Sub CreateWellFilter()
-        Dim wellFilter = New WellFilter(Of Measurement)(_Repository.Measurements, False, WellType, WellProperty, SelectedWellName)
+        Dim wellFilter = New WellFilter(Of SoilAnalysis)(_Repository.SoilAnalyses, False, WellType, WellProperty, SelectedWellName)
         OnCreatingFilter(wellFilter)
     End Sub
 
     Private Sub UpdateEntites()
-        _Entities = _Repository.Measurements.All
+        _Entities = _Repository.SoilAnalyses.All
         NotifyPropertyChanged(NameOf(Entities))
     End Sub
 
     Private Async Sub ReadExcelFile(workbook As XSSFWorkbook, sheetIndex As Integer)
-        ShowWaitingMessage("Leyendo mediciones del archivo Excel...")
-        Dim measurements = Await Task.Run(Function() ExcelReader.ReadMeasurements(workbook, sheetIndex, _progress))
+        ShowWaitingMessage("Leyendo análisis de suelo del archivo Excel...")
+        Dim soil = Await Task.Run(Function() ExcelReader.ReadSoilAnalysis(workbook, sheetIndex, _progress))
         CloseWaitingMessage()
 
-        If measurements.Any Then
-            ShowWaitingMessage("Importando mediciones...")
-            Await Task.Run(Sub() _Repository.Measurements.AddRangeAsync(measurements))
+        If soil.Any Then
+            ShowWaitingMessage("Importando análisis...")
+            Await Task.Run(Sub() _Repository.SoilAnalyses.AddRangeAsync(soil))
             CloseWaitingMessage()
 
             ShowWaitingMessage("Guardando base de datos...")
@@ -132,12 +107,6 @@ Public Class MeasurementsViewModel
     End Property
 
     Public Overrides Function GetContextMenu() As ContextMenu
-        Dim menu = New ContextMenu()
-        Dim editMenuItem As New MenuItem() With {.Header = "Editar...", .Command = EditEntityCommand}
-        Dim removeMenuItem As New MenuItem() With {.Header = "Eliminar", .Command = RemoveEntityCommand}
-        menu.Items.Add(editMenuItem)
-        menu.Items.Add(New Separator)
-        menu.Items.Add(removeMenuItem)
-        Return menu
+        Return Nothing
     End Function
 End Class

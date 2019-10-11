@@ -3,44 +3,29 @@ Imports Wells.YPFModel
 Imports Wells.ViewBase
 Imports NPOI.XSSF.UserModel
 
-Public Class FLNAAnalysesViewModel
-    Inherits EntitiesViewModel(Of FLNAAnalysis)
+Public Class MeasurementsViewModel
+    Inherits EntitiesViewModel(Of Measurement)
 
-    Private _Entities As IQueryable(Of FLNAAnalysis)
-    Private _SelectedEntity As FLNAAnalysis
-    Private _SelectedEntities As IEnumerable(Of FLNAAnalysis)
+    Private _SelectedEntity As Measurement
+    Private _SelectedEntities As IEnumerable(Of Measurement)
 
     Sub New()
         MyBase.New(Nothing)
-        IsNewCommandEnabled = False
+        IsNewCommandEnabled = True
         IsRemoveCommandEnabled = True
-        FilterCollection = New FilterCollection(Of FLNAAnalysis)
+        FilterCollection = New FilterCollection(Of Measurement)
         Initialize()
-        _Entities = _Repository.FLNAAnalyses.All
+        _Entities = _Repository.Measurements.All
         _ShowWellPanel = True
     End Sub
 
-    Public Overrides ReadOnly Property Entities As IEnumerable(Of FLNAAnalysis)
-        Get
-            If FilterCollection?.Any Then
-                Dim l = FilterCollection.Apply(_Entities)
-                _EntitiesCount = l.Count
-                NotifyEntityCount()
-                Return l.ToList
-            End If
-            _EntitiesCount = _Entities.Count
-            NotifyEntityCount()
-            Return _Entities.ToList
-        End Get
-    End Property
-
     Public Overrides ReadOnly Property FilterProperties As Dictionary(Of String, PropertyInfo)
         Get
-            Return FLNAAnalysis.Properties
+            Return Measurement.Properties
         End Get
     End Property
 
-    Public Overrides Property SelectedEntity As FLNAAnalysis
+    Public Overrides Property SelectedEntity As Measurement
         Get
             Return _SelectedEntity
         End Get
@@ -50,20 +35,11 @@ Public Class FLNAAnalysesViewModel
         End Set
     End Property
 
-    Public Overrides Property SelectedEntities As IEnumerable(Of FLNAAnalysis)
-        Get
-            Return _SelectedEntities
-        End Get
-        Set
-            SetValue(_SelectedEntities, Value)
-        End Set
-    End Property
-
     Public Overrides ReadOnly Property EditEntityCommand As ICommand = New RelayCommand(Sub()
-                                                                                            'Dim vm As New EditMeasurementViewModel(SelectedEntity)
-                                                                                            'If _Control.MainWindow.OpenEditEntityDialog(vm) Then
-                                                                                            '    UpdateEntites()
-                                                                                            'End If
+                                                                                            Dim vm As New EditMeasurementViewModel(SelectedEntity)
+                                                                                            If _Control.MainWindow.OpenEditEntityDialog(vm) Then
+                                                                                                UpdateEntites()
+                                                                                            End If
                                                                                         End Sub, Function() SelectedEntity IsNot Nothing, AddressOf OnError)
 
     Public Overrides ReadOnly Property IsNewCommandEnabled As Boolean
@@ -71,10 +47,10 @@ Public Class FLNAAnalysesViewModel
     Public Overrides ReadOnly Property IsRemoveCommandEnabled As Boolean
 
     Public Overrides ReadOnly Property NewEntityCommand As ICommand = New RelayCommand(Sub()
-                                                                                           'Dim vm As New EditMeasurementViewModel()
-                                                                                           'If _Control.MainWindow.OpenEditEntityDialog(vm) Then
-                                                                                           '    UpdateEntites()
-                                                                                           'End If
+                                                                                           Dim vm As New EditMeasurementViewModel()
+                                                                                           If _Control.MainWindow.OpenEditEntityDialog(vm) Then
+                                                                                               UpdateEntites()
+                                                                                           End If
                                                                                        End Sub, Function() IsNewCommandEnabled, AddressOf OnError)
 
     Public Overrides ReadOnly Property ImportEntitiesCommand As ICommand = New RelayCommand(Sub()
@@ -88,30 +64,30 @@ Public Class FLNAAnalysesViewModel
                                                                                             End Sub, Function() IsNewCommandEnabled, AddressOf OnError, AddressOf CloseWaitingMessage)
 
     Public Overrides ReadOnly Property RemoveEntityCommand As ICommand = New RelayCommand(Sub()
-                                                                                              If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar") Then
-                                                                                                  _Repository.FLNAAnalyses.Remove(SelectedEntity)
+                                                                                              If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar esta medición?", "Eliminar") Then
+                                                                                                  _Repository.Measurements.Remove(SelectedEntity)
                                                                                                   UpdateEntites()
                                                                                               End If
                                                                                           End Sub, Function() SelectedEntity IsNot Nothing AndAlso IsRemoveCommandEnabled, AddressOf OnError)
 
     Protected Overrides Sub CreateWellFilter()
-        Dim wellFilter = New WellFilter(Of FLNAAnalysis)(_Repository.FLNAAnalyses, False, WellType, WellProperty, SelectedWellName)
+        Dim wellFilter = New WellFilter(Of Measurement)(_Repository.Measurements, False, WellType, WellProperty, SelectedWellName)
         OnCreatingFilter(wellFilter)
     End Sub
 
     Private Sub UpdateEntites()
-        _Entities = _Repository.FLNAAnalyses.All
+        _Entities = _Repository.Measurements.All
         NotifyPropertyChanged(NameOf(Entities))
     End Sub
 
     Private Async Sub ReadExcelFile(workbook As XSSFWorkbook, sheetIndex As Integer)
-        ShowWaitingMessage("Leyendo análisis de FLNA del archivo Excel...")
-        Dim flna = Await Task.Run(Function() ExcelReader.ReadFLNAAnalysis(workbook, sheetIndex, _progress))
+        ShowWaitingMessage("Leyendo mediciones del archivo Excel...")
+        Dim measurements = Await Task.Run(Function() ExcelReader.ReadMeasurements(workbook, sheetIndex, _progress))
         CloseWaitingMessage()
 
-        If flna.Any Then
-            ShowWaitingMessage("Importando análisis...")
-            Await Task.Run(Sub() _Repository.FLNAAnalyses.AddRangeAsync(flna))
+        If measurements.Any Then
+            ShowWaitingMessage("Importando mediciones...")
+            Await Task.Run(Sub() _Repository.Measurements.AddRangeAsync(measurements))
             CloseWaitingMessage()
 
             ShowWaitingMessage("Guardando base de datos...")
@@ -132,6 +108,12 @@ Public Class FLNAAnalysesViewModel
     End Property
 
     Public Overrides Function GetContextMenu() As ContextMenu
-        Return Nothing
+        Dim menu = New ContextMenu()
+        Dim editMenuItem As New MenuItem() With {.Header = "Editar...", .Command = EditEntityCommand}
+        Dim removeMenuItem As New MenuItem() With {.Header = "Eliminar", .Command = RemoveEntityCommand}
+        menu.Items.Add(editMenuItem)
+        menu.Items.Add(New Separator)
+        menu.Items.Add(removeMenuItem)
+        Return menu
     End Function
 End Class

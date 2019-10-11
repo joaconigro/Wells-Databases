@@ -31,7 +31,7 @@
         </DockPanel>
 
         <DataGrid x:Name="EntitiesDataGrid" ItemsSource="{Binding Entities}" Style="{StaticResource DataGridStyle}" viewbase:DataGridColumnBrowsableBehavior.UseBrowsableAttributeOnColumn="True" 
-                  SelectedItem="{Binding SelectedEntity}" SelectionMode="Extended" IsReadOnly="True" ColumnHeaderStyle="{StaticResource DataGridColmunHeaderStyle}" Grid.Row="1" CanUserAddRows="False"/>
+                  SelectedItem="{Binding SelectedEntity}" SelectionMode="Extended" SelectionChanged="OnSelectionChanged" IsReadOnly="True" ColumnHeaderStyle="{StaticResource DataGridColmunHeaderStyle}" Grid.Row="1" CanUserAddRows="False"/>
 
 
         <GridSplitter Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ShowsPreview="True" Panel.ZIndex="1"/>

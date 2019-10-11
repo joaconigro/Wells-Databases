@@ -19,10 +19,26 @@ Public MustInherit Class EntitiesViewModel(Of T)
     Private _WellType As Integer
     Private _WellProperty As Integer
     Private _SelectedWellName As String
+    Private _SelectedEntities As IEnumerable(Of T)
+    Protected _Entities As IQueryable(Of T)
 
     ReadOnly Property EntitiesCount As Integer
         Get
             Return _EntitiesCount
+        End Get
+    End Property
+
+    Public ReadOnly Property Entities As IEnumerable(Of T)
+        Get
+            If FilterCollection?.Any Then
+                Dim list = FilterCollection.Apply(_Entities)
+                _EntitiesCount = list.Count
+                NotifyEntityCount()
+                Return list.ToList
+            End If
+            _EntitiesCount = _Entities.Count
+            NotifyEntityCount()
+            Return _Entities.ToList
         End Get
     End Property
 
@@ -69,8 +85,6 @@ Public MustInherit Class EntitiesViewModel(Of T)
         End Set
     End Property
 
-    MustOverride ReadOnly Property Entities As IEnumerable(Of T)
-
     MustOverride ReadOnly Property FilterProperties As Dictionary(Of String, PropertyInfo)
 
     Public ReadOnly Property RemoveFilterCommand As ICommand = New RelayCommand(Sub()
@@ -81,7 +95,7 @@ Public MustInherit Class EntitiesViewModel(Of T)
     Public ReadOnly Property EditFilterCommand As ICommand = New RelayCommand(Sub()
                                                                                   Dim vm = FilterViewModel.CreateInstance(Of T)(SelectedFilter, FilterProperties)
                                                                                   SetDataToFilterViewModel(vm)
-                                                                                  If _Control.OpenAddOrEditFilterDialog(vm) Then
+                                                                                  If _Control.OpenFilterDialog(vm) Then
                                                                                       EditFilter(vm)
                                                                                       _Control.ForceListBoxItemsRefresh()
                                                                                       OnFiltersChanged()
@@ -90,7 +104,7 @@ Public MustInherit Class EntitiesViewModel(Of T)
 
     Public ReadOnly Property AddFilterCommand As ICommand = New RelayCommand(Sub()
                                                                                  Dim vm As New FilterViewModel(FilterProperties)
-                                                                                 If _Control.OpenAddOrEditFilterDialog(vm) Then
+                                                                                 If _Control.OpenFilterDialog(vm) Then
                                                                                      CreateFilter(vm)
                                                                                      OnFiltersChanged()
                                                                                  End If
@@ -114,7 +128,14 @@ Public MustInherit Class EntitiesViewModel(Of T)
 
     Public MustOverride Property SelectedEntity As T
 
-    Public MustOverride Property SelectedEntities As IEnumerable(Of T)
+    Public Property SelectedEntities As IEnumerable(Of T)
+        Get
+            Return _SelectedEntities
+        End Get
+        Set
+            SetValue(_SelectedEntities, Value)
+        End Set
+    End Property
     Public MustOverride ReadOnly Property EditEntityCommand As ICommand Implements IEntitiesViewModel.EditEntityCommand
     Public MustOverride ReadOnly Property IsNewCommandEnabled As Boolean Implements IEntitiesViewModel.IsNewCommandEnabled
     Public MustOverride ReadOnly Property IsRemoveCommandEnabled As Boolean Implements IEntitiesViewModel.IsRemoveCommandEnabled
@@ -279,4 +300,9 @@ Public MustInherit Class EntitiesViewModel(Of T)
     End Function
 
     Public MustOverride Function GetContextMenu() As ContextMenu Implements IEntitiesViewModel.GetContextMenu
+
+    Public Sub SetSelectedEntities(entities As IEnumerable(Of Object)) Implements IEntitiesViewModel.SetSelectedEntities
+        Dim tEntities = entities.Select(Function(o) CType(o, T)).ToList
+        SelectedEntities = tEntities
+    End Sub
 End Class

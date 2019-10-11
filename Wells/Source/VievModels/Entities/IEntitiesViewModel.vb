@@ -9,4 +9,6 @@
     ReadOnly Property RemoveEntityCommand As ICommand
 
     Function GetContextMenu() As ContextMenu
+    Sub SetSelectedEntities(entities As IEnumerable(Of Object))
+
 End Interface

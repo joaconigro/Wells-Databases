@@ -1,12 +1,13 @@
 ﻿Imports System.Reflection
 Imports System.Windows
+Imports Wells
 Imports Wells.ViewBase
 
 Public Class EntitiesControl
     Implements IEntitiesControl
 
+    Private _ViewModel As IEntitiesViewModel
     Public ReadOnly Property Window As Window Implements IEntitiesControl.Window
-
     Public ReadOnly Property MainWindow As IMainWindowView Implements IEntitiesControl.MainWindow
 
     Property RowContextMenu As ContextMenu
@@ -28,6 +29,7 @@ Public Class EntitiesControl
         _Window = Window.GetWindow(Me)
         _MainWindow = CType(Window, IMainWindowView)
         DataContext = vm
+        _ViewModel = vm
         CType(vm, BaseViewModel).SetView(Me)
         RowContextMenu = vm.GetContextMenu()
     End Sub
@@ -71,7 +73,7 @@ Public Class EntitiesControl
     End Function
 #End Region
 
-    Function OpenAddOrEditFilterDialog(vm As FilterViewModel) As Boolean Implements IEntitiesControl.OpenAddOrEditFilterDialog
+    Function OpenFilterDialog(vm As FilterViewModel) As Boolean Implements IEntitiesControl.OpenFilterDialog
         Dim diag As New FilterEditingView(vm) With {.Owner = Window}
         Return diag.ShowDialog()
     End Function
@@ -94,13 +96,23 @@ Public Class EntitiesControl
         OnRowEditing(EntitiesDataGrid, Nothing)
     End Sub
 
+    Private Sub OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+        Dim entities = From o In CType(sender, DataGrid).SelectedItems
+                       Select o
+
+    End Sub
+
+    Public Sub UpdateRowContextMenu() Implements IEntitiesControl.UpdateRowContextMenu
+        RowContextMenu = _ViewModel.GetContextMenu()
+    End Sub
 End Class
 
 Public Interface IEntitiesControl
     Inherits IView
     ReadOnly Property Window As Window
     ReadOnly Property MainWindow As IMainWindowView
-    Function OpenAddOrEditFilterDialog(vm As FilterViewModel) As Boolean
+    Function OpenFilterDialog(vm As FilterViewModel) As Boolean
     Sub ForceListBoxItemsRefresh()
     Sub ForceDataGridRefresh()
+    Sub UpdateRowContextMenu()
 End Interface

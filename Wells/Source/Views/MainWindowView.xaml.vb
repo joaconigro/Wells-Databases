@@ -7,6 +7,8 @@ Class MainWindowView
     Private _ViewModel As MainWindowViewModel
     Private _WaitingDialog As WaitingView
 
+    Event PremadeGraphicsChanged() Implements IMainWindowView.PremadeGraphicsChanged
+
     Sub New()
 
         ' This call is required by the designer.
@@ -132,6 +134,7 @@ Class MainWindowView
     Public Sub OpenCreatePremadeGraphicView() Implements IMainWindowView.OpenCreatePremadeGraphicView
         Dim diag = New CreatePremadeGraphicView() With {.Owner = Me}
         diag.ShowDialog()
+        RaiseEvent PremadeGraphicsChanged()
     End Sub
 
     Public Sub OpenGraphicsView(well As YPFModel.Well, series As PremadeSeriesInfoCollection) Implements IMainWindowView.OpenGraphicsView

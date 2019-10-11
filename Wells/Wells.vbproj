@@ -234,19 +234,19 @@
     <Compile Include="Source\Graphics\DateModel.vb" />
     <Compile Include="Source\VievModels\EditMeasurementViewModel.vb" />
     <Compile Include="Source\VievModels\EditWellViewModel.vb" />
-    <Compile Include="Source\VievModels\EntitiesViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\EntitiesViewModel.vb" />
     <Compile Include="Source\VievModels\FilterViewModel.vb" />
     <Compile Include="Source\VievModels\Graphics\BaseGraphicsViewModel.vb" />
     <Compile Include="Source\VievModels\Graphics\CreatePremadeGraphicViewModel.vb" />
     <Compile Include="Source\VievModels\Graphics\CustomGraphicsViewModel.vb" />
     <Compile Include="Source\VievModels\Graphics\PremadeGraphicsViewModel.vb" />
-    <Compile Include="Source\VievModels\IEntitiesViewModel.vb" />
-    <Compile Include="Source\VievModels\FLNAAnalysesViewModel.vb" />
-    <Compile Include="Source\VievModels\PrecipitationsViewModel.vb" />
-    <Compile Include="Source\VievModels\WaterAnalysesViewModel.vb" />
-    <Compile Include="Source\VievModels\SoilAnalysesViewModel.vb" />
-    <Compile Include="Source\VievModels\MeasurementsViewModel.vb" />
-    <Compile Include="Source\VievModels\WellsViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\IEntitiesViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\FLNAAnalysesViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\PrecipitationsViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\WaterAnalysesViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\SoilAnalysesViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\MeasurementsViewModel.vb" />
+    <Compile Include="Source\VievModels\Entities\WellsViewModel.vb" />
     <Compile Include="Source\Views\FilterEditingView.xaml.vb">
       <DependentUpon>FilterEditingView.xaml</DependentUpon>
     </Compile>
