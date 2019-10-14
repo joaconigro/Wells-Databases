@@ -85,6 +85,11 @@ Public Class WellsViewModel
                                                                                    _Control.MainWindow.OpenGraphicsView(SelectedEntity, pg)
                                                                                End Sub, Function() True, AddressOf OnError)
 
+    ReadOnly Property OpenPiperShoellerGraphicCommand As ICommand = New RelayCommand(Sub(param)
+                                                                                         Dim pg = New PiperSchoellerGraphicView
+                                                                                         pg.ShowDialog()
+                                                                                     End Sub, Function() True, AddressOf OnError)
+
     Private Sub UpdateEntites()
         _Entities = _Repository.Wells.All
         NotifyPropertyChanged(NameOf(Entities))
@@ -122,7 +127,10 @@ Public Class WellsViewModel
         menu.Items.Add(New Separator)
 
         Dim graphicsMenuItem As New MenuItem() With {.Header = "Gráficos"}
+        Dim piperMenuItem As New MenuItem() With {.Header = "Piper-Schöeller", .Command = OpenPiperShoellerGraphicCommand, .CommandParameter = SelectedEntities}
+        graphicsMenuItem.Items.Add(piperMenuItem)
         For Each pg In _PremadeGraphics
+            graphicsMenuItem.Items.Add(New Separator)
             Dim aMenuItem As New MenuItem() With {.Header = pg.Title, .Command = OpenPremadeGraphicCommand, .CommandParameter = pg}
             graphicsMenuItem.Items.Add(aMenuItem)
         Next

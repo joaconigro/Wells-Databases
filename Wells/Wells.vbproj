@@ -260,6 +260,9 @@
     <Compile Include="Source\Views\Graphics\CustomGraphicsView.xaml.vb">
       <DependentUpon>CustomGraphicsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Views\Graphics\PiperSchoellerGraphicView.xaml.vb">
+      <DependentUpon>PiperSchoellerGraphicView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Views\Graphics\PremadeGraphicsView.xaml.vb">
       <DependentUpon>PremadeGraphicsView.xaml</DependentUpon>
     </Compile>
@@ -298,6 +301,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Views\Graphics\CustomGraphicsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Views\Graphics\PiperSchoellerGraphicView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
