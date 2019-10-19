@@ -141,5 +141,10 @@ Class MainWindowView
         Dim diag = New PremadeGraphicsView(well, series) With {.Owner = Me}
         diag.Show()
     End Sub
+
+    Public Sub OpenGraphicsView(vm As PiperSchoellerGraphicViewModel) Implements IMainWindowView.OpenGraphicsView
+        Dim diag = New PiperSchoellerGraphicView(vm) With {.Owner = Me}
+        diag.Show()
+    End Sub
 #End Region
 End Class

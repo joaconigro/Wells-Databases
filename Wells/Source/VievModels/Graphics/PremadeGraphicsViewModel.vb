@@ -21,7 +21,7 @@ Public Class PremadeGraphicsViewModel
     End Sub
 
     ReadOnly Property SaveChartImageCommand As ICommand = New RelayCommand(Sub()
-                                                                               _Dialog.SaveChartImage(_Well?.Name)
+                                                                               _Dialog.SaveImage(_Well?.Name)
                                                                            End Sub, Function() True, AddressOf OnError)
 
     Protected Overrides Sub SetValidators()

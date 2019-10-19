@@ -2,7 +2,7 @@
 Imports Wells.ViewBase
 
 Public Class PremadeGraphicsView
-    Implements IGraphicsView
+    Implements IChartGraphicsView
 
     Private _ViewModel As PremadeGraphicsViewModel
 
@@ -55,7 +55,7 @@ Public Class PremadeGraphicsView
     End Function
 #End Region
 
-    Public Function GetYAxisIndex(axisTitle As String) As Integer Implements IGraphicsView.GetYAxisIndex
+    Public Function GetYAxisIndex(axisTitle As String) As Integer Implements IChartGraphicsView.GetYAxisIndex
         If MainChart.AxisY.ToList.Exists(Function(a) a.Title = axisTitle) Then
             Return MainChart.AxisY.ToList.FindIndex(Function(a) a.Title = axisTitle)
         Else
@@ -69,18 +69,18 @@ Public Class PremadeGraphicsView
         Return -1
     End Function
 
-    Public Sub AddAxis(axis As Axis) Implements IGraphicsView.AddAxis
+    Public Sub AddAxis(axis As Axis) Implements IChartGraphicsView.AddAxis
         MainChart.AxisY.Add(axis)
     End Sub
 
-    Public Sub ResetZoom() Implements IGraphicsView.ResetZoom
+    Public Sub ResetZoom() Implements IChartGraphicsView.ResetZoom
         X.MinValue = Double.NaN
         X.MaxValue = Double.NaN
         Y.MinValue = Double.NaN
         Y.MaxValue = Double.NaN
     End Sub
 
-    Public Sub RemoveAxis(axisIndex As Integer) Implements IGraphicsView.RemoveAxis
+    Public Sub RemoveAxis(axisIndex As Integer) Implements IChartGraphicsView.RemoveAxis
         If axisIndex > -1 AndAlso axisIndex < MainChart.AxisY.Count Then
             MainChart.AxisY.RemoveAt(axisIndex)
         End If
@@ -90,39 +90,11 @@ Public Class PremadeGraphicsView
         Next
     End Sub
 
-    Public Sub SaveChartImage(Optional filename As String = "") Implements IGraphicsView.SaveChartImage
+    Public Sub SaveImage(Optional filename As String = "") Implements IGraphicsView.SaveImage
         Dim imageFilename = SaveFileDialog("Imagenes *.png|*.png", "Guardar imagen", filename)
         If Not String.IsNullOrEmpty(imageFilename) Then
-
-            'Dim bitmap = New RenderTargetBitmap(MainChart.ActualWidth, MainChart.ActualHeight, 200, 200, PixelFormats.Pbgra32)
-            'bitmap.Render(MainChart)
-            Dim bms = CaptureScreen(MainChart, 200, 200)
-            Dim frame = BitmapFrame.Create(bms)
-            Dim encoder = New PngBitmapEncoder()
-            encoder.Frames.Add(frame)
-            Using stream = IO.File.Create(imageFilename)
-                encoder.Save(stream)
-            End Using
+            SharedBaseView.CaptureScreen(imageFilename, MainChart, 200, 200)
         End If
     End Sub
 
-    Private Function CaptureScreen(target As Visual, dpiX As Double, dpiY As Double) As BitmapSource
-        If target Is Nothing Then
-            Return Nothing
-        End If
-
-        Dim bounds = VisualTreeHelper.GetDescendantBounds(target)
-        Dim rtb = New RenderTargetBitmap(CInt(bounds.Width * dpiX / 96.0),
-                                         CInt(bounds.Height * dpiY / 96.0),
-                                         dpiX, dpiY, PixelFormats.Pbgra32)
-
-        Dim dv As New DrawingVisual()
-        Using ctx = dv.RenderOpen()
-            Dim vb = New VisualBrush(target)
-            ctx.DrawRectangle(vb, Nothing, New Rect(New Point(), bounds.Size))
-        End Using
-
-        rtb.Render(dv)
-        Return rtb
-    End Function
 End Class

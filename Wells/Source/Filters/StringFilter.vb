@@ -31,7 +31,7 @@ Public Class StringFilter(Of T)
     Public Overrides Function Apply(originalList As IQueryable(Of T)) As IQueryable(Of T)
         Return From o In originalList
                Let s = CStr(CallByName(o, PropertyName, CallType.Get))
-               Where Not String.IsNullOrEmpty(s) AndAlso s.ToLower.Contains(_Value)
+               Where Not String.IsNullOrEmpty(s) AndAlso s.ToLower.Contains(_Value.ToLower)
                Select o
     End Function
 

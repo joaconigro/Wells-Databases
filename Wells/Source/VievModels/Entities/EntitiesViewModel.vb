@@ -12,6 +12,7 @@ Public MustInherit Class EntitiesViewModel(Of T)
     Protected _Repository As RepositoryWrapper
 
     Protected _Control As IEntitiesControl
+    Protected _MainWindow As IMainWindowView
     Protected WithEvents _FilterCollection As FilterCollection(Of T)
     Private _SelectedFilter As BaseFilter(Of T)
     Protected _EntitiesCount As Integer
@@ -62,6 +63,7 @@ Public MustInherit Class EntitiesViewModel(Of T)
 
     Protected Overrides Sub OnSetView(view As IView)
         _Control = CType(Me.View, IEntitiesControl)
+        _MainWindow = _Control.MainWindow
     End Sub
 
     Protected Overrides Sub SetCommandUpdates()

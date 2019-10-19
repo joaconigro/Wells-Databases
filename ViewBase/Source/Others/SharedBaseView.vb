@@ -1,4 +1,6 @@
 ﻿Imports System.Windows
+Imports System.Windows.Media
+Imports System.Windows.Media.Imaging
 
 Public Class SharedBaseView
     Inherits Window
@@ -52,4 +54,29 @@ Public Class SharedBaseView
         Return Nothing
     End Function
 
+    Public Shared Sub CaptureScreen(imageFilename As String, target As Visual, dpiX As Double, dpiY As Double)
+        If target Is Nothing Then
+            Exit Sub
+        End If
+
+        Dim bounds = VisualTreeHelper.GetDescendantBounds(target)
+        Dim rtb = New RenderTargetBitmap(CInt(bounds.Width * dpiX / 96.0),
+                                         CInt(bounds.Height * dpiY / 96.0),
+                                         dpiX, dpiY, PixelFormats.Pbgra32)
+
+        Dim dv As New DrawingVisual()
+        Using ctx = dv.RenderOpen()
+            Dim vb = New VisualBrush(target)
+            ctx.DrawRectangle(vb, Nothing, New Rect(New Point(), bounds.Size))
+        End Using
+
+        rtb.Render(dv)
+
+        Dim frame = BitmapFrame.Create(rtb)
+        Dim encoder = New PngBitmapEncoder()
+        encoder.Frames.Add(frame)
+        Using stream = IO.File.Create(imageFilename)
+            encoder.Save(stream)
+        End Using
+    End Sub
 End Class

@@ -10,7 +10,7 @@ Imports Wells.StandardModel.Models
 Public MustInherit Class BaseGraphicsViewModel
     Inherits BaseViewModel
 
-    Protected _Dialog As IGraphicsView
+    Protected _Dialog As IChartGraphicsView
     Private _MinimunDate As Date
     Private _RandomGenerator As New Random()
     Private _SelectedSerie As ISeriesView
@@ -72,7 +72,7 @@ Public MustInherit Class BaseGraphicsViewModel
         YFormatter = New Func(Of Double, String)(Function(d) d.ToString("N2"))
 
         SeriesCollection = New SeriesCollection(dateConfig)
-        _Dialog = CType(view, IGraphicsView)
+        _Dialog = CType(view, IChartGraphicsView)
     End Sub
 
     Private Sub SetAxis(aSeries As ISeriesView, units As String)

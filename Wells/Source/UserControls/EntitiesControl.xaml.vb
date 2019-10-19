@@ -99,6 +99,7 @@ Public Class EntitiesControl
     Private Sub OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
         Dim entities = From o In CType(sender, DataGrid).SelectedItems
                        Select o
+        _ViewModel.SetSelectedEntities(entities)
 
     End Sub
 

@@ -46,7 +46,7 @@ Public Class WellsViewModel
 
     Public Overrides ReadOnly Property EditEntityCommand As ICommand = New RelayCommand(Sub()
                                                                                             Dim vm As New EditWellViewModel(SelectedEntity)
-                                                                                            If _Control.MainWindow.OpenEditEntityDialog(vm) Then
+                                                                                            If _MainWindow.OpenEditEntityDialog(vm) Then
                                                                                                 UpdateEntites()
                                                                                             End If
                                                                                         End Sub, Function() SelectedEntity IsNot Nothing, AddressOf OnError)
@@ -57,7 +57,7 @@ Public Class WellsViewModel
 
     Public Overrides ReadOnly Property NewEntityCommand As ICommand = New RelayCommand(Sub()
                                                                                            Dim vm As New EditWellViewModel()
-                                                                                           If _Control.MainWindow.OpenEditEntityDialog(vm) Then
+                                                                                           If _MainWindow.OpenEditEntityDialog(vm) Then
                                                                                                UpdateEntites()
                                                                                            End If
                                                                                        End Sub, Function() IsNewCommandEnabled, AddressOf OnError)
@@ -74,7 +74,7 @@ Public Class WellsViewModel
                                                                                             End Sub, Function() IsNewCommandEnabled, AddressOf OnError, AddressOf CloseWaitingMessage)
 
     Public Overrides ReadOnly Property RemoveEntityCommand As ICommand = New RelayCommand(Sub()
-                                                                                              If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar este pozo?", "Eliminar") Then
+                                                                                              If _MainWindow.ShowMessageBox("¿Está seguro de eliminar este pozo?", "Eliminar") Then
                                                                                                   _Repository.Wells.Remove(SelectedEntity)
                                                                                                   UpdateEntites()
                                                                                               End If
@@ -82,13 +82,28 @@ Public Class WellsViewModel
 
     ReadOnly Property OpenPremadeGraphicCommand As ICommand = New RelayCommand(Sub(param)
                                                                                    Dim pg = CType(param, PremadeSeriesInfoCollection)
-                                                                                   _Control.MainWindow.OpenGraphicsView(SelectedEntity, pg)
-                                                                               End Sub, Function() True, AddressOf OnError)
+                                                                                   _MainWindow.OpenGraphicsView(SelectedEntity, pg)
+                                                                               End Sub, Function() SelectedEntity IsNot Nothing, AddressOf OnError)
 
     ReadOnly Property OpenPiperShoellerGraphicCommand As ICommand = New RelayCommand(Sub(param)
-                                                                                         Dim pg = New PiperSchoellerGraphicView
-                                                                                         pg.ShowDialog()
-                                                                                     End Sub, Function() True, AddressOf OnError)
+                                                                                         If SelectedEntities IsNot Nothing AndAlso SelectedEntities.Any Then
+                                                                                             Dim vm = New PiperSchoellerGraphicViewModel(SelectedEntities)
+                                                                                             _MainWindow.OpenGraphicsView(vm)
+                                                                                         ElseIf SelectedEntity IsNot Nothing Then
+                                                                                             Dim vm = New PiperSchoellerGraphicViewModel({SelectedEntity})
+                                                                                             _MainWindow.OpenGraphicsView(vm)
+                                                                                         End If
+
+                                                                                     End Sub, Function()
+                                                                                                  Return (SelectedEntities IsNot Nothing AndAlso SelectedEntities.Any) OrElse SelectedEntity IsNot Nothing
+                                                                                              End Function, AddressOf OnError)
+
+    Protected Overrides Sub SetCommandUpdates()
+        MyBase.SetCommandUpdates()
+        AddCommands(NameOf(SelectedEntity), {OpenPremadeGraphicCommand})
+        AddCommands(NameOf(SelectedEntity), {OpenPiperShoellerGraphicCommand})
+        AddCommands(NameOf(SelectedEntities), {OpenPiperShoellerGraphicCommand})
+    End Sub
 
     Private Sub UpdateEntites()
         _Entities = _Repository.Wells.All

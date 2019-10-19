@@ -7,6 +7,7 @@ Public Interface IMainWindowView
     Sub CloseWaitingMessage()
     Sub OpenGraphicsView()
     Sub OpenGraphicsView(well As YPFModel.Well, series As PremadeSeriesInfoCollection)
+    Sub OpenGraphicsView(vm As PiperSchoellerGraphicViewModel)
     Sub OpenCreatePremadeGraphicView()
     Function OpenEditEntityDialog(vm As EditWellViewModel) As Boolean
     Function OpenEditEntityDialog(vm As EditMeasurementViewModel) As Boolean

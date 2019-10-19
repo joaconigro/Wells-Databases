@@ -134,7 +134,7 @@ Public Class CustomGraphicsViewModel
                                                                          End Sub, Function() SelectedSerie IsNot Nothing, AddressOf OnError)
 
     ReadOnly Property SaveChartImageCommand As ICommand = New RelayCommand(Sub()
-                                                                               _Dialog.SaveChartImage()
+                                                                               _Dialog.SaveImage()
                                                                            End Sub, Function() True, AddressOf OnError)
 
 End Class

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using Wells.StandardModel.Attributes;
 using Wells.StandardModel.Models;
 
 namespace Wells.YPFModel
@@ -20,12 +21,12 @@ namespace Wells.YPFModel
         public string WellId { get; set; }
 
 
-        [Browsable(true), DisplayName("Pozo")]
+        [Browsable(true), DisplayName("Pozo"), SortIndex(0)]
         public string WellName => Well?.Name;
 
 
-        [DisplayName("Fecha"), Browsable(true)]
-        public DateTime Date { get; set; }      
+        [DisplayName("Fecha"), Browsable(true), SortIndex(1)]
+        public DateTime Date { get; set; }
         #endregion
 
 
@@ -57,7 +58,7 @@ namespace Wells.YPFModel
                 string line = sr.ReadLine();
                 while (!string.IsNullOrEmpty(line))
                 {
-                    var split = line.Trim().Split(new char[] {(char)9}, StringSplitOptions.RemoveEmptyEntries);
+                    var split = line.Trim().Split(new char[] { (char)9 }, StringSplitOptions.RemoveEmptyEntries);
                     dict.Add(split[1], new ChemicalAnalysisType(split[1], split[0], split[2], split[3]));
                     line = sr.ReadLine();
                 }

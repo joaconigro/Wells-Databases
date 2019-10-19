@@ -128,12 +128,14 @@ Public Class ExcelReader
                 }
 
                 Dim j As Integer = 2
-                For Each p In FLNAAnalysis.Properties.Keys.ToList
-                    CallByName(flna, FLNAAnalysis.Properties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
+                For Each p In FLNAAnalysis.DoubleProperties.Keys.ToList
+                    CallByName(flna, FLNAAnalysis.DoubleProperties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
-                analysis.Add(flna)
+                If flna.Well IsNot Nothing Then
+                    analysis.Add(flna)
+                End If
                 progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
@@ -159,12 +161,14 @@ Public Class ExcelReader
                 }
 
                 Dim j As Integer = 2
-                For Each p In WaterAnalysis.Properties.Keys.ToList
-                    CallByName(water, WaterAnalysis.Properties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
+                For Each p In WaterAnalysis.DoubleProperties.Keys.ToList
+                    CallByName(water, WaterAnalysis.DoubleProperties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
-                analysis.Add(water)
+                If water.Well IsNot Nothing Then
+                    analysis.Add(water)
+                End If
                 progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception
@@ -190,12 +194,14 @@ Public Class ExcelReader
                 }
 
                 Dim j As Integer = 2
-                For Each p In SoilAnalysis.Properties.Keys.ToList
-                    CallByName(soil, SoilAnalysis.Properties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
+                For Each p In SoilAnalysis.DoubleProperties.Keys.ToList
+                    CallByName(soil, SoilAnalysis.DoubleProperties(p).Name, CallType.Set, ReadCellAsDouble(row, j))
                     j += 1
                 Next
 
-                analysis.Add(soil)
+                If soil.Well IsNot Nothing Then
+                    analysis.Add(soil)
+                End If
                 progress?.Report(i / maxCount * 100)
             Next
         Catch ex As Exception

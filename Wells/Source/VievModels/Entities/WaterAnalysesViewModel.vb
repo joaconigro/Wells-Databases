@@ -61,7 +61,7 @@ Public Class WaterAnalysesViewModel
                                                                                                     ReadExcelFile(wb, sheetIndex)
                                                                                                     UpdateEntites()
                                                                                                 End If
-                                                                                            End Sub, Function() IsNewCommandEnabled, AddressOf OnError, AddressOf CloseWaitingMessage)
+                                                                                            End Sub, Function() True, AddressOf OnError, AddressOf CloseWaitingMessage)
 
     Public Overrides ReadOnly Property RemoveEntityCommand As ICommand = New RelayCommand(Sub()
                                                                                               If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar") Then
@@ -70,9 +70,27 @@ Public Class WaterAnalysesViewModel
                                                                                               End If
                                                                                           End Sub, Function() SelectedEntity IsNot Nothing AndAlso IsRemoveCommandEnabled, AddressOf OnError)
 
+    ReadOnly Property OpenPiperShoellerGraphicCommand As ICommand = New RelayCommand(Sub(param)
+                                                                                         If SelectedEntities IsNot Nothing AndAlso SelectedEntities.Any Then
+                                                                                             Dim vm = New PiperSchoellerGraphicViewModel(SelectedEntities)
+                                                                                             _MainWindow.OpenGraphicsView(vm)
+                                                                                         ElseIf SelectedEntity IsNot Nothing Then
+                                                                                             Dim vm = New PiperSchoellerGraphicViewModel({SelectedEntity})
+                                                                                             _MainWindow.OpenGraphicsView(vm)
+                                                                                         End If
+                                                                                     End Sub, Function()
+                                                                                                  Return (SelectedEntities IsNot Nothing AndAlso SelectedEntities.Any) OrElse SelectedEntity IsNot Nothing
+                                                                                              End Function, AddressOf OnError)
+
     Protected Overrides Sub CreateWellFilter()
         Dim wellFilter = New WellFilter(Of WaterAnalysis)(_Repository.WaterAnalyses, False, WellType, WellProperty, SelectedWellName)
         OnCreatingFilter(wellFilter)
+    End Sub
+
+    Protected Overrides Sub SetCommandUpdates()
+        MyBase.SetCommandUpdates()
+        AddCommands(NameOf(SelectedEntity), {OpenPiperShoellerGraphicCommand})
+        AddCommands(NameOf(SelectedEntities), {OpenPiperShoellerGraphicCommand})
     End Sub
 
     Private Sub UpdateEntites()
@@ -81,21 +99,26 @@ Public Class WaterAnalysesViewModel
     End Sub
 
     Private Async Sub ReadExcelFile(workbook As XSSFWorkbook, sheetIndex As Integer)
-        ShowWaitingMessage("Leyendo análisis de agua del archivo Excel...")
-        Dim water = Await Task.Run(Function() ExcelReader.ReadWaterAnalysis(workbook, sheetIndex, _progress))
-        CloseWaitingMessage()
-
-        If water.Any Then
-            ShowWaitingMessage("Importando análisis...")
-            Await Task.Run(Sub() _Repository.WaterAnalyses.AddRangeAsync(water))
+        Try
+            ShowWaitingMessage("Leyendo análisis de agua del archivo Excel...")
+            Dim water = Await Task.Run(Function() ExcelReader.ReadWaterAnalysis(workbook, sheetIndex, _progress))
             CloseWaitingMessage()
 
-            ShowWaitingMessage("Guardando base de datos...")
-            Await _Repository.SaveChangesAsync()
+            If water.Any Then
+                ShowWaitingMessage("Importando análisis...")
+                Await Task.Run(Sub() _Repository.WaterAnalyses.AddRangeAsync(water))
+                CloseWaitingMessage()
 
-        End If
-        workbook.Close()
-        CloseWaitingMessage()
+                ShowWaitingMessage("Guardando base de datos...")
+                Await _Repository.SaveChangesAsync()
+
+            End If
+        Catch ex As Exception
+            Throw ex
+        Finally
+            workbook.Close()
+            CloseWaitingMessage()
+        End Try
     End Sub
 
     Overrides ReadOnly Property WellExistsInfo As String
@@ -108,6 +131,16 @@ Public Class WaterAnalysesViewModel
     End Property
 
     Public Overrides Function GetContextMenu() As ContextMenu
-        Return Nothing
+        Dim menu = New ContextMenu()
+
+        Dim piperMenuItem As New MenuItem() With {.Header = "Piper-Schöeller", .Command = OpenPiperShoellerGraphicCommand, .CommandParameter = SelectedEntities}
+        menu.Items.Add(piperMenuItem)
+
+        If IsRemoveCommandEnabled Then
+            menu.Items.Add(New Separator)
+            Dim removeMenuItem As New MenuItem() With {.Header = "Eliminar", .Command = RemoveEntityCommand}
+            menu.Items.Add(removeMenuItem)
+        End If
+        Return menu
     End Function
 End Class

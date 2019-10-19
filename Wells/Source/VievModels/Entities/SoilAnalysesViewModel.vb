@@ -60,7 +60,7 @@ Public Class SoilAnalysesViewModel
                                                                                                     ReadExcelFile(wb, sheetIndex)
                                                                                                     UpdateEntites()
                                                                                                 End If
-                                                                                            End Sub, Function() IsNewCommandEnabled, AddressOf OnError, AddressOf CloseWaitingMessage)
+                                                                                            End Sub, Function() True, AddressOf OnError, AddressOf CloseWaitingMessage)
 
     Public Overrides ReadOnly Property RemoveEntityCommand As ICommand = New RelayCommand(Sub()
                                                                                               If _Control.MainWindow.ShowMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar") Then

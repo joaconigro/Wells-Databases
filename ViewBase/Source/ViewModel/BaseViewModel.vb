@@ -101,7 +101,13 @@ Public MustInherit Class BaseViewModel
     End Sub
 
     Sub AddCommands(propertyName As String, commands As IEnumerable(Of ICommand))
-        commandNotifications.Add(propertyName, commands)
+        If commandNotifications.ContainsKey(propertyName) Then
+            Dim newlist = commandNotifications(propertyName).ToList
+            newlist.AddRange(commands)
+            commandNotifications(propertyName) = newlist
+        Else
+            commandNotifications.Add(propertyName, commands)
+        End If
     End Sub
 
     Protected Sub SetValue(Of T)(ByRef value As T, newValue As T, <CallerMemberName()> Optional propertyName As String = Nothing, Optional forceAssignment As Boolean = False)
