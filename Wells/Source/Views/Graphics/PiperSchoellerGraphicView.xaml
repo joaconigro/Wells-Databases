@@ -5,12 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells"
         mc:Ignorable="d"
-        Title="PiperSchoellerGraphicView" Height="500" Width="500">
+        Title="Piper-Schoeller" MinHeight="600" MinWidth="600" Style="{StaticResource WindowsStyle}">
     <DockPanel >
-        <Canvas x:Name="Canvas1">
-            <Image x:Name="PiperImage"
-                   Width="{Binding Path=ActualWidth, ElementName=Canvas1}" 
-                   Height="{Binding Path=ActualHeight, ElementName=Canvas1}" Stretch="Uniform"/>          
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Datos" Style="{StaticResource MarginStyle}" Grid.Row="0" MinWidth="200">
+                <ListBox x:Name="DataListBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding PiperSchollerPoints}" SelectedItem="{Binding SelectedPoint}" Grid.Column="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsVisible}" Content="{Binding Label}" Checked="OnPointCheckedChanged" Unchecked="OnPointCheckedChanged"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+            <Button Content="Cambiar color..." Command="{Binding ChangeColorCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="1"/>
+            <Button Content="Guardar imagen..." Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="2"/>
+        </Grid>
+
+        <Canvas x:Name="PiperCanvas" Style="{StaticResource MarginStyle}" Background="White">
+            <Border Background="White" BorderThickness="1" BorderBrush="DarkGray">
+                <Image x:Name="PiperImage"
+                   Width="{Binding Path=ActualWidth, ElementName=PiperCanvas}" 
+                   Height="{Binding Path=ActualHeight, ElementName=PiperCanvas}"/>
+            </Border>           
+
+            <Border Background="White" BorderThickness="1" BorderBrush="LightGray" Canvas.Top="5" Canvas.Right="5">
+                <StackPanel x:Name="LegendStackPanel" Orientation="Vertical"/>
+            </Border>
         </Canvas>
    
     </DockPanel>

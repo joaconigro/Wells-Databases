@@ -3,10 +3,9 @@ Imports Wells
 Imports Wells.ViewBase
 
 Public Class PiperSchoellerGraphicView
-    Implements IGraphicsView
+    Implements IPiperSchoellerGraphicView
 
     Private _ViewModel As PiperSchoellerGraphicViewModel
-    Private _PiperSchollerPoints As List(Of PiperSchollerData)
 
     Sub New(viewModel As PiperSchoellerGraphicViewModel)
 
@@ -16,11 +15,10 @@ Public Class PiperSchoellerGraphicView
         ' Add any initialization after the InitializeComponent() call.
         _ViewModel = viewModel
         _ViewModel.SetView(Me)
-        _PiperSchollerPoints = _ViewModel.PiperSchollerPoints
         DataContext = _ViewModel
 
         CalculateXYPositions()
-        DrawPoints()
+        CreateGraphics()
     End Sub
 
 #Region "IView implementation"
@@ -65,7 +63,7 @@ Public Class PiperSchoellerGraphicView
     Public Sub SaveImage(Optional filename As String = "") Implements IGraphicsView.SaveImage
         Dim imageFilename = SaveFileDialog("Imagenes *.png|*.png", "Guardar imagen", filename)
         If Not String.IsNullOrEmpty(imageFilename) Then
-            SharedBaseView.CaptureScreen(imageFilename, PiperImage, 200, 200)
+            SharedBaseView.CaptureScreen(imageFilename, PiperCanvas, 200, 200)
         End If
     End Sub
 
@@ -74,21 +72,23 @@ Public Class PiperSchoellerGraphicView
         Dim lowerLeftAnions As New Windows.Point(16255.1201, 18544.4805)
         Dim triangleSideLength As Double = 8544.5205
 
-        For Each p In _PiperSchollerPoints
+        For Each p In _ViewModel.PiperSchollerPoints
             p.CalculateXYPositions(lowerLeftCations, lowerLeftAnions, triangleSideLength)
         Next
+    End Sub
+
+    Private Sub CreateGraphics() Implements IPiperSchoellerGraphicView.CreateGraphics
+        DrawPoints()
+        CreateLegend()
     End Sub
 
     Private Sub DrawPoints()
         Dim baseDrawing = CType(Application.Current.FindResource("PiperImage"), DrawingImage).Clone
         Dim dGroup = CType(CType(baseDrawing.Drawing, DrawingGroup).Children(0), DrawingGroup)
         Using dc = dGroup.Append()
-            For Each p In _PiperSchollerPoints
-                Dim brush = New SolidColorBrush(Colors.Red)
-                Dim pen = New Media.Pen(New SolidColorBrush(Colors.Black), 1)
-                'Dim arcSegment As New ArcSegment(p.Cation, New Windows.Size(50, 50), 360, True, SweepDirection.Clockwise, True)
-                'Dim fig As New PathFigure()
-                'Dim geom = New PathGeometry({arcSegment}, FillRule.EvenOdd, Nothing)
+            For Each p In _ViewModel.PiperSchollerPoints.Where(Function(point) point.IsVisible)
+                Dim brush = New SolidColorBrush(p.PointColor)
+                Dim pen = New Media.Pen(New SolidColorBrush(Colors.Black), 2)
 
                 dc.DrawEllipse(brush, pen, p.Cation, 100, 100)
                 dc.DrawEllipse(brush, pen, p.Anion, 100, 100)
@@ -96,9 +96,40 @@ Public Class PiperSchoellerGraphicView
             Next
         End Using
 
-        'CType(CType(baseDrawing.Drawing, DrawingGroup).Children(0), DrawingGroup).a.Children.Add(dGroup)
         If baseDrawing.CanFreeze Then baseDrawing.Freeze()
         PiperImage.Source = baseDrawing
     End Sub
 
+    Private Sub CreateLegend()
+        LegendStackPanel.Children.Clear()
+
+        For Each p In _ViewModel.PiperSchollerPoints.Where(Function(point) point.IsVisible)
+            Dim ell As New Ellipse With {.Fill = New SolidColorBrush(p.PointColor), .Width = 7, .Height = 7, .Margin = New Thickness(2, 1, 2, 1)}
+            Dim text As New TextBlock() With {.Text = p.Label, .VerticalAlignment = VerticalAlignment.Center, .Margin = New Thickness(2, 1, 2, 1)}
+            Dim itemSP As New StackPanel() With {.Orientation = Orientation.Horizontal}
+            itemSP.Children.Add(ell)
+            itemSP.Children.Add(text)
+            LegendStackPanel.Children.Add(itemSP)
+        Next
+    End Sub
+
+    Function ShowColorDialog(selectedColor As Color) As Media.Color Implements IPiperSchoellerGraphicView.ShowColorDialog
+        Using diag As New Forms.ColorDialog() With {.Color = selectedColor, .FullOpen = True}
+            If diag.ShowDialog = Forms.DialogResult.OK Then
+                Return Media.Color.FromArgb(diag.Color.A, diag.Color.R, diag.Color.G, diag.Color.B)
+            End If
+        End Using
+        Return Media.Color.FromArgb(selectedColor.A, selectedColor.R, selectedColor.G, selectedColor.B)
+    End Function
+
+    Private Sub OnPointCheckedChanged(sender As Object, e As RoutedEventArgs)
+        CreateGraphics()
+    End Sub
 End Class
+
+Public Interface IPiperSchoellerGraphicView
+    Inherits IGraphicsView
+
+    Sub CreateGraphics()
+    Function ShowColorDialog(selectedColor As Color) As Media.Color
+End Interface
