@@ -90,6 +90,31 @@
     <!--Images-->
     <BitmapImage x:Key="HomeImage" UriSource="pack://application:,,,/AppResources;component/Source/Images/HomeImage.png"/>
 
+
+    <DrawingGroup x:Key="PiperZonesDrawingGroup">
+        <GeometryDrawing Brush="#FFFFFA99">
+            <GeometryDrawing.Geometry>
+                <PathGeometry FillRule="EvenOdd" Figures="M14563.8896,8228.5801L14563.8896,8228.5801 16701.0508,4529.6401 14565.9502,830.71 12428.7803,4529.6401z" />
+            </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="#FF99DAFF">
+            <GeometryDrawing.Geometry>
+                <PathGeometry FillRule="EvenOdd" Figures="M14563.8896,8228.5801L14563.8896,8228.5801 12428.7803,4529.6401 10291.6201,8228.5703 12428.7803,11927.5098z" />
+            </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="#FFB1FF99">
+            <GeometryDrawing.Geometry>
+                <PathGeometry FillRule="EvenOdd" Figures="M16701.0508,4529.6401L16701.0508,4529.6401 14563.8896,8228.5801 16698.9902,11927.5098 18836.1602,8228.5703z" />
+            </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="#FFFFBDBD">
+            <GeometryDrawing.Geometry>
+                <PathGeometry FillRule="EvenOdd" Figures="M16698.9902,11927.5098L16698.9902,11927.5098 14563.8896,8228.5801 12428.7803,11927.5098 14565.9502,15626.4404z" />
+            </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+    </DrawingGroup>
+
+
     <DrawingImage x:Key="PiperImage">
         <DrawingImage.Drawing>
             <DrawingGroup x:Name="DrawingLayer">

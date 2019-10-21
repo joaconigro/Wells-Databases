@@ -12,6 +12,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <GroupBox Header="Datos" Style="{StaticResource MarginStyle}" Grid.Row="0" MinWidth="200">
                 <ListBox x:Name="DataListBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding PiperSchollerPoints}" SelectedItem="{Binding SelectedPoint}" Grid.Column="0">
@@ -22,8 +24,18 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </GroupBox>
-            <Button Content="Cambiar color..." Command="{Binding ChangeColorCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="1"/>
-            <Button Content="Guardar imagen..." Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="2"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Tamaño del punto:" Style="{StaticResource TextBlockStyle}" Grid.Column="0"/>
+                <TextBox Text="{Binding PointSize, Converter={StaticResource IntegerConverter}}" Grid.Column="1" Style="{StaticResource NumericTextBoxStyle}"/>
+            </Grid>
+            <CheckBox Content="Mostrar zonas de clasificación" IsChecked="{Binding ShowZones}" Style="{StaticResource CheckBoxStyle}" Grid.Row="2"/>
+            <Button Content="Cambiar color..." Command="{Binding ChangeColorCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="3"/>
+            <Button Content="Guardar imagen..." Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="4"/>
         </Grid>
 
         <Canvas x:Name="PiperCanvas" Style="{StaticResource MarginStyle}" Background="White">
@@ -35,6 +47,27 @@
 
             <Border Background="White" BorderThickness="1" BorderBrush="LightGray" Canvas.Top="5" Canvas.Right="5">
                 <StackPanel x:Name="LegendStackPanel" Orientation="Vertical"/>
+            </Border>
+
+            <Border Background="White" BorderThickness="1" BorderBrush="LightGray" Canvas.Top="5" Canvas.Left="5" Visibility="{Binding ShowZones, Converter={StaticResource BoolToCollapsedVisibilityConverter}}">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M5,0L10,5 5,10 0,5z" Fill="#FFFFFA99" Stretch="Fill" Margin="2 0" HorizontalAlignment="Left" Width="10" Height="10" VerticalAlignment="Center"/>
+                        <TextBlock Text="Sulfatadas y/o cloruradas cálcicas y/o magnésicas" VerticalAlignment="Center" Margin="2 0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M5,0L10,5 5,10 0,5z" Fill="#FF99DAFF" Stretch="Fill" Margin="2 0" HorizontalAlignment="Left" Width="10" Height="10" VerticalAlignment="Center"/>
+                        <TextBlock Text="Bicarbonatadas cálcicas y/o magnésicas" VerticalAlignment="Center" Margin="2 0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M5,0L10,5 5,10 0,5z" Fill="#FFB1FF99" Stretch="Fill" Margin="2 0" HorizontalAlignment="Left" Width="10" Height="10" VerticalAlignment="Center"/>
+                        <TextBlock Text="Cloruradas y/o sulfatadas sódicas" VerticalAlignment="Center" Margin="2 0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M5,0L10,5 5,10 0,5z" Fill="#FFFFBDBD" Stretch="Fill" Margin="2 0" HorizontalAlignment="Left" Width="10" Height="10" VerticalAlignment="Center"/>
+                        <TextBlock Text="Bicarbonatadas sódicas" VerticalAlignment="Center" Margin="2 0"/>
+                    </StackPanel>
+                </StackPanel>
             </Border>
         </Canvas>
    

@@ -3,7 +3,7 @@
     Property Calcium As Double
     Property PotassiumAndSodium As Double
     Property Magnesium As Double
-    Property Carbonate As Double
+    Property Carbonates As Double
     Property Sulfates As Double
     Property Chlorides As Double
     Property Label As String

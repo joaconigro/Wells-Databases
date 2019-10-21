@@ -85,20 +85,31 @@ Public Class PiperSchoellerGraphicView
     Private Sub DrawPoints()
         Dim baseDrawing = CType(Application.Current.FindResource("PiperImage"), DrawingImage).Clone
         Dim dGroup = CType(CType(baseDrawing.Drawing, DrawingGroup).Children(0), DrawingGroup)
+
+        If _ViewModel.ShowZones Then
+            Dim zones = CType(Application.Current.FindResource("PiperZonesDrawingGroup"), DrawingGroup).Clone
+            dGroup.Children.Insert(0, zones.Children.Item(0))
+            dGroup.Children.Insert(1, zones.Children.Item(1))
+            dGroup.Children.Insert(2, zones.Children.Item(2))
+            dGroup.Children.Insert(3, zones.Children.Item(3))
+        End If
+
+
         Using dc = dGroup.Append()
             For Each p In _ViewModel.PiperSchollerPoints.Where(Function(point) point.IsVisible)
                 Dim brush = New SolidColorBrush(p.PointColor)
                 Dim pen = New Media.Pen(New SolidColorBrush(Colors.Black), 2)
 
-                dc.DrawEllipse(brush, pen, p.Cation, 100, 100)
-                dc.DrawEllipse(brush, pen, p.Anion, 100, 100)
-                dc.DrawEllipse(brush, pen, p.Diamond, 100, 100)
+                dc.DrawEllipse(brush, pen, p.Cation, _ViewModel.PointSize, _ViewModel.PointSize)
+                dc.DrawEllipse(brush, pen, p.Anion, _ViewModel.PointSize, _ViewModel.PointSize)
+                dc.DrawEllipse(brush, pen, p.Diamond, _ViewModel.PointSize, _ViewModel.PointSize)
             Next
         End Using
 
         If baseDrawing.CanFreeze Then baseDrawing.Freeze()
         PiperImage.Source = baseDrawing
     End Sub
+
 
     Private Sub CreateLegend()
         LegendStackPanel.Children.Clear()

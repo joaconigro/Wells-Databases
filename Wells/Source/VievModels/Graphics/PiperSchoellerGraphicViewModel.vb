@@ -8,7 +8,7 @@ Public Class PiperSchoellerGraphicViewModel
     Private Const PotassiumMeq As Double = 39
     Private Const SodiumMeq As Double = 23
     Private Const MagnesiumMeq As Double = 12.15
-    Private Const CarbonateMeq As Double = 61
+    Private Const BicarbonateMeq As Double = 61
     Private Const SulfatesMeq As Double = 48
     Private Const ChloridesMeq As Double = 35.5
 
@@ -17,6 +17,8 @@ Public Class PiperSchoellerGraphicViewModel
     Private _Dialog As IPiperSchoellerGraphicView
     Private _PiperSchollerPoints As List(Of PiperSchollerData)
     Private _SelectedPoint As PiperSchollerData
+    Private _ShowZones As Boolean
+    Private _PointSize As Integer
 
     ReadOnly Property PiperSchollerPoints As List(Of PiperSchollerData)
         Get
@@ -33,14 +35,38 @@ Public Class PiperSchoellerGraphicViewModel
         End Set
     End Property
 
+    Property ShowZones As Boolean
+        Get
+            Return _ShowZones
+        End Get
+        Set
+            SetValue(_ShowZones, Value)
+            _Dialog?.CreateGraphics()
+        End Set
+    End Property
+
+    Property PointSize As Integer
+        Get
+            Return _PointSize
+        End Get
+        Set
+            SetValue(_PointSize, Value)
+            _Dialog?.CreateGraphics()
+        End Set
+    End Property
+
     Sub New(wells As IEnumerable(Of Well))
         MyBase.New(Nothing)
+        _ShowZones = True
+        _PointSize = 100
         Initialize()
         InitializeData(wells)
     End Sub
 
     Sub New(analises As IEnumerable(Of WaterAnalysis))
         MyBase.New(Nothing)
+        _ShowZones = True
+        _PointSize = 100
         Initialize()
         InitializeData(analises)
     End Sub
@@ -85,16 +111,16 @@ Public Class PiperSchoellerGraphicViewModel
         Dim mag = analisys.Magnesium / MagnesiumMeq
         Dim totalCations = cal + pot + sod + mag
 
-        Dim carb = analisys.CarbonateAlkalinity / CarbonateMeq
+        Dim bicarb = analisys.BicarbonateAlkalinity / BicarbonateMeq
         Dim sulf = analisys.Sulfates / SulfatesMeq
         Dim chlo = analisys.Chlorides / ChloridesMeq
-        Dim totalAnions = carb + sulf + chlo
+        Dim totalAnions = bicarb + sulf + chlo
 
         Dim psData As New PiperSchollerData() With {
         .Calcium = cal / totalCations * 100,
         .Magnesium = mag / totalCations * 100,
         .PotassiumAndSodium = (sod + pot) / totalCations * 100,
-        .Carbonate = carb / totalAnions * 100,
+        .Carbonates = bicarb / totalAnions * 100,
         .Chlorides = chlo / totalAnions * 100,
         .Sulfates = sulf / totalAnions * 100,
         .PointColor = color,
