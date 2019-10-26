@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>Wells.Resources</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="files\Icon.ico" />
+    <None Remove="files\late.ico" />
+    <None Remove="files\splashscreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="files\Icon.ico" />
+    <Resource Include="files\late.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="files\splashscreen.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>

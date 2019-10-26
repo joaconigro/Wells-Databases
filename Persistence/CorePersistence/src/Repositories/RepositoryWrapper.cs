@@ -145,16 +145,11 @@ namespace Wells.CorePersistence.Repositories
         public static void Instantiate(string connectionString)
         {
             ApplicationDbContext.ConnectionString = connectionString;
-            //DbContextOptions options = ApplicationDbContext.GetSQLOptions(connectionString);
             var context = new ApplicationDbContext();
             context.Database.Migrate();
             instance = new RepositoryWrapper(context);
         }
-
-        //public static void Instantiate(ApplicationDbContext repositoryContext)
-        //{
-        //    instance = new RepositoryWrapper(repositoryContext);
-        //}
+        
 
         public void SaveChanges()
         {

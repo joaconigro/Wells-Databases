@@ -8,7 +8,13 @@ namespace Wells.YPFModel
 {
     public class Well : BusinessObject
     {
-        public Well() : base() { }
+        public Well() : base() {
+            SoilAnalyses = new List<SoilAnalysis>();
+            WaterAnalyses = new List<WaterAnalysis>();
+            FLNAAnalyses = new List<FLNAAnalysis>();
+            Measurements = new List<Measurement>();
+            Files = new List<ExternalFile>();        
+        }
 
         [Browsable(true), DisplayName("Nombre")]
         public string Name { get; set; }

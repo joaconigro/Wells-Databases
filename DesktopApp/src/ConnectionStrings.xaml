@@ -1,0 +1,11 @@
+﻿<ResourceDictionary x:Class="ConnectionStrings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:s="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d">
+
+    <s:String x:Key="SQLConnection">Data Source=(localdb)\mssqllocaldb;Initial Catalog=LateAndesSamples;Integrated Security=True;MultipleActiveResultSets=True</s:String>
+    <s:String x:Key="MySQLConnection">server=192.168.1.50;database=lateandessamples;user=joaco;password=Cacanegra01</s:String>
+</ResourceDictionary>

@@ -183,10 +183,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Base\Base.vbproj">
-      <Project>{b6fed7e9-aadd-4249-ba93-f4feadc5d82b}</Project>
-      <Name>Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Model\StandardModel\StandardModel.csproj">
       <Project>{7a468a1c-31c5-4085-8248-21edc6b5883e}</Project>
       <Name>StandardModel</Name>

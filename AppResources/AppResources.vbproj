@@ -174,12 +174,6 @@
     <Resource Include="Source\Images\HomeImage.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Base\Base.vbproj">
-      <Project>{b6fed7e9-aadd-4249-ba93-f4feadc5d82b}</Project>
-      <Name>Base</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>

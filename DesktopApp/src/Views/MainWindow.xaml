@@ -1,0 +1,47 @@
+﻿<Window x:Class="LaTeAndes.DesktopCore.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uc="clr-namespace:LaTeAndes.DesktopCore.UserControls"
+        mc:Ignorable="d"
+        Title="La.Te. Andes Manager" Height="450" Width="800" Style="{StaticResource WindowsStyle}" WindowState="Maximized">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top"  Margin="2">
+            <MenuItem Header="Clientes">
+                <!--<MenuItem Header="Nuevo" Command="{Binding NewClientCommand}"/>-->
+            </MenuItem>
+            <MenuItem Header="Estudios">
+                <!--<MenuItem Header="Nuevo" Command="{Binding NewAvailableStudyCommand}"/>-->
+            </MenuItem>
+        </Menu>
+        <Grid Style="{StaticResource MarginStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TabControl Grid.Row="0" Style="{StaticResource MarginStyle}">
+                <TabItem Header="Proyectos" >
+                    <uc:EntitiesControl x:Name="SampleCollectionsControl"/>
+                </TabItem>
+
+                <TabItem Header="Muestras" >
+                    <uc:EntitiesControl x:Name="SamplesControl"/>
+                </TabItem>
+
+                <TabItem Header="Usuarios" >
+                    <uc:EntitiesControl x:Name="ClientUsersControl"/>
+                </TabItem>
+
+                <TabItem Header="Clientes" >
+                    <uc:EntitiesControl x:Name="ClientsControl"/>
+                </TabItem>
+
+                <TabItem Header="Estudios" >
+                    <uc:EntitiesControl x:Name="AvailableStudiesControl"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
+
+</Window>

@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="Wells.View.UserControls.EntitiesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Wells.View.UserControls"
+             xmlns:viewbase="clr-namespace:Wells.CoreView.Behaviors;assembly=CoreView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Name="EntityControl" Background="#FFF0F0F0">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Setter Property="ContextMenu" Value="{Binding Path=RowContextMenu, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Style="{StaticResource MarginStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0">
+            <Button Content="Eliminar" DockPanel.Dock="Right" Command="{Binding RemoveEntityCommand}" Visibility="{Binding IsRemoveCommandEnabled, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" IsEnabled="{Binding IsRemoveCommandEnabled}" Style="{StaticResource ButtonStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Crear..." Command="{Binding NewEntityCommand}" Visibility="{Binding IsNewCommandEnabled, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" IsEnabled="{Binding IsNewCommandEnabled}" Style="{StaticResource ButtonStyle}"/>
+                <Button Content="Importar..." Command="{Binding ImportEntitiesCommand}" Style="{StaticResource ButtonStyle}"/>
+                <Button Content="Editar..." Command="{Binding EditEntityCommand}" Style="{StaticResource ButtonStyle}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <DataGrid x:Name="EntitiesDataGrid" ItemsSource="{Binding Entities}" Style="{StaticResource DataGridStyle}" viewbase:DataGridColumnBrowsableBehavior.UseBrowsableAttributeOnColumn="True" 
+                  SelectedItem="{Binding SelectedEntity}" SelectionMode="Extended" SelectionChanged="OnSelectionChanged" IsReadOnly="True" ColumnHeaderStyle="{StaticResource DataGridColmunHeaderStyle}" Grid.Row="1" CanUserAddRows="False"/>
+
+
+        <GridSplitter Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ShowsPreview="True" Panel.ZIndex="1"/>
+
+
+        <Grid  Grid.Row="3"  MinHeight="150">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Pozos/Sondeos" Style="{StaticResource MarginStyle}" Visibility="{Binding ShowWellPanel, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" Grid.Column="0" MinWidth="300">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Tipo: " Grid.Row="0" Grid.Column="0" Style="{StaticResource TextBlockStyle}"/>
+                    <ComboBox Grid.Column="1" Grid.Row="0" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellTypes, Mode=OneTime}" SelectedIndex="{Binding WellType, Mode=TwoWay}"/>
+                    <TextBlock Text="Propiedad: " Grid.Row="1" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+                    <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellProperties, Mode=OneTime}" SelectedIndex="{Binding WellProperty}"/>
+
+
+                    <TextBlock Text="Pozo/Sondeo: " Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToHiddenVisibilityConverter}, Mode=OneWay}" />
+                    <ComboBox Grid.Column="1" IsEditable="True" Grid.Row="2" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellNames, Mode=OneTime}" SelectedValue="{Binding SelectedWellName, Mode=OneWayToSource}" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToHiddenVisibilityConverter}, Mode=OneWay}"/>
+                    <Button Content="Agregar filtro" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonStyle}" Command="{Binding AddWellFilterCommand}"/>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Column="1"  Header="Filtros" Style="{StaticResource MarginStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ListBox x:Name="FiltersListBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding FilterCollection}" SelectedItem="{Binding SelectedFilter}" Grid.Column="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsEnabled}" Content="{Binding Description}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <DockPanel Grid.Column="1" Width="75" Style="{StaticResource MarginStyle}">
+                        <Button Content="Eliminar..." DockPanel.Dock="Bottom" Command="{Binding RemoveFilterCommand}" />
+                        <StackPanel DockPanel.Dock="Top">
+                            <Button Content="Agregar..." Command="{Binding AddFilterCommand}"/>
+                            <Button Content="Editar..." Command="{Binding EditFilterCommand}" Margin="0 5"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Grid>
+            </GroupBox>
+
+        </Grid>
+
+        <DockPanel Grid.Row="4">
+            <TextBlock Text="{Binding EntitiesCount, Converter={StaticResource IntegerConverter}, StringFormat=Mostrando: {0}}" DockPanel.Dock="Left"/>
+            <TextBlock Text="{Binding WellExistsInfo}" TextAlignment="Right" DockPanel.Dock="Right" />
+        </DockPanel>
+
+    </Grid>
+</UserControl>
