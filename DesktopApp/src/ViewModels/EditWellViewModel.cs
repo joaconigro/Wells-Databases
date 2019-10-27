@@ -8,6 +8,7 @@ using Wells.Base;
 using Wells.CorePersistence.Repositories;
 using Wells.CoreView;
 using Wells.CoreView.Validators;
+using Wells.CoreView.ViewInterfaces;
 using Wells.CoreView.ViewModel;
 using Wells.StandardModel.Models;
 using Wells.YPFModel;
@@ -27,7 +28,7 @@ namespace Wells.View.ViewModels
         private double height;
         private bool exists;
         private double bottom;
-
+        private IEditWellView dialog;
         public string WellName { get => wellName; set { SetValue(ref wellName, value); } }
 
 
@@ -58,21 +59,21 @@ namespace Wells.View.ViewModels
         {
             IsEditing = false;
             well = new Well();
-            InitializeWell()
-        //_measurementEditViewModel = New EditMeasurementViewModel(_well)
-        //_repo = RepositoryWrapper.Instance.Wells
+            InitializeWell();
         }
 
         public EditWellViewModel(Well well) : base(null)
         {
-            //_measurementEditViewModel = New EditMeasurementViewModel(_well)
             IsEditing = true;
             this.well = well;
-
-            //NameEditable = False
-            InitializeWell()
-        //_repo = RepositoryWrapper.Instance.Wells
+            InitializeWell();
     }
+
+        protected override void OnSetView(IView view)
+        {
+            base.OnSetView(view);
+            dialog = (IEditWellView)view;
+        }
 
         void InitializeWell()
         {
@@ -164,6 +165,103 @@ namespace Wells.View.ViewModels
                     RepositoryWrapper.Instance.SaveChanges();
                     CloseModalViewCommand.Execute(true);
                 }, (obj) => !HasFailures, OnError);
+            }
+        }
+
+        public ICommand NewMeasurementCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var vm = new EditMeasurementViewModel(well);
+                    if (dialog.ShowEditMeasurementDialog(vm))
+                    {
+                        Measurements.Add(vm.Measurement);
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand EditMeasurementCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var vm = new EditMeasurementViewModel(param as Measurement);
+                    if (dialog.ShowEditMeasurementDialog(vm))
+                    {
+                        Measurements.Add(vm.Measurement);
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand DeleteMeasurementCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var measurement = (param as Measurement);
+                    if (dialog.ShowYesNoMessageBox("¿Desea borrar esta medición?", "Borrar medición"))
+                    {
+                        Measurements.Remove(measurement);
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
+
+
+
+        public ICommand NewExternalLinkCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var filename = View.OpenFileDialog("Archivos|*.*", "Elija un archivo");
+
+                    if (!string.IsNullOrEmpty(filename))
+                    {
+                        var file = new ExternalFile(filename) { Well = well };
+                        Files.Add(file);
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand OpenExternalLinkCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if(param != null)
+                    {
+                        var file = (param as ExternalFile);
+                        file.Open();
+                    }                   
+                }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand DeleteExternalLinkCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if (param != null)
+                    {
+                        var file = (param as ExternalFile);
+                        if (dialog.ShowYesNoMessageBox("¿Desea borrar este archivo?", "Borrar archivo"))
+                        {
+                            Files.Remove(file);
+                        }
+                    }
+                }, (obj) => true, OnError);
             }
         }
     }

@@ -32,7 +32,7 @@ namespace Wells.View.ViewModels
 
 
         List<PiperSchollerData> _PiperSchollerPoints;
-        List<PiperSchollerData> PiperSchollerPoints => _PiperSchollerPoints;
+        public List<PiperSchollerData> PiperSchollerPoints => _PiperSchollerPoints;
 
         public PiperSchollerData SelectedPoint { get => selectedPoint; set { SetValue(ref selectedPoint, value); } }
 

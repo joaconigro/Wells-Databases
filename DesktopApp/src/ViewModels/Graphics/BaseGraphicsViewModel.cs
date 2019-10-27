@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Definitions.Series;
+using LiveCharts.Wpf;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;

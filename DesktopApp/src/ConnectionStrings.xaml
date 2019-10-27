@@ -6,6 +6,6 @@
              xmlns:s="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d">
 
-    <s:String x:Key="SQLConnection">Data Source=(localdb)\mssqllocaldb;Initial Catalog=LateAndesSamples;Integrated Security=True;MultipleActiveResultSets=True</s:String>
-    <s:String x:Key="MySQLConnection">server=192.168.1.50;database=lateandessamples;user=joaco;password=Cacanegra01</s:String>
+    <s:String x:Key="CIEConnection">Data Source=(localdb)\mssqllocaldb;Initial Catalog=CIE_DB;Integrated Security=True;MultipleActiveResultSets=True</s:String>
+    <s:String x:Key="CILPConnection">Data Source=(localdb)\mssqllocaldb;Initial Catalog=CILP_DB;Integrated Security=True;MultipleActiveResultSets=True</s:String>
 </ResourceDictionary>

@@ -11,17 +11,20 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <ListView Name="EntitiesListview" Grid.Column="0" ItemsSource="{Binding ObjectsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" 
+        <ListView Name="EntitiesListview" Grid.Column="0" ItemsSource="{Binding ObjectsSource}" 
                   SelectedItem="{Binding SelectedEntity, Mode=OneWayToSource}" Style="{StaticResource MarginStyle}"/>
         <DockPanel Grid.Column="1">
             <Button Name="RemoveEntityButton" Content="Borrar..." Style="{StaticResource ButtonStyle}" DockPanel.Dock="Bottom"
-                    Command="{Binding DeleteEntityCommand,  Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"/>
+                    Command="{Binding DeleteEntityCommand}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"
+                    IsEnabled="{Binding ElementName=EntitiesListview, Path=SelectedItem, Converter={StaticResource ObjectBoolConverter}}"/>
 
             <StackPanel DockPanel.Dock="Top">
-                <Button Name="NewEntityButton" Content="Nueva..." Style="{StaticResource ButtonStyle}"
-                    Command="{Binding NewEntityCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}"/>
+                <Button Name="NewEntityButton" Content="{Binding NewText}" Style="{StaticResource ButtonStyle}"
+                    Command="{Binding NewEntityCommand}" Visibility="{Binding NewEntityVisibility}"/>
                 <Button Name="EditEntityButton" Content="Editar..." Style="{StaticResource ButtonStyle}"
-                    Command="{Binding EditEntityCommand,  Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"/>
+                    Command="{Binding EditEntityCommand}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"
+                        IsEnabled="{Binding ElementName=EntitiesListview, Path=SelectedItem, Converter={StaticResource ObjectBoolConverter}}"
+                        Visibility="{Binding EditEntityVisibility}"/>
             </StackPanel>
 
         </DockPanel>

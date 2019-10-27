@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Wells.CoreView;
 using Wells.CoreView.ViewInterfaces;
 using Wells.View.ViewModels;
@@ -7,19 +6,16 @@ using Wells.View.ViewModels;
 namespace Wells.View
 {
     /// <summary>
-    /// Interaction logic for FilterEditingView.xaml
+    /// Interaction logic for CreatePremadeGraphicView.xaml
     /// </summary>
-    public partial class FilterEditingView : Window, IView
+    public partial class CreatePremadeGraphicView : Window, IView
     {
-        FilterViewModel _ViewModel;
-
-        public FilterEditingView(FilterViewModel viewModel)
+        CreatePremadeGraphicViewModel viewModel;
+        public CreatePremadeGraphicView()
         {
             InitializeComponent();
-
-            _ViewModel = viewModel;
-            DataContext = _ViewModel;
-            _ViewModel.SetView(this);
+            viewModel = new CreatePremadeGraphicViewModel(this);
+            DataContext = viewModel;
         }
 
         #region IView
@@ -60,9 +56,5 @@ namespace Wells.View
         }
         #endregion
 
-        private void AfterContentRendered(object sender, EventArgs e)
-        {
-            MathOptionsComboBox.SelectedIndex = _ViewModel.SelectedMathFunction;
-        }
     }
 }

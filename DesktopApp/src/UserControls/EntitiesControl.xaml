@@ -30,7 +30,7 @@
             </StackPanel>
         </DockPanel>
 
-        <DataGrid x:Name="EntitiesDataGrid" ItemsSource="{Binding Entities}" Style="{StaticResource DataGridStyle}" viewbase:DataGridColumnBrowsableBehavior.UseBrowsableAttributeOnColumn="True" 
+        <DataGrid x:Name="EntitiesDataGrid" ItemsSource="{Binding Entities}" Style="{StaticResource DataGridStyle}" viewbase:DataGridBehavior.UseBrowsableAttributeOnColumn="True" 
                   SelectedItem="{Binding SelectedEntity}" SelectionMode="Extended" SelectionChanged="OnSelectionChanged" IsReadOnly="True" ColumnHeaderStyle="{StaticResource DataGridColmunHeaderStyle}" Grid.Row="1" CanUserAddRows="False"/>
 
 

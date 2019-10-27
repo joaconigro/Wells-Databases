@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/CoreView;component/src/WPFResources/ViewBaseResources.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Languages;component/src/EnglishLanguage.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/Languages;component/src/EnglishLanguage.xaml" />-->
                 <ResourceDictionary Source="src/ConnectionStrings.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

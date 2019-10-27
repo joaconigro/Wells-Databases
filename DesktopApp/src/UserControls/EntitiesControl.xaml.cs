@@ -1,7 +1,6 @@
 ﻿using Wells.CoreView;
 using Wells.CoreView.ViewInterfaces;
 using Wells.View.ViewModels;
-using LaTeAndes.DesktopCore.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;

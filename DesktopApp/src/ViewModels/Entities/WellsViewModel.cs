@@ -1,4 +1,5 @@
 ﻿using NPOI.XSSF.UserModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -190,7 +191,7 @@ namespace Wells.View.ViewModels
 
                 return entities;
             }
-            return null;
+            return new List<PremadeSeriesInfoCollection>();
         }
 
 
@@ -215,7 +216,7 @@ namespace Wells.View.ViewModels
         }
 
 
-        void OnPremadeGraphicsChanged()
+        void OnPremadeGraphicsChanged(object? sender, EventArgs args)
         {
             _PremadeGraphics = ReadPremadeGraphics();
             Control.UpdateRowContextMenu();
