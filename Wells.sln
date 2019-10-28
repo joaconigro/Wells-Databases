@@ -11,19 +11,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{BC4A4D78-D82B-42D5-B439-1D4BB7A7FE99}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YPFModel", "Model\YPFModel\YPFModel.csproj", "{3005C2CC-C6A3-4A20-9539-129FB4A58288}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model\Model.csproj", "{3005C2CC-C6A3-4A20-9539-129FB4A58288}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CorePersistence", "Persistence\CorePersistence\CorePersistence.csproj", "{4C33BCA9-01D9-4581-B5A1-3D8A26BE219C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{4C33BCA9-01D9-4581-B5A1-3D8A26BE219C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardModel", "Model\StandardModel\StandardModel.csproj", "{7A468A1C-31C5-4085-8248-21EDC6B5883E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseModel", "Model\BaseModel\BaseModel.csproj", "{7A468A1C-31C5-4085-8248-21EDC6B5883E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBase", "CoreBase\CoreBase.csproj", "{ABC3AFDC-C8BB-4256-AE94-D0A04A933EAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base", "Base\Base.csproj", "{ABC3AFDC-C8BB-4256-AE94-D0A04A933EAD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Resources\Resources.csproj", "{2C0C712C-FA6E-40F8-A7A9-02683A0A0488}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreView", "CoreView\CoreView.csproj", "{DF7BCB0F-DFF8-4026-BB04-5256C621BB94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseView", "BaseView\BaseView.csproj", "{DF7BCB0F-DFF8-4026-BB04-5256C621BB94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopApp", "DesktopApp\DesktopApp.csproj", "{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wells", "Wells\Wells.csproj", "{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

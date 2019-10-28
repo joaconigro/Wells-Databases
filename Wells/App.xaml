@@ -1,0 +1,15 @@
+﻿<Application x:Class="DesktopCore.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DesktopCore"
+             StartupUri="src/Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/BaseView;component/src/WPFResources/ViewBaseResources.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/Languages;component/src/EnglishLanguage.xaml" />-->
+                <ResourceDictionary Source="src/ConnectionStrings.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
