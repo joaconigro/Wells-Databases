@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -68,8 +69,8 @@ namespace Wells.View.ViewModels
         public PremadeSeriesInfoCollection SelectedGraphic { get => selectedGraphic; set { SetValue(ref selectedGraphic, value); RaiseCommandUpdates(nameof(SelectedSerie)); } }
 
         PremadeSeriesInfoCollection _NewCollection;
-        ObservableCollection<PremadeSeriesInfo> Series { get; }
-        ObservableCollection<PremadeSeriesInfoCollection> Graphics { get; }
+        public ObservableCollection<PremadeSeriesInfo> Series { get; }
+        public ObservableCollection<PremadeSeriesInfoCollection> Graphics { get; }
 
 
 
@@ -78,6 +79,7 @@ namespace Wells.View.ViewModels
         {
             Initialize();
             _NewCollection = new PremadeSeriesInfoCollection();
+            Series = new ObservableCollection<PremadeSeriesInfo>(); 
             var values = ReadPremadeGraphics();
             if (values != null && values.Any())
                 Graphics = new ObservableCollection<PremadeSeriesInfoCollection>(values);
@@ -86,9 +88,10 @@ namespace Wells.View.ViewModels
         }
 
 
-        List<PremadeSeriesInfoCollection> ReadPremadeGraphics()
+        public static List<PremadeSeriesInfoCollection> ReadPremadeGraphics()
         {
-            var filename = Path.Combine(Directory.GetCurrentDirectory(), "PremadeGraphics.wpg");
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+            var filename = Path.Combine(dir, "PremadeGraphics.wpg");
 
             if (File.Exists(filename))
             {
@@ -101,12 +104,16 @@ namespace Wells.View.ViewModels
 
                 return entities;
             }
-            return null;
+            return new List<PremadeSeriesInfoCollection>();
         }
 
         void SavePremadeGraphics()
         {
-            var filename = Path.Combine(Directory.GetCurrentDirectory(), "PremadeGraphics.wpg");
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            var filename = Path.Combine(dir, "PremadeGraphics.wpg");
 
             var serializer = new XmlSerializer(typeof(List<PremadeSeriesInfoCollection>));
             var entities = Graphics.ToList();

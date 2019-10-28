@@ -1,5 +1,4 @@
 ﻿//using Microsoft.VisualBasic;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -14,41 +13,59 @@ namespace Wells.CoreView
 
         public static void ShowErrorMessageBox(Window owner, string message)
         {
-            MessageBox.Show(owner, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show(owner, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            });
         }
 
         public static string OpenFileDialog(string filter, string title, string initialDirectory = "")
         {
-            var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory };
-            if (ofd.ShowDialog() == true)
-                return ofd.FileName;
-            return null;
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory };
+                if (ofd.ShowDialog() == true)
+                    return ofd.FileName;
+                return null;
+            });
         }
 
         public static List<string> OpenMultipleFileDialog(string filter, string title, string initialDirectory = "")
         {
-            var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory, Multiselect = true };
-            if (ofd.ShowDialog() == true)
-                return ofd.FileNames.ToList();
-            return null;
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory, Multiselect = true };
+                if (ofd.ShowDialog() == true)
+                    return ofd.FileNames.ToList();
+                return null;
+            });
         }
 
         public static string SaveFileDialog(string filter, string title, string filename = "", string initialDirectory = "")
         {
-            var sfd = new Microsoft.Win32.SaveFileDialog() { Filter = filter, Title = title, FileName = filename, InitialDirectory = initialDirectory };
-            if (sfd.ShowDialog() == true)
-                return sfd.FileName;
-            return null;
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                var sfd = new Microsoft.Win32.SaveFileDialog() { Filter = filter, Title = title, FileName = filename, InitialDirectory = initialDirectory };
+                if (sfd.ShowDialog() == true)
+                    return sfd.FileName;
+                return null;
+            });
         }
 
         public static bool ShowYesNoMessageBox(Window owner, string message, string title)
         {
-            return MessageBox.Show(owner, message, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                return MessageBox.Show(owner, message, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+            });
         }
 
         public static void ShowOkOnkyMessageBox(Window owner, string message, string title)
         {
-            MessageBox.Show(owner, message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show(owner, message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+            });
         }
 
         //public static string ShowInputBox(string prompt, string title = "", string filename = "", string defaultResponse = "")
@@ -79,7 +96,7 @@ namespace Wells.CoreView
                                          dpiX, dpiY, PixelFormats.Pbgra32);
 
             var dv = new DrawingVisual();
-            using(var ctx = dv.RenderOpen())
+            using (var ctx = dv.RenderOpen())
             {
                 var vb = new VisualBrush(target);
                 ctx.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
@@ -91,7 +108,7 @@ namespace Wells.CoreView
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(frame);
 
-            using(var stream = System.IO.File.Create(imageFilename))
+            using (var stream = System.IO.File.Create(imageFilename))
             {
                 encoder.Save(stream);
             }

@@ -103,5 +103,10 @@ namespace Wells.YPFModel
         {
             return GetDisplayName(typeof(Well), propertyName);
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

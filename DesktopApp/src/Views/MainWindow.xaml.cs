@@ -100,10 +100,13 @@ namespace Wells.View
 
         public int SelectSheetDialog(List<string> sheets)
         {
-            var diag = new ExcelSheetsView(sheets) { Owner = this };
-            if ((bool)diag.ShowDialog())
-                return diag.SelectedSheet;
-            return -1;
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                var diag = new ExcelSheetsView(sheets) { Owner = this };
+                if ((bool)diag.ShowDialog())
+                    return diag.SelectedSheet;
+                return -1;
+            });
         }
 
         public void ShowWaitingMessage(string message)
@@ -147,7 +150,7 @@ namespace Wells.View
         public void OpenCreatePremadeGraphicView()
         {
             var diag = new CreatePremadeGraphicView();
-            diag.Show();
+            diag.ShowDialog();
             PremadeGraphicsChanged?.Invoke(this, EventArgs.Empty);
         }
 

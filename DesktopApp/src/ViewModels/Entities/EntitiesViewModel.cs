@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Wells.Base;
 using NPOI.XSSF.UserModel;
+using System.Threading.Tasks;
 
 namespace Wells.View.ViewModels
 {
@@ -36,7 +37,23 @@ namespace Wells.View.ViewModels
         public abstract ICommand NewEntityCommand { get; }
         public abstract ICommand EditEntityCommand { get; }
         public abstract ICommand RemoveEntityCommand { get; }
-        public abstract ICommand ImportEntitiesCommand { get; }
+        public ICommand ImportEntitiesCommand
+        {
+            get
+            {
+                return new AsyncCommand(async () =>
+                {
+                    XSSFWorkbook wb = null;
+                    int sheetIndex = -1;
+
+                    if (OpenExcelFile(ref wb, ref sheetIndex))
+                    {
+                        await ReadExcelFile(wb, sheetIndex);
+                        UpdateEntites();
+                    }
+                }, () => true, OnError, CloseWaitingMessage);
+            }
+        }
 
         public abstract Dictionary<string, PropertyInfo> FilterProperties { get; }
         public abstract T SelectedEntity { get ; set ; }
@@ -48,7 +65,7 @@ namespace Wells.View.ViewModels
             {
                 if ((bool)(FilterCollection?.Any()))
                 {
-                    var list = FilterCollection.Apply(_Entities);
+                    var list = FilterCollection.Apply(_Entities).ToList();
                     _EntitiesCount = list.Count();
                     NotifyEntityCount();
                     return list.ToList();
@@ -296,6 +313,9 @@ namespace Wells.View.ViewModels
 
         protected abstract void CreateWellFilter();
 
+        protected abstract Task ReadExcelFile(XSSFWorkbook workbook, int sheetIndex);
+
+        protected abstract void UpdateEntites();
         public bool ShowWellPanel => _ShowWellPanel;
 
         public List<string> WellNames => Repository.Wells.Names;

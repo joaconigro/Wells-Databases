@@ -1,6 +1,8 @@
 ﻿using LiveCharts;
 using LiveCharts.Definitions.Series;
 using System;
+using System.Windows.Input;
+using Wells.CoreView;
 using Wells.CoreView.ViewInterfaces;
 using Wells.View.Graphics;
 using Wells.YPFModel;
@@ -58,6 +60,17 @@ namespace Wells.View.ViewModels
 
                 if (genericSeries != null)
                     SeriesCollection.Add(genericSeries);
+            }
+        }
+
+        public ICommand SaveChartImageCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    _Dialog.SaveImage();
+                }, (obj) => true, OnError);
             }
         }
     }

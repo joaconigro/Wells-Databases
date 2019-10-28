@@ -13,7 +13,6 @@ namespace Wells.View.ViewModels
 {
     public class CustomGraphicsViewModel : BaseGraphicsViewModel
     {
-        private string title;
         private string selectedSeriesDataName;
         private string selectedParameterName;
         private int selectedFromOption;

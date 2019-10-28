@@ -29,7 +29,7 @@ namespace Wells.View.ViewModels
             Initialize();
             _Entities = Repository.Wells.All;
             _ShowWellPanel = true;
-            _PremadeGraphics = ReadPremadeGraphics();
+            _PremadeGraphics = CreatePremadeGraphicViewModel.ReadPremadeGraphics();
         }
 
         protected override void OnSetView(IView view)
@@ -62,24 +62,6 @@ namespace Wells.View.ViewModels
                     if (MainWindow.OpenEditEntityDialog(vm))
                         UpdateEntites();
                 }, (obj) => IsNewCommandEnabled, OnError);
-            }
-        }
-
-        public override ICommand ImportEntitiesCommand
-        {
-            get
-            {
-                return new RelayCommand((param) =>
-                {
-                    XSSFWorkbook wb = null;
-                    int sheetIndex = -1;
-
-                    if (OpenExcelFile(ref wb, ref sheetIndex))
-                    {
-                        ReadExcelFile(wb, sheetIndex);
-                        UpdateEntites();
-                    }
-                }, (obj) => IsNewCommandEnabled, OnError, CloseWaitingMessage);
             }
         }
 
@@ -176,26 +158,7 @@ namespace Wells.View.ViewModels
             return menu;
         }
 
-        List<PremadeSeriesInfoCollection> ReadPremadeGraphics()
-        {
-            var filename = Path.Combine(Directory.GetCurrentDirectory(), "PremadeGraphics.wpg");
-
-            if (File.Exists(filename))
-            {
-                var serializer = new XmlSerializer(typeof(List<PremadeSeriesInfoCollection>));
-                var entities = new List<PremadeSeriesInfoCollection>();
-                using (var reader = new StreamReader(filename))
-                {
-                    entities = (List<PremadeSeriesInfoCollection>)serializer.Deserialize(reader);
-                }
-
-                return entities;
-            }
-            return new List<PremadeSeriesInfoCollection>();
-        }
-
-
-        async void ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
+        protected override async Task ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
         {
             ShowWaitingMessage("Leyendo pozos del archivo Excel...");
             var wells = await Task.Run(() => ExcelReader.ReadWells(workbook, sheetIndex, null));
@@ -216,9 +179,9 @@ namespace Wells.View.ViewModels
         }
 
 
-        void OnPremadeGraphicsChanged(object? sender, EventArgs args)
+        void OnPremadeGraphicsChanged(object sender, EventArgs args)
         {
-            _PremadeGraphics = ReadPremadeGraphics();
+            _PremadeGraphics = CreatePremadeGraphicViewModel.ReadPremadeGraphics();
             Control.UpdateRowContextMenu();
         }
 
@@ -228,7 +191,7 @@ namespace Wells.View.ViewModels
             OnCreatingFilter(wellFilter);
         }
 
-        void UpdateEntites()
+        protected override void UpdateEntites()
         {
             _Entities = Repository.Wells.All;
             NotifyPropertyChanged(nameof(Entities));

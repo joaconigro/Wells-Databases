@@ -592,7 +592,7 @@ namespace Wells.View.Importer
                     case CellType.Formula:
                         return cell.NumericCellValue.ToString().Trim();
                     default:
-                        return cell.StringCellValue;
+                        return cell.StringCellValue.Trim();
 
                 }
             }
@@ -608,7 +608,7 @@ namespace Wells.View.Importer
                 {
                     case CellType.Numeric:
                     case CellType.Formula:
-                        return cell.DateCellValue.ToString("dd/MM/yy").ToUpper();
+                        return cell.DateCellValue.ToString("dd/MM/yyyy").ToUpper();
                     default:
                         DateTime cellDate;
                         string[] formats = { "dd/MM/yyyy", "d/M/yyyy", "dd/MM/yy", "d/M/yy" };
@@ -617,13 +617,14 @@ namespace Wells.View.Importer
                         break;
                 }
             }
-            return new DateTime(1900, 1, 1).ToString("dd/MM/yy");
+            return new DateTime(1900, 1, 1).ToString("dd/MM/yyyy");
         }
 
         static DateTime ParseStringDate(string date)
         {
-            var values = date.Split("/").Cast<int>().ToList();
-            return new DateTime(values[2], values[1], values[0]);
+            var values = date.Split("/");
+            var intValues = values.Select(s => Convert.ToInt32(s)).ToList();
+            return new DateTime(intValues[2], intValues[1], intValues[0]);
         }
 
 

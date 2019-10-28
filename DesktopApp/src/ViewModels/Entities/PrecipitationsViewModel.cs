@@ -45,24 +45,6 @@ namespace Wells.View.ViewModels
             }
         }
 
-        public override ICommand ImportEntitiesCommand
-        {
-            get
-            {
-                return new RelayCommand((param) =>
-                {
-                    XSSFWorkbook wb = null;
-                    int sheetIndex = -1;
-
-                    if (OpenExcelFile(ref wb, ref sheetIndex))
-                    {
-                        ReadExcelFile(wb, sheetIndex);
-                        UpdateEntites();
-                    }
-                }, (obj) => IsNewCommandEnabled, OnError, CloseWaitingMessage);
-            }
-        }
-
         public override ICommand EditEntityCommand
         {
             get
@@ -111,7 +93,7 @@ namespace Wells.View.ViewModels
         }
 
 
-        async void ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
+        protected override async Task ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
         {
             ShowWaitingMessage("Leyendo precipitaciones del archivo Excel...");
             var precipitations = await Task.Run(() => ExcelReader.ReadPrecipitations(workbook, sheetIndex, null));
@@ -134,7 +116,7 @@ namespace Wells.View.ViewModels
 
         protected override void CreateWellFilter() { }
 
-        void UpdateEntites()
+        protected override void UpdateEntites()
         {
             _Entities = Repository.Precipitations.All;
             NotifyPropertyChanged(nameof(Entities));

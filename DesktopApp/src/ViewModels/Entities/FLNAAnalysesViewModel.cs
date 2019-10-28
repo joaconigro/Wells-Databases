@@ -55,24 +55,6 @@ namespace Wells.View.ViewModels
             }
         }
 
-        public override ICommand ImportEntitiesCommand
-        {
-            get
-            {
-                return new RelayCommand((param) =>
-                {
-                    XSSFWorkbook wb = null;
-                    int sheetIndex = -1;
-
-                    if (OpenExcelFile(ref wb, ref sheetIndex))
-                    {
-                        ReadExcelFile(wb, sheetIndex);
-                        UpdateEntites();
-                    }
-                }, (obj) => IsNewCommandEnabled, OnError, CloseWaitingMessage);
-            }
-        }
-
         public override ICommand EditEntityCommand
         {
             get
@@ -121,7 +103,7 @@ namespace Wells.View.ViewModels
         }
 
 
-        async void ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
+        protected override async Task ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
         {
             ShowWaitingMessage("Leyendo análisis de FLNA del archivo Excel...");
             var analyses = await Task.Run(() => ExcelReader.ReadFLNAAnalysis(workbook, sheetIndex, null));
@@ -148,7 +130,7 @@ namespace Wells.View.ViewModels
             OnCreatingFilter(wellFilter);
         }
 
-        void UpdateEntites()
+        protected override void UpdateEntites()
         {
             _Entities = Repository.FLNAAnalyses.All;
             NotifyPropertyChanged(nameof(Entities));
