@@ -54,7 +54,7 @@ namespace Wells.View.ViewModels
                 }, (obj) => IsNewCommandEnabled, OnError);
             }
         }
-        
+
         public override ICommand EditEntityCommand
         {
             get
@@ -81,6 +81,26 @@ namespace Wells.View.ViewModels
             }
         }
 
+        public ICommand OpenPiperShoellerGraphicCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if (SelectedEntities != null && SelectedEntities.Any())
+                    {
+                        var vm = new PiperSchoellerGraphicViewModel(SelectedEntities);
+                        MainWindow.OpenGraphicsView(vm);
+                    }
+                    else if (SelectedEntity != null)
+                    {
+                        var vm = new PiperSchoellerGraphicViewModel(new List<WaterAnalysis>() { SelectedEntity });
+                        MainWindow.OpenGraphicsView(vm);
+                    }
+                }, (obj) => (SelectedEntities != null && SelectedEntities.Any()) || SelectedEntity != null, OnError);
+            }
+        }
+
         public override Dictionary<string, PropertyInfo> FilterProperties => WaterAnalysis.Properties;
 
         public override WaterAnalysis SelectedEntity { get => _SelectedEntity; set { SetValue(ref _SelectedEntity, value); NotifyPropertyChanged(nameof(WellExistsInfo)); } }
@@ -92,9 +112,13 @@ namespace Wells.View.ViewModels
 
         public override ContextMenu GetContextMenu()
         {
+            var menu = new ContextMenu();
+            var piperMenuItem = new MenuItem() { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
+            menu.Items.Add(piperMenuItem);
+
             if (IsRemoveCommandEnabled)
             {
-                var menu = new ContextMenu();
+                menu.Items.Add(new Separator());
                 var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
                 menu.Items.Add(removeMenuItem);
                 return menu;

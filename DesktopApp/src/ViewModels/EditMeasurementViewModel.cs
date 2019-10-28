@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Wells.CorePersistence.Repositories;
 using Wells.CoreView;
 using Wells.CoreView.Validators;
+using Wells.CoreView.ViewInterfaces;
 using Wells.CoreView.ViewModel;
 using Wells.YPFModel;
 
@@ -21,7 +22,7 @@ namespace Wells.View.ViewModels
 
         public string WellName { get => selectedWell?.Name; }
         public List<Well> Wells => RepositoryWrapper.Instance.Wells.All.ToList();
-        public Well SelectedWell { get => selectedWell; set { SetValue(ref selectedWell, value); NotifyPropertyChanged(nameof(WellName)); } }
+        public Well SelectedWell { get => selectedWell; set { SetValue(ref selectedWell, value); Validate(nameof(WellName), WellName); } }
         public Measurement Measurement { get; }
 
         public DateTime Date { get => date; set { SetValue(ref date, value); } }
@@ -58,7 +59,7 @@ namespace Wells.View.ViewModels
 
         void InitializeMeasurement()
         {
-            SelectedWell = Measurement.Well;
+            selectedWell = Measurement.Well;
             Date = Measurement.Date;
             FLNADepth = Measurement.FLNADepth;
             WaterDepth = Measurement.WaterDepth;
@@ -78,7 +79,14 @@ namespace Wells.View.ViewModels
 
         protected override void SetValidators()
         {
-            Add(nameof(WellName), new EmptyStringValidator("Nombre"));
+            if(!IsEditing)
+                Add(nameof(WellName), new EmptyStringValidator("Nombre"));
+        }
+
+        protected override void OnSetView(IView view)
+        {
+            base.OnSetView(view);
+            Initialize();
         }
 
         public ICommand DeleteMeasurementCommand
@@ -93,7 +101,7 @@ namespace Wells.View.ViewModels
                         RepositoryWrapper.Instance.SaveChanges();
                         CloseModalViewCommand.Execute(true);
                     }
-                }, (obj) => !IsEditing, OnError);
+                }, (obj) => IsEditing, OnError);
             }
         }
 

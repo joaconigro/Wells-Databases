@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Wells.StandardModel.Models;
 using System.Collections.Generic;
 using System.Reflection;
+using System;
 
 namespace Wells.YPFModel
 {
@@ -71,11 +72,11 @@ namespace Wells.YPFModel
             {
                 try
                 {
-                    Process.Start(file);
+                    Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new System.Exception($"Error al tratar de abrir el archivo {CompleteFilename}");
+                    throw new Exception($"Error al tratar de abrir el archivo {CompleteFilename}", ex);
                 }
             }
         }
@@ -88,6 +89,11 @@ namespace Wells.YPFModel
         public static string GetDisplayName(string propertyName)
         {
             return GetDisplayName(typeof(ExternalFile), propertyName);
+        }
+
+        public override string ToString()
+        {
+            return CompleteFilename;
         }
     }
 }

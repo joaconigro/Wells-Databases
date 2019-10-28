@@ -29,6 +29,12 @@ namespace Wells.View.ViewModels
         private bool exists;
         private double bottom;
         private IEditWellView dialog;
+        private ObservableCollection<SoilAnalysis> soilAnalyses;
+        private ObservableCollection<WaterAnalysis> waterAnalyses;
+        private ObservableCollection<FLNAAnalysis> fLNAAnalyses;
+        private ObservableCollection<Measurement> measurements;
+        private ObservableCollection<ExternalFile> files;
+
         public string WellName { get => wellName; set { SetValue(ref wellName, value); } }
 
 
@@ -41,11 +47,11 @@ namespace Wells.View.ViewModels
         public double Height { get => height; set { SetValue(ref height, value); } }
         public bool Exists { get => exists; set { SetValue(ref exists, value); } }
         public double Bottom { get => bottom; set { SetValue(ref bottom, value); } }
-        public ObservableCollection<SoilAnalysis> SoilAnalyses { get; set; }
-        public ObservableCollection<WaterAnalysis> WaterAnalyses { get; set; }
-        public ObservableCollection<FLNAAnalysis> FLNAAnalyses { get; set; }
-        public ObservableCollection<Measurement> Measurements { get; set; }
-        public ObservableCollection<ExternalFile> Files { get; set; }
+        public ObservableCollection<SoilAnalysis> SoilAnalyses { get => soilAnalyses; set { SetValue(ref soilAnalyses, value); } }
+        public ObservableCollection<WaterAnalysis> WaterAnalyses { get => waterAnalyses; set { SetValue(ref waterAnalyses, value); } }
+        public ObservableCollection<FLNAAnalysis> FLNAAnalyses { get => fLNAAnalyses; set { SetValue(ref fLNAAnalyses, value); } }
+        public ObservableCollection<Measurement> Measurements { get => measurements; set { SetValue(ref measurements, value); } }
+        public ObservableCollection<ExternalFile> Files { get => files; set { SetValue(ref files, value); } }
 
         public bool IsEditing { get; }
 
@@ -67,12 +73,13 @@ namespace Wells.View.ViewModels
             IsEditing = true;
             this.well = well;
             InitializeWell();
-    }
+        }
 
         protected override void OnSetView(IView view)
         {
             base.OnSetView(view);
             dialog = (IEditWellView)view;
+            Initialize();
         }
 
         void InitializeWell()
@@ -114,14 +121,14 @@ namespace Wells.View.ViewModels
             well.Files = Files.ToList();
         }
 
-        protected override void SetCommandUpdates()
-        {
-            throw new NotImplementedException();
+        protected override void SetCommandUpdates() {
+            Add(nameof(HasFailures), SaveWellCommand);
         }
 
         protected override void SetValidators()
         {
-            Add(nameof(WellName), new List<IValidator>() { new EmptyStringValidator("Nombre"), new WellNameValidator("Nombre") }) ;
+            if (!IsEditing)
+                Add(nameof(WellName), new List<IValidator>() { new EmptyStringValidator("Nombre"), new WellNameValidator("Nombre") });
         }
 
         void RemoveAll()
@@ -147,7 +154,7 @@ namespace Wells.View.ViewModels
                         RepositoryWrapper.Instance.SaveChanges();
                         CloseModalViewCommand.Execute(true);
                     }
-                }, (obj) => !IsEditing, OnError);
+                }, (obj) => IsEditing, OnError);
             }
         }
 
@@ -238,11 +245,11 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if(param != null)
+                    if (param != null)
                     {
                         var file = (param as ExternalFile);
                         file.Open();
-                    }                   
+                    }
                 }, (obj) => true, OnError);
             }
         }

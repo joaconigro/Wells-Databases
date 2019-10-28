@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using Wells.CoreView.ViewInterfaces;
-using Wells.CoreView.Validators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Wells.Base;
+using Wells.CoreView.ViewInterfaces;
 
 namespace Wells.CoreView.ViewModel
 {
@@ -28,7 +27,7 @@ namespace Wells.CoreView.ViewModel
         {
             if (view != null)
                 SetView(view);
-        }      
+        }
 
         public void SetView(IView view)
         {
@@ -154,7 +153,7 @@ namespace Wells.CoreView.ViewModel
                 var list = this.commands[propertyName].ToList();
                 list.AddRange(commands);
                 this.commands[propertyName] = list;
-            } 
+            }
             else
                 this.commands.Add(propertyName, commands);
         }
@@ -220,9 +219,9 @@ namespace Wells.CoreView.ViewModel
                 foreach (var r in validationResults.Values)
                     results.AddRange(r);
 
-                return string.Join(System.Environment.NewLine, from v in results
-                                                               where !v.IsValid
-                                                               select string.Join(System.Environment.NewLine, v.Errors.Select(e => e.ErrorMessage)));
+                return string.Join(Environment.NewLine, from v in results
+                                                        where !v.IsValid
+                                                        select string.Join(Environment.NewLine, v.Errors.Select(e => e.ErrorMessage)));
             }
         }
 
@@ -232,7 +231,7 @@ namespace Wells.CoreView.ViewModel
             {
                 if (validators.Any() && validationResults.Count != validators.Count)
                     return true;
-                return validationResults.Values.Any(r => !r.Any(vr => vr.IsValid));
+                return validationResults.Values.Any(r => r.Any(vr => !vr.IsValid));
             }
         }
 

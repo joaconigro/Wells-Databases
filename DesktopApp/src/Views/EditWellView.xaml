@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Wells.View"
         xmlns:uc="clr-namespace:Wells.View.UserControls"
         mc:Ignorable="d"
-        Title="Edición de pozos" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" Width="500" Height="400">
+        Title="Edición de pozos" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" MinWidth="350" MinHeight="400">
     <Grid Style="{StaticResource MarginStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -30,7 +30,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Name="WellNameTextBlock" Text="Nombre:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Name="WellNameTextBox" Style="{StaticResource MarginStyle}" HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding NameEditable}" Text="{Binding WellName, Mode=TwoWay}"/>
+                <TextBox Name="WellNameTextBox" Style="{StaticResource MarginStyle}" HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding IsEditing, Converter={StaticResource InverseBooleanConverter}}" Text="{Binding WellName, Mode=TwoWay}"/>
                 <CheckBox Name="ExistsCheckBox" Content="Existe" Style="{StaticResource MarginStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="5" IsChecked="{Binding Exists, Mode=TwoWay}"/>
                 <TextBlock Name="WellTypeTextBlock" Text="Tipo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
                 <ComboBox Name="WellTypeComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" ItemsSource="{Binding WellTypes, Mode=OneWay}" SelectedIndex="{Binding Type, Mode=TwoWay}"/>
@@ -69,7 +69,7 @@
         <GroupBox Name="ContentGroupBox" Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">
             <TabControl Name="ContentTabControl">
                 <TabItem Name="MeasurementsTab" Header="Mediciones">
-                    <uc:EntitiesManagerControl x:Name="MeasurementsEntityControl" ObjectsSource="{Binding Measurements, Mode=OneWay}" 
+                    <uc:EntitiesManagerControl x:Name="MeasurementsEntityControl" ObjectsSource="{Binding Measurements}" 
                                                   NewEntityCommand="{Binding NewMeasurementCommand, Mode=OneWay}"
                                                   EditEntityCommand="{Binding EditMeasurementCommand, Mode=OneWay}"
                                                   DeleteEntityCommand ="{Binding DeleteMeasurementCommand, Mode=OneWay}"
@@ -107,7 +107,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Name="DeleteWellButton" Content="Borrar pozo" Style="{StaticResource ButtonStyle}" Grid.Column="0" Command="{Binding DeleteWellCommand}"/>
-            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding AcceptCommand}"/>
+            <Button Name="OkButton" Content="Aceptar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding SaveWellCommand}"/>
             <Button Name="CancelButton" Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="3" Command="{Binding CloseModalViewCommand}" CommandParameter="{StaticResource False}"/>
         </Grid>
     </Grid>
