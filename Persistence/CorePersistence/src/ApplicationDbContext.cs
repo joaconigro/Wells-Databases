@@ -5,23 +5,22 @@ namespace Wells.CorePersistence
 {
     public class ApplicationDbContext : DbContext
     {
+        private string connectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=CILP_DB;Integrated Security=True;MultipleActiveResultSets=True";
+
         #region Constructor
         public ApplicationDbContext(DbContextOptions options) :
         base(options)
         {
-            //Database.Migrate();
+        }
+
+        public ApplicationDbContext(string connectionString) : base()
+        {
+            this.connectionString = connectionString;
         }
 
         public ApplicationDbContext() : base() { }
 
-        public static string ConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=WellsDB.mdf;Integrated Security=True";
-        //private readonly bool useLazyLoading;
-
-        //protected ApplicationDbContext(string connectionString, bool useLazyLoading) : base()
-        //{
-        //    this.connectionString = connectionString;
-        //    this.useLazyLoading = useLazyLoading;
-        //}
+       
         #endregion Constructor
 
 
@@ -30,26 +29,26 @@ namespace Wells.CorePersistence
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Well>().ToTable("Wells");
-            modelBuilder.Entity<Well>().HasMany(w => w.Measurements).WithOne(i => i.Well);
-            modelBuilder.Entity<Well>().HasMany(w => w.SoilAnalyses).WithOne(i => i.Well);
-            modelBuilder.Entity<Well>().HasMany(w => w.FLNAAnalyses).WithOne(i => i.Well);
-            modelBuilder.Entity<Well>().HasMany(w => w.WaterAnalyses).WithOne(i => i.Well);
-            modelBuilder.Entity<Well>().HasMany(w => w.Files).WithOne(i => i.Well);
+            modelBuilder.Entity<Well>().HasMany(w => w.Measurements).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Well>().HasMany(w => w.SoilAnalyses).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Well>().HasMany(w => w.FLNAAnalyses).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Well>().HasMany(w => w.WaterAnalyses).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Well>().HasMany(w => w.Files).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Measurement>().ToTable("Measurements");
-            modelBuilder.Entity<Measurement>().HasOne(u => u.Well).WithMany(i => i.Measurements);
+            modelBuilder.Entity<Measurement>().HasOne(u => u.Well).WithMany(i => i.Measurements).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SoilAnalysis>().ToTable("SoilAnalyses");
-            modelBuilder.Entity<SoilAnalysis>().HasOne(u => u.Well).WithMany(c => c.SoilAnalyses);
+            modelBuilder.Entity<SoilAnalysis>().HasOne(u => u.Well).WithMany(c => c.SoilAnalyses).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<WaterAnalysis>().ToTable("WaterAnalyses");
-            modelBuilder.Entity<WaterAnalysis>().HasOne(u => u.Well).WithMany(c => c.WaterAnalyses);
+            modelBuilder.Entity<WaterAnalysis>().HasOne(u => u.Well).WithMany(c => c.WaterAnalyses).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<FLNAAnalysis>().ToTable("FLNAAnalyses");
-            modelBuilder.Entity<FLNAAnalysis>().HasOne(u => u.Well).WithMany(c => c.FLNAAnalyses);
+            modelBuilder.Entity<FLNAAnalysis>().HasOne(u => u.Well).WithMany(c => c.FLNAAnalyses).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ExternalFile>().ToTable("ExternalFiles");
-            modelBuilder.Entity<ExternalFile>().HasOne(u => u.Well).WithMany(c => c.Files);
+            modelBuilder.Entity<ExternalFile>().HasOne(u => u.Well).WithMany(c => c.Files).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Precipitation>().ToTable("Precipitations");
 
@@ -61,7 +60,7 @@ namespace Wells.CorePersistence
             {
                 optionsBuilder
                     .UseLazyLoadingProxies()
-                    .UseSqlServer(ConnectionString);
+                    .UseSqlServer(connectionString);
             }
         }
 

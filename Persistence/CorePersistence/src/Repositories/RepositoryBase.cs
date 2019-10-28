@@ -14,6 +14,8 @@ namespace Wells.CorePersistence.Repositories
             Context = context;
         }
 
+        public event EntityRemovedEventHandler<T> OnEntityRemoved;
+
         public void Add(T entity)
         {
             Context.Set<T>().Add(entity);
@@ -52,11 +54,13 @@ namespace Wells.CorePersistence.Repositories
         public void Remove(T entity)
         {
             Context.Set<T>().Remove(entity);
+            OnEntityRemoved?.Invoke(this, new EntityRemovedEventArgs<T>(entity));
         }
 
         public void RemoveRange(IEnumerable<T> entities)
         {
             Context.Set<T>().RemoveRange(entities);
+            OnEntityRemoved?.Invoke(this, new EntityRemovedEventArgs<T>(entities));
         }       
 
         public void Update(T entity)
@@ -76,4 +80,17 @@ namespace Wells.CorePersistence.Repositories
 
         protected virtual void OnAddingOrUpdating() { }
     }
+
+    public class EntityRemovedEventArgs<T> : EventArgs where T : class
+    {
+        T Entity { get; }
+
+        IEnumerable<T> Entities { get; }
+
+        public EntityRemovedEventArgs(T entity) { Entity = entity; }
+
+        public EntityRemovedEventArgs(IEnumerable<T> entities) { Entities = entities; }
+    }
+
+    public delegate void EntityRemovedEventHandler<T>(object sender, EntityRemovedEventArgs<T> entityArgs) where T : class;
 }

@@ -22,5 +22,6 @@ namespace Wells.CorePersistence.Repositories
         bool ContainsName(string name);
         bool Exists(string id);
         bool Exists(Func<T, bool> predicate);
+        
     }
 }

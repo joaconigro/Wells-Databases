@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Wells.CorePersistence.Repositories;
 using Wells.CoreView;
 using Wells.CoreView.ViewInterfaces;
 using Wells.View.Filters;
@@ -65,6 +66,7 @@ namespace Wells.View.ViewModels
                     if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar este dato?", "Eliminar"))
                     {
                         Repository.Precipitations.Remove(SelectedEntity);
+                        RepositoryWrapper.Instance.SaveChanges();
                         UpdateEntites();
                     }
                 }, (obj) => SelectedEntity != null && IsRemoveCommandEnabled, OnError);

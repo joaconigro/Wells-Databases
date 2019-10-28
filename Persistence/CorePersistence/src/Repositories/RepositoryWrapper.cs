@@ -144,8 +144,7 @@ namespace Wells.CorePersistence.Repositories
 
         public static void Instantiate(string connectionString)
         {
-            ApplicationDbContext.ConnectionString = connectionString;
-            var context = new ApplicationDbContext();
+            var context = new ApplicationDbContext(connectionString);
             context.Database.Migrate();
             instance = new RepositoryWrapper(context);
         }

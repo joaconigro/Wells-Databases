@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Wells.CorePersistence.Repositories;
 using Wells.CoreView;
 using Wells.CoreView.ViewInterfaces;
 using Wells.View.Filters;
@@ -23,6 +24,7 @@ namespace Wells.View.ViewModels
             Initialize();
             _Entities = Repository.WaterAnalyses.All;
             _ShowWellPanel = true;
+            RepositoryWrapper.Instance.Wells.OnEntityRemoved += OnWellRemoved;
         }
 
         protected override void OnSetView(IView view)
@@ -75,6 +77,7 @@ namespace Wells.View.ViewModels
                     if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar"))
                     {
                         Repository.WaterAnalyses.Remove(SelectedEntity);
+                        RepositoryWrapper.Instance.SaveChanges();
                         UpdateEntites();
                     }
                 }, (obj) => SelectedEntity != null && IsRemoveCommandEnabled, OnError);

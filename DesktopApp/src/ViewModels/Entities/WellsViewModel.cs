@@ -14,6 +14,7 @@ using Wells.View.Filters;
 using Wells.View.Graphics;
 using Wells.View.Importer;
 using Wells.YPFModel;
+using Wells.CorePersistence.Repositories;
 
 namespace Wells.View.ViewModels
 {
@@ -88,6 +89,7 @@ namespace Wells.View.ViewModels
                     if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar este pozo?", "Eliminar"))
                     {
                         Repository.Wells.Remove(SelectedEntity);
+                        RepositoryWrapper.Instance.SaveChanges();
                         UpdateEntites();
                     }
                 }, (obj) => SelectedEntity != null && IsRemoveCommandEnabled, OnError);

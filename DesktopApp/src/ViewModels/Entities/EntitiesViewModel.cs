@@ -14,6 +14,7 @@ using System.Windows.Input;
 using Wells.Base;
 using NPOI.XSSF.UserModel;
 using System.Threading.Tasks;
+using Wells.YPFModel;
 
 namespace Wells.View.ViewModels
 {
@@ -203,8 +204,7 @@ namespace Wells.View.ViewModels
                 filter.ParentCollection = FilterCollection;
             }
         }
-
-
+        
         private void EditFilter(FilterViewModel vm)
         {
             if (vm.ShowNumericPanel)
@@ -344,6 +344,10 @@ namespace Wells.View.ViewModels
 
         public virtual string WellExistsInfo => string.Empty;
 
+        protected void OnWellRemoved(object sender, EntityRemovedEventArgs<Well> eventArgs)
+        {
+            UpdateEntites();
+        }
 
         protected bool OpenExcelFile(ref XSSFWorkbook workbook, ref int sheetIndex) {
             var filename = MainWindow.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel");
