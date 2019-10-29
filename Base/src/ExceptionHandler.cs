@@ -7,12 +7,12 @@ using Wells.Utilities.LoggerService;
 
 namespace Wells.Base
 {
-    public class ExceptionHandler
+    public static class ExceptionHandler
     {
 
         private static LoggerManager loggerManager;
 
-        private static LoggerManager LoggerManager
+        public static LoggerManager LoggerManager
         {
             get
             {

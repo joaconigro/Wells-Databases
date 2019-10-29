@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System.Collections.Generic;
 using System.Linq;
 using Wells.Persistence.Repositories;
 
@@ -25,7 +26,7 @@ namespace Wells.View.Filters
             Value = value;
         }
 
-        public override IQueryable<T> Apply(IQueryable<T> queryable)
+        public override IEnumerable<T> Apply(IEnumerable<T> queryable)
         {
             return from o in queryable
                    where (bool)(Interaction.CallByName(o, PropertyName, CallType.Get)) == Value

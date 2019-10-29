@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -16,7 +17,7 @@ namespace Wells.View.Filters
             FiltersChanged(this, EventArgs.Empty);
         }
 
-        public IQueryable<T> Apply(IQueryable<T> queryable)
+        public IEnumerable<T> Apply(IEnumerable<T> queryable)
         {
             foreach (var f in this)
             {

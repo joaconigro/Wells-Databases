@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Wells.Persistence.Repositories;
 using Wells.BaseView.Validators;
+using System.Collections.Generic;
 
 namespace Wells.View.Filters
 {
@@ -23,7 +24,7 @@ namespace Wells.View.Filters
             Function = function;
         }
 
-        public override IQueryable<T> Apply(IQueryable<T> queryable)
+        public override IEnumerable<T> Apply(IEnumerable<T> queryable)
         {
             return from o in queryable
                    where CompareValue((double)Interaction.CallByName(o, PropertyName, CallType.Get))

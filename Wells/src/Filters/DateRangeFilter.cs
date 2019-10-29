@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Wells.Persistence.Repositories;
 
@@ -28,7 +29,7 @@ namespace Wells.View.Filters
             EndDate = endDate;
         }
 
-        public override IQueryable<T> Apply(IQueryable<T> queryable)
+        public override IEnumerable<T> Apply(IEnumerable<T> queryable)
         {
             return from o in queryable
                    where CompareValue((DateTime)Interaction.CallByName(o, PropertyName, CallType.Get))

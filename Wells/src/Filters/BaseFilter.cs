@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Wells.Persistence.Repositories;
 
 namespace Wells.View.Filters
@@ -40,7 +41,7 @@ namespace Wells.View.Filters
 
         public FilterCollection<T> ParentCollection { get; set; }
 
-        public abstract IQueryable<T> Apply(IQueryable<T> queryable);
+        public abstract IEnumerable<T> Apply(IEnumerable<T> queryable);
 
         protected BaseFilter(string name, string displayName, IBussinessObjectRepository repo)
         {
