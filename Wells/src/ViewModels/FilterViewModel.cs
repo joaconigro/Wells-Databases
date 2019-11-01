@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Input;
+using Wells.BaseView;
 
 namespace Wells.View.ViewModels
 {
@@ -155,8 +157,34 @@ namespace Wells.View.ViewModels
             NotifyPropertyChanged(nameof(ShowEnumPanel));
         }
 
-        protected override void SetCommandUpdates() { }
 
-        protected override void SetValidators() { }
+        public ICommand SaveFilterCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    CloseModalViewCommand.Execute(true);
+                }, (obj) => IsValidFilter(), OnError);
+            }
+        }
+
+        bool IsValidFilter()
+        {
+            if (ShowStringPanel)
+            {
+                return !string.IsNullOrEmpty(StringValue);
+            }
+            return true;
+        }
+
+        protected override void SetCommandUpdates() {
+            Add(nameof(StringValue), SaveFilterCommand);
+            Add(nameof(ShowStringPanel), SaveFilterCommand);
+        }
+
+        protected override void SetValidators() {
+           //Nothing to add yet.
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace Wells.Persistence.Repositories
 
         public override bool ContainsName(string name)
         {
-            return true; // Exists((c) => c.Name == name);
+            return true;
         }
 
         public override bool Exists(string id)
@@ -24,7 +24,7 @@ namespace Wells.Persistence.Repositories
 
         public override Measurement FindByName(string name)
         {
-            return null; // Find((c) => c.Name == name);
+            return null;
         }
 
     }

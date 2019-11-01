@@ -7,9 +7,10 @@ namespace Wells.Persistence.Repositories
     {
         public PrecipitationsRepository(ApplicationDbContext context) : base(context) { }
 
+        public override IQueryable<Precipitation> All => Context.Precipitations.OrderBy(p => p.PrecipitationDate).AsQueryable();
         public override bool ContainsName(string name)
         {
-            return true; // Exists((c) => c.Name == name);
+            return true;
         }
 
         public override bool Exists(string id)
@@ -24,7 +25,7 @@ namespace Wells.Persistence.Repositories
 
         public override Precipitation FindByName(string name)
         {
-            return null; // Find((c) => c.Name == name);
+            return null;
         }
 
       

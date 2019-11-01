@@ -75,7 +75,7 @@ namespace Wells.View.Filters
 
         public override void SetUpdatedValues(FilterViewModel filterViewModel)
         {
-            
+            //Nothing to do.
         }
 
         bool FilterByWellProperty(Well well)

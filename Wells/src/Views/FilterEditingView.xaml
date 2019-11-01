@@ -88,7 +88,7 @@
         </DockPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="7">
-            <Button Content="Aceptar" Command="{Binding CloseModalViewCommand}" CommandParameter="{StaticResource True}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Aceptar" Command="{Binding SaveFilterCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Cancelar" Command="{Binding CloseModalViewCommand}" CommandParameter="{StaticResource False}" Style="{StaticResource ButtonStyle}"/>
         </StackPanel>
     </Grid>

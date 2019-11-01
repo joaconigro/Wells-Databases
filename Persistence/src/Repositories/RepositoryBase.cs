@@ -33,7 +33,7 @@ namespace Wells.Persistence.Repositories
             OnAddingOrUpdating();
         }
 
-        public IQueryable<T> All => Context.Set<T>().AsQueryable();
+        public virtual IQueryable<T> All => Context.Set<T>().AsQueryable();
 
         public bool Exists(Func<T, bool> predicate)
         {
