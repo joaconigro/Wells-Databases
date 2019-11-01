@@ -169,30 +169,7 @@ namespace Wells.View.ViewModels
 
         private void CreateFilter(FilterViewModel vm)
         {
-            var repo = Repository.Repository<T>();
-            BaseFilter<T> f = null;
-
-            if (vm.ShowNumericPanel)
-            {
-                f = FilterFactory.CreateNumericFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.NumericValue, (NumericFunctions)vm.SelectedMathFunction);
-            }
-            else if (vm.ShowStringPanel)
-            {
-                f = FilterFactory.CreateStringFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.StringValue);
-            }
-            else if (vm.ShowDatePanel)
-            {
-                f = FilterFactory.CreateDateRangeFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.StartDate, vm.EndDate);
-            }
-            else if (vm.ShowBooleanPanel)
-            {
-                f = FilterFactory.CreateBooleanFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.BooleanValue);
-            }
-            else if (vm.ShowEnumPanel)
-            {
-                f = FilterFactory.CreateEnumFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.SelectedEnumValue, vm.FilterType);
-            }
-
+            var f = FilterFactory.CreateFilter<T>(vm);
             OnCreatingFilter(f);
         }
 
@@ -207,28 +184,7 @@ namespace Wells.View.ViewModels
         
         private void EditFilter(FilterViewModel vm)
         {
-            if (vm.ShowNumericPanel)
-            {
-                (SelectedFilter as NumericFilter<T>).Value = vm.NumericValue;
-                (SelectedFilter as NumericFilter<T>).Function = (NumericFunctions)vm.SelectedMathFunction;
-            }
-            else if (vm.ShowStringPanel)
-            {
-                (SelectedFilter as StringFilter<T>).Value = vm.StringValue;
-            }
-            else if (vm.ShowDatePanel)
-            {
-                (SelectedFilter as DateRangeFilter<T>).StartDate = vm.StartDate;
-                (SelectedFilter as DateRangeFilter<T>).EndDate = vm.EndDate;
-            }
-            else if (vm.ShowBooleanPanel)
-            {
-                (SelectedFilter as BooleanFilter<T>).Value = vm.BooleanValue;
-            }
-            else if (vm.ShowEnumPanel)
-            {
-                (SelectedFilter as EnumFilter<T>).Value = vm.SelectedEnumValue;
-            }
+            SelectedFilter.SetUpdatedValues(vm);
         }
 
         private void SetDataToFilterViewModel(FilterViewModel vm)

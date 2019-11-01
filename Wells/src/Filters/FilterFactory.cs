@@ -1,41 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Wells.Persistence.Repositories;
 using Wells.BaseView.Validators;
+using Wells.Persistence.Repositories;
+using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
     public class FilterFactory
     {
-        private FilterFactory() { }
+        public static BaseFilter<T> CreateFilter<T>(FilterViewModel vm)
+        {
+            var repo = RepositoryWrapper.Instance.Repository<T>();
+            BaseFilter<T> f = null;
 
-        public static StringFilter<T> CreateStringFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, string value)
+            if (vm.ShowNumericPanel)
+            {
+                f = CreateNumericFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.NumericValue, (NumericFunctions)vm.SelectedMathFunction);
+            }
+            else if (vm.ShowStringPanel)
+            {
+                f = CreateStringFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.StringValue);
+            }
+            else if (vm.ShowDatePanel)
+            {
+                f = CreateDateRangeFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.StartDate, vm.EndDate);
+            }
+            else if (vm.ShowBooleanPanel)
+            {
+                f = CreateBooleanFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.BooleanValue);
+            }
+            else if (vm.ShowEnumPanel)
+            {
+                f = CreateEnumFilter<T>(vm.PropertyName, vm.PropertyDisplayName, repo, vm.SelectedEnumValue, vm.FilterType);
+            }
+
+            return f;
+        }
+
+
+        private static StringFilter<T> CreateStringFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, string value)
         {
             return new StringFilter<T>(propertyName, displayName, repository, value);
         }
 
-        public static BooleanFilter<T> CreateBooleanFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, bool value)
+        private static BooleanFilter<T> CreateBooleanFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, bool value)
         {
             return new BooleanFilter<T>(propertyName, displayName, repository, value);
         }
 
-        public static EnumFilter<T> CreateEnumFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, int value, Type enumType)
+        private static EnumFilter<T> CreateEnumFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, int value, Type enumType)
         {
             return new EnumFilter<T>(propertyName, displayName, repository, value, enumType);
         }
 
-        public static NumericFilter<T> CreateNumericFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, double value, NumericFunctions function)
+        private static NumericFilter<T> CreateNumericFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, double value, NumericFunctions function)
         {
             return new NumericFilter<T>(propertyName, displayName, repository, value, function);
         }
 
-        public static DateRangeFilter<T> CreateDateRangeFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, DateTime startDate)
+        private static DateRangeFilter<T> CreateDateRangeFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, DateTime startDate)
         {
             return new DateRangeFilter<T>(propertyName, displayName, repository, startDate);
         }
 
-        public static DateRangeFilter<T> CreateDateRangeFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, DateTime startDate, DateTime endDate)
+        private static DateRangeFilter<T> CreateDateRangeFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, DateTime startDate, DateTime endDate)
         {
             return new DateRangeFilter<T>(propertyName, displayName, repository, startDate, endDate);
         }

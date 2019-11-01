@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Wells.Persistence.Repositories;
+using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
@@ -43,6 +44,7 @@ namespace Wells.View.Filters
 
         public abstract IEnumerable<T> Apply(IEnumerable<T> queryable);
 
+        public abstract void SetUpdatedValues(FilterViewModel filterViewModel);
         protected BaseFilter(string name, string displayName, IBussinessObjectRepository repo)
         {
             PropertyName = name;

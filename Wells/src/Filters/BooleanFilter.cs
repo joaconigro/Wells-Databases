@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Wells.Persistence.Repositories;
+using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
@@ -31,6 +32,11 @@ namespace Wells.View.Filters
             return from o in queryable
                    where (bool)(Interaction.CallByName(o, PropertyName, CallType.Get)) == Value
                    select o;
+        }
+
+        public override void SetUpdatedValues(FilterViewModel filterViewModel)
+        {
+            Value = filterViewModel.BooleanValue;
         }
     }
 }

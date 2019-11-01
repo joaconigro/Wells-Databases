@@ -1,4 +1,6 @@
-﻿namespace Wells.View.Filters
+﻿using Wells.View.ViewModels;
+
+namespace Wells.View.Filters
 {
     public interface IBaseFilter
     {
@@ -8,5 +10,7 @@
         bool IsEnabled { get; set; }
         string PropertyName { get; set; }
         bool IsDateRangeFilter { get; }
+
+        void SetUpdatedValues(FilterViewModel filterViewModel);
     }
 }

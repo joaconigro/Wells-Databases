@@ -4,6 +4,7 @@ using System.Linq;
 using Wells.Persistence.Repositories;
 using Wells.Model;
 using System.Collections.Generic;
+using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
@@ -70,6 +71,11 @@ namespace Wells.View.Filters
                 default:
                     return true;
             }
+        }
+
+        public override void SetUpdatedValues(FilterViewModel filterViewModel)
+        {
+            
         }
 
         bool FilterByWellProperty(Well well)

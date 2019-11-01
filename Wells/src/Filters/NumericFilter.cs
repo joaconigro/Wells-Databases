@@ -5,6 +5,7 @@ using System.Linq;
 using Wells.Persistence.Repositories;
 using Wells.BaseView.Validators;
 using System.Collections.Generic;
+using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
@@ -29,6 +30,12 @@ namespace Wells.View.Filters
             return from o in queryable
                    where CompareValue((double)Interaction.CallByName(o, PropertyName, CallType.Get))
                    select o;
+        }
+
+        public override void SetUpdatedValues(FilterViewModel filterViewModel)
+        {
+            Value = filterViewModel.NumericValue;
+            Function = (NumericFunctions)filterViewModel.SelectedMathFunction;
         }
 
         bool CompareValue(double objectValue)

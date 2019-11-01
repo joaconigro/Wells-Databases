@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Wells.Persistence.Repositories;
+using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
@@ -39,6 +40,12 @@ namespace Wells.View.Filters
         bool CompareValue(DateTime objectValue)
         {
             return objectValue >= StartDate && objectValue <= EndDate;
+        }
+
+        public override void SetUpdatedValues(FilterViewModel filterViewModel)
+        {
+            StartDate = filterViewModel.StartDate;
+            EndDate = filterViewModel.EndDate;
         }
 
         public override string Description => $"{DisplayPropertyName} entre {StartDate.ToString("dd/MM/YY")} y {EndDate.ToString("dd/MM/YY")}";
