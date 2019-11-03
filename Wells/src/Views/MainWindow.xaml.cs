@@ -15,7 +15,7 @@ namespace Wells.View
     /// </summary>
     public partial class MainWindow : Window, IMainWindow
     {
-        MainWindowViewModel viewModel;
+        readonly MainWindowViewModel viewModel;
         private WaitingView waitingDialog;
 
         public event EventHandler PremadeGraphicsChanged;
@@ -42,14 +42,29 @@ namespace Wells.View
             Close();
         }
 
-        public string OpenFileDialog(string filter, string title, string initialDirectory = "")
+        public string OpenFileDialog(string filter, string title, string initialDirectory)
         {
             return SharedBaseView.OpenFileDialog(filter, title, initialDirectory);
+        }
+
+        public string OpenFileDialog(string filter, string title)
+        {
+            return SharedBaseView.OpenFileDialog(filter, title);
         }
 
         public string SaveFileDialog(string filter, string title, string filename, string initialDirectory = "")
         {
             return SharedBaseView.SaveFileDialog(filter, title, filename, initialDirectory);
+        }
+
+        public string SaveFileDialog(string filter, string title)
+        {
+            return SharedBaseView.SaveFileDialog(filter, title);
+        }
+
+        public string SaveFileDialog(string filter, string title, string filename)
+        {
+            return SharedBaseView.SaveFileDialog(filter, title, filename);
         }
 
         public void ShowErrorMessageBox(string message)
@@ -66,9 +81,6 @@ namespace Wells.View
         {
             SharedBaseView.ShowOkOnkyMessageBox(this, message, title);
         }
-
-
-
         #endregion
 
         private void AfterContentRendered(object sender, System.EventArgs e)
@@ -103,8 +115,7 @@ namespace Wells.View
             return Application.Current.Dispatcher.Invoke(() =>
             {
                 var diag = new ExcelSheetsView(sheets) { Owner = this };
-                if ((bool)diag.ShowDialog())
-                    return diag.SelectedSheet;
+                if ((bool)diag.ShowDialog()) { return diag.SelectedSheet; };
                 return -1;
             });
         }

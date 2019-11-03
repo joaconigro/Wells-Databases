@@ -9,19 +9,15 @@ namespace Wells.BaseView.Converters
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return false;
-            if (value.GetType() == typeof(Visibility))
-                return (Visibility)value == Visibility.Visible ? true : false;
+            if (value == null) { return false; };
+            if (value.GetType() == typeof(Visibility)) { return (Visibility)value == Visibility.Visible ? true : false; };
             return false;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return Visibility.Hidden;
-            if (value.GetType() == typeof(bool))
-                return (bool)value ? Visibility.Visible : Visibility.Hidden;
+            if (value == null) { return Visibility.Hidden; };
+            if (value.GetType() == typeof(bool)) { return (bool)value ? Visibility.Visible : Visibility.Hidden; };
             return Visibility.Hidden;
         }
     }

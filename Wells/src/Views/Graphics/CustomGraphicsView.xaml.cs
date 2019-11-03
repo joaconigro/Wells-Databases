@@ -11,7 +11,7 @@ namespace Wells.View
     /// </summary>
     public partial class CustomGraphicsView : Window, IChartGraphicsView
     {
-        CustomGraphicsViewModel viewModel;
+        readonly CustomGraphicsViewModel viewModel;
         public CustomGraphicsView()
         {
             InitializeComponent();
@@ -32,14 +32,29 @@ namespace Wells.View
             Close();
         }
 
-        public string OpenFileDialog(string filter, string title, string initialDirectory = "")
+        public string OpenFileDialog(string filter, string title, string initialDirectory)
         {
             return SharedBaseView.OpenFileDialog(filter, title, initialDirectory);
+        }
+
+        public string OpenFileDialog(string filter, string title)
+        {
+            return SharedBaseView.OpenFileDialog(filter, title);
         }
 
         public string SaveFileDialog(string filter, string title, string filename, string initialDirectory = "")
         {
             return SharedBaseView.SaveFileDialog(filter, title, filename, initialDirectory);
+        }
+
+        public string SaveFileDialog(string filter, string title)
+        {
+            return SharedBaseView.SaveFileDialog(filter, title);
+        }
+
+        public string SaveFileDialog(string filter, string title, string filename)
+        {
+            return SharedBaseView.SaveFileDialog(filter, title, filename);
         }
 
         public void ShowErrorMessageBox(string message)

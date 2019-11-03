@@ -13,8 +13,7 @@ namespace Wells.BaseView.Converters
             if (Common.IsIntegerNumericType(value.GetType()))
             {
                 var integer = Convert.ToInt32(value);
-                if (parameter != null)
-                    return integer.ToString(parameter.ToString());
+                if (parameter != null) { return integer.ToString(parameter.ToString()); };
                 return integer.ToString();
             }
             return "0";
@@ -25,10 +24,8 @@ namespace Wells.BaseView.Converters
             if (Information.IsNumeric(value))
             {
                 var str = (string)value;
-                int integer;
-                bool ok = int.TryParse(str, NumberStyles.Any, CultureInfo.CurrentCulture, out integer);
-                if (ok)
-                    return integer;
+                bool ok = int.TryParse(str, NumberStyles.Any, CultureInfo.CurrentCulture, out int integer);
+                if (ok) { return integer; };
             }
             return 0;
         }

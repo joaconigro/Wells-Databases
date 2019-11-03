@@ -1,5 +1,4 @@
-﻿//using Microsoft.VisualBasic;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -19,13 +18,18 @@ namespace Wells.BaseView
             });
         }
 
-        public static string OpenFileDialog(string filter, string title, string initialDirectory = "")
+        public static string OpenFileDialog(string filter, string title)
+        {
+            return OpenFileDialog(filter, title, "");
+        }
+
+        public static string OpenFileDialog(string filter, string title, string initialDirectory)
         {
             return Application.Current.Dispatcher.Invoke(() =>
             {
                 var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory };
                 if (ofd.ShowDialog() == true)
-                    return ofd.FileName;
+                { return ofd.FileName; };
                 return null;
             });
         }
@@ -36,9 +40,14 @@ namespace Wells.BaseView
             {
                 var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory, Multiselect = true };
                 if (ofd.ShowDialog() == true)
-                    return ofd.FileNames.ToList();
+                { return ofd.FileNames.ToList(); };
                 return null;
             });
+        }
+
+        public static List<string> OpenMultipleFileDialog(string filter, string title)
+        {
+            return OpenMultipleFileDialog(filter, title, "");
         }
 
         public static string SaveFileDialog(string filter, string title, string filename = "", string initialDirectory = "")
@@ -47,9 +56,19 @@ namespace Wells.BaseView
             {
                 var sfd = new Microsoft.Win32.SaveFileDialog() { Filter = filter, Title = title, FileName = filename, InitialDirectory = initialDirectory };
                 if (sfd.ShowDialog() == true)
-                    return sfd.FileName;
+                { return sfd.FileName; };
                 return null;
             });
+        }
+
+        public static string SaveFileDialog(string filter, string title)
+        {
+            return SaveFileDialog(filter, title, "", "");
+        }
+
+        public static string SaveFileDialog(string filter, string title, string filename)
+        {
+            return SaveFileDialog(filter, title, filename, "");
         }
 
         public static bool ShowYesNoMessageBox(Window owner, string message, string title)
@@ -68,27 +87,9 @@ namespace Wells.BaseView
             });
         }
 
-        //public static string ShowInputBox(string prompt, string title = "", string filename = "", string defaultResponse = "")
-        //{
-        //    return Interaction.InputBox(prompt, title, defaultResponse);
-        //}
-
-        //public static string ShowFolderSelectionDialog()
-        //{
-        //    using (var diag = new Forms.FolderBrowserDialog())
-        //    {
-        //        if (diag.ShowDialog() == Forms.DialogResult.OK)
-        //            return diag.SelectedPath;
-        //    }
-        //    return null;
-        //}
-
-
-
-
         public static void CaptureScreen(string imageFilename, Visual target, double dpiX, double dpiY)
         {
-            if (target == null) return;
+            if (target == null) { return; };
 
             var bounds = VisualTreeHelper.GetDescendantBounds(target);
             var rtb = new RenderTargetBitmap((int)(bounds.Width * dpiX / 96.0),
