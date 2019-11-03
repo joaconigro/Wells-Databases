@@ -12,7 +12,7 @@ using Wells.BaseView.ViewInterfaces;
 
 namespace Wells.BaseView.ViewModel
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged //, IValidatorProvider
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
         protected Dictionary<string, IEnumerable<IValidator>> validators = new Dictionary<string, IEnumerable<IValidator>>();
         protected Dictionary<string, List<ValidationResult>> failures = new Dictionary<string, List<ValidationResult>>();
@@ -41,14 +41,14 @@ namespace Wells.BaseView.ViewModel
 
         public bool IsValid(string propertyName)
         {
-            if (string.IsNullOrEmpty(propertyName)) return true;
+            if (string.IsNullOrEmpty(propertyName)) { return true; }
             return ValidationResult(propertyName).All(r => r.IsValid);
         }
 
         public List<ValidationResult> ValidationResult(string propertyName)
         {
             if (propertyName != null || validationResults.ContainsKey(propertyName))
-                return validationResults[propertyName];
+            { return validationResults[propertyName]; }
             return new List<ValidationResult>();
         }
 
@@ -70,8 +70,7 @@ namespace Wells.BaseView.ViewModel
 
         protected bool ShowYesNoMessageBox(string message, string title)
         {
-            if (View != null)
-                return View.ShowYesNoMessageBox(message, title);
+            if (View != null) { return View.ShowYesNoMessageBox(message, title); }
             return false;
         }
 
@@ -87,12 +86,11 @@ namespace Wells.BaseView.ViewModel
 
         protected void SetValue<T>(ref T value, T newValue, [CallerMemberName()] string propertyName = null, bool forceAssignment = false)
         {
-            if ((newValue == null & value != null) || (newValue != null && (!newValue.Equals(value) | forceAssignment)))
+            if ((newValue == null & value != null) || (newValue != null && (!newValue.Equals(value) || forceAssignment)))
             {
                 OnPropertyChanging(propertyName);
                 value = newValue;
-                if (validators.ContainsKey(propertyName))
-                    Validate(propertyName, newValue);
+                if (validators.ContainsKey(propertyName)) { Validate(propertyName, newValue); }
                 NotifyPropertyChanged(propertyName);
                 OnPropertyChanged(propertyName);
                 UpdateCommandsThatDependsOnFailures();
@@ -131,7 +129,7 @@ namespace Wells.BaseView.ViewModel
                 this.validators[propertyName] = list;
             }
             else
-                this.validators.Add(propertyName, validators);
+            { this.validators.Add(propertyName, validators); }
         }
 
         protected void Add(string propertyName, IValidator validator)
@@ -143,7 +141,7 @@ namespace Wells.BaseView.ViewModel
                 this.validators[propertyName] = list;
             }
             else
-                this.validators.Add(propertyName, new List<IValidator>() { validator });
+            { this.validators.Add(propertyName, new List<IValidator>() { validator }); }
         }
 
         protected void Add(string propertyName, IEnumerable<ICommand> commands)
@@ -155,7 +153,7 @@ namespace Wells.BaseView.ViewModel
                 this.commands[propertyName] = list;
             }
             else
-                this.commands.Add(propertyName, commands);
+            { this.commands.Add(propertyName, commands); }
         }
 
         protected void Add(string propertyName, ICommand command)
@@ -167,7 +165,7 @@ namespace Wells.BaseView.ViewModel
                 commands[propertyName] = list;
             }
             else
-                commands.Add(propertyName, new List<ICommand>() { command });
+            { commands.Add(propertyName, new List<ICommand>() { command }); }
         }
 
         protected virtual void Initialize()
@@ -188,7 +186,9 @@ namespace Wells.BaseView.ViewModel
         protected void ValidateAll()
         {
             foreach (var key in validators.Keys)
+            {
                 Validate(key, Microsoft.VisualBasic.Interaction.CallByName(this, key, Microsoft.VisualBasic.CallType.Get));
+            }
         }
 
 
@@ -207,8 +207,7 @@ namespace Wells.BaseView.ViewModel
 
                 validationResults[propertyName] = results;
             }
-            if (IsValid(propertyName))
-                OnPropertyValidated(propertyName);
+            if (IsValid(propertyName)) { OnPropertyValidated(propertyName); }
         }
 
         public string Errors
@@ -217,7 +216,9 @@ namespace Wells.BaseView.ViewModel
             {
                 var results = new List<ValidationResult>();
                 foreach (var r in validationResults.Values)
+                {
                     results.AddRange(r);
+                }
 
                 return string.Join(Environment.NewLine, from v in results
                                                         where !v.IsValid
@@ -229,8 +230,7 @@ namespace Wells.BaseView.ViewModel
         {
             get
             {
-                if (validators.Any() && validationResults.Count != validators.Count)
-                    return true;
+                if (validators.Any() && validationResults.Count != validators.Count) { return true; }
                 return validationResults.Values.Any(r => r.Any(vr => !vr.IsValid));
             }
         }
@@ -240,10 +240,8 @@ namespace Wells.BaseView.ViewModel
             get => new RelayCommand((param) =>
             {
                 bool? result;
-                if (param == null)
-                    result = false;
-                else
-                    result = (bool?)param;
+                if (param == null) { result = false; }
+                else { result = (bool?)param; }
                 View?.CloseView(result);
             }, (obj) => View != null, OnError);
         }

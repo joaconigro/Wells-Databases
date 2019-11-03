@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Wells.Persistence.Repositories;
+using Wells.BaseModel.Models;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
-using Wells.BaseModel.Models;
-using Wells.View.Graphics;
 using Wells.Model;
+using Wells.Persistence.Repositories;
+using Wells.View.Graphics;
 
 namespace Wells.View.ViewModels
 {
@@ -21,7 +21,7 @@ namespace Wells.View.ViewModels
     {
         protected IChartGraphicsView _Dialog;
         private DateTime _MinimunDate;
-        private Random _RandomGenerator = new Random();
+        private readonly Random _RandomGenerator = new Random();
         private ISeriesView _SelectedSerie;
         private DateTime _MaximunDate;
         protected Dictionary<ISeriesView, SeriesInfo> _SeriesInfo = new Dictionary<ISeriesView, SeriesInfo>();
@@ -83,7 +83,9 @@ namespace Wells.View.ViewModels
         {
             var axis = _Dialog.GetYAxisIndex(units);
             if (axis != -1)
+            {
                 aSeries.ScalesYAt = axis;
+            }
             else
             {
                 var yAxis = new Axis() { Title = units, Position = AxisPosition.RightTop, LabelFormatter = YFormatter, FontSize = 12 };
@@ -97,8 +99,7 @@ namespace Wells.View.ViewModels
         {
             _SeriesInfo.Remove(aSeries);
             var removeAxis = !_SeriesInfo.Keys.Where(s => s.ScalesYAt == aSeries.ScalesYAt).Any();
-            if (removeAxis)
-                _Dialog.RemoveAxis(aSeries.ScalesYAt);
+            if (removeAxis) { _Dialog.RemoveAxis(aSeries.ScalesYAt); }
         }
 
         protected ISeriesView CreateSeriesFromMeasurements(Well well, string parameter)
@@ -125,7 +126,9 @@ namespace Wells.View.ViewModels
                           select new DateModel(m.Date, param)).ToList();
 
             if (values.Count < 2)
+            {
                 throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
+            }
             return values;
         }
 
@@ -140,8 +143,7 @@ namespace Wells.View.ViewModels
 
 
             var units = SoilAnalysis.GetChemicalAnalysisUnits(propertyName);
-            if (!string.IsNullOrEmpty(units))
-                SetAxis(series, units);
+            if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
 
             series.Values.AddRange(values);
@@ -159,7 +161,9 @@ namespace Wells.View.ViewModels
                           select new DateModel(a.Date, param)).ToList();
 
             if (values.Count < 2)
+            {
                 throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
+            }
             return values;
         }
 
@@ -175,8 +179,7 @@ namespace Wells.View.ViewModels
 
 
             var units = WaterAnalysis.GetChemicalAnalysisUnits(propertyName);
-            if (!string.IsNullOrEmpty(units))
-                SetAxis(series, units);
+            if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
 
             series.Values.AddRange(values);
@@ -194,7 +197,9 @@ namespace Wells.View.ViewModels
                           select new DateModel(a.Date, param)).ToList();
 
             if (values.Count < 2)
+            {
                 throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
+            }
             return values;
         }
 
@@ -210,8 +215,7 @@ namespace Wells.View.ViewModels
 
 
             var units = FLNAAnalysis.GetChemicalAnalysisUnits(propertyName);
-            if (!string.IsNullOrEmpty(units))
-                SetAxis(series, units);
+            if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
 
             series.Values.AddRange(values);
@@ -230,7 +234,10 @@ namespace Wells.View.ViewModels
                           select new DateModel(a.Date, param)).ToList();
 
             if (values.Count < 2)
+            {
                 throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
+
+            }
             return values;
         }
 
@@ -257,13 +264,17 @@ namespace Wells.View.ViewModels
                           select new DateModel(p.PrecipitationDate, p.Millimeters)).ToList();
 
             if (values.Count < 1)
+            {
                 throw new Exception("No hay datos de precipitaciones para representar, por lo tanto no se dibujará la serie.");
+            }
             else if (values.Count > 200)
             {
                 var aStep = Math.Max(1, values.Count / 150);
                 var newValues = new List<DateModel>();
                 for (int i = 0; i < values.Count; i += aStep)
+                {
                     newValues.Add(values[i]);
+                }
                 return newValues;
             }
 
@@ -346,9 +357,13 @@ namespace Wells.View.ViewModels
             public List<DateModel> GetValues()
             {
                 if (IsFromWell)
+                {
                     return GetWellValuesFunc.Invoke(Well, PropertyName, ParameterName);
+                }
                 else
+                {
                     return GetPrecipitationValuesFunc.Invoke();
+                }
             }
         }
     }
