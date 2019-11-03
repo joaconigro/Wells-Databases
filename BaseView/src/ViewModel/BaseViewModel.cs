@@ -86,7 +86,7 @@ namespace Wells.BaseView.ViewModel
 
         protected void SetValue<T>(ref T value, T newValue, [CallerMemberName()] string propertyName = null, bool forceAssignment = false)
         {
-            if ((newValue == null & value != null) || (newValue != null && (!newValue.Equals(value) || forceAssignment)))
+            if ((newValue == null && value != null) || (newValue != null && (!newValue.Equals(value) || forceAssignment)))
             {
                 OnPropertyChanging(propertyName);
                 value = newValue;

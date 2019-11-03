@@ -5,14 +5,12 @@ namespace Wells.BaseView.Validators
 {
     public class NumberValidator<T> : AbstractValidator<T>
     {
-
-        NumericFunctions _FuntionType;
-        double _LimitValue;
-
-        NumericFunctions _LowerFunctionRange;
-        NumericFunctions _UpperFunctionRange;
-        double _LowerValue;
-        double _UpperValue;
+        readonly NumericFunctions _FuntionType;
+        readonly double _LimitValue;
+        readonly NumericFunctions _LowerFunctionRange;
+        readonly NumericFunctions _UpperFunctionRange;
+        readonly double _LowerValue;
+        readonly double _UpperValue;
 
         public NumberValidator(string propertyDisplayName, NumericFunctions functionType, T limitValue)
         {
@@ -39,16 +37,23 @@ namespace Wells.BaseView.Validators
 
             bool lowerResult;
             if (_LowerFunctionRange == NumericFunctions.Greater)
+            {
                 lowerResult = doubleValue > _LowerValue;
+            }
             else
+            {
                 lowerResult = doubleValue >= _LowerValue;
+            }
 
             bool upperResult;
             if (_UpperFunctionRange == NumericFunctions.Lower)
+            {
                 upperResult = doubleValue < _UpperValue;
+            }
             else
+            {
                 upperResult = doubleValue <= _UpperValue;
-
+            }
             return lowerResult && upperResult;
         }
 
@@ -58,7 +63,7 @@ namespace Wells.BaseView.Validators
             switch (_FuntionType)
             {
                 case NumericFunctions.Equal:
-                    return _LimitValue == System.Math.Round(doubleValue);
+                    return _LimitValue.Equals(System.Math.Round(doubleValue));
                 case NumericFunctions.Greater:
                     return doubleValue > _LimitValue;
                 case NumericFunctions.GreaterOrEqual:
