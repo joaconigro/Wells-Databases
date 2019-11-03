@@ -104,7 +104,7 @@ namespace Wells.View.UserControls
         public bool ShowFilterDialog(FilterViewModel viewModel)
         {
             var diag = new FilterEditingView(viewModel) { Owner = Window };
-            return (bool)(diag.ShowDialog());
+            return (bool)diag.ShowDialog();
         }
 
         public void SetViewModel(IEntitiesViewModel viewModel)

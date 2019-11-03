@@ -9,8 +9,8 @@ namespace Wells.BaseView.Converters
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) { return Visibility.Hidden; };
-            if (value.GetType() == typeof(bool)) { return (bool)value ? Visibility.Visible : Visibility.Hidden; };
+            if (value == null) { return Visibility.Hidden; }
+            if (value.GetType() == typeof(bool)) { return (bool)value ? Visibility.Visible : Visibility.Hidden; }
             return Visibility.Hidden;
         }
 

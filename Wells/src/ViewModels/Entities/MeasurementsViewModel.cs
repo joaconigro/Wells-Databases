@@ -36,7 +36,7 @@ namespace Wells.View.ViewModels
         {
             get
             {
-                if (_SelectedEntity != null) { return _SelectedEntity.Well.Exists ? "Pozo existente" : "Pozo inexistente"; };
+                if (_SelectedEntity != null) { return _SelectedEntity.Well.Exists ? "Pozo existente" : "Pozo inexistente"; }
                 return string.Empty;
             }
         }

@@ -8,13 +8,13 @@ namespace Wells.BaseView.Converters
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.GetType() == typeof(bool)) { return !(bool)value; };
+            if (value.GetType() == typeof(bool)) { return !(bool)value; }
             return false;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.GetType() == typeof(bool)) { return !(bool)value; };
+            if (value.GetType() == typeof(bool)) { return !(bool)value; }
             return false;
         }
     }

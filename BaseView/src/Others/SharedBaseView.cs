@@ -28,47 +28,44 @@ namespace Wells.BaseView
             return Application.Current.Dispatcher.Invoke(() =>
             {
                 var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory };
-                if (ofd.ShowDialog() == true)
-                { return ofd.FileName; };
+                if (ofd.ShowDialog() == true) { return ofd.FileName; }
                 return null;
             });
         }
 
-        public static List<string> OpenMultipleFileDialog(string filter, string title, string initialDirectory = "")
+        public static List<string> OpenMultipleFileDialog(string filter, string title, string initialDirectory)
         {
             return Application.Current.Dispatcher.Invoke(() =>
             {
                 var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory, Multiselect = true };
-                if (ofd.ShowDialog() == true)
-                { return ofd.FileNames.ToList(); };
+                if (ofd.ShowDialog() == true) { return ofd.FileNames.ToList(); }
                 return null;
             });
         }
 
         public static List<string> OpenMultipleFileDialog(string filter, string title)
         {
-            return OpenMultipleFileDialog(filter, title, "");
+            return OpenMultipleFileDialog(filter, title, string.Empty);
         }
 
-        public static string SaveFileDialog(string filter, string title, string filename = "", string initialDirectory = "")
+        public static string SaveFileDialog(string filter, string title, string filename, string initialDirectory)
         {
             return Application.Current.Dispatcher.Invoke(() =>
             {
                 var sfd = new Microsoft.Win32.SaveFileDialog() { Filter = filter, Title = title, FileName = filename, InitialDirectory = initialDirectory };
-                if (sfd.ShowDialog() == true)
-                { return sfd.FileName; };
+                if (sfd.ShowDialog() == true) { return sfd.FileName; }
                 return null;
             });
         }
 
         public static string SaveFileDialog(string filter, string title)
         {
-            return SaveFileDialog(filter, title, "", "");
+            return SaveFileDialog(filter, title, string.Empty, string.Empty);
         }
 
         public static string SaveFileDialog(string filter, string title, string filename)
         {
-            return SaveFileDialog(filter, title, filename, "");
+            return SaveFileDialog(filter, title, filename, string.Empty);
         }
 
         public static bool ShowYesNoMessageBox(Window owner, string message, string title)
@@ -89,7 +86,7 @@ namespace Wells.BaseView
 
         public static void CaptureScreen(string imageFilename, Visual target, double dpiX, double dpiY)
         {
-            if (target == null) { return; };
+            if (target == null) { return; }
 
             var bounds = VisualTreeHelper.GetDescendantBounds(target);
             var rtb = new RenderTargetBitmap((int)(bounds.Width * dpiX / 96.0),

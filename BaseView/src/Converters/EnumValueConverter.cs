@@ -17,7 +17,7 @@ namespace Wells.BaseView.Converters
         {
             string text = value.ToString();
             var values = Common.EnumDescriptionsToList(targetType);
-            if (values.Contains(text)) { return Enum.ToObject(targetType, values.IndexOf(text)); };
+            if (values.Contains(text)) { return Enum.ToObject(targetType, values.IndexOf(text)); }
             return 0;
         }
     }
