@@ -43,7 +43,7 @@ namespace Wells.View
             return SharedBaseView.OpenFileDialog(filter, title);
         }
 
-        public string SaveFileDialog(string filter, string title, string filename, string initialDirectory = "")
+        public string SaveFileDialog(string filter, string title, string filename, string initialDirectory)
         {
             return SharedBaseView.SaveFileDialog(filter, title, filename, initialDirectory);
         }
