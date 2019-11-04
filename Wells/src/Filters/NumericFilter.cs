@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.VisualBasic;
 using System;
-using System.Linq;
-using Wells.Persistence.Repositories;
-using Wells.BaseView.Validators;
 using System.Collections.Generic;
+using System.Linq;
+using Wells.BaseView.Validators;
+using Wells.Persistence.Repositories;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
@@ -40,21 +40,15 @@ namespace Wells.View.Filters
 
         bool CompareValue(double objectValue)
         {
-            switch (Function)
+            return Function switch
             {
-                case NumericFunctions.Equal:
-                    return objectValue == System.Math.Round(Value);
-                case NumericFunctions.Greater:
-                    return objectValue > Value;
-                case NumericFunctions.GreaterOrEqual:
-                    return objectValue >= Value;
-                case NumericFunctions.Lower:
-                    return objectValue < Value;
-                case NumericFunctions.LowerOrEqual:
-                    return objectValue <= Value;
-                default:
-                    return false;
-            }
+                NumericFunctions.Equal => objectValue.Equals(Math.Round(Value, 2)),
+                NumericFunctions.Greater => objectValue > Value,
+                NumericFunctions.GreaterOrEqual => objectValue >= Value,
+                NumericFunctions.Lower => objectValue < Value,
+                NumericFunctions.LowerOrEqual => objectValue <= Value,
+                _ => false,
+            };
         }
 
 
@@ -62,19 +56,14 @@ namespace Wells.View.Filters
         {
             get
             {
-                switch (Function)
+                return Function switch
                 {
-                    case NumericFunctions.Equal:
-                        return $"{DisplayPropertyName} = {DisplayValue}";
-                    case NumericFunctions.Greater:
-                        return $"{DisplayPropertyName} > {DisplayValue}";
-                    case NumericFunctions.GreaterOrEqual:
-                        return $"{DisplayPropertyName} >= {DisplayValue}";
-                    case NumericFunctions.Lower:
-                        return $"{DisplayPropertyName} < {DisplayValue}";
-                    default:
-                        return $"{DisplayPropertyName} <= {DisplayValue}";
-                }
+                    NumericFunctions.Equal => $"{DisplayPropertyName} = {DisplayValue}",
+                    NumericFunctions.Greater => $"{DisplayPropertyName} > {DisplayValue}",
+                    NumericFunctions.GreaterOrEqual => $"{DisplayPropertyName} >= {DisplayValue}",
+                    NumericFunctions.Lower => $"{DisplayPropertyName} < {DisplayValue}",
+                    _ => $"{DisplayPropertyName} <= {DisplayValue}",
+                };
             }
         }
     }

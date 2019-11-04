@@ -1,20 +1,19 @@
-﻿using Wells.BaseView;
-using Wells.BaseView.Validators;
-using Wells.BaseView.ViewInterfaces;
-using Wells.BaseView.ViewModel;
-using Wells.Persistence.Repositories;
-using Wells.View.Filters;
-using Wells.View.UserControls;
+﻿using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Wells.Base;
-using NPOI.XSSF.UserModel;
-using System.Threading.Tasks;
+using Wells.BaseView;
+using Wells.BaseView.ViewInterfaces;
+using Wells.BaseView.ViewModel;
 using Wells.Model;
+using Wells.Persistence.Repositories;
+using Wells.View.Filters;
+using Wells.View.UserControls;
 
 namespace Wells.View.ViewModels
 {
@@ -57,7 +56,7 @@ namespace Wells.View.ViewModels
         }
 
         public abstract Dictionary<string, PropertyInfo> FilterProperties { get; }
-        public abstract T SelectedEntity { get ; set ; }
+        public abstract T SelectedEntity { get; set; }
         public IEnumerable<T> SelectedEntities { get => _SelectedEntities; set { SetValue(ref _SelectedEntities, value); } }
 
         public IEnumerable<T> Entities
@@ -157,8 +156,9 @@ namespace Wells.View.ViewModels
                 {
                     CreateWellFilter();
                     OnFiltersChanged(null, EventArgs.Empty);
-                }, (obj) => { 
-                if(WellType > 0 || WellProperty > 0)
+                }, (obj) =>
+                {
+                    if (WellType > 0 || WellProperty > 0)
                     {
                         if (WellProperty != 1) { return true; }
                         if (WellProperty == 1 && !string.IsNullOrEmpty(SelectedWellName)) { return true; }
@@ -185,7 +185,7 @@ namespace Wells.View.ViewModels
                 filter.ParentCollection = FilterCollection;
             }
         }
-        
+
         private void EditFilter(FilterViewModel vm)
         {
             SelectedFilter.SetUpdatedValues(vm);
@@ -217,7 +217,7 @@ namespace Wells.View.ViewModels
             }
         }
 
-        public EntitiesViewModel(IView view) : base(view)
+        protected EntitiesViewModel(IView view) : base(view)
         {
             Repository = RepositoryWrapper.Instance;
         }
@@ -234,7 +234,10 @@ namespace Wells.View.ViewModels
             MainWindow = Control.MainWindow;
         }
 
-        protected override void SetValidators() { }
+        protected override void SetValidators()
+        {
+            //No need to implement yet.
+        }
 
         protected override void SetCommandUpdates()
         {
@@ -294,7 +297,7 @@ namespace Wells.View.ViewModels
 
 
         public string SelectedWellName { get => selectedWellName; set { SetValue(ref selectedWellName, value); } }
-      
+
         private int wellType;
         private int wellProperty;
         private string selectedWellName;
@@ -309,9 +312,11 @@ namespace Wells.View.ViewModels
             UpdateEntites();
         }
 
-        protected bool OpenExcelFile(ref XSSFWorkbook workbook, ref int sheetIndex) {
+        protected bool OpenExcelFile(ref XSSFWorkbook workbook, ref int sheetIndex)
+        {
             var filename = MainWindow.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel");
-            if (!string.IsNullOrEmpty(filename)) {
+            if (!string.IsNullOrEmpty(filename))
+            {
                 workbook = new XSSFWorkbook(filename);
                 if (workbook.NumberOfSheets > 1)
                 {
@@ -333,5 +338,4 @@ namespace Wells.View.ViewModels
         }
 
     }
-       
 }

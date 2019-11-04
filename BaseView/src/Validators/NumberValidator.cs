@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using FluentValidation;
+﻿using FluentValidation;
+using System.ComponentModel;
 
 namespace Wells.BaseView.Validators
 {
@@ -25,7 +25,7 @@ namespace Wells.BaseView.Validators
             _LowerFunctionRange = inclusiveLowerLimit ? NumericFunctions.GreaterOrEqual : NumericFunctions.Greater;
             _UpperFunctionRange = inclusiveUpperLimit ? NumericFunctions.LowerOrEqual : NumericFunctions.Lower;
             _LowerValue = System.Convert.ToDouble(lowerLimit);
-            _UpperValue = System.Convert.ToDouble(upperLimit);   
+            _UpperValue = System.Convert.ToDouble(upperLimit);
 
             RuleFor((number) => number).Must((number) => CompareRange(number)).WithMessage($"{propertyDisplayName}: el valor no está en el rango esperado.");
         }
@@ -60,21 +60,15 @@ namespace Wells.BaseView.Validators
         bool CompareValue(T aValue)
         {
             double doubleValue = System.Convert.ToDouble(aValue);
-            switch (_FuntionType)
+            return _FuntionType switch
             {
-                case NumericFunctions.Equal:
-                    return _LimitValue.Equals(System.Math.Round(doubleValue));
-                case NumericFunctions.Greater:
-                    return doubleValue > _LimitValue;
-                case NumericFunctions.GreaterOrEqual:
-                    return doubleValue >= _LimitValue;
-                case NumericFunctions.Lower:
-                    return doubleValue < _LimitValue;
-                case NumericFunctions.LowerOrEqual:
-                    return doubleValue <= _LimitValue;
-                default:
-                    return false;
-            }
+                NumericFunctions.Equal => _LimitValue.Equals(System.Math.Round(doubleValue)),
+                NumericFunctions.Greater => doubleValue > _LimitValue,
+                NumericFunctions.GreaterOrEqual => doubleValue >= _LimitValue,
+                NumericFunctions.Lower => doubleValue < _LimitValue,
+                NumericFunctions.LowerOrEqual => doubleValue <= _LimitValue,
+                _ => false,
+            };
         }
     }
 

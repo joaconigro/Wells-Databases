@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Wells.BaseModel.Models;
+using System.Threading.Tasks;
 
 namespace Wells.Persistence.Repositories
 {
@@ -9,7 +9,7 @@ namespace Wells.Persistence.Repositories
     {
         protected ApplicationDbContext Context { get; set; }
 
-        public RepositoryBase(ApplicationDbContext context)
+        protected RepositoryBase(ApplicationDbContext context)
         {
             Context = context;
         }
@@ -22,12 +22,12 @@ namespace Wells.Persistence.Repositories
         }
 
         public void AddRange(IEnumerable<T> entities)
-        {        
+        {
             Context.Set<T>().AddRange(entities);
             OnAddingOrUpdating();
         }
 
-        public async void AddRangeAsync(IEnumerable<T> entities)
+        public async Task AddRangeAsync(IEnumerable<T> entities)
         {
             await Context.Set<T>().AddRangeAsync(entities);
             OnAddingOrUpdating();
@@ -61,7 +61,7 @@ namespace Wells.Persistence.Repositories
         {
             Context.Set<T>().RemoveRange(entities);
             OnEntityRemoved?.Invoke(this, new EntityRemovedEventArgs<T>(entities));
-        }       
+        }
 
         public void Update(T entity)
         {

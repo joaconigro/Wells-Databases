@@ -35,11 +35,6 @@ namespace Wells.Base
             Handle(ex, TraceEventType.Error, "", rethrow);
         }
 
-        public static void Handle(Exception ex, TraceEventType severity, string additionalInfo)
-        {
-            Handle(ex, TraceEventType.Error, "", true);
-        }
-
         public static void Handle(Exception ex, TraceEventType severity, string additionalInfo, bool rethrow)
         {
             if (ex != null)

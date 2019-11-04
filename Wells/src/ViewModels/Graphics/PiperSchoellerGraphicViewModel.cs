@@ -97,7 +97,9 @@ namespace Wells.View.ViewModels
             var randomColor = System.Drawing.Color.FromKnownColor(randomColorName);
             return Color.FromArgb(randomColor.A, randomColor.R, randomColor.G, randomColor.B);
         }
-        protected override void SetValidators() { }
+        protected override void SetValidators() {
+            //No need to implement yet.
+        }
 
         protected override void SetCommandUpdates()
         {

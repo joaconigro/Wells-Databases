@@ -74,15 +74,12 @@ namespace Wells.Model
             {
                 if (HasWater && Well != null)
                 {
-                    if (Well.HasHeight){ return  Well.Z + Well.Height - WaterDepth; }
+                    if (Well.HasHeight) { return Well.Z + Well.Height - WaterDepth; }
                     return Well.Z - WaterDepth;
                 }
                 return NumericNullValue;
             }
         }
-
-        //[DisplayName("Caudal"), Browsable(true)]
-        //public double Caudal { get; set; }
 
         [DisplayName("Observaciones"), Browsable(true)]
         public string Comment { get; set; }

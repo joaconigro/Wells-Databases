@@ -5,7 +5,7 @@ namespace Wells.Persistence
 {
     public class ApplicationDbContext : DbContext
     {
-        private string connectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=CILP_DB;Integrated Security=True;MultipleActiveResultSets=True";
+        private readonly string connectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=CILP_DB;Integrated Security=True;MultipleActiveResultSets=True";
 
         #region Constructor
         public ApplicationDbContext(DbContextOptions options) :

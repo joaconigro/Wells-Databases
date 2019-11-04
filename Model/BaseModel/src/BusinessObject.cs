@@ -10,12 +10,12 @@ namespace Wells.BaseModel.Models
 {
     public abstract class BusinessObject : IBusinessObject, IComparable<IBusinessObject>
     {
-        public const double NumericNullValue = -9999.0;
+        public static readonly double NumericNullValue = -9999.0;
 
-        public const string DateFormat = "dd/MM/yyyy";
+        public static readonly string DateFormat = "dd/MM/yyyy";
 
         #region Constructors
-        public BusinessObject()
+        protected BusinessObject()
         {
             Id = Guid.NewGuid().ToString();
         }
@@ -27,8 +27,6 @@ namespace Wells.BaseModel.Models
         [Browsable(false), Required]
         public string Id { get; set; }
 
-       
-        public virtual void OnInitialize() { }
 
         public static Dictionary<string, PropertyInfo> GetBrowsableProperties(Type type)
         {

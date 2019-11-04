@@ -5,7 +5,7 @@ using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
-    public class FilterFactory
+    public static class FilterFactory
     {
         public static BaseFilter<T> CreateFilter<T>(FilterViewModel vm)
         {
@@ -55,11 +55,6 @@ namespace Wells.View.Filters
         private static NumericFilter<T> CreateNumericFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, double value, NumericFunctions function)
         {
             return new NumericFilter<T>(propertyName, displayName, repository, value, function);
-        }
-
-        private static DateRangeFilter<T> CreateDateRangeFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, DateTime startDate)
-        {
-            return new DateRangeFilter<T>(propertyName, displayName, repository, startDate);
         }
 
         private static DateRangeFilter<T> CreateDateRangeFilter<T>(string propertyName, string displayName, IBussinessObjectRepository repository, DateTime startDate, DateTime endDate)

@@ -7,7 +7,5 @@ namespace Wells.BaseModel.Models
         [Key]
         [Required]
         string Id { get; set; }
-
-        void OnInitialize();
     }
 }

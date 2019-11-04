@@ -1,14 +1,12 @@
 ﻿using NLog;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 
 namespace Wells.Utilities.LoggerService
 {
     public class LoggerManager : Logger, ILoggerManager
     {
-        private static ILogger logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         public LoggerManager() : base()
         {

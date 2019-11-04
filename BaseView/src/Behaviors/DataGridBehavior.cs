@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Wells.BaseView.Converters;
 using Wells.BaseModel.Attributes;
+using Wells.BaseView.Converters;
 
 namespace Wells.BaseView.Behaviors
 {
@@ -80,8 +80,7 @@ namespace Wells.BaseView.Behaviors
                 {
                     if (att.GetType() == typeof(BrowsableAttribute))
                     {
-                        var browsableAttribute = att as BrowsableAttribute;
-                        if (browsableAttribute != null)
+                        if (att is BrowsableAttribute browsableAttribute)
                         {
                             if (!browsableAttribute.Browsable)
                             {
@@ -94,8 +93,7 @@ namespace Wells.BaseView.Behaviors
 
                     if (att.GetType() == typeof(DisplayNameAttribute))
                     {
-                        var displayName = att as DisplayNameAttribute;
-                        if (displayName != null)
+                        if (att is DisplayNameAttribute displayName)
                         {
                             e.Column.Header = displayName.DisplayName;
                         }
@@ -106,8 +104,7 @@ namespace Wells.BaseView.Behaviors
                     {
                         if (att.GetType() == typeof(SortIndexAttribute))
                         {
-                            var sortIndex = att as SortIndexAttribute;
-                            if (sortIndex != null)
+                            if (att is SortIndexAttribute sortIndex)
                             {
                                 e.Column.DisplayIndex = (int)sortIndex.Index;
                             }

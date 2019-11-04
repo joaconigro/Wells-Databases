@@ -7,7 +7,7 @@ namespace Wells.Persistence.Repositories
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private ApplicationDbContext Context;
+        private readonly ApplicationDbContext Context;
         private PrecipitationsRepository precipitations;
         private ExternalFilesRepository externalFiles;
         private MeasurementsRepository measurements;
@@ -17,7 +17,7 @@ namespace Wells.Persistence.Repositories
         private WellsRepository wells;
 
         private static RepositoryWrapper instance;
-        
+
 
         public PrecipitationsRepository Precipitations
         {
@@ -141,7 +141,7 @@ namespace Wells.Persistence.Repositories
             context.Database.Migrate();
             instance = new RepositoryWrapper(context);
         }
-        
+
 
         public void SaveChanges()
         {
@@ -150,7 +150,7 @@ namespace Wells.Persistence.Repositories
 
         public async Task<int> SaveChangesAsync()
         {
-           return await Context.SaveChangesAsync();
+            return await Context.SaveChangesAsync();
         }
     }
 }

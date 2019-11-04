@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using Wells.Persistence.Repositories;
 using Wells.BaseView;
 using Wells.BaseView.Validators;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
 using Wells.Model;
+using Wells.Persistence.Repositories;
 
 namespace Wells.View.ViewModels
 {
@@ -75,7 +75,10 @@ namespace Wells.View.ViewModels
             Measurement.Comment = Comment;
         }
 
-        protected override void SetCommandUpdates() { }
+        protected override void SetCommandUpdates()
+        {
+            //No need to implement yet.
+        }
 
         protected override void SetValidators()
         {

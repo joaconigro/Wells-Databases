@@ -11,7 +11,7 @@ namespace Wells.View
     /// </summary>
     public partial class FilterEditingView : Window, IView
     {
-        FilterViewModel _ViewModel;
+        readonly FilterViewModel _ViewModel;
 
         public FilterEditingView(FilterViewModel viewModel)
         {
