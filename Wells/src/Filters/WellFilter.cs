@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualBasic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Wells.Persistence.Repositories;
 using Wells.Model;
-using System.Collections.Generic;
+using Wells.Persistence.Repositories;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
@@ -14,7 +14,7 @@ namespace Wells.View.Filters
         WellTypes WellType { get; }
         string WellName { get; }
 
-        bool _ApplyToWellsOnly;
+        readonly bool _ApplyToWellsOnly;
         public override string DisplayValue => WellName;
 
         public override bool IsDateRangeFilter => false;
@@ -56,21 +56,18 @@ namespace Wells.View.Filters
         bool IsThisWell(Well well)
         {
             var result = FilterByWellType(well);
-            if (!result) return false;
+            if (!result) { return false; }
             return FilterByWellProperty(well);
         }
 
         bool FilterByWellType(Well well)
         {
-            switch (WellType)
+            return WellType switch
             {
-                case WellTypes.OnlyMeasurementWell:
-                    return well.WellType == BaseModel.Models.WellType.MeasurementWell;
-                case WellTypes.OnlySounding:
-                    return well.WellType == BaseModel.Models.WellType.Sounding;
-                default:
-                    return true;
-            }
+                WellTypes.OnlyMeasurementWell => well.WellType == BaseModel.Models.WellType.MeasurementWell,
+                WellTypes.OnlySounding => well.WellType == BaseModel.Models.WellType.Sounding,
+                _ => true,
+            };
         }
 
         public override void SetUpdatedValues(FilterViewModel filterViewModel)
@@ -84,9 +81,13 @@ namespace Wells.View.Filters
             {
                 case WellQueryProperty.Name:
                     if (string.IsNullOrEmpty(WellName))
+                    {
                         return false;
+                    }
                     else
+                    {
                         return well.Name == WellName;
+                    }
 
                 case WellQueryProperty.ZoneA:
                     return Rectangle2D.ZoneA.Contains(well);
@@ -105,20 +106,12 @@ namespace Wells.View.Filters
 
         string CreateDescription()
         {
-            string text;
-            switch (WellType)
+            var text = WellType switch
             {
-                case WellTypes.OnlyMeasurementWell:
-                    text = "Todos los pozos ";
-                    break;
-                case WellTypes.OnlySounding:
-                    text = "Todos los sondeos ";
-                    break;
-                default:
-                    text = "Todos los pozos y sondeos ";
-                    break;
-            }
-
+                WellTypes.OnlyMeasurementWell => "Todos los pozos ",
+                WellTypes.OnlySounding => "Todos los sondeos ",
+                _ => "Todos los pozos y sondeos ",
+            };
             switch (QueryProperty)
             {
                 case WellQueryProperty.Name:

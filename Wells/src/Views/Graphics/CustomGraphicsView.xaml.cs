@@ -83,7 +83,9 @@ namespace Wells.View
         public int GetYAxisIndex(string axisTitle)
         {
             if (MainChart.AxisY.ToList().Exists(a => a.Title == axisTitle))
+            {
                 return MainChart.AxisY.ToList().FindIndex(a => a.Title == axisTitle);
+            }
             else
             {
                 if (MainChart.AxisY.ToList().Count == 1)
@@ -102,7 +104,9 @@ namespace Wells.View
         public void RemoveAxis(int axisIndex)
         {
             if (axisIndex > -1 && axisIndex < MainChart.AxisY.Count)
+            {
                 MainChart.AxisY.RemoveAt(axisIndex);
+            }
 
             foreach (var axis in MainChart.AxisY)
             {
@@ -119,11 +123,13 @@ namespace Wells.View
             Y.MaxValue = double.NaN;
         }
 
-        public void SaveImage(string filename = "")
+        public void SaveImage(string filename)
         {
             var imageFilename = SaveFileDialog("Imagenes *.png|*.png", "Guardar imagen", filename);
             if (!string.IsNullOrEmpty(imageFilename))
+            {
                 SharedBaseView.CaptureScreen(imageFilename, MainChart, 200, 200);
+            }
         }
     }
 }

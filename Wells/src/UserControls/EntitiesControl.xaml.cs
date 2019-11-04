@@ -33,9 +33,15 @@ namespace Wells.View.UserControls
 
 
         #region IView
-        public void CloseView(bool? dialogResult) { }
+        public void CloseView(bool? dialogResult) 
+        { 
+            //No need to implement 
+        }
 
-        public void CloseView() { }
+        public void CloseView()
+        {
+            //No need to implement 
+        }
 
         public string OpenFileDialog(string filter, string title, string initialDirectory)
         {
@@ -61,7 +67,6 @@ namespace Wells.View.UserControls
         {
             return SharedBaseView.SaveFileDialog(filter, title, filename);
         }
-
 
         public void ShowErrorMessageBox(string message)
         {
@@ -134,7 +139,6 @@ namespace Wells.View.UserControls
     {
         Window Window { get; }
         IMainWindow MainWindow { get; }
-
         void SetViewModel(IEntitiesViewModel viewModel);
         bool ShowFilterDialog(FilterViewModel viewModel);
         void ForceListBoxItemsRefresh();

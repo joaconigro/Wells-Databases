@@ -23,8 +23,7 @@ namespace Wells.Persistence.Repositories
         {
             get
             {
-                if (precipitations == null)
-                    precipitations = new PrecipitationsRepository(Context);
+                if (precipitations == null) { precipitations = new PrecipitationsRepository(Context); }
                 return precipitations;
             }
         }
@@ -33,8 +32,7 @@ namespace Wells.Persistence.Repositories
         {
             get
             {
-                if (externalFiles == null)
-                    externalFiles = new ExternalFilesRepository(Context);
+                if (externalFiles == null) { externalFiles = new ExternalFilesRepository(Context); }
                 return externalFiles;
             }
         }
@@ -43,8 +41,7 @@ namespace Wells.Persistence.Repositories
         {
             get
             {
-                if (measurements == null)
-                    measurements = new MeasurementsRepository(Context);
+                if (measurements == null) { measurements = new MeasurementsRepository(Context); }
                 return measurements;
             }
         }
@@ -53,8 +50,7 @@ namespace Wells.Persistence.Repositories
         {
             get
             {
-                if (soilAnalyses == null)
-                    soilAnalyses = new SoilAnalysesRepository(Context);
+                if (soilAnalyses == null) { soilAnalyses = new SoilAnalysesRepository(Context); }
                 return soilAnalyses;
             }
         }
@@ -63,8 +59,7 @@ namespace Wells.Persistence.Repositories
         {
             get
             {
-                if (waterAnalyses == null)
-                    waterAnalyses = new WaterAnalysesRepository(Context);
+                if (waterAnalyses == null) { waterAnalyses = new WaterAnalysesRepository(Context); }
                 return waterAnalyses;
             }
         }
@@ -73,8 +68,7 @@ namespace Wells.Persistence.Repositories
         {
             get
             {
-                if (fLNAAnalyses == null)
-                    fLNAAnalyses = new FLNAAnalysesRepository(Context);
+                if (fLNAAnalyses == null) { fLNAAnalyses = new FLNAAnalysesRepository(Context); }
                 return fLNAAnalyses;
             }
         }
@@ -83,8 +77,7 @@ namespace Wells.Persistence.Repositories
         {
             get
             {
-                if (wells == null)
-                    wells = new WellsRepository(Context);
+                if (wells == null) { wells = new WellsRepository(Context); }
                 return wells;
             }
         }

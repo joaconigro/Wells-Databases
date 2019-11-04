@@ -9,8 +9,8 @@ using Wells.BaseView;
 using Wells.BaseView.Validators;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
-using Wells.View.Graphics;
 using Wells.Model;
+using Wells.View.Graphics;
 
 namespace Wells.View.ViewModels
 {
@@ -46,17 +46,13 @@ namespace Wells.View.ViewModels
         {
             get
             {
-                switch (selectedSeriesDataName)
+                return selectedSeriesDataName switch
                 {
-                    case "Mediciones":
-                        return Measurement.DoubleProperties.Keys.ToList();
-                    case "Análisis de FLNA":
-                        return FLNAAnalysis.DoubleProperties.Keys.ToList();
-                    case "Análisis de agua":
-                        return WaterAnalysis.DoubleProperties.Keys.ToList();
-                    default:
-                        return SoilAnalysis.DoubleProperties.Keys.ToList();
-                }
+                    "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
+                    "Análisis de FLNA" => FLNAAnalysis.DoubleProperties.Keys.ToList(),
+                    "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
+                    _ => SoilAnalysis.DoubleProperties.Keys.ToList(),
+                };
             }
 
         }
@@ -79,12 +75,16 @@ namespace Wells.View.ViewModels
         {
             Initialize();
             _NewCollection = new PremadeSeriesInfoCollection();
-            Series = new ObservableCollection<PremadeSeriesInfo>(); 
+            Series = new ObservableCollection<PremadeSeriesInfo>();
             var values = ReadPremadeGraphics();
             if (values != null && values.Any())
+            {
                 Graphics = new ObservableCollection<PremadeSeriesInfoCollection>(values);
+            }
             else
+            {
                 Graphics = new ObservableCollection<PremadeSeriesInfoCollection>();
+            }
         }
 
 
@@ -111,17 +111,16 @@ namespace Wells.View.ViewModels
         {
             var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
             if (!Directory.Exists(dir))
+            {
                 Directory.CreateDirectory(dir);
+            }
 
             var filename = Path.Combine(dir, "PremadeGraphics.wpg");
 
             var serializer = new XmlSerializer(typeof(List<PremadeSeriesInfoCollection>));
             var entities = Graphics.ToList();
-            using (var writer = new StreamWriter(filename))
-            {
-                serializer.Serialize(writer, entities);
-            }
-
+            using var writer = new StreamWriter(filename);
+            serializer.Serialize(writer, entities);
         }
 
 

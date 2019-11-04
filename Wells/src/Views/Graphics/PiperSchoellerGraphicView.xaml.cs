@@ -97,7 +97,9 @@ namespace Wells.View
             double triangleSideLength = 8544.5205;
 
             foreach (var p in viewModel.PiperSchollerPoints)
+            {
                 p.CalculateXYPositions(lowerLeftCations, lowerLeftAnions, triangleSideLength);
+            }
         }
 
         void DrawPoints()
@@ -128,7 +130,7 @@ namespace Wells.View
                 }
             }
 
-            if (baseDrawing.CanFreeze) baseDrawing.Freeze();
+            if (baseDrawing.CanFreeze) { baseDrawing.Freeze(); }
             PiperImage.Source = baseDrawing;
         }
 
@@ -153,16 +155,20 @@ namespace Wells.View
             using (var diag = new System.Windows.Forms.ColorDialog() { Color = selectedColor, FullOpen = true })
             {
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
                     return Color.FromArgb(diag.Color.A, diag.Color.R, diag.Color.G, diag.Color.B);
+                }
             }
             return Color.FromArgb(selectedColor.A, selectedColor.R, selectedColor.G, selectedColor.B);
         }
 
-        public void SaveImage(string filename = "")
+        public void SaveImage(string filename)
         {
             var imageFilename = SaveFileDialog("Imagenes *.png|*.png", "Guardar imagen", filename);
             if (!string.IsNullOrEmpty(imageFilename))
+            {
                 SharedBaseView.CaptureScreen(imageFilename, PiperCanvas, 200, 200);
+            }
         }
     }
 }

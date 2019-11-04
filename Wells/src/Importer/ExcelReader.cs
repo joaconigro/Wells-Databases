@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Wells.Persistence;
 using Wells.BaseModel.Models;
 using Wells.Model;
+using Wells.Persistence;
 
 namespace Wells.View.Importer
 {
@@ -16,7 +16,6 @@ namespace Wells.View.Importer
     {
         static string _OriginalRow = "Fila original";
         static string _Reason = "Razón";
-
 
 
         public static List<Well> ReadWells(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
@@ -46,11 +45,15 @@ namespace Wells.View.Importer
                     well.Height = ReadCellAsDouble(row, 7);
                     var exists = ReadCellAsString(row, 8).ToUpper();
                     if (!string.IsNullOrEmpty(exists))
+                    {
                         well.Exists = exists == "SI" ? true : false;
+                    }
                     well.Bottom = ReadCellAsDouble(row, 9);
 
                     if (!string.IsNullOrEmpty(well.Name) && !wells.ContainsKey(well.Name))
+                    {
                         wells.Add(well.Name, well);
+                    }
 
                     progress?.Report(i / maxCount * 100);
                 }
@@ -123,7 +126,9 @@ namespace Wells.View.Importer
                     };
 
                     if (meas.Well != null)
+                    {
                         measurements.Add(meas);
+                    }
 
                     progress?.Report(i / maxCount * 100);
                 }
@@ -163,7 +168,9 @@ namespace Wells.View.Importer
                     }
 
                     if (analysis.Well != null)
+                    {
                         analyses.Add(analysis);
+                    }
 
                     progress?.Report(i / maxCount * 100);
                 }
@@ -204,7 +211,9 @@ namespace Wells.View.Importer
                     }
 
                     if (analysis.Well != null)
+                    {
                         analyses.Add(analysis);
+                    }
 
                     progress?.Report(i / maxCount * 100);
                 }
@@ -245,7 +254,9 @@ namespace Wells.View.Importer
                     }
 
                     if (analysis.Well != null)
+                    {
                         analyses.Add(analysis);
+                    }
 
                     progress?.Report(i / maxCount * 100);
                 }
@@ -263,7 +274,9 @@ namespace Wells.View.Importer
         static Well GetWell(string wellName)
         {
             if (!string.IsNullOrEmpty(wellName) && Persistence.Repositories.RepositoryWrapper.Instance.Wells.Wells.ContainsKey(wellName))
+            {
                 return Persistence.Repositories.RepositoryWrapper.Instance.Wells.Wells[wellName];
+            }
             return null;
         }
 
@@ -283,17 +296,29 @@ namespace Wells.View.Importer
                     var type = rejected.First().Entity.GetType();
 
                     if (type == typeof(Well))
+                    {
                         ExportsRejectedWells(rejected, sheet);
+                    }
                     else if (type == typeof(Measurement))
+                    {
                         ExportsRejectedMeasurements(rejected, sheet);
+                    }
                     else if (type == typeof(Precipitation))
+                    {
                         ExportsRejectedPrecipitations(rejected, sheet);
+                    }
                     else if (type == typeof(FLNAAnalysis))
+                    {
                         ExportsRejectedFLNAAnalysis(rejected, sheet);
+                    }
                     else if (type == typeof(WaterAnalysis))
+                    {
                         ExportsRejectedWaterAnalysis(rejected, sheet);
+                    }
                     else if (type == typeof(SoilAnalysis))
+                    {
                         ExportsRejectedSoilAnalysis(rejected, sheet);
+                    }
 
                     wb.Write(stream);
                     wb.Close();
@@ -593,7 +618,6 @@ namespace Wells.View.Importer
                         return cell.NumericCellValue.ToString().Trim();
                     default:
                         return cell.StringCellValue.Trim();
-
                 }
             }
             return string.Empty;
@@ -613,7 +637,7 @@ namespace Wells.View.Importer
                         DateTime cellDate;
                         string[] formats = { "dd/MM/yyyy", "d/M/yyyy", "dd/MM/yy", "d/M/yy" };
                         var ok = DateTime.TryParseExact(cell.StringCellValue.Trim(), formats, null, DateTimeStyles.None, out cellDate);
-                        if (ok) return cellDate.ToString("dd/MM/yyyy").ToUpper();
+                        if (ok) { return cellDate.ToString("dd/MM/yyyy").ToUpper(); }
                         break;
                 }
             }
@@ -650,7 +674,7 @@ namespace Wells.View.Importer
                         }
                         if (double.TryParse(stringValue, out result))
                         {
-                            if (isLowerThan) result -= result * 0.1;
+                            if (isLowerThan) { result -= result * 0.1; }
                         }
                         return result;
 

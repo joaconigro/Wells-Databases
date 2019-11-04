@@ -64,7 +64,7 @@ namespace Wells.View.ViewModels
         {
             get
             {
-                if ((bool)(FilterCollection?.Any()))
+                if ((bool)FilterCollection?.Any())
                 {
                     var list = FilterCollection.Apply(_Entities).ToList();
                     _EntitiesCount = list.Count();
@@ -83,10 +83,14 @@ namespace Wells.View.ViewModels
             set
             {
                 if (_FilterCollection != null)
+                {
                     _FilterCollection.FiltersChanged -= OnFiltersChanged;
+                }
                 SetValue(ref _FilterCollection, value);
                 if (_FilterCollection != null)
+                {
                     _FilterCollection.FiltersChanged += OnFiltersChanged;
+                }
             }
         }
 
@@ -156,8 +160,8 @@ namespace Wells.View.ViewModels
                 }, (obj) => { 
                 if(WellType > 0 || WellProperty > 0)
                     {
-                        if (WellProperty != 1) return true;
-                        if (WellProperty == 1 && !string.IsNullOrEmpty(SelectedWellName)) return true;
+                        if (WellProperty != 1) { return true; }
+                        if (WellProperty == 1 && !string.IsNullOrEmpty(SelectedWellName)) { return true; }
                         return false;
                     }
                     return false;
@@ -309,14 +313,19 @@ namespace Wells.View.ViewModels
             var filename = MainWindow.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel");
             if (!string.IsNullOrEmpty(filename)) {
                 workbook = new XSSFWorkbook(filename);
-                if (workbook.NumberOfSheets > 1) {
+                if (workbook.NumberOfSheets > 1)
+                {
                     List<string> sheets = new List<string>();
                     for (int i = 0; i < workbook.NumberOfSheets; i++)
+                    {
                         sheets.Add(workbook.GetSheetName(i));
+                    }
                     sheetIndex = MainWindow.SelectSheetDialog(sheets);
                 }
                 else
+                {
                     sheetIndex = 0;
+                }
                 return sheetIndex > -1;
             }
             return false;

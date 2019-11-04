@@ -79,8 +79,10 @@ namespace Wells.View.ViewModels
 
         protected override void SetValidators()
         {
-            if(!IsEditing)
+            if (!IsEditing)
+            {
                 Add(nameof(WellName), new EmptyStringValidator("Nombre"));
+            }
         }
 
         protected override void OnSetView(IView view)
@@ -113,9 +115,13 @@ namespace Wells.View.ViewModels
                 {
                     SaveMeasurement();
                     if (IsEditing)
+                    {
                         RepositoryWrapper.Instance.Measurements.Update(Measurement);
+                    }
                     else
+                    {
                         RepositoryWrapper.Instance.Measurements.Add(Measurement);
+                    }
                     RepositoryWrapper.Instance.SaveChanges();
                     CloseModalViewCommand.Execute(true);
                 }, (obj) => !HasFailures, OnError);

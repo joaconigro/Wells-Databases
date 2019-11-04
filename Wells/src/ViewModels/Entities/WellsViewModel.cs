@@ -1,20 +1,18 @@
 ﻿using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.Serialization;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
+using Wells.Model;
+using Wells.Persistence.Repositories;
 using Wells.View.Filters;
 using Wells.View.Graphics;
 using Wells.View.Importer;
-using Wells.Model;
-using Wells.Persistence.Repositories;
 
 namespace Wells.View.ViewModels
 {
@@ -37,14 +35,16 @@ namespace Wells.View.ViewModels
         {
             base.OnSetView(view);
             MainWindow.PremadeGraphicsChanged += OnPremadeGraphicsChanged;
-        } 
+        }
 
         public override string WellExistsInfo
         {
             get
             {
                 if (_SelectedEntity != null)
+                {
                     return _SelectedEntity.Exists ? "Pozo existente" : "Pozo inexistente";
+                }
                 return string.Empty;
             }
         }
@@ -61,7 +61,9 @@ namespace Wells.View.ViewModels
                 {
                     var vm = new EditWellViewModel();
                     if (MainWindow.OpenEditEntityDialog(vm))
+                    {
                         UpdateEntites();
+                    }
                 }, (obj) => IsNewCommandEnabled, OnError);
             }
         }
@@ -74,8 +76,9 @@ namespace Wells.View.ViewModels
                 {
                     var vm = new EditWellViewModel(SelectedEntity);
                     if (MainWindow.OpenEditEntityDialog(vm))
+                    {
                         UpdateEntites();
-
+                    }
                 }, (obj) => SelectedEntity != null, OnError);
             }
         }
@@ -113,13 +116,16 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                if (SelectedEntities != null && SelectedEntities.Any()) {
-                    var vm = new PiperSchoellerGraphicViewModel(SelectedEntities);
-                    MainWindow.OpenGraphicsView(vm); }
-                else if (SelectedEntity != null) {
-                    var vm = new PiperSchoellerGraphicViewModel(new List<Well>() { SelectedEntity });
-                MainWindow.OpenGraphicsView(vm);
-                                                                                         }
+                    if (SelectedEntities != null && SelectedEntities.Any())
+                    {
+                        var vm = new PiperSchoellerGraphicViewModel(SelectedEntities);
+                        MainWindow.OpenGraphicsView(vm);
+                    }
+                    else if (SelectedEntity != null)
+                    {
+                        var vm = new PiperSchoellerGraphicViewModel(new List<Well>() { SelectedEntity });
+                        MainWindow.OpenGraphicsView(vm);
+                    }
                 }, (obj) => (SelectedEntities != null && SelectedEntities.Any()) || SelectedEntity != null, OnError);
             }
         }
@@ -131,7 +137,7 @@ namespace Wells.View.ViewModels
         protected override void SetCommandUpdates()
         {
             base.SetCommandUpdates();
-            Add(nameof(SelectedEntity), OpenPremadeGraphicCommand );
+            Add(nameof(SelectedEntity), OpenPremadeGraphicCommand);
             Add(nameof(SelectedEntity), OpenPiperShoellerGraphicCommand);
             Add(nameof(SelectedEntities), OpenPiperShoellerGraphicCommand);
         }

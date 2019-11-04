@@ -1,13 +1,12 @@
 ﻿using LiveCharts;
 using LiveCharts.Definitions.Series;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using Wells.Persistence.Repositories;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.Model;
+using Wells.Persistence.Repositories;
 
 namespace Wells.View.ViewModels
 {
@@ -52,9 +51,13 @@ namespace Wells.View.ViewModels
         void SetWell()
         {
             if (!string.IsNullOrEmpty(selectedWellName))
+            {
                 _Well = RepositoryWrapper.Instance.Wells.FindByName(selectedWellName);
+            }
             else
+            {
                 _Well = null;
+            }
         }
 
         protected override void SetCommandUpdates()
@@ -62,7 +65,10 @@ namespace Wells.View.ViewModels
             Add(nameof(SelectedSerie), RemoveSeriesCommand);
         }
 
-        protected override void SetValidators() { }
+        protected override void SetValidators()
+        {
+            //Nothing to add yet.
+        }
 
         public CustomGraphicsViewModel(IView view) : base(view)
         {
@@ -99,7 +105,9 @@ namespace Wells.View.ViewModels
             }
 
             if (genericSeries != null)
+            {
                 SeriesCollection.Add(genericSeries);
+            }
         }
 
         public ICommand CreateSeriesCommand
@@ -132,7 +140,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    _Dialog.SaveImage();
+                    _Dialog.SaveImage(string.Empty);
                 }, (obj) => true, OnError);
             }
         }

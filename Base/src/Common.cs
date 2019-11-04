@@ -16,10 +16,8 @@ namespace Wells.Base
 
             foreach (var name in names)
             {
-                var attr = aEnum.GetField(Enum.GetName(aEnum, names.IndexOf(name))).
-                           GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute;
-
-                if (attr != null)
+                if (aEnum.GetField(Enum.GetName(aEnum, names.IndexOf(name))).
+                           GetCustomAttribute(typeof(DescriptionAttribute)) is DescriptionAttribute attr)
                 {
                     descriptions.Add(attr.Description);
                 }
@@ -35,10 +33,9 @@ namespace Wells.Base
         public static string GetEnumDescription(Enum e)
         {
             var type = e.GetType();
-            var attr = type.GetField(Enum.GetName(type, e)).
-                       GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute;
 
-            if (attr != null)
+            if (type.GetField(Enum.GetName(type, e)).
+                       GetCustomAttribute(typeof(DescriptionAttribute)) is DescriptionAttribute attr)
             {
                 return attr.Description;
             }
@@ -52,7 +49,7 @@ namespace Wells.Base
 
         public static bool IsNumericType(Type type)
         {
-            if (type.IsEnum) return false;
+            if (type.IsEnum) { return false; }
             var typeCode = Type.GetTypeCode(type);
             switch (typeCode)
             {
@@ -77,7 +74,7 @@ namespace Wells.Base
 
         public static bool IsIntegerNumericType(Type type)
         {
-            if (type.IsEnum) return false;
+            if (type.IsEnum) { return false; }
             var typeCode = Type.GetTypeCode(type);
             switch (typeCode)
             {

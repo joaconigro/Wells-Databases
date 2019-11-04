@@ -17,7 +17,6 @@ namespace Wells.View.ViewModels
 {
     public class EditWellViewModel : BaseViewModel
     {
-        private Well well;
         private string wellName;
         private double x;
         private double y;
@@ -58,20 +57,20 @@ namespace Wells.View.ViewModels
         public List<string> WellTypes => Common.EnumDescriptionsToList(typeof(WellType));
 
 
-        public Well Well => well;
+        public Well Well { get; }
 
 
         public EditWellViewModel() : base(null)
         {
             IsEditing = false;
-            well = new Well();
+            Well = new Well();
             InitializeWell();
         }
 
         public EditWellViewModel(Well well) : base(null)
         {
             IsEditing = true;
-            this.well = well;
+            this.Well = well;
             InitializeWell();
         }
 
@@ -84,41 +83,41 @@ namespace Wells.View.ViewModels
 
         void InitializeWell()
         {
-            WellName = well.Name;
-            X = well.X;
-            Y = well.Y;
-            Z = well.Z;
-            Latitude = well.Latitude;
-            Longitude = well.Longitude;
-            Type = (int)well.WellType;
-            Height = well.Height;
-            Exists = well.Exists;
-            Bottom = well.Bottom;
-            SoilAnalyses = new ObservableCollection<SoilAnalysis>(well.SoilAnalyses.OrderBy(i => i.Date));
-            WaterAnalyses = new ObservableCollection<WaterAnalysis>(well.WaterAnalyses.OrderBy(i => i.Date));
-            FLNAAnalyses = new ObservableCollection<FLNAAnalysis>(well.FLNAAnalyses.OrderBy(i => i.Date));
-            Measurements = new ObservableCollection<Measurement>(well.Measurements.OrderBy(i => i.Date));
-            Files = new ObservableCollection<ExternalFile>(well.Files.OrderBy(i => i.CompleteFilename));
+            WellName = Well.Name;
+            X = Well.X;
+            Y = Well.Y;
+            Z = Well.Z;
+            Latitude = Well.Latitude;
+            Longitude = Well.Longitude;
+            Type = (int)Well.WellType;
+            Height = Well.Height;
+            Exists = Well.Exists;
+            Bottom = Well.Bottom;
+            SoilAnalyses = new ObservableCollection<SoilAnalysis>(Well.SoilAnalyses.OrderBy(i => i.Date));
+            WaterAnalyses = new ObservableCollection<WaterAnalysis>(Well.WaterAnalyses.OrderBy(i => i.Date));
+            FLNAAnalyses = new ObservableCollection<FLNAAnalysis>(Well.FLNAAnalyses.OrderBy(i => i.Date));
+            Measurements = new ObservableCollection<Measurement>(Well.Measurements.OrderBy(i => i.Date));
+            Files = new ObservableCollection<ExternalFile>(Well.Files.OrderBy(i => i.CompleteFilename));
         }
 
 
         void SaveWell()
         {
-            well.Name = WellName;
-            well.X = X;
-            well.Y = Y;
-            well.Z = Z;
-            well.Latitude = Latitude;
-            well.Longitude = Longitude;
-            well.WellType = (WellType)Type;
-            well.Bottom = Bottom;
-            well.Exists = Exists;
-            well.Height = Height;
-            well.SoilAnalyses = SoilAnalyses.ToList();
-            well.WaterAnalyses = WaterAnalyses.ToList();
-            well.FLNAAnalyses = FLNAAnalyses.ToList();
-            well.Measurements = Measurements.ToList();
-            well.Files = Files.ToList();
+            Well.Name = WellName;
+            Well.X = X;
+            Well.Y = Y;
+            Well.Z = Z;
+            Well.Latitude = Latitude;
+            Well.Longitude = Longitude;
+            Well.WellType = (WellType)Type;
+            Well.Bottom = Bottom;
+            Well.Exists = Exists;
+            Well.Height = Height;
+            Well.SoilAnalyses = SoilAnalyses.ToList();
+            Well.WaterAnalyses = WaterAnalyses.ToList();
+            Well.FLNAAnalyses = FLNAAnalyses.ToList();
+            Well.Measurements = Measurements.ToList();
+            Well.Files = Files.ToList();
         }
 
         protected override void SetCommandUpdates() {
@@ -128,17 +127,19 @@ namespace Wells.View.ViewModels
         protected override void SetValidators()
         {
             if (!IsEditing)
+            {
                 Add(nameof(WellName), new List<IValidator>() { new EmptyStringValidator("Nombre"), new WellNameValidator("Nombre") });
+            }
         }
 
         void RemoveAll()
         {
-            RepositoryWrapper.Instance.Measurements.RemoveRange(well.Measurements);
-            RepositoryWrapper.Instance.SoilAnalyses.RemoveRange(well.SoilAnalyses);
-            RepositoryWrapper.Instance.WaterAnalyses.RemoveRange(well.WaterAnalyses);
-            RepositoryWrapper.Instance.FLNAAnalyses.RemoveRange(well.FLNAAnalyses);
-            RepositoryWrapper.Instance.ExternalFiles.RemoveRange(well.Files);
-            RepositoryWrapper.Instance.Wells.Remove(well);
+            RepositoryWrapper.Instance.Measurements.RemoveRange(Well.Measurements);
+            RepositoryWrapper.Instance.SoilAnalyses.RemoveRange(Well.SoilAnalyses);
+            RepositoryWrapper.Instance.WaterAnalyses.RemoveRange(Well.WaterAnalyses);
+            RepositoryWrapper.Instance.FLNAAnalyses.RemoveRange(Well.FLNAAnalyses);
+            RepositoryWrapper.Instance.ExternalFiles.RemoveRange(Well.Files);
+            RepositoryWrapper.Instance.Wells.Remove(Well);
         }
 
 
@@ -166,9 +167,13 @@ namespace Wells.View.ViewModels
                 {
                     SaveWell();
                     if (IsEditing)
-                        RepositoryWrapper.Instance.Wells.Update(well);
+                    {
+                        RepositoryWrapper.Instance.Wells.Update(Well);
+                    }
                     else
-                        RepositoryWrapper.Instance.Wells.Add(well);
+                    {
+                        RepositoryWrapper.Instance.Wells.Add(Well);
+                    }
                     RepositoryWrapper.Instance.SaveChanges();
                     CloseModalViewCommand.Execute(true);
                 }, (obj) => !HasFailures, OnError);
@@ -181,7 +186,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    var vm = new EditMeasurementViewModel(well);
+                    var vm = new EditMeasurementViewModel(Well);
                     if (dialog.ShowEditMeasurementDialog(vm))
                     {
                         Measurements.Add(vm.Measurement);
@@ -232,7 +237,7 @@ namespace Wells.View.ViewModels
 
                     if (!string.IsNullOrEmpty(filename))
                     {
-                        var file = new ExternalFile(filename) { Well = well };
+                        var file = new ExternalFile(filename) { Well = Well };
                         Files.Add(file);
                     }
                 }, (obj) => true, OnError);

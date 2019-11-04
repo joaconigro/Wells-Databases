@@ -46,7 +46,7 @@ namespace Wells.Model
         {
             get
             {
-                if (HasFLNA && HasWater) return WaterDepth - FLNADepth;
+                if (HasFLNA && HasWater) { return WaterDepth - FLNADepth; }
                 return NumericNullValue;
             }
         }
@@ -59,7 +59,7 @@ namespace Wells.Model
             {
                 if (HasFLNA && Well != null)
                 {
-                    if (Well.HasHeight) return Well.Z + Well.Height - FLNADepth;
+                    if (Well.HasHeight) { return Well.Z + Well.Height - FLNADepth; }
                     return Well.Z - FLNADepth;
                 }
                 return NumericNullValue;
@@ -74,7 +74,7 @@ namespace Wells.Model
             {
                 if (HasWater && Well != null)
                 {
-                    if (Well.HasHeight) return Well.Z + Well.Height - WaterDepth;
+                    if (Well.HasHeight){ return  Well.Z + Well.Height - WaterDepth; }
                     return Well.Z - WaterDepth;
                 }
                 return NumericNullValue;

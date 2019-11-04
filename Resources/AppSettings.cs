@@ -9,12 +9,12 @@
 
         public static void RestoreDefaultSettings()
         {
-
+            //Not implemented yet.
         }
 
         public static void UpgradeSettings()
         {
-
+            //Not implemented yet.
         }
 
         public static string CurrentLanguage
@@ -29,6 +29,6 @@
             }
         }
 
-        public static bool UpgradeRequired => UpgradeRequired;
+        public static bool UpgradeRequired => _UpgradeRequired;
     }
 }

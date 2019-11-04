@@ -49,7 +49,9 @@ namespace Wells.View.ViewModels
             get
             {
                 if (FilterType.IsEnum)
+                {
                     return Common.EnumDescriptionsToList(FilterType);
+                }
                 return null;
             }
         }
@@ -82,7 +84,9 @@ namespace Wells.View.ViewModels
             IsIntegerNumericType = false;
             IsCreatingFilter = true;
             if (properties.Any())
+            {
                 SelectedPropertyIndex = 0;
+            }
             DialogTitle = "Crear filtro";
         }
 

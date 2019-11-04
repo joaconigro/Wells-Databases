@@ -116,7 +116,9 @@ namespace Wells.View.ViewModels
         }
 
 
-        protected override void CreateWellFilter() { }
+        protected override void CreateWellFilter() { 
+            //No need to implement.
+        }
 
         protected override void UpdateEntites()
         {

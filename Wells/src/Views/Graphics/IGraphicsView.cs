@@ -4,6 +4,6 @@ namespace Wells.View
 {
     public interface IGraphicsView : IView
     {
-        void SaveImage(string filename = "");
+        void SaveImage(string filename);
     }
 }

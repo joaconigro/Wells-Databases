@@ -4,19 +4,25 @@ using System;
 using System.Windows.Input;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
-using Wells.View.Graphics;
 using Wells.Model;
+using Wells.View.Graphics;
 
 namespace Wells.View.ViewModels
 {
     public class PremadeGraphicsViewModel : BaseGraphicsViewModel
     {
-        private Well _Well;
-        PremadeSeriesInfoCollection _GraphicSeries;
+        private readonly Well _Well;
+        readonly PremadeSeriesInfoCollection _GraphicSeries;
         public string Title { get; }
-        protected override void SetCommandUpdates() { }
+        protected override void SetCommandUpdates()
+        {
+            //No need to implement yet.
+        }
 
-        protected override void SetValidators() { }
+        protected override void SetValidators()
+        {
+            //No need to implement yet.
+        }
 
         public PremadeGraphicsViewModel(IView view, Well well, PremadeSeriesInfoCollection series) : base(view)
         {
@@ -37,21 +43,13 @@ namespace Wells.View.ViewModels
 
                 if (gs.IsFromWell)
                 {
-                    switch (gs.ParameterGroup)
+                    genericSeries = gs.ParameterGroup switch
                     {
-                        case "Mediciones":
-                            genericSeries = CreateSeriesFromMeasurements(_Well, gs.PropertyDisplayName);
-                            break;
-                        case "Análisis de FLNA":
-                            genericSeries = CreateSeriesFromFLNAAnalyses(_Well, gs.PropertyDisplayName);
-                            break;
-                        case "Análisis de agua":
-                            genericSeries = CreateSeriesFromWaterAnalyses(_Well, gs.PropertyDisplayName);
-                            break;
-                        default:
-                            genericSeries = CreateSeriesFromSoilAnalyses(_Well, gs.PropertyDisplayName);
-                            break;
-                    }
+                        "Mediciones" => CreateSeriesFromMeasurements(_Well, gs.PropertyDisplayName),
+                        "Análisis de FLNA" => CreateSeriesFromFLNAAnalyses(_Well, gs.PropertyDisplayName),
+                        "Análisis de agua" => CreateSeriesFromWaterAnalyses(_Well, gs.PropertyDisplayName),
+                        _ => CreateSeriesFromSoilAnalyses(_Well, gs.PropertyDisplayName),
+                    };
                 }
                 else
                 {
@@ -59,7 +57,9 @@ namespace Wells.View.ViewModels
                 }
 
                 if (genericSeries != null)
+                {
                     SeriesCollection.Add(genericSeries);
+                }
             }
         }
 
@@ -69,7 +69,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    _Dialog.SaveImage();
+                    _Dialog.SaveImage(_Well.Name);
                 }, (obj) => true, OnError);
             }
         }

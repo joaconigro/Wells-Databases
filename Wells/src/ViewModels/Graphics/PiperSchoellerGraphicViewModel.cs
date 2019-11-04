@@ -22,7 +22,7 @@ namespace Wells.View.ViewModels
         private const double SulfatesMeq = 48.0;
         private const double ChloridesMeq = 35.5;
 
-        private Random _Random = new Random();
+        private readonly Random _Random = new Random();
 
         IPiperSchoellerGraphicView _Dialog;
 
@@ -149,7 +149,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    _Dialog.SaveImage();
+                    _Dialog.SaveImage("Piper");
                 }, (obj) => true, OnError);
             }
         }

@@ -24,7 +24,14 @@ namespace Wells.BaseView
             _CanExecute = canExecute;
         }
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute, Action<Exception> onError, Action onFinish = null)
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute, Action<Exception> onError)
+        {
+            _Execute = execute;
+            _CanExecute = canExecute;
+            _OnError = onError;
+        }
+
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute, Action<Exception> onError, Action onFinish)
         {
             _Execute = execute;
             _CanExecute = canExecute;
