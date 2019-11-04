@@ -4,7 +4,6 @@ namespace Wells.View.Graphics
 {
     public class DateModel
     {
-
         public DateTime SampleDate { get; set; }
         public double Value { get; set; }
 

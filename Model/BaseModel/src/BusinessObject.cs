@@ -10,9 +10,9 @@ namespace Wells.BaseModel.Models
 {
     public abstract class BusinessObject : IBusinessObject, IComparable<IBusinessObject>
     {
-        public static double NumericNullValue = -9999.0;
+        public const double NumericNullValue = -9999.0;
 
-        public static string DateFormat = "dd/MM/yyyy";
+        public const string DateFormat = "dd/MM/yyyy";
 
         #region Constructors
         public BusinessObject()

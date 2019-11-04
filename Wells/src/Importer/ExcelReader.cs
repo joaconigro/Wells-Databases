@@ -14,8 +14,8 @@ namespace Wells.View.Importer
 {
     public static class ExcelReader
     {
-        static string _OriginalRow = "Fila original";
-        static string _Reason = "Razón";
+        static readonly string _OriginalRow = "Fila original";
+        static readonly string _Reason = "Razón";
 
 
         public static List<Well> ReadWells(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
@@ -632,12 +632,12 @@ namespace Wells.View.Importer
                 {
                     case CellType.Numeric:
                     case CellType.Formula:
-                        return cell.DateCellValue.ToString("dd/MM/yyyy").ToUpper();
+                        return cell.DateCellValue.ToString("dd/MM/yyyy");
                     default:
                         DateTime cellDate;
                         string[] formats = { "dd/MM/yyyy", "d/M/yyyy", "dd/MM/yy", "d/M/yy" };
                         var ok = DateTime.TryParseExact(cell.StringCellValue.Trim(), formats, null, DateTimeStyles.None, out cellDate);
-                        if (ok) { return cellDate.ToString("dd/MM/yyyy").ToUpper(); }
+                        if (ok) { return cellDate.ToString("dd/MM/yyyy"); }
                         break;
                 }
             }

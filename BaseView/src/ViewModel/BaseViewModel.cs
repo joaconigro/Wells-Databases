@@ -26,7 +26,9 @@ namespace Wells.BaseView.ViewModel
         protected BaseViewModel(IView view)
         {
             if (view != null)
+            {
                 SetView(view);
+            }
         }
 
         public void SetView(IView view)
@@ -203,7 +205,9 @@ namespace Wells.BaseView.ViewModel
             {
                 var results = new List<ValidationResult>();
                 foreach (var v in validators[propertyName])
+                {
                     results.Add(v.Validate(value));
+                }
 
                 validationResults[propertyName] = results;
             }

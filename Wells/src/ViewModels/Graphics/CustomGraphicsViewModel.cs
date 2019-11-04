@@ -33,17 +33,13 @@ namespace Wells.View.ViewModels
         {
             get
             {
-                switch (selectedSeriesDataName)
+                return selectedSeriesDataName switch
                 {
-                    case "Mediciones":
-                        return Measurement.DoubleProperties.Keys.ToList();
-                    case "Análisis de FLNA":
-                        return FLNAAnalysis.DoubleProperties.Keys.ToList();
-                    case "Análisis de agua":
-                        return WaterAnalysis.DoubleProperties.Keys.ToList();
-                    default:
-                        return SoilAnalysis.DoubleProperties.Keys.ToList();
-                }
+                    "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
+                    "Análisis de FLNA" => FLNAAnalysis.DoubleProperties.Keys.ToList(),
+                    "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
+                    _ => SoilAnalysis.DoubleProperties.Keys.ToList(),
+                };
             }
 
         }
@@ -77,32 +73,18 @@ namespace Wells.View.ViewModels
 
         void CreateSeries()
         {
-            ISeriesView genericSeries = null;
-
-            switch (SelectedFromOption)
+            ISeriesView genericSeries = SelectedFromOption switch
             {
-                case 0:
-                    switch (selectedSeriesDataName)
-                    {
-                        case "Mediciones":
-                            genericSeries = CreateSeriesFromMeasurements(_Well, SelectedParameterName);
-                            break;
-                        case "Análisis de FLNA":
-                            genericSeries = CreateSeriesFromFLNAAnalyses(_Well, SelectedParameterName);
-                            break;
-                        case "Análisis de agua":
-                            genericSeries = CreateSeriesFromWaterAnalyses(_Well, SelectedParameterName);
-                            break;
-                        default:
-                            genericSeries = CreateSeriesFromSoilAnalyses(_Well, SelectedParameterName);
-                            break;
-                    }
-                    break;
+                0 => selectedSeriesDataName switch
+                {
+                    "Mediciones" => CreateSeriesFromMeasurements(_Well, SelectedParameterName),
+                    "Análisis de FLNA" => CreateSeriesFromFLNAAnalyses(_Well, SelectedParameterName),
+                    "Análisis de agua" => CreateSeriesFromWaterAnalyses(_Well, SelectedParameterName),
+                    _ => CreateSeriesFromSoilAnalyses(_Well, SelectedParameterName),
+                },
 
-                case 1:
-                    genericSeries = CreateSeriesFromPrecipitations();
-                    break;
-            }
+                _ => CreateSeriesFromPrecipitations(),
+            };
 
             if (genericSeries != null)
             {

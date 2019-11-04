@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Wells.View.Graphics
+﻿namespace Wells.View.Graphics
 {
     public class PremadeSeriesInfo
     {
@@ -12,9 +8,9 @@ namespace Wells.View.Graphics
 
         public override string ToString()
         {
-            if (IsFromWell) return PropertyDisplayName;
+            if (IsFromWell) { return PropertyDisplayName; }
             return "Precipitaciones";
         }
-      
+
     }
 }

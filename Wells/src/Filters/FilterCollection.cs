@@ -22,7 +22,9 @@ namespace Wells.View.Filters
             foreach (var f in this)
             {
                 if (f.IsEnabled)
+                {
                     queryable = f.Apply(queryable);
+                }
             }
             return queryable;
         }

@@ -53,7 +53,9 @@ namespace Wells.View.ViewModels
                 {
                     var vm = new EditMeasurementViewModel();
                     if (MainWindow.OpenEditEntityDialog(vm))
+                    {
                         UpdateEntites();
+                    }
                 }, (obj) => IsNewCommandEnabled, OnError);
             }
         }
@@ -66,8 +68,9 @@ namespace Wells.View.ViewModels
                 {
                     var vm = new EditMeasurementViewModel(SelectedEntity);
                     if (MainWindow.OpenEditEntityDialog(vm))
+                    {
                         UpdateEntites();
-
+                    }
                 }, (obj) => SelectedEntity != null, OnError);
             }
         }

@@ -14,10 +14,10 @@
 
         public bool Contains(double x, double y)
         {
-            if (x < X0) return false;
-            if (x > X1) return false;
-            if (y < Y0) return false;
-            if (y > Y1) return false;
+            if (x < X0) { return false; }
+            if (x > X1) { return false; }
+            if (y < Y0) { return false; }
+            if (y > Y1) { return false; }
             return true;
         }
 

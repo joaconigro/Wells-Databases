@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Wells.Persistence;
-using Wells.Persistence.Repositories;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
-using Wells.View.Importer;
 using Wells.Model;
+using Wells.Persistence;
+using Wells.Persistence.Repositories;
+using Wells.View.Importer;
 
 namespace Wells.View.ViewModels
 {
@@ -15,9 +15,8 @@ namespace Wells.View.ViewModels
     {
         RepositoryWrapper repository;
         IMainWindow mainWindow;
-        private bool repositoryIsOpened;
 
-        public bool RepositoryIsOpened => repositoryIsOpened;
+        public bool RepositoryIsOpened { get; private set; }
 
         public MainWindowViewModel(IView view) : base(null)
         {
@@ -38,7 +37,7 @@ namespace Wells.View.ViewModels
                 mainWindow.ShowWaitingMessage("Abriendo la base de datos");
                 RepositoryWrapper.Instantiate(connectionString);
                 repository = RepositoryWrapper.Instance;
-                repositoryIsOpened = repository != null;
+                RepositoryIsOpened = repository != null;
             }
             catch (Exception ex)
             {
@@ -55,15 +54,20 @@ namespace Wells.View.ViewModels
             Add(nameof(RepositoryIsOpened), OpenGraphicsViewCommand);
         }
 
-        protected override void SetValidators() { }
+        protected override void SetValidators()
+        {
+            //No need to add validators yet.
+        }
 
-        void ExportRejectedToExcel(List<RejectedEntity> rejected)
+        public void ExportRejectedToExcel(List<RejectedEntity> rejected)
         {
             if (mainWindow.ShowYesNoMessageBox($"No se pudieron importar {rejected.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados"))
             {
                 var filename = mainWindow.SaveFileDialog("Archivos de Excel|*.xlsx", "Datos rechazados");
                 if (!string.IsNullOrEmpty(filename))
+                {
                     ExcelReader.ExportRejectedToExcel(rejected, filename);
+                }
             }
         }
 
