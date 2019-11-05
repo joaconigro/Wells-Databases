@@ -314,7 +314,7 @@ namespace Wells.View.ViewModels
 
         protected bool OpenExcelFile(ref XSSFWorkbook workbook, ref int sheetIndex)
         {
-            var filename = MainWindow.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel");
+            var filename = SharedBaseView.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel");
             if (!string.IsNullOrEmpty(filename))
             {
                 workbook = new XSSFWorkbook(filename);

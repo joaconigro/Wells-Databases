@@ -233,7 +233,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    var filename = View.OpenFileDialog("Archivos|*.*", "Elija un archivo");
+                    var filename = SharedBaseView.OpenFileDialog("Archivos|*.*", "Elija un archivo");
 
                     if (!string.IsNullOrEmpty(filename))
                     {

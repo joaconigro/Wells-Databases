@@ -33,31 +33,6 @@ namespace Wells.View
             Close();
         }
 
-        public string OpenFileDialog(string filter, string title, string initialDirectory)
-        {
-            return SharedBaseView.OpenFileDialog(filter, title, initialDirectory);
-        }
-
-        public string OpenFileDialog(string filter, string title)
-        {
-            return SharedBaseView.OpenFileDialog(filter, title);
-        }
-
-        public string SaveFileDialog(string filter, string title, string filename, string initialDirectory)
-        {
-            return SharedBaseView.SaveFileDialog(filter, title, filename, initialDirectory);
-        }
-
-        public string SaveFileDialog(string filter, string title)
-        {
-            return SharedBaseView.SaveFileDialog(filter, title);
-        }
-
-        public string SaveFileDialog(string filter, string title, string filename)
-        {
-            return SharedBaseView.SaveFileDialog(filter, title, filename);
-        }
-
         public void ShowErrorMessageBox(string message)
         {
             SharedBaseView.ShowErrorMessageBox(this, message);
@@ -126,7 +101,7 @@ namespace Wells.View
 
         public void SaveImage(string filename)
         {
-            var imageFilename = SaveFileDialog("Imagenes *.png|*.png", "Guardar imagen", filename);
+            var imageFilename = SharedBaseView.SaveFileDialog("Imagenes *.png|*.png", "Guardar imagen", filename);
             if (!string.IsNullOrEmpty(imageFilename))
             {
                 SharedBaseView.CaptureScreen(imageFilename, MainChart, 200, 200);
