@@ -2,10 +2,10 @@
 {
     public class Rectangle2D
     {
-        public double X0;
-        public double X1;
-        public double Y0;
-        public double Y1;
+        private readonly double X0;
+        private readonly double X1;
+        private readonly double Y0;
+        private readonly double Y1;
 
         Rectangle2D(double x0, double x1, double y0, double y1)
         {

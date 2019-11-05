@@ -57,7 +57,7 @@ namespace Wells.BaseView
                 {
                     if (_OnError == null)
                     {
-                        throw ex;
+                        throw;
                     }
                     else
                     {

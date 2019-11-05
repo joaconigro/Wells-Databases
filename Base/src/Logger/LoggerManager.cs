@@ -8,7 +8,7 @@ namespace Wells.Utilities.LoggerService
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        public LoggerManager() : base()
+        public LoggerManager()
         {
         }
 

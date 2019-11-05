@@ -2,10 +2,10 @@
 {
     public struct ChemicalAnalysisType
     {
-        public string PropertyName;
-        public string Group;
-        public string Unit;
-        public string Technique;
+        public string PropertyName { get; }
+        public string Group { get; }
+        public string Unit { get; }
+        public string Technique { get; }
 
         public ChemicalAnalysisType(string propertyName, string group, string technique, string unit)
         {

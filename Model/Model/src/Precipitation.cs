@@ -10,7 +10,7 @@ namespace Wells.Model
     public class Precipitation : BusinessObject
     {
 
-        public Precipitation() : base() { }
+        public Precipitation() { }
         
         #region Properties
         [Required, DisplayName("Fecha"), Browsable(true)]

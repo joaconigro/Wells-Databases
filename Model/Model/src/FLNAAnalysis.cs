@@ -7,7 +7,7 @@ namespace Wells.Model
 {
     public class FLNAAnalysis : ChemicalAnalysis
     {
-        public FLNAAnalysis() : base() { }
+        public FLNAAnalysis() { }
 
         public FLNAAnalysis(Well well) : base(well) { }
 

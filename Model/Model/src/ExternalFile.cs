@@ -12,9 +12,9 @@ namespace Wells.Model
 {
     public class ExternalFile : BusinessObject
     {
-        public ExternalFile() : base() { }
+        public ExternalFile() { }
 
-        public ExternalFile(string filename) : base()
+        public ExternalFile(string filename)
         {
             Name = Path.GetFileNameWithoutExtension(filename);
             FileExtension = Path.GetExtension(filename);

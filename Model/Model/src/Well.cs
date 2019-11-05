@@ -7,7 +7,7 @@ namespace Wells.Model
 {
     public class Well : BusinessObject
     {
-        public Well() : base()
+        public Well()
         {
             SoilAnalyses = new List<SoilAnalysis>();
             WaterAnalyses = new List<WaterAnalysis>();
@@ -42,10 +42,13 @@ namespace Wells.Model
         public double Bottom { get; set; }
 
         [Browsable(false)]
-        public bool HasGeographic => !(Latitude == NumericNullValue && Longitude == NumericNullValue);
+        public bool HasGeographic => !(Latitude.Equals(NumericNullValue) || Longitude.Equals(NumericNullValue));
 
         [Browsable(false)]
-        public bool HasHeight => Height != NumericNullValue;
+        public bool HasHeight => !Height.Equals(NumericNullValue);
+
+        [Browsable(false)]
+        public bool HasZ => !Z.Equals(NumericNullValue);
 
         [DisplayName("Tipo"), Browsable(true)]
         public WellType WellType { get; set; }

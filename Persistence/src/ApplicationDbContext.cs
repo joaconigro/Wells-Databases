@@ -13,12 +13,12 @@ namespace Wells.Persistence
         {
         }
 
-        public ApplicationDbContext(string connectionString) : base()
+        public ApplicationDbContext(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public ApplicationDbContext() : base() { }
+        public ApplicationDbContext() { }
 
        
         #endregion Constructor

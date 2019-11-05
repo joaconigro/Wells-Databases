@@ -10,7 +10,7 @@ namespace Wells.Model
 {
     public class Measurement : BusinessObject
     {
-        public Measurement() : base() { }
+        public Measurement() { }
 
         #region Properties
         [Required]
@@ -60,7 +60,8 @@ namespace Wells.Model
                 if (HasFLNA && Well != null)
                 {
                     if (Well.HasHeight) { return Well.Z + Well.Height - FLNADepth; }
-                    return Well.Z - FLNADepth;
+                    else if (Well.HasZ) { return Well.Z - FLNADepth; }
+                    return -FLNADepth;
                 }
                 return NumericNullValue;
             }
@@ -75,7 +76,8 @@ namespace Wells.Model
                 if (HasWater && Well != null)
                 {
                     if (Well.HasHeight) { return Well.Z + Well.Height - WaterDepth; }
-                    return Well.Z - WaterDepth;
+                    else if (Well.HasZ) { return Well.Z - WaterDepth; }
+                    return -WaterDepth;
                 }
                 return NumericNullValue;
             }

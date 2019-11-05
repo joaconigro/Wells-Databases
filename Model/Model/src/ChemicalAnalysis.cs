@@ -11,9 +11,9 @@ namespace Wells.Model
 {
     public abstract class ChemicalAnalysis : BusinessObject
     {
-        protected ChemicalAnalysis() : base() { }
+        protected ChemicalAnalysis() { }
 
-        protected ChemicalAnalysis(Well well) : base() { Well = well; WellId = well.Id; }
+        protected ChemicalAnalysis(Well well) { Well = well; WellId = well.Id; }
 
         #region Properties
         [Required]

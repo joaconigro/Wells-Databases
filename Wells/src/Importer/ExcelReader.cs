@@ -33,7 +33,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var well = new Well()
                     {
-                        Name = ReadCellAsString(row, 0).ToUpper(),
+                        Name = ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture),
                         X = ReadCellAsDouble(row, 1),
                         Y = ReadCellAsDouble(row, 2),
                         Z = ReadCellAsDouble(row, 3),
@@ -43,7 +43,7 @@ namespace Wells.View.Importer
                     var wellType = ReadCellAsDouble(row, 6);
                     well.WellType = (wellType == 1 ? WellType.Sounding : WellType.MeasurementWell);
                     well.Height = ReadCellAsDouble(row, 7);
-                    var exists = ReadCellAsString(row, 8).ToUpper();
+                    var exists = ReadCellAsString(row, 8).ToUpper(CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(exists))
                     {
                         well.Exists = exists == "SI" ? true : false;
@@ -118,7 +118,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var meas = new Measurement()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper()),
+                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1)),
                         FLNADepth = ReadCellAsDouble(row, 2),
                         WaterDepth = ReadCellAsDouble(row, 3),
@@ -156,7 +156,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var analysis = new FLNAAnalysis()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper()),
+                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
                     };
 
@@ -199,7 +199,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var analysis = new WaterAnalysis()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper()),
+                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
                     };
 
@@ -242,7 +242,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var analysis = new SoilAnalysis()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper()),
+                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
                     };
 

@@ -7,7 +7,7 @@ namespace Wells.Model
 {
     public class WaterAnalysis : ChemicalAnalysis
     {
-        public WaterAnalysis() : base() { }
+        public WaterAnalysis() { }
 
         public WaterAnalysis(Well well) : base(well) { }
 

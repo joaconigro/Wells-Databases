@@ -7,7 +7,7 @@ namespace Wells.Model
 {
     public class SoilAnalysis : ChemicalAnalysis
     {
-        public SoilAnalysis() : base() { }
+        public SoilAnalysis() { }
 
         public SoilAnalysis(Well well) : base(well) { }
 
