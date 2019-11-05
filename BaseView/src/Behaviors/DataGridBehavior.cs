@@ -74,41 +74,26 @@ namespace Wells.BaseView.Behaviors
                 (e.Column as DataGridTextColumn).ElementStyle = style;
             }
 
+            bool thereAreColumns = (sender as DataGrid).Columns.Count > 0;
+
             if (propDesc != null)
             {
                 foreach (var att in propDesc.Attributes)
                 {
-                    if (att.GetType() == typeof(BrowsableAttribute))
+                    if (att is BrowsableAttribute browsableAttribute && !browsableAttribute.Browsable)
                     {
-                        if (att is BrowsableAttribute browsableAttribute)
-                        {
-                            if (!browsableAttribute.Browsable)
-                            {
-                                e.Cancel = !browsableAttribute.Browsable;
-                                return;
-                            }
-                        }
+                        e.Cancel = !browsableAttribute.Browsable;
+                        return;
                     }
 
-
-                    if (att.GetType() == typeof(DisplayNameAttribute))
+                    if (att is DisplayNameAttribute displayName)
                     {
-                        if (att is DisplayNameAttribute displayName)
-                        {
-                            e.Column.Header = displayName.DisplayName;
-                        }
+                        e.Column.Header = displayName.DisplayName;
                     }
 
-
-                    if ((sender as DataGrid).Columns.Count > 0)
+                    if (thereAreColumns && att is SortIndexAttribute sortIndex)
                     {
-                        if (att.GetType() == typeof(SortIndexAttribute))
-                        {
-                            if (att is SortIndexAttribute sortIndex)
-                            {
-                                e.Column.DisplayIndex = (int)sortIndex.Index;
-                            }
-                        }
+                        e.Column.DisplayIndex = (int)sortIndex.Index;
                     }
                 }
             }

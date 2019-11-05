@@ -47,7 +47,7 @@ namespace Wells.BaseView
 
         public async void Execute(object parameter)
         {
-            await ExecuteAsync();
+            await ExecuteAsync().ConfigureAwait(false);
         }
 
         public bool CanExecute()
@@ -68,7 +68,7 @@ namespace Wells.BaseView
                 try
                 {
                     _IsExecuting = true;
-                    await Task.Run(() => _Execute.Invoke());
+                    await Task.Run(() => _Execute.Invoke()).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {

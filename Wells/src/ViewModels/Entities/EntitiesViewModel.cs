@@ -48,7 +48,7 @@ namespace Wells.View.ViewModels
 
                     if (OpenExcelFile(ref wb, ref sheetIndex))
                     {
-                        await ReadExcelFile(wb, sheetIndex);
+                        await ReadExcelFile(wb, sheetIndex).ConfigureAwait(false);
                         UpdateEntites();
                     }
                 }, () => true, OnError, CloseWaitingMessage);
