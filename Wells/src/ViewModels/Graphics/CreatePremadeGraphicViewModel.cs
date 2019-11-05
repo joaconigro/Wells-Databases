@@ -49,7 +49,7 @@ namespace Wells.View.ViewModels
                 return selectedSeriesDataName switch
                 {
                     "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
-                    "Análisis de FLNA" => FLNAAnalysis.DoubleProperties.Keys.ToList(),
+                    "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
                     "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
                     _ => SoilAnalysis.DoubleProperties.Keys.ToList(),
                 };

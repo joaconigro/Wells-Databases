@@ -75,6 +75,21 @@ namespace Wells.View.ViewModels
             }
         }
 
+        public ICommand EditWellCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var vm = new EditWellViewModel(SelectedEntity.Well);
+                    if (MainWindow.OpenEditEntityDialog(vm))
+                    {
+                        UpdateEntites();
+                    }
+                }, (obj) => SelectedEntity != null, OnError);
+            }
+        }
+
         public override ICommand RemoveEntityCommand
         {
             get
@@ -104,8 +119,10 @@ namespace Wells.View.ViewModels
         {
             var menu = new ContextMenu();
             var editMenuItem = new MenuItem() { Header = "Editar...", Command = EditEntityCommand };
+            var editWellMenuItem = new MenuItem() { Header = "Editar pozo...", Command = EditWellCommand };
             var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
             menu.Items.Add(editMenuItem);
+            menu.Items.Add(editWellMenuItem);
             menu.Items.Add(new Separator());
             menu.Items.Add(removeMenuItem);
             return menu;

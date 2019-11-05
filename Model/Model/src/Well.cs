@@ -11,7 +11,7 @@ namespace Wells.Model
         {
             SoilAnalyses = new List<SoilAnalysis>();
             WaterAnalyses = new List<WaterAnalysis>();
-            FLNAAnalyses = new List<FLNAAnalysis>();
+            FlnaAnalyses = new List<FlnaAnalysis>();
             Measurements = new List<Measurement>();
             Files = new List<ExternalFile>();
         }
@@ -68,7 +68,7 @@ namespace Wells.Model
         public virtual List<WaterAnalysis> WaterAnalyses { get; set; }
 
         [Browsable(false)]
-        public virtual List<FLNAAnalysis> FLNAAnalyses { get; set; }
+        public virtual List<FlnaAnalysis> FlnaAnalyses { get; set; }
 
         [Browsable(false)]
         public virtual List<Measurement> Measurements { get; set; }

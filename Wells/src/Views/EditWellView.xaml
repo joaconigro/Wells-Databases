@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells.View"
+        xmlns:base="clr-namespace:Wells.BaseView;assembly=BaseView"
         xmlns:uc="clr-namespace:Wells.View.UserControls"
         mc:Ignorable="d"
         Title="Edición de pozos" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" MinWidth="350" MinHeight="400">
@@ -35,9 +36,9 @@
                 <TextBlock Name="WellTypeTextBlock" Text="Tipo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
                 <ComboBox Name="WellTypeComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" ItemsSource="{Binding WellTypes, Mode=OneWay}" SelectedIndex="{Binding Type, Mode=TwoWay}"/>
                 <TextBlock Name="HeightTextBlock" Text="Altura:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="HeightTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Height, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBox Name="HeightTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{base:CultureAwareBinding Height, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="BottomTextBlock" Text="Fondo:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="BottomTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{Binding Bottom, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBox Name="BottomTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{base:CultureAwareBinding Bottom, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
             </Grid>
         </GroupBox>
         <GroupBox Name="WellCoordinatesGroupBox" Header="Coordenadas" Grid.Row="1">
@@ -55,15 +56,15 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Name="XTextBlock" Text="X:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Name="XTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="1" Text="{Binding X, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBox Name="XTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="1" Text="{base:CultureAwareBinding X, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="YTextBlock" Text="Y:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
-                <TextBox Name="YTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="3" Text="{Binding Y, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBox Name="YTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="3" Text="{base:CultureAwareBinding Y, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="ZTextBlock" Text="Z:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="4"/>
-                <TextBox Name="ZTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="5" Text="{Binding Z, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBox Name="ZTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="5" Text="{base:CultureAwareBinding Z, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                 <TextBlock Name="LatitudeTextBlock" Text="Latitud:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="LatitudeTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
+                <TextBox Name="LatitudeTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{base:CultureAwareBinding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
                 <TextBlock Name="LongitudTextBlock" Text="Longitud:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="LongitudTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{Binding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
+                <TextBox Name="LongitudTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{base:CultureAwareBinding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
             </Grid>
         </GroupBox>
         <GroupBox Name="ContentGroupBox" Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">

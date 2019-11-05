@@ -67,6 +67,21 @@ namespace Wells.View.ViewModels
             }
         }
 
+        public ICommand EditWellCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var vm = new EditWellViewModel(SelectedEntity.Well);
+                    if (MainWindow.OpenEditEntityDialog(vm))
+                    {
+                        UpdateEntites();
+                    }
+                }, (obj) => SelectedEntity != null, OnError);
+            }
+        }
+
         public override ICommand RemoveEntityCommand
         {
             get
@@ -117,6 +132,9 @@ namespace Wells.View.ViewModels
             var menu = new ContextMenu();
             var piperMenuItem = new MenuItem() { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
             menu.Items.Add(piperMenuItem);
+            menu.Items.Add(new Separator());
+            var editWellMenuItem = new MenuItem() { Header = "Editar pozo...", Command = EditWellCommand };
+            menu.Items.Add(editWellMenuItem);
 
             if (IsRemoveCommandEnabled)
             {

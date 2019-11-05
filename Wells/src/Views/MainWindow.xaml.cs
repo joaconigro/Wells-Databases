@@ -80,7 +80,7 @@ namespace Wells.View
                 MeasurementsControl.SetViewModel(new MeasurementsViewModel());
                 WaterAnalysesControl.SetViewModel(new WaterAnalysesViewModel());
                 SoilAnalysesControl.SetViewModel(new SoilAnalysesViewModel());
-                FLNAAnalysesControl.SetViewModel(new FLNAAnalysesViewModel());
+                FLNAAnalysesControl.SetViewModel(new FlnaAnalysesViewModel());
                 PrecipitationsControl.SetViewModel(new PrecipitationsViewModel());
             });
         }

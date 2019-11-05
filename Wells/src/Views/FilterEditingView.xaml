@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells.View"
+        xmlns:base="clr-namespace:Wells.BaseView;assembly=BaseView"
         mc:Ignorable="d"
          Title="{Binding DialogTitle}" SizeToContent="Height" Width="300" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner" ContentRendered="AfterContentRendered">
     <Grid Margin="5">
@@ -49,9 +50,9 @@
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsIntegerNumericType}" Value="False">
-                                <Setter Property="Text" Value="{Binding NumericValue, Converter={StaticResource DoubleConverter}, ConverterParameter=N2}"/>
+                                <Setter Property="Text" Value="{base:CultureAwareBinding NumericValue, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsIntegerNumericType}" Value="True">
+                            <DataTrigger Binding="{base:CultureAwareBinding IsIntegerNumericType}" Value="True">
                                 <Setter Property="Text" Value="{Binding NumericValue, Converter={StaticResource IntegerConverter}, ConverterParameter=N0}"/>
                             </DataTrigger>
                         </Style.Triggers>

@@ -15,7 +15,7 @@ namespace Wells.View.ViewModels
     {
         private Well selectedWell;
         private DateTime date;
-        private double fLNADepth;
+        private double flnaDepth;
         private double waterDepth;
         private string comment;
 
@@ -26,7 +26,7 @@ namespace Wells.View.ViewModels
         public Measurement Measurement { get; }
 
         public DateTime Date { get => date; set { SetValue(ref date, value); } }
-        public double FLNADepth { get => fLNADepth; set { SetValue(ref fLNADepth, value); } }
+        public double FlnaDepth { get => flnaDepth; set { SetValue(ref flnaDepth, value); } }
         public double WaterDepth { get => waterDepth; set { SetValue(ref waterDepth, value); } }
         public string Comment { get => comment; set { SetValue(ref comment, value); } }
         public bool IsEditing { get; }
@@ -61,7 +61,7 @@ namespace Wells.View.ViewModels
         {
             selectedWell = Measurement.Well;
             Date = Measurement.Date;
-            FLNADepth = Measurement.FLNADepth;
+            FlnaDepth = Measurement.FlnaDepth;
             WaterDepth = Measurement.WaterDepth;
             Comment = Measurement.Comment;
         }
@@ -70,7 +70,7 @@ namespace Wells.View.ViewModels
         {
             Measurement.Well = SelectedWell;
             Measurement.Date = Date;
-            Measurement.FLNADepth = FLNADepth;
+            Measurement.FlnaDepth = FlnaDepth;
             Measurement.WaterDepth = WaterDepth;
             Measurement.Comment = Comment;
         }

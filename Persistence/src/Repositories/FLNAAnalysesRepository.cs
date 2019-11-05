@@ -2,9 +2,9 @@
 
 namespace Wells.Persistence.Repositories
 {
-    public class FLNAAnalysesRepository : RepositoryBase<FLNAAnalysis>, IBussinessObjectRepository
+    public class FlnaAnalysesRepository : RepositoryBase<FlnaAnalysis>, IBussinessObjectRepository
     {
-        public FLNAAnalysesRepository(ApplicationDbContext context) : base(context) { }
+        public FlnaAnalysesRepository(ApplicationDbContext context) : base(context) { }
 
         public override bool ContainsName(string name)
         {
@@ -16,12 +16,12 @@ namespace Wells.Persistence.Repositories
             return Exists((c) => c.Id == id);
         }
 
-        public override FLNAAnalysis Find(string id)
+        public override FlnaAnalysis Find(string id)
         {
             return Find((c) => c.Id == id);
         }
 
-        public override FLNAAnalysis FindByName(string name)
+        public override FlnaAnalysis FindByName(string name)
         {
             return null;
         }       

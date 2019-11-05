@@ -31,22 +31,22 @@ namespace Wells.Model
 
 
         #region Static properties
-        static Dictionary<string, ChemicalAnalysisType> _FLNAAnalysisTypes;
-        static Dictionary<string, ChemicalAnalysisType> _WaterAnalysisTypes;
-        static Dictionary<string, ChemicalAnalysisType> _SoilAnalysisTypes;
+        static Dictionary<string, ChemicalAnalysisType> flnaAnalysisTypes;
+        static Dictionary<string, ChemicalAnalysisType> waterAnalysisTypes;
+        static Dictionary<string, ChemicalAnalysisType> soilAnalysisTypes;
 
-        public static Dictionary<string, ChemicalAnalysisType> FLNAAnalysisTypes => _FLNAAnalysisTypes;
+        public static Dictionary<string, ChemicalAnalysisType> FlnaAnalysisTypes => flnaAnalysisTypes;
 
-        public static Dictionary<string, ChemicalAnalysisType> WaterAnalysisTypes => _WaterAnalysisTypes;
+        public static Dictionary<string, ChemicalAnalysisType> WaterAnalysisTypes => waterAnalysisTypes;
 
-        public static Dictionary<string, ChemicalAnalysisType> SoilAnalysisTypes => _SoilAnalysisTypes;
+        public static Dictionary<string, ChemicalAnalysisType> SoilAnalysisTypes => soilAnalysisTypes;
 
 
         public static void CreateParamtersDictionary()
         {
-            _FLNAAnalysisTypes = ReadParametersFromResource(Properties.Resources.FLNA);
-            _WaterAnalysisTypes = ReadParametersFromResource(Properties.Resources.Water);
-            _SoilAnalysisTypes = ReadParametersFromResource(Properties.Resources.Soil);
+            flnaAnalysisTypes = ReadParametersFromResource(Properties.Resources.FLNA);
+            waterAnalysisTypes = ReadParametersFromResource(Properties.Resources.Water);
+            soilAnalysisTypes = ReadParametersFromResource(Properties.Resources.Soil);
         }
 
 

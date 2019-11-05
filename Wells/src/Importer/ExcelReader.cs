@@ -17,6 +17,7 @@ namespace Wells.View.Importer
         static readonly string _OriginalRow = "Fila original";
         static readonly string _Reason = "Razón";
 
+        public static List<RejectedEntity> RejectedEntities { get; private set; }
 
         public static List<Well> ReadWells(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
         {
@@ -24,6 +25,8 @@ namespace Wells.View.Importer
             IRow row;
             Dictionary<string, Well> wells = new Dictionary<string, Well>();
             int indexError = 1;
+            RejectedEntities = new List<RejectedEntity>();
+
             try
             {
                 var maxCount = sheet.LastRowNum;
@@ -54,6 +57,14 @@ namespace Wells.View.Importer
                     {
                         wells.Add(well.Name, well);
                     }
+                    else if (string.IsNullOrEmpty(well.Name))
+                    {
+                        RejectedEntities.Add(new RejectedEntity(well, i, RejectedReasons.WellNameEmpty));
+                    }
+                    else if (wells.ContainsKey(well.Name))
+                    {
+                        RejectedEntities.Add(new RejectedEntity(well, i, RejectedReasons.DuplicatedName));
+                    }
 
                     progress?.Report(i / maxCount * 100);
                 }
@@ -73,6 +84,8 @@ namespace Wells.View.Importer
             IRow row;
             List<Precipitation> precipitations = new List<Precipitation>();
             int indexError = 1;
+            RejectedEntities = new List<RejectedEntity>();
+
             try
             {
                 var maxCount = sheet.LastRowNum;
@@ -109,6 +122,8 @@ namespace Wells.View.Importer
             IRow row;
             List<Measurement> measurements = new List<Measurement>();
             int indexError = 1;
+            RejectedEntities = new List<RejectedEntity>();
+
             try
             {
                 var maxCount = sheet.LastRowNum;
@@ -118,9 +133,9 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var meas = new Measurement()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
+                        Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1)),
-                        FLNADepth = ReadCellAsDouble(row, 2),
+                        FlnaDepth = ReadCellAsDouble(row, 2),
                         WaterDepth = ReadCellAsDouble(row, 3),
                         Comment = ReadCellAsString(row, 4)
                     };
@@ -128,6 +143,10 @@ namespace Wells.View.Importer
                     if (meas.Well != null)
                     {
                         measurements.Add(meas);
+                    }
+                    else
+                    {
+                        RejectedEntities.Add(new RejectedEntity(meas, i, RejectedReasons.WellNotFound));
                     }
 
                     progress?.Report(i / maxCount * 100);
@@ -141,12 +160,14 @@ namespace Wells.View.Importer
             return measurements;
         }
 
-        public static List<FLNAAnalysis> ReadFLNAAnalysis(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
+        public static List<FlnaAnalysis> ReadFlnaAnalysis(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
         {
             var sheet = workbook.GetSheetAt(sheetIndex);
             IRow row;
-            List<FLNAAnalysis> analyses = new List<FLNAAnalysis>();
+            List<FlnaAnalysis> analyses = new List<FlnaAnalysis>();
             int indexError = 1;
+            RejectedEntities = new List<RejectedEntity>();
+
             try
             {
                 var maxCount = sheet.LastRowNum;
@@ -154,22 +175,26 @@ namespace Wells.View.Importer
                 {
                     indexError = i;
                     row = sheet.GetRow(i);
-                    var analysis = new FLNAAnalysis()
+                    var analysis = new FlnaAnalysis()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
+                        Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
                     };
 
                     int j = 2;
-                    foreach (var p in FLNAAnalysis.DoubleProperties.Keys.ToList())
+                    foreach (var p in FlnaAnalysis.DoubleProperties.Keys.ToList())
                     {
-                        Interaction.CallByName(analysis, FLNAAnalysis.DoubleProperties[p].Name, CallType.Set, ReadCellAsDouble(row, j));
+                        Interaction.CallByName(analysis, FlnaAnalysis.DoubleProperties[p].Name, CallType.Set, ReadCellAsDouble(row, j));
                         j += 1;
                     }
 
                     if (analysis.Well != null)
                     {
                         analyses.Add(analysis);
+                    }
+                    else
+                    {
+                        RejectedEntities.Add(new RejectedEntity(analysis, i, RejectedReasons.WellNotFound));
                     }
 
                     progress?.Report(i / maxCount * 100);
@@ -190,6 +215,8 @@ namespace Wells.View.Importer
             IRow row;
             List<WaterAnalysis> analyses = new List<WaterAnalysis>();
             int indexError = 1;
+            RejectedEntities = new List<RejectedEntity>();
+
             try
             {
                 var maxCount = sheet.LastRowNum;
@@ -199,7 +226,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var analysis = new WaterAnalysis()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
+                        Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
                     };
 
@@ -213,6 +240,10 @@ namespace Wells.View.Importer
                     if (analysis.Well != null)
                     {
                         analyses.Add(analysis);
+                    }
+                    else
+                    {
+                        RejectedEntities.Add(new RejectedEntity(analysis, i, RejectedReasons.WellNotFound));
                     }
 
                     progress?.Report(i / maxCount * 100);
@@ -233,6 +264,8 @@ namespace Wells.View.Importer
             IRow row;
             List<SoilAnalysis> analyses = new List<SoilAnalysis>();
             int indexError = 1;
+            RejectedEntities = new List<RejectedEntity>();
+
             try
             {
                 var maxCount = sheet.LastRowNum;
@@ -242,7 +275,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var analysis = new SoilAnalysis()
                     {
-                        Well = GetWell(ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture)),
+                        Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
                     };
 
@@ -256,6 +289,10 @@ namespace Wells.View.Importer
                     if (analysis.Well != null)
                     {
                         analyses.Add(analysis);
+                    }
+                    else
+                    {
+                        RejectedEntities.Add(new RejectedEntity(analysis, i, RejectedReasons.WellNotFound));
                     }
 
                     progress?.Report(i / maxCount * 100);
@@ -281,47 +318,51 @@ namespace Wells.View.Importer
         }
 
 
-        public static void ExportRejectedToExcel(List<RejectedEntity> rejected, string filename)
+        public static void ExportRejectedToExcel(string filename)
         {
             try
             {
-                using (var stream = File.Open(filename, FileMode.Create, FileAccess.Write))
+                if (RejectedEntities != null && RejectedEntities.Any())
                 {
-                    //Create Excel workbook
-                    var wb = new XSSFWorkbook();
+                    using (var stream = File.Open(filename, FileMode.Create, FileAccess.Write))
+                    {
+                        //Create Excel workbook
+                        var wb = new XSSFWorkbook();
 
-                    //Create Excel sheet
-                    var sheet = wb.CreateSheet("Rechazados");
+                        //Create Excel sheet
+                        var sheet = wb.CreateSheet("Rechazados");
 
-                    var type = rejected.First().Entity.GetType();
+                        var type = RejectedEntities.First().Entity.GetType();
 
-                    if (type == typeof(Well))
-                    {
-                        ExportsRejectedWells(rejected, sheet);
-                    }
-                    else if (type == typeof(Measurement))
-                    {
-                        ExportsRejectedMeasurements(rejected, sheet);
-                    }
-                    else if (type == typeof(Precipitation))
-                    {
-                        ExportsRejectedPrecipitations(rejected, sheet);
-                    }
-                    else if (type == typeof(FLNAAnalysis))
-                    {
-                        ExportsRejectedFLNAAnalysis(rejected, sheet);
-                    }
-                    else if (type == typeof(WaterAnalysis))
-                    {
-                        ExportsRejectedWaterAnalysis(rejected, sheet);
-                    }
-                    else if (type == typeof(SoilAnalysis))
-                    {
-                        ExportsRejectedSoilAnalysis(rejected, sheet);
-                    }
+                        if (type == typeof(Well))
+                        {
+                            ExportsRejectedWells(RejectedEntities, sheet);
+                        }
+                        else if (type == typeof(Measurement))
+                        {
+                            ExportsRejectedMeasurements(RejectedEntities, sheet);
+                        }
+                        else if (type == typeof(Precipitation))
+                        {
+                            ExportsRejectedPrecipitations(RejectedEntities, sheet);
+                        }
+                        else if (type == typeof(FlnaAnalysis))
+                        {
+                            ExportsRejectedFLNAAnalysis(RejectedEntities, sheet);
+                        }
+                        else if (type == typeof(WaterAnalysis))
+                        {
+                            ExportsRejectedWaterAnalysis(RejectedEntities, sheet);
+                        }
+                        else if (type == typeof(SoilAnalysis))
+                        {
+                            ExportsRejectedSoilAnalysis(RejectedEntities, sheet);
+                        }
 
-                    wb.Write(stream);
-                    wb.Close();
+                        RejectedEntities.Clear();
+                        wb.Write(stream);
+                        wb.Close();
+                    }
                 }
 
             }
@@ -437,7 +478,7 @@ namespace Wells.View.Importer
             for (int i = 1; i < rejected.Count; i++)
             {
                 var r = rejected[i - 1];
-                WriteFLNAAnalysisToExcelRow(r.Entity as FLNAAnalysis, sheet, i, r.OriginalRow, r.Reason);
+                WriteFLNAAnalysisToExcelRow(r.Entity as FlnaAnalysis, sheet, i, r.OriginalRow, r.Reason);
             }
         }
 
@@ -445,11 +486,11 @@ namespace Wells.View.Importer
         {
             var header = sheet.CreateRow(0);
 
-            header.CreateCell(0).SetCellValue(FLNAAnalysis.GetDisplayName(nameof(FLNAAnalysis.WellName)));
-            header.CreateCell(1).SetCellValue(FLNAAnalysis.GetDisplayName(nameof(FLNAAnalysis.Date)));
+            header.CreateCell(0).SetCellValue(FlnaAnalysis.GetDisplayName(nameof(FlnaAnalysis.WellName)));
+            header.CreateCell(1).SetCellValue(FlnaAnalysis.GetDisplayName(nameof(FlnaAnalysis.Date)));
 
             int i = 2;
-            foreach (var p in FLNAAnalysis.Properties.Keys.ToList())
+            foreach (var p in FlnaAnalysis.Properties.Keys.ToList())
             {
                 header.CreateCell(i).SetCellValue(p);
                 i += 1;
@@ -459,7 +500,7 @@ namespace Wells.View.Importer
             header.CreateCell(i + 1).SetCellValue(_Reason);
         }
 
-        static void WriteFLNAAnalysisToExcelRow(FLNAAnalysis analysis, ISheet sheet, int rowIndex, int originalRowIndex, RejectedReasons reason)
+        static void WriteFLNAAnalysisToExcelRow(FlnaAnalysis analysis, ISheet sheet, int rowIndex, int originalRowIndex, RejectedReasons reason)
         {
             var row = sheet.CreateRow(rowIndex);
 
@@ -467,9 +508,9 @@ namespace Wells.View.Importer
             row.CreateCell(1).SetCellValue(analysis.Date);
 
             int i = 2;
-            foreach (var p in FLNAAnalysis.Properties.Keys.ToList())
+            foreach (var p in FlnaAnalysis.Properties.Keys.ToList())
             {
-                row.CreateCell(i, CellType.Numeric).SetCellValue((double)Interaction.CallByName(analysis, FLNAAnalysis.Properties[p].Name, CallType.Get));
+                row.CreateCell(i, CellType.Numeric).SetCellValue((double)Interaction.CallByName(analysis, FlnaAnalysis.Properties[p].Name, CallType.Get));
                 i += 1;
             }
 
@@ -528,25 +569,25 @@ namespace Wells.View.Importer
         static void WriteMeasurementHeader(ISheet sheet)
         {
             var header = sheet.CreateRow(0);
-
-            header.CreateCell(0).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.WellName)));
-            header.CreateCell(1).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.Date)));
-            header.CreateCell(2).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.FLNADepth)));
-            header.CreateCell(3).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.WaterDepth)));
-            header.CreateCell(4).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.Comment)));
-            header.CreateCell(5).SetCellValue(_OriginalRow);
-            header.CreateCell(6).SetCellValue(_Reason);
+            int i = 0;
+            header.CreateCell(i).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.WellName)));
+            header.CreateCell(i++).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.Date)));
+            header.CreateCell(i++).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.FlnaDepth)));
+            header.CreateCell(i++).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.WaterDepth)));
+            header.CreateCell(i++).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.Comment)));
+            header.CreateCell(i++).SetCellValue(_OriginalRow);
+            header.CreateCell(i++).SetCellValue(_Reason);
         }
 
         static IRow WriteMeasurementToExcelRow(Measurement measurement, ISheet sheet, int rowIndex)
         {
             var row = sheet.CreateRow(rowIndex);
-
+            int i = 0;
             row.CreateCell(0).SetCellValue(measurement.WellName);
-            row.CreateCell(1).SetCellValue(measurement.Date);
-            row.CreateCell(2, CellType.Numeric).SetCellValue(measurement.FLNADepth);
-            row.CreateCell(3, CellType.Numeric).SetCellValue(measurement.WaterDepth);
-            row.CreateCell(4).SetCellValue(measurement.Comment);
+            row.CreateCell(i++).SetCellValue(measurement.Date);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(measurement.FlnaDepth);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(measurement.WaterDepth);
+            row.CreateCell(i++).SetCellValue(measurement.Comment);
 
             return row;
         }
@@ -571,35 +612,35 @@ namespace Wells.View.Importer
         static void WriteWellHeader(ISheet sheet)
         {
             var header = sheet.CreateRow(0);
-
+            int i = 0;
             header.CreateCell(0).SetCellValue(Well.GetDisplayName(nameof(Well.Name)));
-            header.CreateCell(1).SetCellValue(Well.GetDisplayName(nameof(Well.X)));
-            header.CreateCell(2).SetCellValue(Well.GetDisplayName(nameof(Well.Y)));
-            header.CreateCell(3).SetCellValue(Well.GetDisplayName(nameof(Well.Z)));
-            header.CreateCell(4).SetCellValue(Well.GetDisplayName(nameof(Well.Latitude)));
-            header.CreateCell(5).SetCellValue(Well.GetDisplayName(nameof(Well.Longitude)));
-            header.CreateCell(6).SetCellValue("Tipo");
-            header.CreateCell(7).SetCellValue(Well.GetDisplayName(nameof(Well.Height)));
-            header.CreateCell(8).SetCellValue(Well.GetDisplayName(nameof(Well.Exists)));
-            header.CreateCell(9).SetCellValue(Well.GetDisplayName(nameof(Well.Bottom)));
-            header.CreateCell(10).SetCellValue(_OriginalRow);
-            header.CreateCell(11).SetCellValue(_Reason);
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.X)));
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.Y)));
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.Z)));
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.Latitude)));
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.Longitude)));
+            header.CreateCell(i++).SetCellValue("Tipo");
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.Height)));
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.Exists)));
+            header.CreateCell(i++).SetCellValue(Well.GetDisplayName(nameof(Well.Bottom)));
+            header.CreateCell(i++).SetCellValue(_OriginalRow);
+            header.CreateCell(i++).SetCellValue(_Reason);
         }
 
         static IRow WriteWellToExcelRow(Well well, ISheet sheet, int rowIndex)
         {
             var row = sheet.CreateRow(rowIndex);
-
+            int i = 0;
             row.CreateCell(0).SetCellValue(well.Name);
-            row.CreateCell(1, CellType.Numeric).SetCellValue(well.X);
-            row.CreateCell(2, CellType.Numeric).SetCellValue(well.Y);
-            row.CreateCell(3, CellType.Numeric).SetCellValue(well.Z);
-            row.CreateCell(4, CellType.Numeric).SetCellValue(well.Latitude);
-            row.CreateCell(5, CellType.Numeric).SetCellValue(well.Longitude);
-            row.CreateCell(6, CellType.Numeric).SetCellValue((int)well.WellType);
-            row.CreateCell(7, CellType.Numeric).SetCellValue(well.Height);
-            row.CreateCell(8).SetCellValue(well.Exists ? "SI" : "NO");
-            row.CreateCell(9, CellType.Numeric).SetCellValue(well.Bottom);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(well.X);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(well.Y);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(well.Z);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(well.Latitude);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(well.Longitude);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue((int)well.WellType);
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(well.Height);
+            row.CreateCell(i++).SetCellValue(well.Exists ? "SI" : "NO");
+            row.CreateCell(i++, CellType.Numeric).SetCellValue(well.Bottom);
 
             return row;
         }

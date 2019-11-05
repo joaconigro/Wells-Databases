@@ -19,8 +19,6 @@ namespace Wells.Persistence
         }
 
         public ApplicationDbContext() { }
-
-       
         #endregion Constructor
 
 
@@ -31,7 +29,7 @@ namespace Wells.Persistence
             modelBuilder.Entity<Well>().ToTable("Wells");
             modelBuilder.Entity<Well>().HasMany(w => w.Measurements).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Well>().HasMany(w => w.SoilAnalyses).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Well>().HasMany(w => w.FLNAAnalyses).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Well>().HasMany(w => w.FlnaAnalyses).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Well>().HasMany(w => w.WaterAnalyses).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Well>().HasMany(w => w.Files).WithOne(i => i.Well).OnDelete(DeleteBehavior.Cascade);
 
@@ -44,14 +42,13 @@ namespace Wells.Persistence
             modelBuilder.Entity<WaterAnalysis>().ToTable("WaterAnalyses");
             modelBuilder.Entity<WaterAnalysis>().HasOne(u => u.Well).WithMany(c => c.WaterAnalyses).OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<FLNAAnalysis>().ToTable("FLNAAnalyses");
-            modelBuilder.Entity<FLNAAnalysis>().HasOne(u => u.Well).WithMany(c => c.FLNAAnalyses).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<FlnaAnalysis>().ToTable("FlnaAnalyses");
+            modelBuilder.Entity<FlnaAnalysis>().HasOne(u => u.Well).WithMany(c => c.FlnaAnalyses).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ExternalFile>().ToTable("ExternalFiles");
             modelBuilder.Entity<ExternalFile>().HasOne(u => u.Well).WithMany(c => c.Files).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Precipitation>().ToTable("Precipitations");
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -65,7 +62,7 @@ namespace Wells.Persistence
         }
 
 
-        public static DbContextOptions GetSQLOptions(string connectionString)
+        public static DbContextOptions GetSqlOptions(string connectionString)
         {
             var builder = new DbContextOptionsBuilder();
             builder
@@ -81,7 +78,7 @@ namespace Wells.Persistence
         public DbSet<Well> Wells { get; set; }
         public DbSet<SoilAnalysis> SoilAnalyses { get; set; }
         public DbSet<WaterAnalysis> WaterAnalyses { get; set; }
-        public DbSet<FLNAAnalysis> FLNAAnalyses { get; set; }
+        public DbSet<FlnaAnalysis> FlnaAnalyses { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<ExternalFile> Files { get; set; }
         public DbSet<Precipitation> Precipitations { get; set; }

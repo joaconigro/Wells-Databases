@@ -13,7 +13,7 @@ namespace Wells.Persistence.Repositories
         private MeasurementsRepository measurements;
         private SoilAnalysesRepository soilAnalyses;
         private WaterAnalysesRepository waterAnalyses;
-        private FLNAAnalysesRepository fLNAAnalyses;
+        private FlnaAnalysesRepository flnaAnalyses;
         private WellsRepository wells;
 
         private static RepositoryWrapper instance;
@@ -64,12 +64,12 @@ namespace Wells.Persistence.Repositories
             }
         }
 
-        public FLNAAnalysesRepository FLNAAnalyses
+        public FlnaAnalysesRepository FlnaAnalyses
         {
             get
             {
-                if (fLNAAnalyses == null) { fLNAAnalyses = new FLNAAnalysesRepository(Context); }
-                return fLNAAnalyses;
+                if (flnaAnalyses == null) { flnaAnalyses = new FlnaAnalysesRepository(Context); }
+                return flnaAnalyses;
             }
         }
 
@@ -97,9 +97,9 @@ namespace Wells.Persistence.Repositories
             {
                 return WaterAnalyses;
             }
-            else if (typeof(T) == typeof(FLNAAnalysis))
+            else if (typeof(T) == typeof(FlnaAnalysis))
             {
-                return FLNAAnalyses;
+                return FlnaAnalyses;
             }
             else if (typeof(T) == typeof(Measurement))
             {

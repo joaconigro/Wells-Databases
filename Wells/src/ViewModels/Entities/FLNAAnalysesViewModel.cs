@@ -14,15 +14,15 @@ using Wells.Model;
 
 namespace Wells.View.ViewModels
 {
-    public class FLNAAnalysesViewModel : EntitiesViewModel<FLNAAnalysis>
+    public class FlnaAnalysesViewModel : EntitiesViewModel<FlnaAnalysis>
     {
-        public FLNAAnalysesViewModel() : base(null)
+        public FlnaAnalysesViewModel() : base(null)
         {
             IsNewCommandEnabled = false;
             IsRemoveCommandEnabled = true;
-            FilterCollection = new FilterCollection<FLNAAnalysis>();
+            FilterCollection = new FilterCollection<FlnaAnalysis>();
             Initialize();
-            _Entities = Repository.FLNAAnalyses.All;
+            _Entities = Repository.FlnaAnalyses.All;
             _ShowWellPanel = true;
             RepositoryWrapper.Instance.Wells.OnEntityRemoved += OnWellRemoved;
         }
@@ -67,6 +67,21 @@ namespace Wells.View.ViewModels
             }
         }
 
+        public ICommand EditWellCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var vm = new EditWellViewModel(SelectedEntity.Well);
+                    if (MainWindow.OpenEditEntityDialog(vm))
+                    {
+                        UpdateEntites();
+                    }
+                }, (obj) => SelectedEntity != null, OnError);
+            }
+        }
+
         public override ICommand RemoveEntityCommand
         {
             get
@@ -75,7 +90,7 @@ namespace Wells.View.ViewModels
                 {
                     if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar"))
                     {
-                        Repository.FLNAAnalyses.Remove(SelectedEntity);
+                        Repository.FlnaAnalyses.Remove(SelectedEntity);
                         RepositoryWrapper.Instance.SaveChanges();
                         UpdateEntites();
                     }
@@ -83,9 +98,9 @@ namespace Wells.View.ViewModels
             }
         }
 
-        public override Dictionary<string, PropertyInfo> FilterProperties => FLNAAnalysis.Properties;
+        public override Dictionary<string, PropertyInfo> FilterProperties => FlnaAnalysis.Properties;
 
-        public override FLNAAnalysis SelectedEntity { get => _SelectedEntity; set { SetValue(ref _SelectedEntity, value); NotifyPropertyChanged(nameof(WellExistsInfo)); } }
+        public override FlnaAnalysis SelectedEntity { get => _SelectedEntity; set { SetValue(ref _SelectedEntity, value); NotifyPropertyChanged(nameof(WellExistsInfo)); } }
 
         protected override void SetCommandUpdates()
         {
@@ -97,7 +112,10 @@ namespace Wells.View.ViewModels
             if (IsRemoveCommandEnabled)
             {
                 var menu = new ContextMenu();
+                var editWellMenuItem = new MenuItem() { Header = "Editar pozo...", Command = EditWellCommand };
                 var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
+                menu.Items.Add(editWellMenuItem);
+                menu.Items.Add(new Separator());
                 menu.Items.Add(removeMenuItem);
                 return menu;
             }
@@ -108,13 +126,13 @@ namespace Wells.View.ViewModels
         protected override async Task ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
         {
             ShowWaitingMessage("Leyendo análisis de FLNA del archivo Excel...");
-            var analyses = await Task.Run(() => ExcelReader.ReadFLNAAnalysis(workbook, sheetIndex, null));
+            var analyses = await Task.Run(() => ExcelReader.ReadFlnaAnalysis(workbook, sheetIndex, null));
             CloseWaitingMessage();
 
             if (analyses.Any())
             {
                 ShowWaitingMessage("Importando análisis...");
-                await Task.Run(() => Repository.FLNAAnalyses.AddRangeAsync(analyses));
+                await Task.Run(() => Repository.FlnaAnalyses.AddRangeAsync(analyses));
                 CloseWaitingMessage();
 
                 ShowWaitingMessage("Guardando base de datos...");
@@ -128,13 +146,13 @@ namespace Wells.View.ViewModels
 
         protected override void CreateWellFilter()
         {
-            var wellFilter = new WellFilter<FLNAAnalysis>(Repository.FLNAAnalyses, false, WellType, WellProperty, SelectedWellName);
+            var wellFilter = new WellFilter<FlnaAnalysis>(Repository.FlnaAnalyses, false, WellType, WellProperty, SelectedWellName);
             OnCreatingFilter(wellFilter);
         }
 
         protected override void UpdateEntites()
         {
-            _Entities = Repository.FLNAAnalyses.All;
+            _Entities = Repository.FlnaAnalyses.All;
             NotifyPropertyChanged(nameof(Entities));
         }
     }

@@ -27,7 +27,7 @@ namespace Wells.Model
 
 
         [DisplayName("Profundidad FLNA (m)"), Browsable(true)]
-        public double FLNADepth { get; set; }
+        public double FlnaDepth { get; set; }
 
 
         [DisplayName("Profundidad Agua (m)"), Browsable(true)]
@@ -39,29 +39,29 @@ namespace Wells.Model
 
 
         [Browsable(false)]
-        public bool HasFLNA => FLNADepth != NumericNullValue;
+        public bool HasFlna => FlnaDepth != NumericNullValue;
 
         [DisplayName("Espesor FLNA (m)"), Browsable(true)]
-        public double FLNAThickness
+        public double FlnaThickness
         {
             get
             {
-                if (HasFLNA && HasWater) { return WaterDepth - FLNADepth; }
+                if (HasFlna && HasWater) { return WaterDepth - FlnaDepth; }
                 return NumericNullValue;
             }
         }
 
 
         [DisplayName("Cota FLNA (m)"), Browsable(true)]
-        public double FLNAElevation
+        public double FlnaElevation
         {
             get
             {
-                if (HasFLNA && Well != null)
+                if (HasFlna && Well != null)
                 {
-                    if (Well.HasHeight) { return Well.Z + Well.Height - FLNADepth; }
-                    else if (Well.HasZ) { return Well.Z - FLNADepth; }
-                    return -FLNADepth;
+                    if (Well.HasHeight && Well.HasZ) { return Well.Z + Well.Height - FlnaDepth; }
+                    else if (Well.HasZ) { return Well.Z - FlnaDepth; }
+                    return -FlnaDepth;
                 }
                 return NumericNullValue;
             }
@@ -75,7 +75,7 @@ namespace Wells.Model
             {
                 if (HasWater && Well != null)
                 {
-                    if (Well.HasHeight) { return Well.Z + Well.Height - WaterDepth; }
+                    if (Well.HasHeight && Well.HasZ) { return Well.Z + Well.Height - WaterDepth; }
                     else if (Well.HasZ) { return Well.Z - WaterDepth; }
                     return -WaterDepth;
                 }

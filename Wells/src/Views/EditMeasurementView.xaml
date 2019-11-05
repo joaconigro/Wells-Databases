@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells.View"
+        xmlns:base="clr-namespace:Wells.BaseView;assembly=BaseView"
         mc:Ignorable="d"
       Title="Edición de medición" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" SizeToContent="Height" Width="500">
     <Grid Style="{StaticResource MarginStyle}">
@@ -32,9 +33,9 @@
                 <TextBlock Name="DateTextBlock" Text="Fecha:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
                 <DatePicker Name="MeasurementDatePicker" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" SelectedDate="{Binding Date, Mode=TwoWay}"/>
                 <TextBlock Name="FLNADepthTextBlock" Text="Profundidad FLNA:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="FLNADepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding FLNADepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+                <TextBox Name="FLNADepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{base:CultureAwareBinding FlnaDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
                 <TextBlock Name="WaterDepthTextBlock" Text="Profundidad agua:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="WaterDepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{Binding WaterDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
+                <TextBox Name="WaterDepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{base:CultureAwareBinding WaterDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
                 
                 <TextBlock Name="CommentTextBlock" Text="Observaciones:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
                 <TextBox Name="CommentTextBox" Margin="4" Text="{Binding Comment, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" 

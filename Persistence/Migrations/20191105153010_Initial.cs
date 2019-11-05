@@ -63,15 +63,15 @@ namespace Wells.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FLNAAnalyses",
+                name: "FlnaAnalyses",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    GRO = table.Column<double>(nullable: false),
-                    DRO = table.Column<double>(nullable: false),
-                    MRO = table.Column<double>(nullable: false),
+                    Gro = table.Column<double>(nullable: false),
+                    Dro = table.Column<double>(nullable: false),
+                    Mro = table.Column<double>(nullable: false),
                     Benzene = table.Column<double>(nullable: false),
                     Tolueno = table.Column<double>(nullable: false),
                     Ethylbenzene = table.Column<double>(nullable: false),
@@ -89,9 +89,9 @@ namespace Wells.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FLNAAnalyses", x => x.Id);
+                    table.PrimaryKey("PK_FlnaAnalyses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FLNAAnalyses_Wells_WellId",
+                        name: "FK_FlnaAnalyses_Wells_WellId",
                         column: x => x.WellId,
                         principalTable: "Wells",
                         principalColumn: "Id",
@@ -105,7 +105,7 @@ namespace Wells.Persistence.Migrations
                     Id = table.Column<string>(nullable: false),
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    FLNADepth = table.Column<double>(nullable: false),
+                    FlnaDepth = table.Column<double>(nullable: false),
                     WaterDepth = table.Column<double>(nullable: false),
                     Comment = table.Column<string>(nullable: true)
                 },
@@ -128,12 +128,12 @@ namespace Wells.Persistence.Migrations
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Humidity = table.Column<double>(nullable: false),
-                    PH = table.Column<double>(nullable: false),
-                    GRO = table.Column<double>(nullable: false),
-                    DRO = table.Column<double>(nullable: false),
-                    MRO = table.Column<double>(nullable: false),
-                    TotalHydrocarbons_EPA8015 = table.Column<double>(nullable: false),
-                    TotalHydrocarbons_TNRCC1005 = table.Column<double>(nullable: false),
+                    Ph = table.Column<double>(nullable: false),
+                    Gro = table.Column<double>(nullable: false),
+                    Dro = table.Column<double>(nullable: false),
+                    Mro = table.Column<double>(nullable: false),
+                    TotalHydrocarbonsEpa8015 = table.Column<double>(nullable: false),
+                    TotalHydrocarbonsTnrcc1005 = table.Column<double>(nullable: false),
                     OilsAndFats = table.Column<double>(nullable: false),
                     C6_C8Aliphatic = table.Column<double>(nullable: false),
                     C8_C10Aliphatic = table.Column<double>(nullable: false),
@@ -151,7 +151,7 @@ namespace Wells.Persistence.Migrations
                     Tolueno = table.Column<double>(nullable: false),
                     Ethylbenzene = table.Column<double>(nullable: false),
                     XyleneO = table.Column<double>(nullable: false),
-                    XylenePM = table.Column<double>(nullable: false),
+                    XylenePm = table.Column<double>(nullable: false),
                     TotalXylene = table.Column<double>(nullable: false),
                     Naphthalene = table.Column<double>(nullable: false),
                     Acenafthene = table.Column<double>(nullable: false),
@@ -165,10 +165,10 @@ namespace Wells.Persistence.Migrations
                     BenzoAAnthracene = table.Column<double>(nullable: false),
                     BenzoAPyrene = table.Column<double>(nullable: false),
                     BenzoBFluoranthene = table.Column<double>(nullable: false),
-                    BenzoGHIPerylene = table.Column<double>(nullable: false),
+                    BenzoGhiPerylene = table.Column<double>(nullable: false),
                     BenzoKFluoranthene = table.Column<double>(nullable: false),
-                    DibenzoAHAnthracene = table.Column<double>(nullable: false),
-                    Indeno123CDPyrene = table.Column<double>(nullable: false),
+                    DibenzoAhAnthracene = table.Column<double>(nullable: false),
+                    Indeno123CdPyrene = table.Column<double>(nullable: false),
                     Arsenic = table.Column<double>(nullable: false),
                     Cadmium = table.Column<double>(nullable: false),
                     Copper = table.Column<double>(nullable: false),
@@ -197,7 +197,7 @@ namespace Wells.Persistence.Migrations
                     Id = table.Column<string>(nullable: false),
                     WellId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    PH = table.Column<double>(nullable: false),
+                    Ph = table.Column<double>(nullable: false),
                     Conductivity = table.Column<double>(nullable: false),
                     DryWaste = table.Column<double>(nullable: false),
                     BicarbonateAlkalinity = table.Column<double>(nullable: false),
@@ -211,16 +211,16 @@ namespace Wells.Persistence.Migrations
                     Potassium = table.Column<double>(nullable: false),
                     Sodium = table.Column<double>(nullable: false),
                     Fluorides = table.Column<double>(nullable: false),
-                    DRO = table.Column<double>(nullable: false),
-                    GRO = table.Column<double>(nullable: false),
-                    MRO = table.Column<double>(nullable: false),
-                    TotalHydrocarbons_EPA8015 = table.Column<double>(nullable: false),
-                    TotalHydrocarbons_TNRCC1005 = table.Column<double>(nullable: false),
+                    Dro = table.Column<double>(nullable: false),
+                    Gro = table.Column<double>(nullable: false),
+                    Mro = table.Column<double>(nullable: false),
+                    TotalHydrocarbonsEpa8015 = table.Column<double>(nullable: false),
+                    TotalHydrocarbonsTnrcc1005 = table.Column<double>(nullable: false),
                     Benzene = table.Column<double>(nullable: false),
                     Tolueno = table.Column<double>(nullable: false),
                     Ethylbenzene = table.Column<double>(nullable: false),
                     XyleneO = table.Column<double>(nullable: false),
-                    XylenePM = table.Column<double>(nullable: false),
+                    XylenePm = table.Column<double>(nullable: false),
                     TotalXylene = table.Column<double>(nullable: false),
                     Naphthalene = table.Column<double>(nullable: false),
                     Acenafthene = table.Column<double>(nullable: false),
@@ -234,10 +234,10 @@ namespace Wells.Persistence.Migrations
                     Crysene = table.Column<double>(nullable: false),
                     BenzoAPyrene = table.Column<double>(nullable: false),
                     BenzoBFluoranthene = table.Column<double>(nullable: false),
-                    BenzoGHIPerylene = table.Column<double>(nullable: false),
+                    BenzoGhiPerylene = table.Column<double>(nullable: false),
                     BenzoKFluoranthene = table.Column<double>(nullable: false),
-                    DibenzoAHAnthracene = table.Column<double>(nullable: false),
-                    Indeno123CDPyrene = table.Column<double>(nullable: false),
+                    DibenzoAhAnthracene = table.Column<double>(nullable: false),
+                    Indeno123CdPyrene = table.Column<double>(nullable: false),
                     Arsenic = table.Column<double>(nullable: false),
                     Cadmium = table.Column<double>(nullable: false),
                     Cobalt = table.Column<double>(nullable: false),
@@ -265,8 +265,8 @@ namespace Wells.Persistence.Migrations
                 column: "WellId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FLNAAnalyses_WellId",
-                table: "FLNAAnalyses",
+                name: "IX_FlnaAnalyses_WellId",
+                table: "FlnaAnalyses",
                 column: "WellId");
 
             migrationBuilder.CreateIndex(
@@ -291,7 +291,7 @@ namespace Wells.Persistence.Migrations
                 name: "ExternalFiles");
 
             migrationBuilder.DropTable(
-                name: "FLNAAnalyses");
+                name: "FlnaAnalyses");
 
             migrationBuilder.DropTable(
                 name: "Measurements");

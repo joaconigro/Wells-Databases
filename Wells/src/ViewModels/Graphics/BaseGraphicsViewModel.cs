@@ -210,11 +210,11 @@ namespace Wells.View.ViewModels
             series.Title = $"{well.Name} - {parameter}";
 
 
-            var propertyName = FLNAAnalysis.Properties[parameter].Name;
+            var propertyName = FlnaAnalysis.Properties[parameter].Name;
             var values = GetFLNAAnalysesValues(well, propertyName, parameter);
 
 
-            var units = FLNAAnalysis.GetChemicalAnalysisUnits(propertyName);
+            var units = FlnaAnalysis.GetChemicalAnalysisUnits(propertyName);
             if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
 
@@ -227,7 +227,7 @@ namespace Wells.View.ViewModels
 
         List<DateModel> GetFLNAAnalysesValues(Well well, string propertyName, string parameter)
         {
-            var values = (from a in well.FLNAAnalyses
+            var values = (from a in well.FlnaAnalyses
                           let param = Convert.ToDouble(Interaction.CallByName(a, propertyName, CallType.Get))
                           where a.Date >= MinimunDate && a.Date <= MaximunDate && param != BusinessObject.NumericNullValue
                           orderby a.Date ascending

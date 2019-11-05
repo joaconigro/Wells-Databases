@@ -13,6 +13,7 @@ using Wells.BaseView.ViewModel;
 using Wells.Model;
 using Wells.Persistence.Repositories;
 using Wells.View.Filters;
+using Wells.View.Importer;
 using Wells.View.UserControls;
 
 namespace Wells.View.ViewModels
@@ -50,6 +51,11 @@ namespace Wells.View.ViewModels
                     {
                         await ReadExcelFile(wb, sheetIndex).ConfigureAwait(false);
                         UpdateEntites();
+                        CloseWaitingMessage();
+                        if (ExcelReader.RejectedEntities.Any())
+                        {
+                            ExportRejectedToExcel();
+                        }
                     }
                 }, () => true, OnError, CloseWaitingMessage);
             }
@@ -273,6 +279,17 @@ namespace Wells.View.ViewModels
             Control.MainWindow.CloseWaitingMessage();
         }
 
+        void ExportRejectedToExcel()
+        {
+            if (MainWindow.ShowYesNoMessageBox($"No se pudieron importar {ExcelReader.RejectedEntities.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados"))
+            {
+                var filename = SharedBaseView.SaveFileDialog("Archivos de Excel|*.xlsx", "Datos rechazados");
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    ExcelReader.ExportRejectedToExcel(filename);
+                }
+            }
+        }
 
         protected abstract void CreateWellFilter();
 

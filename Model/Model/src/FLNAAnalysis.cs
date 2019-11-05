@@ -1,30 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using Wells.BaseModel.Models;
 
 namespace Wells.Model
 {
-    public class FLNAAnalysis : ChemicalAnalysis
+    public class FlnaAnalysis : ChemicalAnalysis
     {
-        public FLNAAnalysis() { }
+        public FlnaAnalysis() { }
 
-        public FLNAAnalysis(Well well) : base(well) { }
+        public FlnaAnalysis(Well well) : base(well) { }
 
         public override ChemicalAnalysisType GetChemicalAnalysisType(string propertyName)
         {
-            return FLNAAnalysisTypes[propertyName];
+            return FlnaAnalysisTypes[propertyName];
         }
 
         #region Properties
         [DisplayName("GRO (%)"), Browsable(true)]
-        public double GRO { get; set; }
+        public double Gro { get; set; }
 
         [DisplayName("DRO (%)"), Browsable(true)]
-        public double DRO { get; set; }
+        public double Dro { get; set; }
 
         [DisplayName("MRO (%)"), Browsable(true)]
-        public double MRO { get; set; }
+        public double Mro { get; set; }
 
         [DisplayName("Benceno (%)"), Browsable(true)]
         public double Benzene { get; set; }
@@ -74,7 +73,7 @@ namespace Wells.Model
         {
             get
             {
-                return GetBrowsableProperties(typeof(FLNAAnalysis));
+                return GetBrowsableProperties(typeof(FlnaAnalysis));
             }
         }
 
@@ -83,18 +82,18 @@ namespace Wells.Model
         {
             get
             {
-                return GetDoubleBrowsableProperties(typeof(FLNAAnalysis));
+                return GetDoubleBrowsableProperties(typeof(FlnaAnalysis));
             }
         }
 
         public static string GetDisplayName(string propertyName)
         {
-            return GetDisplayName(typeof(FLNAAnalysis), propertyName);
+            return GetDisplayName(typeof(FlnaAnalysis), propertyName);
         }
 
         public static string GetChemicalAnalysisUnits(string propertyName)
         {
-            return FLNAAnalysisTypes[propertyName].Unit;
+            return FlnaAnalysisTypes[propertyName].Unit;
         }
     }
 }

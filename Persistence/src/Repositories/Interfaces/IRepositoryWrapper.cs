@@ -6,7 +6,7 @@
         ExternalFilesRepository ExternalFiles { get; }
         MeasurementsRepository Measurements { get; }
         SoilAnalysesRepository SoilAnalyses { get; }
-        FLNAAnalysesRepository FLNAAnalyses { get; }
+        FlnaAnalysesRepository FlnaAnalyses { get; }
         WaterAnalysesRepository WaterAnalyses { get; }
         WellsRepository Wells { get; }
 

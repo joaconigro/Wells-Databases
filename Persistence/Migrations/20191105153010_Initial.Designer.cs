@@ -10,7 +10,7 @@ using Wells.Persistence;
 namespace Wells.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191028014107_Initial")]
+    [Migration("20191105153010_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace Wells.Persistence.Migrations
                     b.ToTable("ExternalFiles");
                 });
 
-            modelBuilder.Entity("Wells.Model.FLNAAnalysis", b =>
+            modelBuilder.Entity("Wells.Model.FlnaAnalysis", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -80,11 +80,11 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("C8_C10")
                         .HasColumnType("float");
 
-                    b.Property<double>("DRO")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("Dro")
+                        .HasColumnType("float");
 
                     b.Property<double>("DynamicViscosity")
                         .HasColumnType("float");
@@ -92,10 +92,10 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("Ethylbenzene")
                         .HasColumnType("float");
 
-                    b.Property<double>("GRO")
+                    b.Property<double>("Gro")
                         .HasColumnType("float");
 
-                    b.Property<double>("MRO")
+                    b.Property<double>("Mro")
                         .HasColumnType("float");
 
                     b.Property<double>("RealDensity")
@@ -115,7 +115,7 @@ namespace Wells.Persistence.Migrations
 
                     b.HasIndex("WellId");
 
-                    b.ToTable("FLNAAnalyses");
+                    b.ToTable("FlnaAnalyses");
                 });
 
             modelBuilder.Entity("Wells.Model.Measurement", b =>
@@ -129,7 +129,7 @@ namespace Wells.Persistence.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("FLNADepth")
+                    b.Property<double>("FlnaDepth")
                         .HasColumnType("float");
 
                     b.Property<double>("WaterDepth")
@@ -191,7 +191,7 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("BenzoBFluoranthene")
                         .HasColumnType("float");
 
-                    b.Property<double>("BenzoGHIPerylene")
+                    b.Property<double>("BenzoGhiPerylene")
                         .HasColumnType("float");
 
                     b.Property<double>("BenzoKFluoranthene")
@@ -242,13 +242,13 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("Crysene")
                         .HasColumnType("float");
 
-                    b.Property<double>("DRO")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("DibenzoAHAnthracene")
+                    b.Property<double>("DibenzoAhAnthracene")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Dro")
                         .HasColumnType("float");
 
                     b.Property<double>("Ethylbenzene")
@@ -263,22 +263,22 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("Fluorene")
                         .HasColumnType("float");
 
-                    b.Property<double>("GRO")
+                    b.Property<double>("Gro")
                         .HasColumnType("float");
 
                     b.Property<double>("Humidity")
                         .HasColumnType("float");
 
-                    b.Property<double>("Indeno123CDPyrene")
+                    b.Property<double>("Indeno123CdPyrene")
                         .HasColumnType("float");
 
                     b.Property<double>("Lead")
                         .HasColumnType("float");
 
-                    b.Property<double>("MRO")
+                    b.Property<double>("Mercury")
                         .HasColumnType("float");
 
-                    b.Property<double>("Mercury")
+                    b.Property<double>("Mro")
                         .HasColumnType("float");
 
                     b.Property<double>("Naphthalene")
@@ -290,7 +290,7 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("OilsAndFats")
                         .HasColumnType("float");
 
-                    b.Property<double>("PH")
+                    b.Property<double>("Ph")
                         .HasColumnType("float");
 
                     b.Property<double>("Pyrene")
@@ -305,10 +305,10 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("TotalChrome")
                         .HasColumnType("float");
 
-                    b.Property<double>("TotalHydrocarbons_EPA8015")
+                    b.Property<double>("TotalHydrocarbonsEpa8015")
                         .HasColumnType("float");
 
-                    b.Property<double>("TotalHydrocarbons_TNRCC1005")
+                    b.Property<double>("TotalHydrocarbonsTnrcc1005")
                         .HasColumnType("float");
 
                     b.Property<double>("TotalXylene")
@@ -321,7 +321,7 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("XyleneO")
                         .HasColumnType("float");
 
-                    b.Property<double>("XylenePM")
+                    b.Property<double>("XylenePm")
                         .HasColumnType("float");
 
                     b.Property<double>("Zinc")
@@ -363,7 +363,7 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("BenzoBFluoranthene")
                         .HasColumnType("float");
 
-                    b.Property<double>("BenzoGHIPerylene")
+                    b.Property<double>("BenzoGhiPerylene")
                         .HasColumnType("float");
 
                     b.Property<double>("BenzoKFluoranthene")
@@ -396,13 +396,13 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("Crysene")
                         .HasColumnType("float");
 
-                    b.Property<double>("DRO")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("DibenzoAHAnthracene")
+                    b.Property<double>("DibenzoAhAnthracene")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Dro")
                         .HasColumnType("float");
 
                     b.Property<double>("DryWaste")
@@ -423,22 +423,22 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("Fluorides")
                         .HasColumnType("float");
 
-                    b.Property<double>("GRO")
+                    b.Property<double>("Gro")
                         .HasColumnType("float");
 
-                    b.Property<double>("Indeno123CDPyrene")
+                    b.Property<double>("Indeno123CdPyrene")
                         .HasColumnType("float");
 
                     b.Property<double>("Lead")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MRO")
                         .HasColumnType("float");
 
                     b.Property<double>("Magnesium")
                         .HasColumnType("float");
 
                     b.Property<double>("Mercury")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Mro")
                         .HasColumnType("float");
 
                     b.Property<double>("Naphthalene")
@@ -450,7 +450,7 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("Nitrates")
                         .HasColumnType("float");
 
-                    b.Property<double>("PH")
+                    b.Property<double>("Ph")
                         .HasColumnType("float");
 
                     b.Property<double>("Potassium")
@@ -471,10 +471,10 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("TotalChrome")
                         .HasColumnType("float");
 
-                    b.Property<double>("TotalHydrocarbons_EPA8015")
+                    b.Property<double>("TotalHydrocarbonsEpa8015")
                         .HasColumnType("float");
 
-                    b.Property<double>("TotalHydrocarbons_TNRCC1005")
+                    b.Property<double>("TotalHydrocarbonsTnrcc1005")
                         .HasColumnType("float");
 
                     b.Property<double>("TotalSulfur")
@@ -490,7 +490,7 @@ namespace Wells.Persistence.Migrations
                     b.Property<double>("XyleneO")
                         .HasColumnType("float");
 
-                    b.Property<double>("XylenePM")
+                    b.Property<double>("XylenePm")
                         .HasColumnType("float");
 
                     b.Property<double>("Zinc")
@@ -552,10 +552,10 @@ namespace Wells.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Wells.Model.FLNAAnalysis", b =>
+            modelBuilder.Entity("Wells.Model.FlnaAnalysis", b =>
                 {
                     b.HasOne("Wells.Model.Well", "Well")
-                        .WithMany("FLNAAnalyses")
+                        .WithMany("FlnaAnalyses")
                         .HasForeignKey("WellId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

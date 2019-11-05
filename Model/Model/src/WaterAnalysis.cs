@@ -18,7 +18,7 @@ namespace Wells.Model
 
         #region Properties
         [DisplayName("pH (UpH)"), Browsable(true)]
-        public double PH { get; set; }
+        public double Ph { get; set; }
 
         [DisplayName("Conductividad (uS/cm)"), Browsable(true)]
         public double Conductivity { get; set; }
@@ -60,19 +60,19 @@ namespace Wells.Model
         public double Fluorides { get; set; }
 
         [DisplayName("DRO (mg/l)"), Browsable(true)]
-        public double DRO { get; set; }
+        public double Dro { get; set; }
 
         [DisplayName("GRO (mg/l)"), Browsable(true)]
-        public double GRO { get; set; }
+        public double Gro { get; set; }
 
         [DisplayName("MRO (mg/l)"), Browsable(true)]
-        public double MRO { get; set; }
+        public double Mro { get; set; }
 
         [DisplayName("Hidrocarburos totales (EPA 8015) (mg/l)"), Browsable(true)]
-        public double TotalHydrocarbons_EPA8015 { get; set; }
+        public double TotalHydrocarbonsEpa8015 { get; set; }
 
         [DisplayName("Hidrocarburos totales (TNRCC 1005) (mg/l)"), Browsable(true)]
-        public double TotalHydrocarbons_TNRCC1005 { get; set; }
+        public double TotalHydrocarbonsTnrcc1005 { get; set; }
 
         [DisplayName("Benceno (mg/l)"), Browsable(true)]
         public double Benzene { get; set; }
@@ -87,7 +87,7 @@ namespace Wells.Model
         public double XyleneO { get; set; }
 
         [DisplayName("Xileno (p-m) (mg/l)"), Browsable(true)]
-        public double XylenePM { get; set; }
+        public double XylenePm { get; set; }
 
         [DisplayName("Xileno total (mg/l)"), Browsable(true)]
         public double TotalXylene { get; set; }
@@ -129,16 +129,16 @@ namespace Wells.Model
         public double BenzoBFluoranthene { get; set; }
 
         [DisplayName("Benzo(g,h,i)perileno (mg/l)"), Browsable(true)]
-        public double BenzoGHIPerylene { get; set; }
+        public double BenzoGhiPerylene { get; set; }
 
         [DisplayName("Benzo(k)fluoranteno (mg/l)"), Browsable(true)]
         public double BenzoKFluoranthene { get; set; }
 
         [DisplayName("Dibenzo(a,h)antraceno (mg/l)"), Browsable(true)]
-        public double DibenzoAHAnthracene { get; set; }
+        public double DibenzoAhAnthracene { get; set; }
 
         [DisplayName("Indeno(1,2,3-cd)pireno (mg/l)"), Browsable(true)]
-        public double Indeno123CDPyrene { get; set; }
+        public double Indeno123CdPyrene { get; set; }
 
         [DisplayName("Arsénico (mg/l)"), Browsable(true)]
         public double Arsenic { get; set; }

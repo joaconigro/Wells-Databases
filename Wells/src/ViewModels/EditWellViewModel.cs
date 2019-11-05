@@ -30,7 +30,7 @@ namespace Wells.View.ViewModels
         private IEditWellView dialog;
         private ObservableCollection<SoilAnalysis> soilAnalyses;
         private ObservableCollection<WaterAnalysis> waterAnalyses;
-        private ObservableCollection<FLNAAnalysis> fLNAAnalyses;
+        private ObservableCollection<FlnaAnalysis> fLNAAnalyses;
         private ObservableCollection<Measurement> measurements;
         private ObservableCollection<ExternalFile> files;
 
@@ -48,7 +48,7 @@ namespace Wells.View.ViewModels
         public double Bottom { get => bottom; set { SetValue(ref bottom, value); } }
         public ObservableCollection<SoilAnalysis> SoilAnalyses { get => soilAnalyses; set { SetValue(ref soilAnalyses, value); } }
         public ObservableCollection<WaterAnalysis> WaterAnalyses { get => waterAnalyses; set { SetValue(ref waterAnalyses, value); } }
-        public ObservableCollection<FLNAAnalysis> FLNAAnalyses { get => fLNAAnalyses; set { SetValue(ref fLNAAnalyses, value); } }
+        public ObservableCollection<FlnaAnalysis> FLNAAnalyses { get => fLNAAnalyses; set { SetValue(ref fLNAAnalyses, value); } }
         public ObservableCollection<Measurement> Measurements { get => measurements; set { SetValue(ref measurements, value); } }
         public ObservableCollection<ExternalFile> Files { get => files; set { SetValue(ref files, value); } }
 
@@ -95,7 +95,7 @@ namespace Wells.View.ViewModels
             Bottom = Well.Bottom;
             SoilAnalyses = new ObservableCollection<SoilAnalysis>(Well.SoilAnalyses.OrderBy(i => i.Date));
             WaterAnalyses = new ObservableCollection<WaterAnalysis>(Well.WaterAnalyses.OrderBy(i => i.Date));
-            FLNAAnalyses = new ObservableCollection<FLNAAnalysis>(Well.FLNAAnalyses.OrderBy(i => i.Date));
+            FLNAAnalyses = new ObservableCollection<FlnaAnalysis>(Well.FlnaAnalyses.OrderBy(i => i.Date));
             Measurements = new ObservableCollection<Measurement>(Well.Measurements.OrderBy(i => i.Date));
             Files = new ObservableCollection<ExternalFile>(Well.Files.OrderBy(i => i.CompleteFilename));
         }
@@ -115,7 +115,7 @@ namespace Wells.View.ViewModels
             Well.Height = Height;
             Well.SoilAnalyses = SoilAnalyses.ToList();
             Well.WaterAnalyses = WaterAnalyses.ToList();
-            Well.FLNAAnalyses = FLNAAnalyses.ToList();
+            Well.FlnaAnalyses = FLNAAnalyses.ToList();
             Well.Measurements = Measurements.ToList();
             Well.Files = Files.ToList();
         }
@@ -137,7 +137,7 @@ namespace Wells.View.ViewModels
             RepositoryWrapper.Instance.Measurements.RemoveRange(Well.Measurements);
             RepositoryWrapper.Instance.SoilAnalyses.RemoveRange(Well.SoilAnalyses);
             RepositoryWrapper.Instance.WaterAnalyses.RemoveRange(Well.WaterAnalyses);
-            RepositoryWrapper.Instance.FLNAAnalyses.RemoveRange(Well.FLNAAnalyses);
+            RepositoryWrapper.Instance.FlnaAnalyses.RemoveRange(Well.FlnaAnalyses);
             RepositoryWrapper.Instance.ExternalFiles.RemoveRange(Well.Files);
             RepositoryWrapper.Instance.Wells.Remove(Well);
         }

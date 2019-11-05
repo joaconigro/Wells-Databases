@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Wells.Base;
 using Wells.BaseModel.Attributes;
 using Wells.BaseView.Converters;
 
@@ -55,19 +56,22 @@ namespace Wells.BaseView.Behaviors
                 (e.Column as DataGridTextColumn).Binding.StringFormat = "dd/MM/yy";
                 changeStyle = true;
             }
-            else if (e.PropertyType == typeof(double))
+            if (Common.IsNumericType(e.PropertyType))
             {
-                (e.Column as DataGridTextColumn).Binding.StringFormat = "N3";
+                if (Common.IsIntegerNumericType(e.PropertyType))
+                {
+                    (e.Column as DataGridTextColumn).Binding.StringFormat = "N0";
+                }
+                else
+                {
+                    (e.Column as DataGridTextColumn).Binding.StringFormat = "N3";
+                }
                 changeStyle = true;
             }
-            else if (e.PropertyType == typeof(int))
-            {
-                (e.Column as DataGridTextColumn).Binding.StringFormat = "N0";
-                changeStyle = true;
-            }
-
+         
             if (changeStyle)
             {
+                ((e.Column as DataGridTextColumn).Binding as Binding).ConverterCulture = System.Globalization.CultureInfo.CurrentCulture;
                 var style = new Style(typeof(TextBlock), (e.Column as DataGridTextColumn).ElementStyle);
                 var setter = new Setter(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Right);
                 style.Setters.Add(setter);

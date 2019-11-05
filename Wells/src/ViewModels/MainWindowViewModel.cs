@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
 using Wells.Model;
-using Wells.Persistence;
 using Wells.Persistence.Repositories;
-using Wells.View.Importer;
 
 namespace Wells.View.ViewModels
 {
@@ -57,18 +54,6 @@ namespace Wells.View.ViewModels
         protected override void SetValidators()
         {
             //No need to add validators yet.
-        }
-
-        public void ExportRejectedToExcel(List<RejectedEntity> rejected)
-        {
-            if (mainWindow.ShowYesNoMessageBox($"No se pudieron importar {rejected.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados"))
-            {
-                var filename = SharedBaseView.SaveFileDialog("Archivos de Excel|*.xlsx", "Datos rechazados");
-                if (!string.IsNullOrEmpty(filename))
-                {
-                    ExcelReader.ExportRejectedToExcel(rejected, filename);
-                }
-            }
         }
 
         public ICommand OpenGraphicsViewCommand

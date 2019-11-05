@@ -11,9 +11,9 @@ namespace Wells.BaseView.Converters
         {
             if (Information.IsNumeric(value))
             {
-                var dbl = Convert.ToDouble(value);
-                if (parameter != null) { return dbl.ToString(parameter.ToString()); }
-                return dbl.ToString();
+                var dbl = Convert.ToDouble(value, culture);
+                if (parameter != null) { return dbl.ToString(parameter.ToString(), culture); }
+                return dbl.ToString(culture);
             }
             return "0";
         }
@@ -23,7 +23,7 @@ namespace Wells.BaseView.Converters
             if (Information.IsNumeric(value))
             {
                 var str = (string)value;
-                bool ok = double.TryParse(str, NumberStyles.Any, CultureInfo.CurrentCulture, out double doubleValue);
+                bool ok = double.TryParse(str, NumberStyles.Any, culture, out double doubleValue);
                 if (ok) { return doubleValue; }
             }
             return 0.0;
