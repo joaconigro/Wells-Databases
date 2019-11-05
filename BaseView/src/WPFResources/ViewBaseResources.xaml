@@ -6,7 +6,7 @@
                     xmlns:behaviors="clr-namespace:Wells.BaseView.Behaviors">
 
     <!--Icon-->
-    <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/Resources;component/files/Icon.ico"/>
+    <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/Resources;component/files/icon32x32.ico"/>
 
     <!--SystemTypes-->
     <s:Boolean x:Key="True">True</s:Boolean>

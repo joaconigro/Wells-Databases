@@ -8,11 +8,14 @@
 
   <ItemGroup>
     <None Remove="files\Icon.ico" />
+    <None Remove="files\icon128x128.ico" />
+    <None Remove="files\icon32x32.ico" />
     <None Remove="files\splashscreen.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="files\Icon.ico" />
+    <Resource Include="files\icon128x128.ico" />
+    <Resource Include="files\icon32x32.ico" />
     <Resource Include="files\splashscreen.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

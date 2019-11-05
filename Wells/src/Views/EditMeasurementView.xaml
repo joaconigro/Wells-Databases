@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:Wells.View"
         xmlns:base="clr-namespace:Wells.BaseView;assembly=BaseView"
         mc:Ignorable="d"
-      Title="Edición de medición" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" SizeToContent="Height" Width="500">
+      Title="Edición de medición" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner" 
+        Width="500" Height="300" MinHeight="300" MinWidth="450">
     <Grid Style="{StaticResource MarginStyle}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -19,7 +20,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -39,7 +40,7 @@
                 
                 <TextBlock Name="CommentTextBlock" Text="Observaciones:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
                 <TextBox Name="CommentTextBox" Margin="4" Text="{Binding Comment, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" 
-                         AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="100" 
+                         AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MinHeight="100" 
                          VerticalAlignment="Stretch" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"/>
             </Grid>
         </GroupBox>
