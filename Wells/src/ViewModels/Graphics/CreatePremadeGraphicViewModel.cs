@@ -54,7 +54,6 @@ namespace Wells.View.ViewModels
                     _ => SoilAnalysis.DoubleProperties.Keys.ToList(),
                 };
             }
-
         }
 
         public bool ShowWellOptions => SelectedFromOption == 0 ? true : false;

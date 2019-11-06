@@ -62,17 +62,23 @@ namespace Wells.BaseView.ViewModel
 
         protected void ShowErrorMessage(string message)
         {
-            View?.ShowErrorMessageBox(message);
+            if (View != null)            
+            { 
+                SharedBaseView. ShowErrorMessageBox(View, message); 
+            }
         }
 
         protected void ShowMessage(string message, string title)
         {
-            View?.ShowOkOnkyMessageBox(message, title);
+            if (View != null)
+            {
+                SharedBaseView.ShowOkOnkyMessageBox(View, message, title);
+            }
         }
 
         protected bool ShowYesNoMessageBox(string message, string title)
         {
-            if (View != null) { return View.ShowYesNoMessageBox(message, title); }
+            if (View != null) { return SharedBaseView.ShowYesNoMessageBox(View, message, title); }
             return false;
         }
 

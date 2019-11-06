@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Wells.View"
         xmlns:base="clr-namespace:Wells.BaseView;assembly=BaseView"
         mc:Ignorable="d"
-         Title="{Binding DialogTitle}" SizeToContent="Height" Width="300" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner" ContentRendered="AfterContentRendered">
+         Title="{Binding DialogTitle}" SizeToContent="Height" Width="300" Style="{StaticResource DialogStyle}" 
+        WindowStartupLocation="CenterOwner" ContentRendered="AfterContentRendered">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

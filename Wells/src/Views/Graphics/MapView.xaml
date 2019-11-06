@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Wells.View"
         xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF" 
         mc:Ignorable="d"
-        Title="MapView" Height="450" Width="800" Style="{StaticResource ResizableDialogStyle}">
+        Title="Mapa" Height="450" Width="800" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner">
     <DockPanel >
         <Grid>
             <Grid.RowDefinitions>
@@ -32,11 +32,28 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Tamaño del punto:" Style="{StaticResource TextBlockStyle}" Grid.Column="0"/>
-                <TextBox Text="{Binding PointSize, Converter={StaticResource DoubleConverter}, ConverterParameter=N1, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding PointSize, Converter={StaticResource DoubleConverter}, ConverterParameter=N1}" 
                          Grid.Column="1" Style="{StaticResource NumericTextBoxStyle}"/>
             </Grid>
-            
-            <CheckBox Content="Mostrar etiquetas" IsChecked="{Binding ShowLabels}" Style="{StaticResource CheckBoxStyle}" Grid.Row="2"/>
+
+            <GroupBox Header="Clasificación" Grid.Row="2">
+                <Grid Name="WellOptions">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="90"/>
+                        <ColumnDefinition Width="*" MinWidth="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Clasificar por:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
+                    <ComboBox Name="SeriesDataComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding ClassificationNames, Mode=OneWay}" SelectedItem="{Binding SelectedClassName, Mode=OneWayToSource}"/>
+                    <TextBlock Text="Parámetro:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                    <ComboBox Name="ParametersComboBox" Style="{StaticResource MarginStyle}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameterName, Mode=OneWayToSource}"/>
+                </Grid>
+
+            </GroupBox>
+
             <Button Content="Cambiar color..." Command="{Binding ChangeColorCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="3"/>
             <Button Content="Guardar imagen..." Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="4"/>
         </Grid>

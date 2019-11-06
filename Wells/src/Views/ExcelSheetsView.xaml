@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells.View"
         mc:Ignorable="d"
-       Title="Hojas del archivo Excel" WindowStartupLocation="CenterScreen" Style="{StaticResource DialogStyle}" MinWidth="350" SizeToContent="WidthAndHeight">
+       Title="Hojas del archivo Excel" WindowStartupLocation="CenterOwner" Style="{StaticResource DialogStyle}" 
+        MinWidth="350" SizeToContent="WidthAndHeight">
     <StackPanel Margin="2">
         <DockPanel>
             <TextBlock Text="Seleccione una hoja para importar: " Style="{StaticResource MarginStyle}"/>

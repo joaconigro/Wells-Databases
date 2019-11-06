@@ -41,7 +41,6 @@ namespace Wells.View.ViewModels
                     _ => SoilAnalysis.DoubleProperties.Keys.ToList(),
                 };
             }
-
         }
 
         void SetWell()

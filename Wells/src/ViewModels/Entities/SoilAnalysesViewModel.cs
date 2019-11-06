@@ -88,7 +88,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar este análisis?", "Eliminar"))
+                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar este análisis?", "Eliminar"))
                     {
                         Repository.SoilAnalyses.Remove(SelectedEntity);
                         RepositoryWrapper.Instance.SaveChanges();

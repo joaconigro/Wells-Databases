@@ -30,22 +30,7 @@ namespace Wells.View
         public void CloseView()
         {
             Close();
-        }
-
-        public void ShowErrorMessageBox(string message)
-        {
-            SharedBaseView.ShowErrorMessageBox(this, message);
-        }
-
-        public bool ShowYesNoMessageBox(string message, string title)
-        {
-            return SharedBaseView.ShowYesNoMessageBox(this, message, title);
-        }
-
-        public void ShowOkOnkyMessageBox(string message, string title)
-        {
-            SharedBaseView.ShowOkOnkyMessageBox(this, message, title);
-        }
+        }     
         #endregion
 
 

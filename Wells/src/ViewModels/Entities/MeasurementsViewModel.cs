@@ -96,7 +96,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar eliminar esta medición?", "Eliminar"))
+                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar eliminar esta medición?", "Eliminar"))
                     {
                         Repository.Measurements.Remove(SelectedEntity);
                         RepositoryWrapper.Instance.SaveChanges();

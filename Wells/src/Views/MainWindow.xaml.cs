@@ -41,21 +41,6 @@ namespace Wells.View
         {
             Close();
         }
-
-        public void ShowErrorMessageBox(string message)
-        {
-            SharedBaseView.ShowErrorMessageBox(this, message);
-        }
-
-        public bool ShowYesNoMessageBox(string message, string title)
-        {
-            return SharedBaseView.ShowYesNoMessageBox(this, message, title);
-        }
-
-        public void ShowOkOnkyMessageBox(string message, string title)
-        {
-            SharedBaseView.ShowOkOnkyMessageBox(this, message, title);
-        }
         #endregion
 
         private void AfterContentRendered(object sender, System.EventArgs e)
@@ -117,44 +102,44 @@ namespace Wells.View
 
         public void OpenGraphicsView()
         {
-            var diag = new CustomGraphicsView();
+            var diag = new CustomGraphicsView() { Owner = this };
             diag.Show();
         }
 
         public void OpenGraphicsView(Well well, PremadeSeriesInfoCollection series)
         {
-            var diag = new PremadeGraphicsView(well, series);
+            var diag = new PremadeGraphicsView(well, series) { Owner = this };
             diag.Show();
         }
 
         public void OpenGraphicsView(PiperSchoellerGraphicViewModel viewModel)
         {
-            var diag = new PiperSchoellerGraphicView(viewModel);
+            var diag = new PiperSchoellerGraphicView(viewModel) { Owner = this };
             diag.Show();
         }
 
         public void OpenGraphicsView(MapViewModel viewModel)
         {
-            var diag = new MapView(viewModel);
+            var diag = new MapView(viewModel) { Owner = this };
             diag.Show();
         }
 
         public void OpenCreatePremadeGraphicView()
         {
-            var diag = new CreatePremadeGraphicView();
+            var diag = new CreatePremadeGraphicView() { Owner = this };
             diag.ShowDialog();
             PremadeGraphicsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public bool OpenEditEntityDialog(EditWellViewModel viewModel)
         {
-            var diag = new EditWellView(viewModel);
+            var diag = new EditWellView(viewModel) { Owner = this};
             return (bool)diag.ShowDialog();
         }
 
         public bool OpenEditEntityDialog(EditMeasurementViewModel viewModel)
         {
-            var diag = new EditMeasurementView(viewModel);
+            var diag = new EditMeasurementView(viewModel) { Owner = this };
             return (bool)diag.ShowDialog();
         }
     }
@@ -165,7 +150,7 @@ namespace Wells.View
         void ShowWaitingMessage(string message);
         void CloseWaitingMessage();
         void OpenGraphicsView();
-        void OpenGraphicsView(Model.Well well, PremadeSeriesInfoCollection series);
+        void OpenGraphicsView(Well well, PremadeSeriesInfoCollection series);
         void OpenGraphicsView(PiperSchoellerGraphicViewModel viewModel);
         void OpenGraphicsView(MapViewModel viewModel);
         void OpenCreatePremadeGraphicView();

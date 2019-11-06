@@ -23,12 +23,45 @@ namespace Wells.View.ViewModels
         private Pushpin selectedPushpin;
         private Location centerLocation;
         private double pointSize;
+        private const double minPointSize = 2.0;
+        private const double maxPointSize = 40.0;
+        private string selectedClassName;
+        private string selectedParameterName;
 
         public Location CenterLocation { get => centerLocation; set { SetValue(ref centerLocation, value); } }
         public List<Pushpin> Pushpins { get; }
         public Pushpin SelectedPushpin { get => selectedPushpin; set { SetValue(ref selectedPushpin, value); UpdateSelection(); } }
-        public double PointSize { get => pointSize; set { SetValue(ref pointSize, value); ChangePushpinAttributes(); } }
         public bool ShowLabels { get => showLabels; set { SetValue(ref showLabels, value); } }
+        public List<string> ClassificationNames => new List<string>() {"Nada", "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public string SelectedClassName { get => selectedClassName; set { SetValue(ref selectedClassName, value); NotifyPropertyChanged(nameof(Parameters)); } }
+        public string SelectedParameterName { get => selectedParameterName; set { SetValue(ref selectedParameterName, value); } }
+
+        public List<string> Parameters
+        {
+            get
+            {
+                return selectedClassName switch
+                {
+                "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
+                "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
+                "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
+                "Análisis de suelos" => SoilAnalysis.DoubleProperties.Keys.ToList(),
+                _ => new List<string>()
+                };
+            }
+
+        }
+        public double PointSize 
+        { 
+            get => pointSize; 
+            set { 
+                if(value >= minPointSize && value <= maxPointSize)
+                {
+                    SetValue(ref pointSize, value);
+                    ChangePushpinAttributes();
+                }
+            } 
+        }
 
 
         public MapViewModel(IEnumerable<Well> wells) : base(null)
@@ -49,7 +82,7 @@ namespace Wells.View.ViewModels
                     Name = w.Name,
                     Location = new Location(w.Latitude, w.Longitude),
                     ToolTip = w.Name,
-                    Template = (Application.Current.FindResource("PushpinDefaultTemplate") as ControlTemplate),
+                    Template = Application.Current.FindResource("PushpinDefaultTemplate") as ControlTemplate,
                     Background = new SolidColorBrush(GetRandomColor())
                 };
                 p.MouseDown += new MouseButtonEventHandler(PushpinMouseDown);

@@ -150,7 +150,7 @@ namespace Wells.View.ViewModels
                 }
                 else
                 {
-                    View.ShowErrorMessageBox("No se puede filtrar por esta propiedad.");
+                    SharedBaseView.ShowErrorMessageBox(View, "No se puede filtrar por esta propiedad.");
                 }
             }
 

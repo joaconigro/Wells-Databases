@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Wells.BaseView.ViewInterfaces;
 
 namespace Wells.BaseView
 {
@@ -16,6 +17,11 @@ namespace Wells.BaseView
             {
                 MessageBox.Show(owner, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             });
+        }
+
+        public static void ShowErrorMessageBox(IView view, string message)
+        {
+            ShowErrorMessageBox((Window)view, message);
         }
 
         public static string OpenFileDialog(string filter, string title)
@@ -76,12 +82,22 @@ namespace Wells.BaseView
             });
         }
 
+        public static bool ShowYesNoMessageBox(IView view, string message, string title)
+        {
+            return ShowYesNoMessageBox((Window)view, message, title);
+        }
+
         public static void ShowOkOnkyMessageBox(Window owner, string message, string title)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 MessageBox.Show(owner, message, title, MessageBoxButton.OK, MessageBoxImage.Information);
             });
+        }
+
+        public static void ShowOkOnkyMessageBox(IView view, string message, string title)
+        {
+            ShowOkOnkyMessageBox((Window)view, message, title);
         }
 
         public static Color ShowColorDialog(System.Drawing.Color selectedColor)

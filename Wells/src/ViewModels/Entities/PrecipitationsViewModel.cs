@@ -63,7 +63,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar este dato?", "Eliminar"))
+                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar este dato?", "Eliminar"))
                     {
                         Repository.Precipitations.Remove(SelectedEntity);
                         RepositoryWrapper.Instance.SaveChanges();

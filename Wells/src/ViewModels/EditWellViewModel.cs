@@ -149,7 +149,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (View.ShowYesNoMessageBox("¿Está seguro de eliminar este pozo?", "Eliminar"))
+                    if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro de eliminar este pozo?", "Eliminar"))
                     {
                         RemoveAll();
                         RepositoryWrapper.Instance.SaveChanges();
@@ -217,7 +217,7 @@ namespace Wells.View.ViewModels
                 return new RelayCommand((param) =>
                 {
                     var measurement = (param as Measurement);
-                    if (dialog.ShowYesNoMessageBox("¿Desea borrar esta medición?", "Borrar medición"))
+                    if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar esta medición?", "Borrar medición"))
                     {
                         Measurements.Remove(measurement);
                     }
@@ -268,7 +268,7 @@ namespace Wells.View.ViewModels
                     if (param != null)
                     {
                         var file = (param as ExternalFile);
-                        if (dialog.ShowYesNoMessageBox("¿Desea borrar este archivo?", "Borrar archivo"))
+                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este archivo?", "Borrar archivo"))
                         {
                             Files.Remove(file);
                         }

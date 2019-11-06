@@ -30,15 +30,25 @@ namespace Wells.View.ViewModels
         private int pointSize;
         private PiperSchollerData selectedPoint;
 
-
-        List<PiperSchollerData> _PiperSchollerPoints;
-        public List<PiperSchollerData> PiperSchollerPoints => _PiperSchollerPoints;
+        public List<PiperSchollerData> PiperSchollerPoints { get; private set; }
 
         public PiperSchollerData SelectedPoint { get => selectedPoint; set { SetValue(ref selectedPoint, value); } }
 
         public bool ShowZones { get => showZones; set { SetValue(ref showZones, value); _Dialog?.CreateGraphics(); } }
 
-        public int PointSize { get => pointSize; set { SetValue(ref pointSize, value); _Dialog?.CreateGraphics(); } }
+
+        public int PointSize
+        {
+            get => pointSize;
+            set
+            {
+                if (value >= 10 && value <= 1000)
+                {
+                    SetValue(ref pointSize, value);
+                    _Dialog?.CreateGraphics();
+                }
+            }
+        }
 
         public PiperSchoellerGraphicViewModel(IEnumerable<Well> wells) : base(null)
         {
@@ -59,7 +69,7 @@ namespace Wells.View.ViewModels
 
         void InitializeData(IEnumerable<WaterAnalysis> analyses)
         {
-            _PiperSchollerPoints = new List<PiperSchollerData>();
+            PiperSchollerPoints = new List<PiperSchollerData>();
 
             var group = analyses.GroupBy(a => a.Well);
 
@@ -68,7 +78,7 @@ namespace Wells.View.ViewModels
                 foreach (var a in g)
                 {
                     var aColor = GetRandomColor();
-                    _PiperSchollerPoints.Add(CalculatePercentage(a, aColor));
+                    PiperSchollerPoints.Add(CalculatePercentage(a, aColor));
                 }
             }
 
@@ -76,14 +86,14 @@ namespace Wells.View.ViewModels
 
         void InitializeData(IEnumerable<Well> wells)
         {
-            _PiperSchollerPoints = new List<PiperSchollerData>();
+            PiperSchollerPoints = new List<PiperSchollerData>();
 
             foreach (var w in wells)
             {
                 var aColor = GetRandomColor();
                 foreach (var a in w.WaterAnalyses)
                 {
-                    _PiperSchollerPoints.Add(CalculatePercentage(a, aColor));
+                    PiperSchollerPoints.Add(CalculatePercentage(a, aColor));
                 }
             }
 

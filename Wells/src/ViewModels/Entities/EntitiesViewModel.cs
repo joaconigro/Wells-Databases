@@ -281,7 +281,7 @@ namespace Wells.View.ViewModels
 
         void ExportRejectedToExcel()
         {
-            if (MainWindow.ShowYesNoMessageBox($"No se pudieron importar {ExcelReader.RejectedEntities.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados"))
+            if (SharedBaseView.ShowYesNoMessageBox(MainWindow, $"No se pudieron importar {ExcelReader.RejectedEntities.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados"))
             {
                 var filename = SharedBaseView.SaveFileDialog("Archivos de Excel|*.xlsx", "Datos rechazados");
                 if (!string.IsNullOrEmpty(filename))

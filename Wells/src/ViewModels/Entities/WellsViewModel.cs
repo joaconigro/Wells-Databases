@@ -89,7 +89,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (MainWindow.ShowYesNoMessageBox("¿Está seguro de eliminar este pozo?", "Eliminar"))
+                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar este pozo?", "Eliminar"))
                     {
                         Repository.Wells.Remove(SelectedEntity);
                         RepositoryWrapper.Instance.SaveChanges();
