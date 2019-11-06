@@ -125,18 +125,6 @@ namespace Wells.View
             }
         }
 
-        public Color ShowColorDialog(System.Drawing.Color selectedColor)
-        {
-            using (var diag = new System.Windows.Forms.ColorDialog() { Color = selectedColor, FullOpen = true })
-            {
-                if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    return Color.FromArgb(diag.Color.A, diag.Color.R, diag.Color.G, diag.Color.B);
-                }
-            }
-            return Color.FromArgb(selectedColor.A, selectedColor.R, selectedColor.G, selectedColor.B);
-        }
-
         public void SaveImage(string filename)
         {
             var imageFilename = SharedBaseView.SaveFileDialog("Imagenes *.png|*.png", "Guardar imagen", filename);

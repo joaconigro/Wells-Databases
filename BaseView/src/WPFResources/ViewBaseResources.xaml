@@ -85,6 +85,7 @@
     <converters:BoolToHiddenVisibilityConverter x:Key="BoolToHiddenVisibilityConverter"/>
     <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     <converters:HiddenVisibilityToBoolConverter x:Key="HiddenVisibilityToBoolConverter"/>
+    <converters:CollapsedVisibilityToBoolConverter x:Key="CollapsedVisibilityToBoolConverter"/>
     <converters:ObjectBoolConverter x:Key="ObjectBoolConverter"/>
 
     <!--Behaviors-->
@@ -93,6 +94,26 @@
    
     
     <!--Images-->
+    <ControlTemplate x:Key="PushpinDefaultTemplate">
+        <ContentControl x:Name="Content" Width="{TemplateBinding Width}" Background="{TemplateBinding Background}">
+            <Grid x:Name="Grid" Width="{Binding ElementName=Content, Path=ActualWidth}" Height="{Binding ElementName=Content, Path=ActualWidth}">
+                <Ellipse x:Name="BackgroundEllipse" Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualWidth}" 
+                     StrokeThickness="1" Stroke="Black" Fill="{Binding ElementName=Content, Path=Background}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Ellipse Width="4" Height="4" StrokeThickness="1" Stroke="Black" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </ContentControl>       
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="PushpinSelectedTemplate">
+        <ContentControl x:Name="Content" Width="{TemplateBinding Width}" Background="{TemplateBinding Background}">
+            <Grid x:Name="Grid" Width="{Binding ElementName=Content, Path=ActualWidth}" Height="{Binding ElementName=Content, Path=ActualWidth}">
+                <Ellipse x:Name="BackgroundEllipse" Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualWidth}" 
+                        StrokeThickness="2" Stroke="Yellow" Fill="{Binding ElementName=Content, Path=Background}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Ellipse Width="4" Height="4" StrokeThickness="1" Stroke="Black" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </ContentControl>
+    </ControlTemplate>
+
     <BitmapImage x:Key="SplashScreenImage" UriSource="pack://application:,,,/Resources;component/files/splashscreen.png"/>
 
     <DrawingGroup x:Key="PiperZonesDrawingGroup">

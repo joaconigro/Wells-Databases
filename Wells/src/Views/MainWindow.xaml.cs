@@ -133,6 +133,12 @@ namespace Wells.View
             diag.Show();
         }
 
+        public void OpenGraphicsView(MapViewModel viewModel)
+        {
+            var diag = new MapView(viewModel);
+            diag.Show();
+        }
+
         public void OpenCreatePremadeGraphicView()
         {
             var diag = new CreatePremadeGraphicView();
@@ -161,6 +167,7 @@ namespace Wells.View
         void OpenGraphicsView();
         void OpenGraphicsView(Model.Well well, PremadeSeriesInfoCollection series);
         void OpenGraphicsView(PiperSchoellerGraphicViewModel viewModel);
+        void OpenGraphicsView(MapViewModel viewModel);
         void OpenCreatePremadeGraphicView();
         bool OpenEditEntityDialog(EditWellViewModel viewModel);
         bool OpenEditEntityDialog(EditMeasurementViewModel viewModel);

@@ -130,6 +130,22 @@ namespace Wells.View.ViewModels
             }
         }
 
+
+        public ICommand OpenMapCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if (SelectedEntities != null && SelectedEntities.Any())
+                    {
+                        var vm = new MapViewModel(SelectedEntities);
+                        MainWindow.OpenGraphicsView(vm);
+                    }
+                }, (obj) => SelectedEntities != null && SelectedEntities.Any(), OnError);
+            }
+        }
+
         public override Dictionary<string, PropertyInfo> FilterProperties => Well.Properties;
 
         public override Well SelectedEntity { get => _SelectedEntity; set { SetValue(ref _SelectedEntity, value); NotifyPropertyChanged(nameof(WellExistsInfo)); } }
@@ -148,6 +164,10 @@ namespace Wells.View.ViewModels
             var editMenuItem = new MenuItem() { Header = "Editar...", Command = EditEntityCommand };
             var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
             menu.Items.Add(editMenuItem);
+            menu.Items.Add(new Separator());
+
+            var mapMenuItem = new MenuItem() { Header = "Mostrar en mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
+            menu.Items.Add(mapMenuItem);
             menu.Items.Add(new Separator());
 
             var graphicsMenuItem = new MenuItem() { Header = "Gráficos" };

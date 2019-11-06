@@ -166,7 +166,7 @@ namespace Wells.View.ViewModels
                                                                      SelectedPoint.PointColor.R,
                                                                      SelectedPoint.PointColor.G,
                                                                      SelectedPoint.PointColor.B);
-                    SelectedPoint.PointColor = _Dialog.ShowColorDialog(currentColor);
+                    SelectedPoint.PointColor = SharedBaseView.ShowColorDialog(currentColor);
                     _Dialog.CreateGraphics();
                 }, (obj) => SelectedPoint != null, OnError);
             }

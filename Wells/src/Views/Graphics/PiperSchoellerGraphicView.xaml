@@ -31,7 +31,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Tamaño del punto:" Style="{StaticResource TextBlockStyle}" Grid.Column="0"/>
-                <TextBox Text="{Binding PointSize, Converter={StaticResource IntegerConverter}}" Grid.Column="1" Style="{StaticResource NumericTextBoxStyle}"/>
+                <TextBox Text="{Binding PointSize, Converter={StaticResource IntegerConverter}, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Style="{StaticResource NumericTextBoxStyle}"/>
             </Grid>
             <CheckBox Content="Mostrar zonas de clasificación" IsChecked="{Binding ShowZones}" Style="{StaticResource CheckBoxStyle}" Grid.Row="2"/>
             <Button Content="Cambiar color..." Command="{Binding ChangeColorCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="3"/>
