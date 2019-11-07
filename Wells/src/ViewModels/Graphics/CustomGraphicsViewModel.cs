@@ -18,8 +18,8 @@ namespace Wells.View.ViewModels
         private string selectedWellName;
         private Well _Well;
 
-        public List<string> SeriesDataNames => new List<string>() { "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
-        public List<string> FromOptions => new List<string>() { "Pozos", "Precipitaciones" };
+        public List<string> SeriesDataNames => new List<string> { "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public List<string> FromOptions => new List<string> { "Pozos", "Precipitaciones" };
 
         public List<string> WellNames => RepositoryWrapper.Instance.Wells.Names;
         public bool ShowWellOptions => SelectedFromOption == 0 ? true : false;

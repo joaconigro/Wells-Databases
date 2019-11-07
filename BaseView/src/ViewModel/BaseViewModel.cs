@@ -92,7 +92,7 @@ namespace Wells.BaseView.ViewModel
             });
         }
 
-        protected void SetValue<T>(ref T value, T newValue, [CallerMemberName()] string propertyName = null, bool forceAssignment = false)
+        protected void SetValue<T>(ref T value, T newValue, [CallerMemberName] string propertyName = null, bool forceAssignment = false)
         {
             if ((newValue == null && value != null) || (newValue != null && (!newValue.Equals(value) || forceAssignment)))
             {
@@ -149,7 +149,7 @@ namespace Wells.BaseView.ViewModel
                 this.validators[propertyName] = list;
             }
             else
-            { this.validators.Add(propertyName, new List<IValidator>() { validator }); }
+            { this.validators.Add(propertyName, new List<IValidator> { validator }); }
         }
 
         protected void Add(string propertyName, IEnumerable<ICommand> commands)
@@ -173,7 +173,7 @@ namespace Wells.BaseView.ViewModel
                 commands[propertyName] = list;
             }
             else
-            { commands.Add(propertyName, new List<ICommand>() { command }); }
+            { commands.Add(propertyName, new List<ICommand> { command }); }
         }
 
         protected virtual void Initialize()
@@ -204,7 +204,7 @@ namespace Wells.BaseView.ViewModel
         {
             if (value == null)
             {
-                var errors = new List<ValidationFailure>() { new ValidationFailure(propertyName, "Error: hay una propiedad nula") };
+                var errors = new List<ValidationFailure> { new ValidationFailure(propertyName, "Error: hay una propiedad nula") };
                 validationResults[propertyName] = new List<ValidationResult> { new ValidationResult(errors) };
             }
             else

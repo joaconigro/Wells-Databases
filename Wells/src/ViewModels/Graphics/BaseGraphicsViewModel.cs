@@ -71,8 +71,6 @@ namespace Wells.View.ViewModels
             dateConfig.Y(dm => dm.Value);
 
             XFormatter = new Func<double, string>(d => DateTime.FromOADate(d).Date.ToString("dd/MM/yy"));
-
-
             YFormatter = new Func<double, string>(d => d.ToString("N2"));
 
             SeriesCollection = new SeriesCollection(dateConfig);
@@ -88,7 +86,7 @@ namespace Wells.View.ViewModels
             }
             else
             {
-                var yAxis = new Axis() { Title = units, Position = AxisPosition.RightTop, LabelFormatter = YFormatter, FontSize = 12 };
+                var yAxis = new Axis { Title = units, Position = AxisPosition.RightTop, LabelFormatter = YFormatter, FontSize = 12 };
                 _Dialog.AddAxis(yAxis);
                 axis = _Dialog.GetYAxisIndex(units);
                 aSeries.ScalesYAt = axis;
@@ -286,14 +284,14 @@ namespace Wells.View.ViewModels
         {
             var seriesColor = Color.FromArgb(255, (byte)_RandomGenerator.Next(0, 255), (byte)_RandomGenerator.Next(0, 255), (byte)_RandomGenerator.Next(0, 255));
 
-            var lineSeries = new LineSeries()
+            var lineSeries = new LineSeries
             {
                 LineSmoothness = 0,
                 Stroke = new SolidColorBrush(seriesColor),
                 PointGeometrySize = 8,
                 Fill = new SolidColorBrush(Colors.Transparent),
                 Values = new ChartValues<DateModel>(),
-                StrokeDashArray = new DoubleCollection() { 2.0 }
+                StrokeDashArray = new DoubleCollection { 2.0 }
             };
 
             return lineSeries;
@@ -303,7 +301,7 @@ namespace Wells.View.ViewModels
         {
             var seriesColor = Color.FromArgb(255, (byte)_RandomGenerator.Next(0, 255), (byte)_RandomGenerator.Next(0, 255), (byte)_RandomGenerator.Next(0, 255));
 
-            var columnSeries = new ColumnSeries()
+            var columnSeries = new ColumnSeries
             {
                 PointGeometry = new RectangleGeometry(new Rect(new Size(8, 8))),
                 ColumnPadding = 0,

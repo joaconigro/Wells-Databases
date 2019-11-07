@@ -24,9 +24,9 @@ namespace Wells.View.ViewModels
         private PremadeSeriesInfoCollection selectedGraphic;
         protected override void SetCommandUpdates()
         {
-            Add(nameof(Title), new List<ICommand>() { CreateGraphicCommand });
-            Add(nameof(SelectedSerie), new List<ICommand>() { RemoveSeriesCommand });
-            Add(nameof(SelectedGraphic), new List<ICommand>() { RemoveGraphicCommand });
+            Add(nameof(Title), CreateGraphicCommand);
+            Add(nameof(SelectedSerie), RemoveSeriesCommand);
+            Add(nameof(SelectedGraphic), RemoveGraphicCommand);
         }
 
         protected override void SetValidators()
@@ -34,8 +34,8 @@ namespace Wells.View.ViewModels
             Add(nameof(Title), new EmptyStringValidator("Título"));
         }
 
-        public List<string> SeriesDataNames => new List<string>() { "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
-        public List<string> FromOptions => new List<string>() { "Pozos", "Precipitaciones" };
+        public List<string> SeriesDataNames => new List<string> { "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public List<string> FromOptions => new List<string> { "Pozos", "Precipitaciones" };
 
         public string Title { get => title; set { SetValue(ref title, value); } }
         public string SelectedSeriesDataName { get => selectedSeriesDataName; set { SetValue(ref selectedSeriesDataName, value); NotifyPropertyChanged(nameof(Parameters)); } }
@@ -91,19 +91,18 @@ namespace Wells.View.ViewModels
         {
             var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
             var filename = Path.Combine(dir, "PremadeGraphics.wpg");
+            var entities = new List<PremadeSeriesInfoCollection>();
 
             if (File.Exists(filename))
             {
                 var serializer = new XmlSerializer(typeof(List<PremadeSeriesInfoCollection>));
-                var entities = new List<PremadeSeriesInfoCollection>();
                 using (var reader = new StreamReader(filename))
                 {
                     entities = (List<PremadeSeriesInfoCollection>)serializer.Deserialize(reader);
                 }
 
-                return entities;
             }
-            return new List<PremadeSeriesInfoCollection>();
+            return entities;
         }
 
         void SavePremadeGraphics()
@@ -132,7 +131,7 @@ namespace Wells.View.ViewModels
                     PremadeSeriesInfo s;
                     if (ShowWellOptions)
                     {
-                        s = new PremadeSeriesInfo()
+                        s = new PremadeSeriesInfo
                         {
                             IsFromWell = ShowWellOptions,
                             ParameterGroup = SelectedSeriesDataName,
@@ -141,7 +140,7 @@ namespace Wells.View.ViewModels
                     }
                     else
                     {
-                        s = new PremadeSeriesInfo() { IsFromWell = ShowWellOptions };
+                        s = new PremadeSeriesInfo { IsFromWell = ShowWellOptions };
                     }
                     Series.Add(s);
                     (CreateGraphicCommand as RelayCommand).OnCanExecuteChanged();

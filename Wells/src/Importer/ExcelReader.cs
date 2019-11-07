@@ -34,7 +34,7 @@ namespace Wells.View.Importer
                 {
                     indexError = i;
                     row = sheet.GetRow(i);
-                    var well = new Well()
+                    var well = new Well
                     {
                         Name = ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture),
                         X = ReadCellAsDouble(row, 1),
@@ -93,7 +93,7 @@ namespace Wells.View.Importer
                 {
                     indexError = i;
                     row = sheet.GetRow(i);
-                    var prec = new Precipitation()
+                    var prec = new Precipitation
                     {
                         PrecipitationDate = ParseStringDate(ReadCellAsDateString(row, 0)),
                         Millimeters = ReadCellAsDouble(row, 1)
@@ -131,7 +131,7 @@ namespace Wells.View.Importer
                 {
                     indexError = i;
                     row = sheet.GetRow(i);
-                    var meas = new Measurement()
+                    var meas = new Measurement
                     {
                         Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1)),
@@ -175,7 +175,7 @@ namespace Wells.View.Importer
                 {
                     indexError = i;
                     row = sheet.GetRow(i);
-                    var analysis = new FlnaAnalysis()
+                    var analysis = new FlnaAnalysis
                     {
                         Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
@@ -224,7 +224,7 @@ namespace Wells.View.Importer
                 {
                     indexError = i;
                     row = sheet.GetRow(i);
-                    var analysis = new WaterAnalysis()
+                    var analysis = new WaterAnalysis
                     {
                         Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))
@@ -273,7 +273,7 @@ namespace Wells.View.Importer
                 {
                     indexError = i;
                     row = sheet.GetRow(i);
-                    var analysis = new SoilAnalysis()
+                    var analysis = new SoilAnalysis
                     {
                         Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1))

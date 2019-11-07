@@ -35,7 +35,7 @@ namespace Wells.BaseView
         {
             return Application.Current.Dispatcher.Invoke(() =>
             {
-                var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory };
+                var ofd = new Microsoft.Win32.OpenFileDialog { Filter = filter, Title = title, InitialDirectory = initialDirectory };
                 if (ofd.ShowDialog() == true) { return ofd.FileName; }
                 return null;
             });
@@ -45,7 +45,7 @@ namespace Wells.BaseView
         {
             return Application.Current.Dispatcher.Invoke(() =>
             {
-                var ofd = new Microsoft.Win32.OpenFileDialog() { Filter = filter, Title = title, InitialDirectory = initialDirectory, Multiselect = true };
+                var ofd = new Microsoft.Win32.OpenFileDialog { Filter = filter, Title = title, InitialDirectory = initialDirectory, Multiselect = true };
                 if (ofd.ShowDialog() == true) { return ofd.FileNames.ToList(); }
                 return null;
             });
@@ -60,7 +60,7 @@ namespace Wells.BaseView
         {
             return Application.Current.Dispatcher.Invoke(() =>
             {
-                var sfd = new Microsoft.Win32.SaveFileDialog() { Filter = filter, Title = title, FileName = filename, InitialDirectory = initialDirectory };
+                var sfd = new Microsoft.Win32.SaveFileDialog { Filter = filter, Title = title, FileName = filename, InitialDirectory = initialDirectory };
                 if (sfd.ShowDialog() == true) { return sfd.FileName; }
                 return null;
             });
@@ -104,7 +104,7 @@ namespace Wells.BaseView
 
         public static Color ShowColorDialog(System.Drawing.Color selectedColor)
         {
-            using (var diag = new Cyotek.Windows.Forms.ColorPickerDialog() { Color = selectedColor })
+            using (var diag = new Cyotek.Windows.Forms.ColorPickerDialog { Color = selectedColor })
             {
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {

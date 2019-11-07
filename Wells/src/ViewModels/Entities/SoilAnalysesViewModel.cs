@@ -112,8 +112,8 @@ namespace Wells.View.ViewModels
             if (IsRemoveCommandEnabled)
             {
                 var menu = new ContextMenu();
-                var editWellMenuItem = new MenuItem() { Header = "Editar pozo...", Command = EditWellCommand };
-                var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
+                var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };
+                var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
                 menu.Items.Add(editWellMenuItem);
                 menu.Items.Add(new Separator());
                 menu.Items.Add(removeMenuItem);

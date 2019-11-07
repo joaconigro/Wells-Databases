@@ -111,7 +111,7 @@ namespace Wells.View.ViewModels
                     }
                     else if (SelectedEntity != null)
                     {
-                        var vm = new PiperSchoellerGraphicViewModel(new List<WaterAnalysis>() { SelectedEntity });
+                        var vm = new PiperSchoellerGraphicViewModel(new List<WaterAnalysis> { SelectedEntity });
                         MainWindow.OpenGraphicsView(vm);
                     }
                 }, (obj) => (SelectedEntities != null && SelectedEntities.Any()) || SelectedEntity != null, OnError);
@@ -130,16 +130,16 @@ namespace Wells.View.ViewModels
         public override ContextMenu GetContextMenu()
         {
             var menu = new ContextMenu();
-            var piperMenuItem = new MenuItem() { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
+            var piperMenuItem = new MenuItem { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
             menu.Items.Add(piperMenuItem);
             menu.Items.Add(new Separator());
-            var editWellMenuItem = new MenuItem() { Header = "Editar pozo...", Command = EditWellCommand };
+            var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };
             menu.Items.Add(editWellMenuItem);
 
             if (IsRemoveCommandEnabled)
             {
                 menu.Items.Add(new Separator());
-                var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
+                var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
                 menu.Items.Add(removeMenuItem);
                 return menu;
             }

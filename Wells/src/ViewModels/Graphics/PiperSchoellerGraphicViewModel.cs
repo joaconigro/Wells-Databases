@@ -123,7 +123,7 @@ namespace Wells.View.ViewModels
             var chlo = analysis.Chlorides / ChloridesMeq;
             var totalAnions = bicarb + sulf + chlo;
 
-            var psData = new PiperSchollerData()
+            var psData = new PiperSchollerData
             {
                 Calcium = cal / totalCations * 100,
                 Magnesium = mag / totalCations * 100,

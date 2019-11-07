@@ -128,7 +128,7 @@ namespace Wells.View.ViewModels
         {
             if (!IsEditing)
             {
-                Add(nameof(WellName), new List<IValidator>() { new EmptyStringValidator("Nombre"), new WellNameValidator("Nombre") });
+                Add(nameof(WellName), new List<IValidator> { new EmptyStringValidator("Nombre"), new WellNameValidator("Nombre") });
             }
         }
 
@@ -252,7 +252,7 @@ namespace Wells.View.ViewModels
                 {
                     if (param != null)
                     {
-                        var file = (param as ExternalFile);
+                        var file = param as ExternalFile;
                         file.Open();
                     }
                 }, (obj) => true, OnError);
@@ -267,7 +267,7 @@ namespace Wells.View.ViewModels
                 {
                     if (param != null)
                     {
-                        var file = (param as ExternalFile);
+                        var file = param as ExternalFile;
                         if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este archivo?", "Borrar archivo"))
                         {
                             Files.Remove(file);

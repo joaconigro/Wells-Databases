@@ -118,9 +118,9 @@ namespace Wells.View.ViewModels
         public override ContextMenu GetContextMenu()
         {
             var menu = new ContextMenu();
-            var editMenuItem = new MenuItem() { Header = "Editar...", Command = EditEntityCommand };
-            var editWellMenuItem = new MenuItem() { Header = "Editar pozo...", Command = EditWellCommand };
-            var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
+            var editMenuItem = new MenuItem { Header = "Editar...", Command = EditEntityCommand };
+            var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };
+            var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
             menu.Items.Add(editMenuItem);
             menu.Items.Add(editWellMenuItem);
             menu.Items.Add(new Separator());

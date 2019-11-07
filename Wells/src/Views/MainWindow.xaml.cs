@@ -102,7 +102,7 @@ namespace Wells.View
 
         public void OpenGraphicsView()
         {
-            var diag = new CustomGraphicsView() { Owner = this };
+            var diag = new CustomGraphicsView { Owner = this };
             diag.Show();
         }
 
@@ -126,7 +126,7 @@ namespace Wells.View
 
         public void OpenCreatePremadeGraphicView()
         {
-            var diag = new CreatePremadeGraphicView() { Owner = this };
+            var diag = new CreatePremadeGraphicView { Owner = this };
             diag.ShowDialog();
             PremadeGraphicsChanged?.Invoke(this, EventArgs.Empty);
         }

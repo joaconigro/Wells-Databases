@@ -235,7 +235,6 @@ namespace Wells.View.ViewModels
 
         protected override void OnSetView(IView view)
         {
-            //base.OnSetView(view);
             Control = (IEntitiesControl)view;
             MainWindow = Control.MainWindow;
             View = MainWindow;

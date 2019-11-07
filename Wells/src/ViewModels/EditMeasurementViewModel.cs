@@ -45,7 +45,7 @@ namespace Wells.View.ViewModels
         {
             IsEditing = false;
             IsWellSelectable = false;
-            Measurement = new Measurement() { Well = well };
+            Measurement = new Measurement { Well = well };
             InitializeMeasurement();
         }
 

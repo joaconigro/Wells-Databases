@@ -24,7 +24,7 @@ namespace Wells.View.ViewModels
         {
             IsNewCommandEnabled = true;
             IsRemoveCommandEnabled = true;
-            FilterCollection = new Filters.FilterCollection<Well>();
+            FilterCollection = new FilterCollection<Well>();
             Initialize();
             _Entities = Repository.Wells.All;
             _ShowWellPanel = true;
@@ -123,7 +123,7 @@ namespace Wells.View.ViewModels
                     }
                     else if (SelectedEntity != null)
                     {
-                        var vm = new PiperSchoellerGraphicViewModel(new List<Well>() { SelectedEntity });
+                        var vm = new PiperSchoellerGraphicViewModel(new List<Well> { SelectedEntity });
                         MainWindow.OpenGraphicsView(vm);
                     }
                 }, (obj) => (SelectedEntities != null && SelectedEntities.Any()) || SelectedEntity != null, OnError);
@@ -161,22 +161,22 @@ namespace Wells.View.ViewModels
         public override ContextMenu GetContextMenu()
         {
             var menu = new ContextMenu();
-            var editMenuItem = new MenuItem() { Header = "Editar...", Command = EditEntityCommand };
-            var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
+            var editMenuItem = new MenuItem { Header = "Editar...", Command = EditEntityCommand };
+            var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
             menu.Items.Add(editMenuItem);
             menu.Items.Add(new Separator());
 
-            var mapMenuItem = new MenuItem() { Header = "Mostrar en mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
+            var mapMenuItem = new MenuItem { Header = "Mostrar en mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
             menu.Items.Add(mapMenuItem);
             menu.Items.Add(new Separator());
 
-            var graphicsMenuItem = new MenuItem() { Header = "Gráficos" };
-            var piperMenuItem = new MenuItem() { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
+            var graphicsMenuItem = new MenuItem { Header = "Gráficos" };
+            var piperMenuItem = new MenuItem { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
             graphicsMenuItem.Items.Add(piperMenuItem);
             foreach (var pg in _PremadeGraphics)
             {
                 graphicsMenuItem.Items.Add(new Separator());
-                var aMenuItem = new MenuItem() { Header = pg.Title, Command = OpenPremadeGraphicCommand, CommandParameter = pg };
+                var aMenuItem = new MenuItem { Header = pg.Title, Command = OpenPremadeGraphicCommand, CommandParameter = pg };
                 graphicsMenuItem.Items.Add(aMenuItem);
             }
             menu.Items.Add(graphicsMenuItem);

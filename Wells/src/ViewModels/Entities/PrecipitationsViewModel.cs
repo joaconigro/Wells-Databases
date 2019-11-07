@@ -87,7 +87,7 @@ namespace Wells.View.ViewModels
             if (IsRemoveCommandEnabled)
             {
                 var menu = new ContextMenu();
-                var removeMenuItem = new MenuItem() { Header = "Eliminar", Command = RemoveEntityCommand };
+                var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
                 menu.Items.Add(removeMenuItem);
                 return menu;
             }
