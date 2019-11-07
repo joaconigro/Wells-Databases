@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.Maps.MapControl.WPF;
+using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Serialization;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
-using Wells.View.Graphics;
 using Wells.Model;
-using Microsoft.Maps.MapControl.WPF;
-using System.Windows.Controls;
-using System.Windows;
+using Wells.View.Graphics;
+using Wells.View.UserControls;
 
 namespace Wells.View.ViewModels
 {
@@ -23,88 +26,182 @@ namespace Wells.View.ViewModels
         private Pushpin selectedPushpin;
         private Location centerLocation;
         private double pointSize;
-        private const double minPointSize = 2.0;
-        private const double maxPointSize = 40.0;
-        private string selectedClassName;
-        private string selectedParameterName;
+        private double minPointSize;
+        private double maxPointSize;
+        private const double lowerPointSize = 5.0;
+        private const double upperPointSize = 40.0;
+        private string selectedClass;
+        private string selectedParameter;
+        private Gradient selectedGradient;
+        private bool isClassified;
+        private readonly List<Well> wells;
 
         public Location CenterLocation { get => centerLocation; set { SetValue(ref centerLocation, value); } }
         public List<Pushpin> Pushpins { get; }
+        public List<Gradient> Gradients { get; private set; }
         public Pushpin SelectedPushpin { get => selectedPushpin; set { SetValue(ref selectedPushpin, value); UpdateSelection(); } }
         public bool ShowLabels { get => showLabels; set { SetValue(ref showLabels, value); } }
-        public List<string> ClassificationNames => new List<string>() {"Nada", "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
-        public string SelectedClassName { get => selectedClassName; set { SetValue(ref selectedClassName, value); NotifyPropertyChanged(nameof(Parameters)); } }
-        public string SelectedParameterName { get => selectedParameterName; set { SetValue(ref selectedParameterName, value); } }
-
+        public List<string> ClassificationNames => new List<string>() { "Nada", "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public string SelectedClass { get => selectedClass; set { SetValue(ref selectedClass, value); NotifyPropertyChanged(nameof(Parameters)); } }
+        public string SelectedParameter { get => selectedParameter; set { SetValue(ref selectedParameter, value); ChangePushpinAttributes(); } }
+        public Gradient SelectedGradient { get => selectedGradient; set { SetValue(ref selectedGradient, value); ChangePushpinAttributes(); } }
+        public bool IsClassified { get => isClassified; set { SetValue(ref isClassified, value); NotifyPropertyChanged(nameof(IsNotClassified)); ChangePushpinAttributes(); } }
+        public bool IsNotClassified => !IsClassified;
         public List<string> Parameters
         {
             get
             {
-                return selectedClassName switch
+                selectedParameter = string.Empty;
+                IsClassified = selectedClass != "Nada";
+                return selectedClass switch
                 {
-                "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
-                "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
-                "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
-                "Análisis de suelos" => SoilAnalysis.DoubleProperties.Keys.ToList(),
-                _ => new List<string>()
+                    "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
+                    "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
+                    "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
+                    "Análisis de suelos" => SoilAnalysis.DoubleProperties.Keys.ToList(),
+                    _ => new List<string>()
                 };
             }
-
         }
-        public double PointSize 
-        { 
-            get => pointSize; 
-            set { 
-                if(value >= minPointSize && value <= maxPointSize)
+
+        public double PointSize
+        {
+            get => pointSize;
+            set
+            {
+                if (value >= lowerPointSize && value <= upperPointSize)
                 {
                     SetValue(ref pointSize, value);
                     ChangePushpinAttributes();
                 }
-            } 
+            }
+        }
+
+        public double MinPointSize
+        {
+            get => minPointSize;
+            set
+            {
+                if (value >= lowerPointSize && value <= maxPointSize)
+                {
+                    SetValue(ref minPointSize, value);
+                    ChangePushpinAttributes();
+                }
+            }
+        }
+
+        public double MaxPointSize
+        {
+            get => maxPointSize;
+            set
+            {
+                if (value >= minPointSize && value <= upperPointSize)
+                {
+                    SetValue(ref maxPointSize, value);
+                    ChangePushpinAttributes();
+                }
+            }
         }
 
 
         public MapViewModel(IEnumerable<Well> wells) : base(null)
         {
+            ReadGradients();
+            this.wells = wells.Where(w => w.HasGeographic).OrderBy(w => w.Name).ToList();
             Pushpins = new List<Pushpin>();
             showLabels = true;
             Initialize();
-            InitializeData(wells);
+            InitializeData();
+
+            isClassified = false;
+            selectedClass = "Nada";
+            selectedGradient = Gradients.First();
+
+            var lat = this.wells.Average(w => w.Latitude);
+            var lon = this.wells.Average(w => w.Longitude);
+            CenterLocation = new Location(lat, lon);
+            PointSize = 13.0;
+            minPointSize = lowerPointSize;
+            maxPointSize = upperPointSize;
+            //SaveGradients();
         }
 
 
-        void InitializeData(IEnumerable<Well> wells)
+        void InitializeData()
         {
-            foreach (var w in wells.Where(well => well.HasGeographic))
+            foreach (var w in wells)
             {
-                var p = new Pushpin()
+                var p = new Pushpin
                 {
                     Name = w.Name,
                     Location = new Location(w.Latitude, w.Longitude),
-                    ToolTip = w.Name,
                     Template = Application.Current.FindResource("PushpinDefaultTemplate") as ControlTemplate,
-                    Background = new SolidColorBrush(GetRandomColor())
+                    Background = new SolidColorBrush(SharedBaseView.GetRandomColor(_Random))
                 };
                 p.MouseDown += new MouseButtonEventHandler(PushpinMouseDown);
                 Pushpins.Add(p);
             }
 
-            var lat = wells.Where(well => well.HasGeographic).Average(w => w.Latitude);
-            var lon = wells.Where(well => well.HasGeographic).Average(w => w.Longitude);
-            CenterLocation = new Location(lat, lon);
-
-            PointSize = 10.0;
+            CreateTooltips();
         }
 
         void ChangePushpinAttributes()
         {
-            foreach (Pushpin p in Pushpins)
+            if (IsClassified && !string.IsNullOrEmpty(SelectedParameter))
             {
-                p.Width = PointSize;
+                foreach (Pushpin p in Pushpins)
+                {
+                    var well = wells.First(w => w.Name == p.Name);
+                    p.Tag = GetValue(well);
+                }
+                var minValue = Pushpins.Min(p => (double)p.Tag);
+                var maxValue = Pushpins.Max(p => (double)p.Tag);
+               
+                foreach (Pushpin p in Pushpins)
+                {
+                    if (minPointSize.Equals(maxPointSize))
+                    {
+                        p.Width = minPointSize;
+                    }
+                    else
+                    {
+                        p.Width = minPointSize + MapTo((double)p.Tag, minValue, maxValue, minPointSize, maxPointSize);
+                    }
+
+                    var offset = MapTo((double)p.Tag, minValue, maxValue, 0.0, 1.0);
+                    p.Background = new SolidColorBrush(SelectedGradient.GetColor(offset));
+                }
             }
-            if (SelectedPushpin != null)
+            else
             {
-                SelectedPushpin.Width = PointSize + 2;
+                foreach (Pushpin p in Pushpins)
+                {
+                    p.Width = PointSize;
+                }
+                if (SelectedPushpin != null)
+                {
+                    SelectedPushpin.Width = PointSize + 2;
+                }
+            }
+            CreateTooltips();
+        }
+
+        void CreateTooltips()
+        {
+            if (IsClassified && !string.IsNullOrEmpty(SelectedParameter))
+            {
+                foreach (Pushpin p in Pushpins)
+                {
+                    var info = $"{selectedParameter} = { Convert.ToDouble(p.Tag).ToString("N2")}";
+                    p.ToolTip = new CustomTooltip(p.Name, info);
+                }
+            }
+            else
+            {
+                foreach (Pushpin p in Pushpins)
+                {
+                    p.ToolTip = new CustomTooltip(p.Name);
+                }
             }
         }
 
@@ -126,13 +223,12 @@ namespace Wells.View.ViewModels
             }
         }
 
-        Color GetRandomColor()
+        public void ClearSelection()
         {
-            var names = (IList)Enum.GetValues(typeof(System.Drawing.KnownColor));
-            var randomColorName = (System.Drawing.KnownColor)names[_Random.Next(names.Count)];
-            var randomColor = System.Drawing.Color.FromKnownColor(randomColorName);
-            return Color.FromArgb(randomColor.A, randomColor.R, randomColor.G, randomColor.B);
+            SelectedPushpin = null;
+            UpdateSelection();
         }
+
         protected override void SetValidators()
         {
             //No need to implement yet.
@@ -151,7 +247,84 @@ namespace Wells.View.ViewModels
             _Dialog = (IMapView)view;
         }
 
+        private double MapTo(double value, double minValue, double maxValue, double min, double max)
+        {
+            return (value - minValue) * (max - min) / (maxValue - minValue);
+        }
 
+        double GetValue(Well well)
+        {
+            try
+            {
+                if (SelectedClass == "Mediciones")
+                {
+                    var propName = Measurement.DoubleProperties[SelectedParameter].Name;
+                    return well.Measurements.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                }
+                else if (SelectedClass == "Análisis de FLNA")
+                {
+                    var propName = FlnaAnalysis.DoubleProperties[SelectedParameter].Name;
+                    return well.FlnaAnalyses.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                }
+                else if (SelectedClass == "Análisis de agua")
+                {
+                    var propName = WaterAnalysis.DoubleProperties[SelectedParameter].Name;
+                    return well.WaterAnalyses.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                }
+                else if (SelectedClass == "Análisis de suelos")
+                {
+                    var propName = SoilAnalysis.DoubleProperties[SelectedParameter].Name;
+                    return well.SoilAnalyses.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                }
+                else { return 0.0; }
+            }
+            catch
+            {
+                ShowErrorMessage("Uno o más de los pozos utilizados no tiene los datos seleccionados.");
+                return 0.0;
+            }          
+        }
+
+        void ReadGradients()
+        {
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+            var filename = Path.Combine(dir, "Gradients.wgr");
+
+            Gradients = new List<Gradient>();
+            if (File.Exists(filename))
+            {
+                var serializer = new XmlSerializer(typeof(List<Gradient>));
+                using (var reader = new StreamReader(filename))
+                {
+                    Gradients = (List<Gradient>)serializer.Deserialize(reader);
+                }
+            }
+
+            foreach (var g in Gradients)
+            {
+                g.DeserializeGradient();
+            }
+        }
+
+        public void SaveGradients()
+        {
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            var filename = Path.Combine(dir, "Gradients.wgr");
+
+            foreach (var g in Gradients)
+            {
+                g.SerializeGradient();
+            }
+
+            var serializer = new XmlSerializer(typeof(List<Gradient>));
+            using var writer = new StreamWriter(filename);
+            serializer.Serialize(writer, Gradients);
+        }
 
 
         public ICommand SaveImageCommand

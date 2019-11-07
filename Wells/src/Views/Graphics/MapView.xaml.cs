@@ -56,5 +56,13 @@ namespace Wells.View
                 SharedBaseView.CaptureScreen(imageFilename, Map, 200, 200);
             }
         }
+
+        private void OnMapMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                viewModel.ClearSelection();
+            }
+        }
     }
 }

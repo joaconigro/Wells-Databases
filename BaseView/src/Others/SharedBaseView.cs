@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -102,7 +104,7 @@ namespace Wells.BaseView
 
         public static Color ShowColorDialog(System.Drawing.Color selectedColor)
         {
-            using (var diag = new System.Windows.Forms.ColorDialog() { Color = selectedColor, FullOpen = true })
+            using (var diag = new Cyotek.Windows.Forms.ColorPickerDialog() { Color = selectedColor })
             {
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
@@ -110,6 +112,14 @@ namespace Wells.BaseView
                 }
             }
             return Color.FromArgb(selectedColor.A, selectedColor.R, selectedColor.G, selectedColor.B);
+        }
+
+        public static Color GetRandomColor(Random random)
+        {
+            var names = (IList)Enum.GetValues(typeof(System.Drawing.KnownColor));
+            var randomColorName = (System.Drawing.KnownColor)names[random.Next(names.Count)];
+            var randomColor = System.Drawing.Color.FromKnownColor(randomColorName);
+            return Color.FromArgb(randomColor.A, randomColor.R, randomColor.G, randomColor.B);
         }
 
         public static void CaptureScreen(string imageFilename, Visual target, double dpiX, double dpiY)

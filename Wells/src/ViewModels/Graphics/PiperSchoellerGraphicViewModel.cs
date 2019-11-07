@@ -77,7 +77,7 @@ namespace Wells.View.ViewModels
             {
                 foreach (var a in g)
                 {
-                    var aColor = GetRandomColor();
+                    var aColor = SharedBaseView.GetRandomColor(_Random);
                     PiperSchollerPoints.Add(CalculatePercentage(a, aColor));
                 }
             }
@@ -90,7 +90,7 @@ namespace Wells.View.ViewModels
 
             foreach (var w in wells)
             {
-                var aColor = GetRandomColor();
+                var aColor = SharedBaseView.GetRandomColor(_Random);
                 foreach (var a in w.WaterAnalyses)
                 {
                     PiperSchollerPoints.Add(CalculatePercentage(a, aColor));
@@ -99,14 +99,6 @@ namespace Wells.View.ViewModels
 
         }
 
-
-        Color GetRandomColor()
-        {
-            var names = (IList)Enum.GetValues(typeof(System.Drawing.KnownColor));
-            var randomColorName = (System.Drawing.KnownColor)names[_Random.Next(names.Count)];
-            var randomColor = System.Drawing.Color.FromKnownColor(randomColorName);
-            return Color.FromArgb(randomColor.A, randomColor.R, randomColor.G, randomColor.B);
-        }
         protected override void SetValidators() {
             //No need to implement yet.
         }

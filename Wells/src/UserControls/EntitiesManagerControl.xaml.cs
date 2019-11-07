@@ -45,6 +45,6 @@ namespace Wells.View.UserControls
         public Visibility EditEntityVisibility { get => (Visibility)GetValue(EditEntityVisibilityProperty); set => SetValue(EditEntityVisibilityProperty, value); }
         public object ObjectsSource { get => GetValue(ObjectsSourceProperty); set => SetValue(ObjectsSourceProperty, value); }
         public object SelectedEntity { get; set; }
-        public string NewText { get => (string)GetValue(ObjectsSourceProperty); set => SetValue(ObjectsSourceProperty, value); }
+        public string NewText { get => (string)GetValue(NewTextProperty); set => SetValue(NewTextProperty, value); }
     }
 }

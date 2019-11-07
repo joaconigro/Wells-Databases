@@ -81,6 +81,7 @@
     <!--Converters-->
     <converters:DoubleStringConverter x:Key="DoubleConverter"/>
     <converters:IntegerStringConverter x:Key="IntegerConverter"/>
+    <converters:DoubleByFactorConverter x:Key="DoubleByFactorConverter"/>
     <converters:BoolToCollapsedVisibilityConverter x:Key="BoolToCollapsedVisibilityConverter"/>
     <converters:BoolToHiddenVisibilityConverter x:Key="BoolToHiddenVisibilityConverter"/>
     <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
@@ -94,6 +95,16 @@
    
     
     <!--Images-->
+    <LinearGradientBrush x:Key="HeatScaleGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="White" Offset="0"/>
+        <GradientStop Color="Yellow" Offset="0.17"/>
+        <GradientStop Color="Orange" Offset="0.33"/>
+        <GradientStop Color="OrangeRed" Offset="0.6"/>
+        <GradientStop Color="Red" Offset="0.70"/>
+        <GradientStop Color="Brown" Offset="0.90"/>
+        <GradientStop Color="Black" Offset="1"/>
+    </LinearGradientBrush>
+
     <ControlTemplate x:Key="PushpinDefaultTemplate">
         <ContentControl x:Name="Content" Width="{TemplateBinding Width}" Background="{TemplateBinding Background}">
             <Grid x:Name="Grid" Width="{Binding ElementName=Content, Path=ActualWidth}" Height="{Binding ElementName=Content, Path=ActualWidth}">

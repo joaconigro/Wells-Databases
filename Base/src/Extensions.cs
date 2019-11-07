@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Wells.Base
 {
@@ -18,6 +20,16 @@ namespace Wells.Base
         {
             var list = source.Select(selector);
             return StandardDeviation(list);
+        }
+
+        public static MemoryStream GetStream(this string value)
+        {
+            return value.GetStream(Encoding.UTF8);
+        }
+
+        public static MemoryStream GetStream(this string value, Encoding encoding)
+        {
+            return new MemoryStream(encoding.GetBytes(value ?? ""));
         }
     }
 }
