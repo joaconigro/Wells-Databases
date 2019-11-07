@@ -107,7 +107,7 @@ namespace Wells.BaseView.Behaviors
             {
                 (e.Column as DataGridComboBoxColumn).ItemsSource = Base.Common.EnumDescriptionsToList(e.PropertyType);
                 var propPath = (e.Column as DataGridComboBoxColumn).SortMemberPath;
-                (e.Column as DataGridComboBoxColumn).SelectedItemBinding = new Binding()
+                (e.Column as DataGridComboBoxColumn).SelectedItemBinding = new Binding
                 {
                     Path = new PropertyPath(propPath),
                     Converter = new EnumValueConverter(),

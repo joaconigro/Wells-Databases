@@ -32,8 +32,7 @@ namespace Wells.View.ViewModels
             try
             {
                 mainWindow.ShowWaitingMessage("Abriendo la base de datos");
-                RepositoryWrapper.Instantiate(connectionString);
-                repository = RepositoryWrapper.Instance;
+                repository = RepositoryWrapper.Instantiate(connectionString);
                 RepositoryIsOpened = repository != null;
             }
             catch (Exception ex)

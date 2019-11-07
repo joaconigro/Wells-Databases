@@ -16,9 +16,6 @@ namespace Wells.Persistence.Repositories
         private FlnaAnalysesRepository flnaAnalyses;
         private WellsRepository wells;
 
-        private static RepositoryWrapper instance;
-
-
         public PrecipitationsRepository Precipitations
         {
             get
@@ -116,30 +113,25 @@ namespace Wells.Persistence.Repositories
             return null;
         }
 
-        public static bool IsInstatiated => instance != null;
+        public static bool IsInstatiated => Instance != null;
 
-        public static RepositoryWrapper Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    throw new NullReferenceException("El repositorio no fue instanciado. Use el método 'Instantiate' para obtener un singleton de RepositoryWrapper");
-                }
-                return instance;
-            }
-        }
+        public static RepositoryWrapper Instance { get; private set; }
 
         RepositoryWrapper(ApplicationDbContext repositoryContext)
         {
             Context = repositoryContext;
         }
 
-        public static void Instantiate(string connectionString)
+        public static RepositoryWrapper Instantiate(string connectionString)
         {
             var context = new ApplicationDbContext(connectionString);
             context.Database.Migrate();
-            instance = new RepositoryWrapper(context);
+            Instance = new RepositoryWrapper(context);
+            if (Instance == null)
+            {
+                throw new ArgumentNullException("El repositorio se pudo ser instanciado.");
+            }
+            return Instance;
         }
 
 
