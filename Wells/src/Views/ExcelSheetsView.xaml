@@ -1,0 +1,21 @@
+﻿<Window x:Class="Wells.View.ExcelSheetsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wells.View"
+        mc:Ignorable="d"
+       Title="Hojas del archivo Excel" WindowStartupLocation="CenterOwner" Style="{StaticResource DialogStyle}" 
+        MinWidth="350" SizeToContent="WidthAndHeight">
+    <StackPanel Margin="2">
+        <DockPanel>
+            <TextBlock Text="Seleccione una hoja para importar: " Style="{StaticResource MarginStyle}"/>
+            <ComboBox Name="SheetsComoboBox" ItemsSource="{Binding Sheets}" IsEditable="False" Style="{StaticResource MarginStyle}"
+                      SelectedIndex="{Binding SelectedSheet}"/>
+        </DockPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Name="OkButtom" Content="Aceptar" Style="{StaticResource ButtonStyle}" IsDefault="True" Click="OnOkClicked"/>
+            <Button Name="CanelButtom" Content="Cancelar" Style="{StaticResource ButtonStyle}" IsCancel="True" Click="OnCancelClicked"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

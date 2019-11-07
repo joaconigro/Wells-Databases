@@ -1,0 +1,91 @@
+﻿<Window x:Class="Wells.View.CustomGraphicsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wells.View"
+        xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="Gráficos" MinHeight="600" MinWidth="800" Style="{StaticResource WindowsStyle}"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="113*"/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Style="{StaticResource MarginStyle}" Grid.RowSpan="2">
+            <GroupBox Header="Crear serie" Style="{StaticResource MarginStyle}" DockPanel.Dock="Top" MinHeight="200">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="90"/>
+                        <ColumnDefinition Width="*" MinWidth="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Desde:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0" />
+                    <DatePicker Name="MinimunDatePicker" SelectedDate="{Binding MinimunDate, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Style="{StaticResource MarginStyle}"/>
+                    <TextBlock Text="Hasta:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                    <DatePicker Name="MaximunDatePicker" SelectedDate="{Binding MaximunDate, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Style="{StaticResource MarginStyle}"/>
+                    <TextBlock Text="A partir de:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
+                    <ComboBox Name="FromComboBox" Style="{StaticResource MarginStyle}" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding FromOptions, Mode=OneWay}" SelectedIndex="{Binding SelectedFromOption, Mode=TwoWay}"/>
+                    <Grid Name="WellOptions" Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding ShowWellOptions, Converter={StaticResource BoolToCollapsedVisibilityConverter}, Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" MinWidth="90"/>
+                            <ColumnDefinition Width="*" MinWidth="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Pozo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
+                        <ComboBox Name="WellNamesComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding WellNames, Mode=OneWay}" SelectedItem="{Binding SelectedWellName, Mode=OneWayToSource}"/>
+                        <TextBlock Text="Serie de:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                        <ComboBox Name="SeriesDataComboBox" Style="{StaticResource MarginStyle}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SeriesDataNames, Mode=OneWay}" SelectedItem="{Binding SelectedSeriesDataName, Mode=OneWayToSource}"/>
+                        <TextBlock Text="Parámetro:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
+                        <ComboBox Name="ParametersComboBox" Style="{StaticResource MarginStyle}" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameterName, Mode=OneWayToSource}"/>
+                    </Grid>
+                    <Button Name="CreateSeriesButton" Content="Crear serie" Command="{Binding CreateSeriesCommand}" Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource ButtonStyle}"/>
+                </Grid>
+            </GroupBox>
+            <Button Content="Guardar imagen" Style="{StaticResource ButtonStyle}" Command="{Binding SaveChartImageCommand}" DockPanel.Dock="Bottom"/>
+            <GroupBox Name="SeriesGroupBox" Header="Series" Style="{StaticResource MarginStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ListBox  Style="{StaticResource MarginStyle}" ItemsSource="{Binding SeriesCollection}" SelectedItem="{Binding SelectedSerie}" Grid.Row="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Visibility, Converter={StaticResource HiddenVisibilityToBoolConverter}}" Content="{Binding Title}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Name="RemoveSerieButton" Content="Eliminar serie" Grid.Row="1" Style="{StaticResource ButtonStyle}" Command="{Binding RemoveSeriesCommand}"/>
+                </Grid>
+            </GroupBox>
+        </DockPanel>
+        <charts:CartesianChart Name="MainChart" Grid.Column="1" Series="{Binding SeriesCollection}" Zoom="X" Pan="X" Hoverable="False" DisableAnimations="True"
+                               BorderBrush="DarkGray" BorderThickness="1" Margin="5" Background="White" LegendLocation="Top" Grid.RowSpan="2">
+            <charts:CartesianChart.ChartLegend>
+                <charts:DefaultLegend BulletSize="8" Orientation="Horizontal"/>
+            </charts:CartesianChart.ChartLegend>
+            <charts:CartesianChart.AxisX>
+                <charts:Axis Name="X" LabelFormatter="{Binding XFormatter}" FontSize="12"/>
+            </charts:CartesianChart.AxisX>
+            <charts:CartesianChart.AxisY>
+                <charts:Axis Name="Y" LabelFormatter="{Binding YFormatter}" FontSize="12"/>
+            </charts:CartesianChart.AxisY>
+        </charts:CartesianChart>
+    </Grid>
+</Window>
