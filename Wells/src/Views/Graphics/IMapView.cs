@@ -1,9 +1,8 @@
-﻿using System.Drawing;
-
-namespace Wells.View
+﻿namespace Wells.View
 {
     interface IMapView : IGraphicsView
     {
         void UpdateMap();
+        bool ShowManageColorMapDialog();
     }
 }

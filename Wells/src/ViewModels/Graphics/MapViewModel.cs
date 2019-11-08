@@ -2,13 +2,11 @@
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Xml.Serialization;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
@@ -34,6 +32,7 @@ namespace Wells.View.ViewModels
         private string selectedParameter;
         private Gradient selectedGradient;
         private bool isClassified;
+        private string selectedFunction;
         private readonly List<Well> wells;
 
         public Location CenterLocation { get => centerLocation; set { SetValue(ref centerLocation, value); } }
@@ -42,7 +41,9 @@ namespace Wells.View.ViewModels
         public Pushpin SelectedPushpin { get => selectedPushpin; set { SetValue(ref selectedPushpin, value); UpdateSelection(); } }
         public bool ShowLabels { get => showLabels; set { SetValue(ref showLabels, value); } }
         public List<string> ClassificationNames => new List<string> { "Nada", "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public List<string> Functions => new List<string> { "Máximo", "Mínimo", "Promedio", "Última fecha" };
         public string SelectedClass { get => selectedClass; set { SetValue(ref selectedClass, value); NotifyPropertyChanged(nameof(Parameters)); } }
+        public string SelectedFunction { get => selectedFunction; set { SetValue(ref selectedFunction, value); ChangePushpinAttributes(); } }
         public string SelectedParameter { get => selectedParameter; set { SetValue(ref selectedParameter, value); ChangePushpinAttributes(); } }
         public Gradient SelectedGradient { get => selectedGradient; set { SetValue(ref selectedGradient, value); ChangePushpinAttributes(); } }
         public bool IsClassified { get => isClassified; set { SetValue(ref isClassified, value); NotifyPropertyChanged(nameof(IsNotClassified)); ChangePushpinAttributes(); } }
@@ -106,7 +107,7 @@ namespace Wells.View.ViewModels
 
         public MapViewModel(IEnumerable<Well> wells) : base(null)
         {
-            ReadGradients();
+            Gradients = ManageColorMapsViewModel.ReadGradients();
             this.wells = wells.Where(w => w.HasGeographic).OrderBy(w => w.Name).ToList();
             Pushpins = new List<Pushpin>();
             showLabels = true;
@@ -123,7 +124,6 @@ namespace Wells.View.ViewModels
             PointSize = 13.0;
             minPointSize = lowerPointSize;
             maxPointSize = upperPointSize;
-            //SaveGradients();
         }
 
 
@@ -147,7 +147,7 @@ namespace Wells.View.ViewModels
 
         void ChangePushpinAttributes()
         {
-            if (IsClassified && !string.IsNullOrEmpty(SelectedParameter))
+            if (IsClassified && !string.IsNullOrEmpty(SelectedParameter) && SelectedGradient != null)
             {
                 foreach (Pushpin p in Pushpins)
                 {
@@ -156,7 +156,7 @@ namespace Wells.View.ViewModels
                 }
                 var minValue = Pushpins.Min(p => (double)p.Tag);
                 var maxValue = Pushpins.Max(p => (double)p.Tag);
-               
+
                 foreach (Pushpin p in Pushpins)
                 {
                     if (minPointSize.Equals(maxPointSize))
@@ -282,50 +282,8 @@ namespace Wells.View.ViewModels
             {
                 ShowErrorMessage("Uno o más de los pozos utilizados no tiene los datos seleccionados.");
                 return 0.0;
-            }          
-        }
-
-        void ReadGradients()
-        {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-            var filename = Path.Combine(dir, "Gradients.wgr");
-
-            Gradients = new List<Gradient>();
-            if (File.Exists(filename))
-            {
-                var serializer = new XmlSerializer(typeof(List<Gradient>));
-                using (var reader = new StreamReader(filename))
-                {
-                    Gradients = (List<Gradient>)serializer.Deserialize(reader);
-                }
-            }
-
-            foreach (var g in Gradients)
-            {
-                g.DeserializeGradient();
             }
         }
-
-        public void SaveGradients()
-        {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-            var filename = Path.Combine(dir, "Gradients.wgr");
-
-            foreach (var g in Gradients)
-            {
-                g.SerializeGradient();
-            }
-
-            var serializer = new XmlSerializer(typeof(List<Gradient>));
-            using var writer = new StreamWriter(filename);
-            serializer.Serialize(writer, Gradients);
-        }
-
 
         public ICommand SaveImageCommand
         {
@@ -345,13 +303,30 @@ namespace Wells.View.ViewModels
                 return new RelayCommand((param) =>
                 {
                     var brush = SelectedPushpin.Background as SolidColorBrush;
-                    var currentColor = System.Drawing.Color.FromArgb(brush.Color.A,
-                                                                     brush.Color.R,
-                                                                     brush.Color.G,
-                                                                     brush.Color.B);
+                    var currentColor = brush.Color.ToDrawingColor();
                     var color = SharedBaseView.ShowColorDialog(currentColor);
                     SelectedPushpin.Background = new SolidColorBrush(color);
                 }, (obj) => SelectedPushpin != null, OnError);
+            }
+        }
+
+        public ICommand ManageColorMapsCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var gradName = SelectedGradient?.Name;
+                    if (_Dialog.ShowManageColorMapDialog())
+                    {
+                        Gradients = ManageColorMapsViewModel.ReadGradients();
+                        NotifyPropertyChanged(nameof(Gradients));
+                        if (!string.IsNullOrEmpty(gradName))
+                        {
+                            SelectedGradient = Gradients.FirstOrDefault(g => g.Name == gradName);
+                        }
+                    }
+                }, (obj) => true, OnError);
             }
         }
 

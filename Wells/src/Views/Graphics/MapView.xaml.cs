@@ -64,5 +64,11 @@ namespace Wells.View
                 viewModel.ClearSelection();
             }
         }
+
+        public bool ShowManageColorMapDialog()
+        {
+            var diag = new ManageColorMapsView { Owner = this };
+            return (bool)diag.ShowDialog();
+        }
     }
 }

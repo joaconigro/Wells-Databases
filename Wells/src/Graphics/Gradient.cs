@@ -9,7 +9,10 @@ namespace Wells.View.Graphics
 {
     public class Gradient
     {
-        public Gradient() { }
+        public Gradient() {
+            Name = "Nuevo";
+            LinearGradient = new LinearGradientBrush(Colors.White, Colors.Black, 0.0);
+        }
 
         public Gradient(string name, LinearGradientBrush linearGradientBrush)
         {
@@ -39,6 +42,23 @@ namespace Wells.View.Graphics
             {
                 LinearGradient = (LinearGradientBrush)XamlReader.Load(stream);
             }
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public void Invert()
+        {
+            var stops = LinearGradient.GradientStops.OrderBy(x => x.Offset).ToList();
+            foreach(var s in stops)
+            {
+                s.Offset = (s.Offset - 1.0) * -1.0;
+            }
+            stops = stops.OrderBy(x => x.Offset).ToList();
+            var grad = new GradientStopCollection(stops);
+            LinearGradient = new LinearGradientBrush(grad);
         }
 
         public Color GetColor(double offset)

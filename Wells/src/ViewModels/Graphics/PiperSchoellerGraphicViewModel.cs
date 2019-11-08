@@ -164,10 +164,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    var currentColor = System.Drawing.Color.FromArgb(SelectedPoint.PointColor.A,
-                                                                     SelectedPoint.PointColor.R,
-                                                                     SelectedPoint.PointColor.G,
-                                                                     SelectedPoint.PointColor.B);
+                    var currentColor = SelectedPoint.PointColor.ToDrawingColor();
                     SelectedPoint.PointColor = SharedBaseView.ShowColorDialog(currentColor);
                     _Dialog.CreateGraphics();
                 }, (obj) => SelectedPoint != null, OnError);

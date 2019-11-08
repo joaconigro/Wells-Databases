@@ -30,6 +30,6 @@ namespace Wells.Base
         public static MemoryStream GetStream(this string value, Encoding encoding)
         {
             return new MemoryStream(encoding.GetBytes(value ?? ""));
-        }
+        }               
     }
 }

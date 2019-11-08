@@ -7,7 +7,7 @@
         xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:base="clr-namespace:Wells.BaseView;assembly=BaseView"
         mc:Ignorable="d"
-        Title="Mapa" Height="450" Width="800" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner">
+        Title="Mapa" MinHeight="450" MinWidth="800" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner">
     <DockPanel >
         <Grid MaxWidth="300">
             <Grid.RowDefinitions>
@@ -35,12 +35,17 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Clasificar por:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
                     <ComboBox Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding ClassificationNames, Mode=OneWay}" SelectedItem="{Binding SelectedClass, Mode=TwoWay}"/>
                     <TextBlock Text="Parámetro:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0" 
                                Visibility="{Binding IsClassified, Converter={StaticResource BoolToCollapsedVisibilityConverter}}"/>
                     <ComboBox Style="{StaticResource MarginStyle}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Parameters, Mode=OneWay}" SelectedItem="{Binding SelectedParameter, Mode=TwoWay}"
+                              Visibility="{Binding IsClassified, Converter={StaticResource BoolToCollapsedVisibilityConverter}}"/>
+                    <TextBlock Text="Función:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0" 
+                               Visibility="{Binding IsClassified, Converter={StaticResource BoolToCollapsedVisibilityConverter}}"/>
+                    <ComboBox Style="{StaticResource MarginStyle}" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Functions, Mode=OneWay}" SelectedItem="{Binding SelectedFunction, Mode=TwoWay}"
                               Visibility="{Binding IsClassified, Converter={StaticResource BoolToCollapsedVisibilityConverter}}"/>
                 </Grid>
             </GroupBox>
@@ -52,6 +57,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -60,21 +66,21 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Color:" Style="{StaticResource TextBlockStyle}" Grid.Column="0" Grid.Row="0"/>
-                            <ComboBox Name="ColorsComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Gradients, Mode=OneWay}" SelectedItem="{Binding SelectedGradient, Mode=TwoWay}">
+                            <ComboBox Name="ColorsComboBox" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Style="{StaticResource MarginStyle}"  ItemsSource="{Binding Gradients, Mode=OneWay}" SelectedItem="{Binding SelectedGradient, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <Rectangle Height="18" Fill="{Binding LinearGradient}" Width="{Binding ElementName=ColorsComboBox, Path=ActualWidth, 
                                             Converter={StaticResource DoubleByFactorConverter}, ConverterParameter=0.9}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
-                                
                             </ComboBox>
-
-                            <TextBlock Text="Desde:" Style="{StaticResource TextBlockStyle}" Grid.Column="0" Grid.Row="1"/>
-                            <TextBox Text="{base:CultureAwareBinding MinPointSize, Converter={StaticResource DoubleConverter}, ConverterParameter=N1}" Grid.Row="1"
+                            <Button Content="Administrar tablas de color..."  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Command="{Binding ManageColorMapsCommand}" Style="{StaticResource ButtonStyle}"/>
+                            
+                            <TextBlock Text="Desde:" Style="{StaticResource TextBlockStyle}" Grid.Column="0" Grid.Row="2"/>
+                            <TextBox Text="{base:CultureAwareBinding MinPointSize, Converter={StaticResource DoubleConverter}, ConverterParameter=N1}" Grid.Row="2"
                              Grid.Column="1" Style="{StaticResource NumericTextBoxStyle}"/>
-                            <TextBlock Text="Hasta:" Style="{StaticResource TextBlockStyle}" Grid.Column="2" Grid.Row="1"/>
-                            <TextBox Text="{base:CultureAwareBinding MaxPointSize, Converter={StaticResource DoubleConverter}, ConverterParameter=N1}" Grid.Row="1"
+                            <TextBlock Text="Hasta:" Style="{StaticResource TextBlockStyle}" Grid.Column="2" Grid.Row="2"/>
+                            <TextBox Text="{base:CultureAwareBinding MaxPointSize, Converter={StaticResource DoubleConverter}, ConverterParameter=N1}" Grid.Row="2"
                              Grid.Column="3" Style="{StaticResource NumericTextBoxStyle}"/>
                         </Grid>
                     </StackPanel>
