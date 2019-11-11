@@ -142,6 +142,12 @@ namespace Wells.View
             var diag = new EditMeasurementView(viewModel) { Owner = this };
             return (bool)diag.ShowDialog();
         }
+
+        public void ShowManageColorMapDialog()
+        {
+            var diag = new ManageColorMapsView { Owner = this };
+            diag.ShowDialog();
+        }
     }
 
     public interface IMainWindow : IView
@@ -154,6 +160,7 @@ namespace Wells.View
         void OpenGraphicsView(PiperSchoellerGraphicViewModel viewModel);
         void OpenGraphicsView(MapViewModel viewModel);
         void OpenCreatePremadeGraphicView();
+        void ShowManageColorMapDialog();
         bool OpenEditEntityDialog(EditWellViewModel viewModel);
         bool OpenEditEntityDialog(EditMeasurementViewModel viewModel);
 

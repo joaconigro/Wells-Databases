@@ -33,7 +33,7 @@ namespace Wells.View.ViewModels
         public bool EnablePropertiesPanel => SelectedGradient != null;
        
         
-        private void UpdateGradient()
+        public void UpdateGradient()
         {
             if (SelectedGradient != null)
             {

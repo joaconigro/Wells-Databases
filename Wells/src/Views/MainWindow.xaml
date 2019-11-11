@@ -32,6 +32,8 @@
             <MenuItem Header="_Gráficos">
                 <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
                 <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
+                <Separator/>
+                <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
             </MenuItem>
         </Menu>
         <Grid Style="{StaticResource MarginStyle}">

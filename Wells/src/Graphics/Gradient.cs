@@ -61,6 +61,17 @@ namespace Wells.View.Graphics
             LinearGradient = new LinearGradientBrush(grad);
         }
 
+        public GradientStop AddGradientStop(double offset)
+        {
+            var color = GetColor(offset);
+            var gs = new GradientStop(color, offset);
+            LinearGradient.GradientStops.Add(gs);
+            var stops = LinearGradient.GradientStops.OrderBy(x => x.Offset).ToList();
+            var grad = new GradientStopCollection(stops);
+            LinearGradient = new LinearGradientBrush(grad);
+            return gs;
+        }
+
         public Color GetColor(double offset)
         {
             var stops = LinearGradient.GradientStops.OrderBy(x => x.Offset).ToList();

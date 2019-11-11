@@ -15,28 +15,41 @@ namespace Wells.View.UserControls
         private System.Drawing.Color drawingColor;
         private Color mediaColor;
         private readonly Canvas canvas;
-        private GradientStop gradientStop;
         private double gradientOffset;
         private double canvasLeftPosition;
         private bool _isDragging;
-        private readonly bool canDrag;
         private Point _offset;
-        private readonly double rectWidth;
-        private readonly double traslation;
+        private bool isSelected;
 
-        public ColorSlider(Canvas canvas, Rectangle rectangle, GradientStop gradientStop)
+        public GradientStop GradientStop { get; }
+        public bool CanDrag { get; }
+        public SolidColorBrush SliderFill { get => (SolidColorBrush)GetValue(SliderFillProperty); set => SetValue(SliderFillProperty, value); }
+        public bool IsSelected 
+        { 
+            get => isSelected;
+            set 
+            { 
+                isSelected = value;
+                SliderFill = isSelected ? new SolidColorBrush(Colors.DeepSkyBlue) : new SolidColorBrush(Colors.LightGray);
+            }
+        }
+
+        public static readonly DependencyProperty SliderFillProperty = DependencyProperty.Register(nameof(SliderFill),
+         typeof(SolidColorBrush), typeof(ColorSlider), new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+
+        public ColorSlider(Canvas canvas, GradientStop gradientStop)
         {
             InitializeComponent();
+            DataContext = this;
 
-            rectWidth = rectangle.ActualWidth;
-            traslation = (rectWidth - canvas.ActualWidth) / 2.0;
             this.canvas = canvas;
-            this.gradientStop = gradientStop;
+            GradientStop = gradientStop;
 
-            GradientOffset = this.gradientStop.Offset;
-            MediaColor = this.gradientStop.Color;
+            GradientOffset = GradientStop.Offset;
+            MediaColor = GradientStop.Color;
 
-            canDrag = !GradientOffset.Equals(0.0) & !GradientOffset.Equals(1.0);
+            CanDrag = !(GradientOffset.Equals(0.0) || GradientOffset.Equals(1.0));
+            SliderFill = new SolidColorBrush(Colors.LightGray);
         }
 
 
@@ -46,11 +59,9 @@ namespace Wells.View.UserControls
             get => canvasLeftPosition;
             set
             {
-                if (value < 0.0) { value = 0.0; }
-                else if (value > rectWidth) { value = rectWidth; }
                 canvasLeftPosition = value;
                 UpdateGradientOffset();
-                gradientStop.Offset = gradientOffset;
+                GradientStop.Offset = gradientOffset;
             }
         }
 
@@ -61,7 +72,7 @@ namespace Wells.View.UserControls
             {
                 drawingColor = value;
                 mediaColor = drawingColor.ToMediaColor();
-                gradientStop.Color = mediaColor;
+                GradientStop.Color = mediaColor;
             }
         }
 
@@ -69,32 +80,18 @@ namespace Wells.View.UserControls
 
         void UpdateGradientOffset()
         {
-            if (canvasLeftPosition.Equals(0.0))
-            {
-                gradientOffset = 0.0;
-            }
-            else
-            {
-                gradientOffset = canvasLeftPosition / rectWidth;
-            }
+            gradientOffset = (canvasLeftPosition + 4.0) / canvas.ActualWidth;
         }
 
         void UpdateCanvasLeft()
         {
-            if (gradientOffset.Equals(0.0))
-            {
-                canvasLeftPosition = 0.0;
-            }
-            else
-            {
-                canvasLeftPosition = rectWidth * gradientOffset;
-            }
+            canvasLeftPosition = canvas.ActualWidth * gradientOffset - 4.0;
         }
 
 
         private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (canDrag)
+            if (CanDrag)
             {
                 _isDragging = true;
                 _offset = e.GetPosition(this);
@@ -103,10 +100,10 @@ namespace Wells.View.UserControls
 
         private void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (canDrag)
+            if (CanDrag)
             {
                 // If we're not dragging, don't bother - also validate the element
-                if (!_isDragging) return;
+                if (!_isDragging) { return; }
 
                 // Get the position of the mouse relative to the canvas
                 Point mousePoint = e.GetPosition(canvas);
@@ -115,9 +112,9 @@ namespace Wells.View.UserControls
                 mousePoint.Offset(-_offset.X, -_offset.Y);
 
                 // Move the element on the canvas
-                var value = mousePoint.X + traslation;
-                if (value < 0.0) { value = 0.0; }
-                else if (value > rectWidth) { value = rectWidth; }
+                var value = mousePoint.X;
+                if (value < -4.0) { value = -4.0; }
+                else if (value > canvas.ActualWidth + 4.0) { value = canvas.ActualWidth + 4.0; }
                 this.SetValue(Canvas.LeftProperty, value);
                 CanvasLeftPosition = value;
             }
@@ -127,6 +124,7 @@ namespace Wells.View.UserControls
         {
             _isDragging = false;
         }
+
     }
 
 }

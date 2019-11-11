@@ -7,5 +7,5 @@
              mc:Ignorable="d" 
              d:DesignHeight="18" d:DesignWidth="9" PreviewMouseLeftButtonDown="OnPreviewMouseLeftButtonDown"
              PreviewMouseMove="OnPreviewMouseMove" PreviewMouseLeftButtonUp="OnPreviewMouseLeftButtonUp">
-    <Path Data="M5,0L10,5 10,10 0,10 0,5z" Fill="LightGray" Stroke="DarkGray" Height="18" Width="9" Stretch="Fill"/>
+    <Path Data="M5,0L10,5 10,10 0,10 0,5z" Fill="{Binding SliderFill}" Stroke="DarkGray" Height="18" Width="9" Stretch="Fill"/>
 </UserControl>

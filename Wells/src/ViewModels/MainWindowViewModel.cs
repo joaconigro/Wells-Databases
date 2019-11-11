@@ -76,5 +76,16 @@ namespace Wells.View.ViewModels
                 }, (obj) => true, OnError);
             }
         }
+
+        public ICommand ManageColorMapsCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    mainWindow.ShowManageColorMapDialog();
+                }, (obj) => true, OnError);
+            }
+        }
     }
 }
