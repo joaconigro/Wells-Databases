@@ -385,7 +385,7 @@ namespace Wells.View.Importer
         static IRow CreateRejectedRow(IRow row, int column, int originalRow, RejectedReasons reason)
         {
             row.CreateCell(column, CellType.Numeric).SetCellValue(originalRow + 1);
-            row.CreateCell(column + 1, CellType.String).SetCellValue(Enum.GetName(typeof(RejectedReasons), reason));
+            row.CreateCell(column + 1, CellType.String).SetCellValue(Base.Common.GetEnumDescription(reason));
             return row;
         }
 

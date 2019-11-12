@@ -202,14 +202,14 @@ namespace Wells.View.ViewModels
         }
 
 
-        protected ISeriesView CreateSeriesFromFLNAAnalyses(Well well, string parameter)
+        protected ISeriesView CreateSeriesFromFlnaAnalyses(Well well, string parameter)
         {
             var series = CreateLineSeries();
             series.Title = $"{well.Name} - {parameter}";
 
 
             var propertyName = FlnaAnalysis.Properties[parameter].Name;
-            var values = GetFLNAAnalysesValues(well, propertyName, parameter);
+            var values = GetFlnaAnalysesValues(well, propertyName, parameter);
 
 
             var units = FlnaAnalysis.GetChemicalAnalysisUnits(propertyName);
@@ -217,13 +217,11 @@ namespace Wells.View.ViewModels
 
 
             series.Values.AddRange(values);
-            _SeriesInfo.Add(series, new SeriesInfo(well, propertyName, parameter, GetFLNAAnalysesValues));
+            _SeriesInfo.Add(series, new SeriesInfo(well, propertyName, parameter, GetFlnaAnalysesValues));
             return series;
         }
 
-
-
-        List<DateModel> GetFLNAAnalysesValues(Well well, string propertyName, string parameter)
+        List<DateModel> GetFlnaAnalysesValues(Well well, string propertyName, string parameter)
         {
             var values = (from a in well.FlnaAnalyses
                           let param = Convert.ToDouble(Interaction.CallByName(a, propertyName, CallType.Get))

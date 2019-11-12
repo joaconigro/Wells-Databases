@@ -60,11 +60,6 @@ namespace Wells.View.ViewModels
             Add(nameof(SelectedSerie), RemoveSeriesCommand);
         }
 
-        protected override void SetValidators()
-        {
-            //Nothing to add yet.
-        }
-
         public CustomGraphicsViewModel(IView view) : base(view)
         {
             Initialize();
@@ -77,7 +72,7 @@ namespace Wells.View.ViewModels
                 0 => selectedSeriesDataName switch
                 {
                     "Mediciones" => CreateSeriesFromMeasurements(_Well, SelectedParameterName),
-                    "Análisis de FLNA" => CreateSeriesFromFLNAAnalyses(_Well, SelectedParameterName),
+                    "Análisis de FLNA" => CreateSeriesFromFlnaAnalyses(_Well, SelectedParameterName),
                     "Análisis de agua" => CreateSeriesFromWaterAnalyses(_Well, SelectedParameterName),
                     _ => CreateSeriesFromSoilAnalyses(_Well, SelectedParameterName),
                 },

@@ -229,11 +229,6 @@ namespace Wells.View.ViewModels
             UpdateSelection();
         }
 
-        protected override void SetValidators()
-        {
-            //No need to implement yet.
-        }
-
         protected override void SetCommandUpdates()
         {
             Add(nameof(SelectedPushpin), ChangeColorCommand);

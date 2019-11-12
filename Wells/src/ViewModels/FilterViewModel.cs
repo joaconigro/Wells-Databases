@@ -186,9 +186,5 @@ namespace Wells.View.ViewModels
             Add(nameof(StringValue), SaveFilterCommand);
             Add(nameof(ShowStringPanel), SaveFilterCommand);
         }
-
-        protected override void SetValidators() {
-           //Nothing to add yet.
-        }
     }
 }

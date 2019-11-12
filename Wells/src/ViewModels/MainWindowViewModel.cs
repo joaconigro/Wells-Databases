@@ -50,11 +50,6 @@ namespace Wells.View.ViewModels
             Add(nameof(RepositoryIsOpened), OpenGraphicsViewCommand);
         }
 
-        protected override void SetValidators()
-        {
-            //No need to add validators yet.
-        }
-
         public ICommand OpenGraphicsViewCommand
         {
             get

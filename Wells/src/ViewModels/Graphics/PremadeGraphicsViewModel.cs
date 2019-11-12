@@ -14,15 +14,6 @@ namespace Wells.View.ViewModels
         private readonly Well _Well;
         readonly PremadeSeriesInfoCollection _GraphicSeries;
         public string Title { get; }
-        protected override void SetCommandUpdates()
-        {
-            //No need to implement yet.
-        }
-
-        protected override void SetValidators()
-        {
-            //No need to implement yet.
-        }
 
         public PremadeGraphicsViewModel(IView view, Well well, PremadeSeriesInfoCollection series) : base(view)
         {
@@ -46,7 +37,7 @@ namespace Wells.View.ViewModels
                     genericSeries = gs.ParameterGroup switch
                     {
                         "Mediciones" => CreateSeriesFromMeasurements(_Well, gs.PropertyDisplayName),
-                        "Análisis de FLNA" => CreateSeriesFromFLNAAnalyses(_Well, gs.PropertyDisplayName),
+                        "Análisis de FLNA" => CreateSeriesFromFlnaAnalyses(_Well, gs.PropertyDisplayName),
                         "Análisis de agua" => CreateSeriesFromWaterAnalyses(_Well, gs.PropertyDisplayName),
                         _ => CreateSeriesFromSoilAnalyses(_Well, gs.PropertyDisplayName),
                     };

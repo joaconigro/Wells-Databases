@@ -124,9 +124,9 @@ namespace Wells.BaseView.ViewModel
             }
         }
 
-        protected abstract void SetValidators();
+        protected virtual void SetValidators() { }
 
-        protected abstract void SetCommandUpdates();
+        protected virtual void SetCommandUpdates() { }
 
         protected void Add(string propertyName, IEnumerable<IValidator> validators)
         {

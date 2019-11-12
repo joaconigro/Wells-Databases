@@ -106,6 +106,7 @@ namespace Wells.View.UserControls
 
         public void UpdateRowContextMenu()
         {
+            RowContextMenu?.Items.Clear();
             RowContextMenu = _ViewModel.GetContextMenu();
         }
     }

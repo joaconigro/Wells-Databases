@@ -60,12 +60,6 @@ namespace Wells.View.ViewModels
             Add(nameof(SelectedGradient), new List<ICommand> { RemoveGradientCommand, InvertGradientCommand });
         }
 
-        protected override void SetValidators()
-        {
-            //No need to implement yet
-        }
-
-
         public static List<Gradient> ReadGradients()
         {
             var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");

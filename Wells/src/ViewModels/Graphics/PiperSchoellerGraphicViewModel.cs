@@ -99,16 +99,10 @@ namespace Wells.View.ViewModels
 
         }
 
-        protected override void SetValidators() {
-            //No need to implement yet.
-        }
-
         protected override void SetCommandUpdates()
         {
             Add(nameof(SelectedPoint), ChangeColorCommand);
         }
-
-
 
         PiperSchollerData CalculatePercentage(WaterAnalysis analysis, Color color)
         {

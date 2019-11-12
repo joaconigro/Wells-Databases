@@ -24,7 +24,6 @@ namespace Wells.View.ViewModels
         public List<Well> Wells => RepositoryWrapper.Instance.Wells.All.ToList();
         public Well SelectedWell { get => selectedWell; set { SetValue(ref selectedWell, value); Validate(nameof(WellName), WellName); } }
         public Measurement Measurement { get; }
-
         public DateTime Date { get => date; set { SetValue(ref date, value); } }
         public double FlnaDepth { get => flnaDepth; set { SetValue(ref flnaDepth, value); } }
         public double WaterDepth { get => waterDepth; set { SetValue(ref waterDepth, value); } }
@@ -73,11 +72,6 @@ namespace Wells.View.ViewModels
             Measurement.FlnaDepth = FlnaDepth;
             Measurement.WaterDepth = WaterDepth;
             Measurement.Comment = Comment;
-        }
-
-        protected override void SetCommandUpdates()
-        {
-            //No need to implement yet.
         }
 
         protected override void SetValidators()

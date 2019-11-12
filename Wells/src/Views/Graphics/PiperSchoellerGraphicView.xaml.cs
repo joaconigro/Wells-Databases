@@ -102,8 +102,8 @@ namespace Wells.View
             foreach (var p in viewModel.PiperSchollerPoints.Where(point => point.IsVisible))
             {
                 var ell = new Ellipse { Fill = new SolidColorBrush(p.PointColor), Width = 7, Height = 7, Margin = new Thickness(2, 1, 2, 1) };
-                var text = new TextBlock() { Text = p.Label, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(2, 1, 2, 1) };
-                var itemSP = new StackPanel() { Orientation = Orientation.Horizontal };
+                var text = new TextBlock { Text = p.Label, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(2, 1, 2, 1) };
+                var itemSP = new StackPanel { Orientation = Orientation.Horizontal };
                 itemSP.Children.Add(ell);
                 itemSP.Children.Add(text);
                 LegendStackPanel.Children.Add(itemSP);

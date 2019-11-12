@@ -19,6 +19,7 @@ namespace Wells.View.ViewModels
     public class WellsViewModel : EntitiesViewModel<Well>
     {
         private List<PremadeSeriesInfoCollection> _PremadeGraphics;
+        private readonly MenuItem filesMenuItem;
 
         public WellsViewModel() : base(null)
         {
@@ -29,6 +30,7 @@ namespace Wells.View.ViewModels
             _Entities = Repository.Wells.All;
             _ShowWellPanel = true;
             _PremadeGraphics = CreatePremadeGraphicViewModel.ReadPremadeGraphics();
+            filesMenuItem = new MenuItem { Header = "Archivos" };
         }
 
         protected override void OnSetView(IView view)
@@ -146,9 +148,33 @@ namespace Wells.View.ViewModels
             }
         }
 
+        public ICommand OpenFileCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if (param != null)
+                    {
+                        var file = param as ExternalFile;
+                        file.Open();
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
+
         public override Dictionary<string, PropertyInfo> FilterProperties => Well.Properties;
 
-        public override Well SelectedEntity { get => _SelectedEntity; set { SetValue(ref _SelectedEntity, value); NotifyPropertyChanged(nameof(WellExistsInfo)); } }
+        public override Well SelectedEntity 
+        { 
+            get => _SelectedEntity; 
+            set 
+            { 
+                SetValue(ref _SelectedEntity, value);
+                UpdateFilesContextMenu();
+                NotifyPropertyChanged(nameof(WellExistsInfo)); 
+            } 
+        }
 
         protected override void SetCommandUpdates()
         {
@@ -163,17 +189,20 @@ namespace Wells.View.ViewModels
             var menu = new ContextMenu();
             var editMenuItem = new MenuItem { Header = "Editar...", Command = EditEntityCommand };
             menu.Items.Add(editMenuItem);
-            
+
+            menu.Items.Add(new Separator());
+            menu.Items.Add(filesMenuItem);
+
             menu.Items.Add(new Separator());
             var exportMenuItem = new MenuItem { Header = "Exportar...", Command = ExportEntitiesCommand };
             menu.Items.Add(exportMenuItem);
             
             menu.Items.Add(new Separator());
-            var mapMenuItem = new MenuItem { Header = "Mostrar en mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
-            menu.Items.Add(mapMenuItem);
-            menu.Items.Add(new Separator());
-
             var graphicsMenuItem = new MenuItem { Header = "Gráficos" };
+            var mapMenuItem = new MenuItem { Header = "Mostrar en mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
+            graphicsMenuItem.Items.Add(mapMenuItem);
+            graphicsMenuItem.Items.Add(new Separator());
+
             var piperMenuItem = new MenuItem { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
             graphicsMenuItem.Items.Add(piperMenuItem);
             foreach (var pg in _PremadeGraphics)
@@ -188,6 +217,16 @@ namespace Wells.View.ViewModels
             var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
             menu.Items.Add(removeMenuItem);
             return menu;
+        }
+
+        private void UpdateFilesContextMenu()
+        {
+            filesMenuItem.Items.Clear();
+            foreach(var file in SelectedEntity?.Files)
+            {
+                var aMenuItem = new MenuItem { Header = file.CompleteFilename, Command = OpenFileCommand, CommandParameter = file };
+                filesMenuItem.Items.Add(aMenuItem);
+            }
         }
 
         protected override async Task ReadExcelFile(XSSFWorkbook workbook, int sheetIndex)
