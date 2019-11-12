@@ -12,7 +12,7 @@ namespace Wells.View.ViewModels
         ICommand EditEntityCommand { get; }
         ICommand RemoveEntityCommand { get; }
         ICommand ImportEntitiesCommand { get; }
-
+        ICommand ExportEntitiesCommand { get; }
         ContextMenu GetContextMenu();
 
         void SetSelectedItems(IEnumerable<object> entities);

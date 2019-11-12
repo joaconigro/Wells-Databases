@@ -84,14 +84,14 @@ namespace Wells.View.ViewModels
 
         public override ContextMenu GetContextMenu()
         {
-            if (IsRemoveCommandEnabled)
-            {
-                var menu = new ContextMenu();
-                var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
-                menu.Items.Add(removeMenuItem);
-                return menu;
-            }
-            return null;
+            var menu = new ContextMenu();
+            var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
+            var exportMenuItem = new MenuItem { Header = "Exportar...", Command = ExportEntitiesCommand };
+
+            menu.Items.Add(exportMenuItem);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(removeMenuItem);
+            return menu;
         }
 
 

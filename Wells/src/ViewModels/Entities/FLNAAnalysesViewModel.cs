@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Wells.Persistence.Repositories;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
+using Wells.Model;
+using Wells.Persistence.Repositories;
 using Wells.View.Filters;
 using Wells.View.Importer;
-using Wells.Model;
 
 namespace Wells.View.ViewModels
 {
@@ -109,17 +109,17 @@ namespace Wells.View.ViewModels
 
         public override ContextMenu GetContextMenu()
         {
-            if (IsRemoveCommandEnabled)
-            {
-                var menu = new ContextMenu();
-                var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };
-                var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
-                menu.Items.Add(editWellMenuItem);
-                menu.Items.Add(new Separator());
-                menu.Items.Add(removeMenuItem);
-                return menu;
-            }
-            return null;
+            var menu = new ContextMenu();
+            var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };
+            var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
+            var exportMenuItem = new MenuItem { Header = "Exportar...", Command = ExportEntitiesCommand };
+
+            menu.Items.Add(editWellMenuItem);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(exportMenuItem);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(removeMenuItem);
+            return menu;
         }
 
 

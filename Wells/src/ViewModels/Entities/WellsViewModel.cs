@@ -162,10 +162,13 @@ namespace Wells.View.ViewModels
         {
             var menu = new ContextMenu();
             var editMenuItem = new MenuItem { Header = "Editar...", Command = EditEntityCommand };
-            var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
             menu.Items.Add(editMenuItem);
+            
             menu.Items.Add(new Separator());
-
+            var exportMenuItem = new MenuItem { Header = "Exportar...", Command = ExportEntitiesCommand };
+            menu.Items.Add(exportMenuItem);
+            
+            menu.Items.Add(new Separator());
             var mapMenuItem = new MenuItem { Header = "Mostrar en mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
             menu.Items.Add(mapMenuItem);
             menu.Items.Add(new Separator());
@@ -182,6 +185,7 @@ namespace Wells.View.ViewModels
             menu.Items.Add(graphicsMenuItem);
 
             menu.Items.Add(new Separator());
+            var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
             menu.Items.Add(removeMenuItem);
             return menu;
         }

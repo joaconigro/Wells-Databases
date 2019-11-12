@@ -132,18 +132,19 @@ namespace Wells.View.ViewModels
             var menu = new ContextMenu();
             var piperMenuItem = new MenuItem { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
             menu.Items.Add(piperMenuItem);
+            
             menu.Items.Add(new Separator());
-            var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };
-            menu.Items.Add(editWellMenuItem);
 
-            if (IsRemoveCommandEnabled)
-            {
-                menu.Items.Add(new Separator());
-                var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
-                menu.Items.Add(removeMenuItem);
-                return menu;
-            }
-            return null;
+            var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };
+            var removeMenuItem = new MenuItem { Header = "Eliminar", Command = RemoveEntityCommand };
+            var exportMenuItem = new MenuItem { Header = "Exportar...", Command = ExportEntitiesCommand };
+
+            menu.Items.Add(editWellMenuItem);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(exportMenuItem);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(removeMenuItem);
+            return menu;
         }
 
 

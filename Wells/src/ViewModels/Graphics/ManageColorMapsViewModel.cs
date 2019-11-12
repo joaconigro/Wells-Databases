@@ -137,9 +137,12 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    Gradients.Remove(SelectedGradient);
-                    SelectedGradient = null;
-                    UpdateGradient();
+                    if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro de eliminar esta tabla de colores?", "Eliminar"))
+                    {
+                        Gradients.Remove(SelectedGradient);
+                        SelectedGradient = null;
+                        UpdateGradient();
+                    }                    
                 }, (obj) => SelectedGradient != null, OnError);
             }
         }

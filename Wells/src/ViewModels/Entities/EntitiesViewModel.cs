@@ -45,19 +45,32 @@ namespace Wells.View.ViewModels
                 return new AsyncCommand(async () =>
                 {
                     XSSFWorkbook wb = null;
-                    int sheetIndex = -1;
-
-                    if (OpenExcelFile(ref wb, ref sheetIndex))
+                    if (OpenExcelFile(ref wb, out int sheetIndex))
                     {
                         await ReadExcelFile(wb, sheetIndex).ConfigureAwait(false);
                         UpdateEntites();
                         CloseWaitingMessage();
-                        if (ExcelReader.RejectedEntities.Any())
+                        if (ExcelReader.RejectedRows.Count > 1)
                         {
                             ExportRejectedToExcel();
                         }
                     }
-                }, () => true, OnError, CloseWaitingMessage);
+                }, () => true, OnError, () => { CloseWaitingMessage(); NotifyPropertyChanged(nameof(WellNames)); });
+            }
+        }
+
+        public ICommand ExportEntitiesCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var filename = SharedBaseView.SaveFileDialog("Archivos de Excel|*.xlsx", "Exportar datos");
+                    if (!string.IsNullOrEmpty(filename))
+                    {
+                        ExcelReader.ExportEntities(SelectedEntities, filename);
+                    }
+                }, (obj) => SelectedEntities != null && SelectedEntities.Any(), OnError);
             }
         }
 
@@ -174,9 +187,7 @@ namespace Wells.View.ViewModels
                 }, OnError);
             }
         }
-
-
-
+        
         private void CreateFilter(FilterViewModel vm)
         {
             var f = FilterFactory.CreateFilter<T>(vm);
@@ -281,12 +292,13 @@ namespace Wells.View.ViewModels
 
         void ExportRejectedToExcel()
         {
-            if (SharedBaseView.ShowYesNoMessageBox(MainWindow, $"No se pudieron importar {ExcelReader.RejectedEntities.Count} registro(s). ¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados"))
+            if (SharedBaseView.ShowYesNoMessageBox(MainWindow, $"No se pudieron importar {ExcelReader.RejectedRows.Count - 1} registro(s). " +
+                $"¿Desea exportar estos datos a un nuevo archivo Excel?", "Datos rechazados"))
             {
                 var filename = SharedBaseView.SaveFileDialog("Archivos de Excel|*.xlsx", "Datos rechazados");
                 if (!string.IsNullOrEmpty(filename))
                 {
-                    ExcelReader.ExportRejectedToExcel(filename);
+                    ExcelReader.ExportRejected(filename);
                 }
             }
         }
@@ -329,7 +341,7 @@ namespace Wells.View.ViewModels
             UpdateEntites();
         }
 
-        protected bool OpenExcelFile(ref XSSFWorkbook workbook, ref int sheetIndex)
+        protected bool OpenExcelFile(ref XSSFWorkbook workbook, out int sheetIndex)
         {
             var filename = SharedBaseView.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel");
             if (!string.IsNullOrEmpty(filename))
@@ -350,6 +362,7 @@ namespace Wells.View.ViewModels
                 }
                 return sheetIndex > -1;
             }
+            sheetIndex = -1;
             return false;
 
         }
