@@ -20,7 +20,7 @@
                 <ListBox x:Name="DataListBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding Pushpins}" SelectedItem="{Binding SelectedPushpin}" Grid.Column="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox  Content="{Binding Name}" IsChecked="{Binding Visibility, Converter={StaticResource CollapsedVisibilityToBoolConverter}}"/>
+                            <CheckBox  Content="{Binding Label}" IsChecked="{Binding Visibility, Converter={StaticResource CollapsedVisibilityToBoolConverter}}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -52,6 +52,7 @@
 
             <GroupBox Header="Estilo" Style="{StaticResource MarginStyle}" Grid.Row="2">
                 <StackPanel>
+                    <CheckBox Content="Mostrar etiquetas" IsChecked="{Binding ShowLabels}" Style="{StaticResource CheckBoxStyle}"/>
                     <StackPanel Visibility="{Binding IsClassified, Converter={StaticResource BoolToCollapsedVisibilityConverter}}">
                         <Grid >
                             <Grid.RowDefinitions>
@@ -105,7 +106,8 @@
        
         <Border Background="White" BorderThickness="1" BorderBrush="DarkGray" Style="{StaticResource MarginStyle}">
             <map:Map CredentialsProvider="WOJnujYuqbTJawU9xyL1~CtK34r6iupKgjel-l4eKgg~AjRoNW87EoNXYpTgLswgmA4dbMPqiaAGOxnBaaRBjcbKlLovYHKqZzTx2A0_214n" 
-                   x:Name="Map" Mode="Aerial" ZoomLevel="14" MouseDown="OnMapMouseDown"/>
+                   x:Name="Map" Mode="Aerial" ZoomLevel="15" MouseDown="OnMapMouseDown"/>
+
         </Border>
     </DockPanel>
 </Window>

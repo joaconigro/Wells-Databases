@@ -14,7 +14,6 @@ namespace Wells.View.UserControls
         public EntitiesManagerControl()
         {
             InitializeComponent();
-            //DataContext = this;
         }
 
         public static readonly DependencyProperty ObjectsSourceProperty = DependencyProperty.Register(nameof(ObjectsSource),

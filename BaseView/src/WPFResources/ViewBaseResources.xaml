@@ -105,24 +105,38 @@
         <GradientStop Color="Black" Offset="1"/>
     </LinearGradientBrush>
 
-    <ControlTemplate x:Key="PushpinDefaultTemplate">
-        <ContentControl x:Name="Content" Width="{TemplateBinding Width}" Background="{TemplateBinding Background}">
-            <Grid x:Name="Grid" Width="{Binding ElementName=Content, Path=ActualWidth}" Height="{Binding ElementName=Content, Path=ActualWidth}">
-                <Ellipse x:Name="BackgroundEllipse" Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualWidth}" 
+    <ControlTemplate x:Key="CustomPushpinTemplate" TargetType="local:CustomPushpin">
+        <ContentControl x:Name="Content" Background="{TemplateBinding Background}">
+            <Canvas>
+                <Grid Canvas.Top="{Binding ElementName=Content, Path=ActualWidth, Converter={StaticResource DoubleByFactorConverter}, ConverterParameter=0.5}">
+                    <Ellipse x:Name="BackgroundEllipse" Width="{Binding ElementName=Content, Path=ActualWidth}" Height="{Binding ElementName=Content, Path=ActualWidth}" 
                      StrokeThickness="1" Stroke="Black" Fill="{Binding ElementName=Content, Path=Background}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <Ellipse Width="4" Height="4" StrokeThickness="1" Stroke="Black" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Grid>
-        </ContentControl>       
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="PushpinSelectedTemplate">
-        <ContentControl x:Name="Content" Width="{TemplateBinding Width}" Background="{TemplateBinding Background}">
-            <Grid x:Name="Grid" Width="{Binding ElementName=Content, Path=ActualWidth}" Height="{Binding ElementName=Content, Path=ActualWidth}">
-                <Ellipse x:Name="BackgroundEllipse" Width="{Binding ElementName=Grid, Path=ActualWidth}" Height="{Binding ElementName=Grid, Path=ActualWidth}" 
-                        StrokeThickness="2" Stroke="Yellow" Fill="{Binding ElementName=Content, Path=Background}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <Ellipse Width="4" Height="4" StrokeThickness="1" Stroke="Black" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Grid>
+                    <Ellipse Width="4" Height="4" StrokeThickness="1" Stroke="Black" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+                <Grid Visibility="{TemplateBinding Property=ShowLabel, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" 
+                      Canvas.Left="{Binding ElementName=Content, Path=ActualWidth}" 
+                      Canvas.Top="{Binding ElementName=Content, Path=ActualWidth, Converter={StaticResource DoubleByFactorConverter}, ConverterParameter=-0.1}">
+                    <TextBlock Text="{TemplateBinding Property=Label}" FontWeight="SemiBold" FontSize="11" Foreground="White">
+                    <TextBlock.Effect>
+                        <BlurEffect Radius="3.0" KernelType="Gaussian"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+                <TextBlock Text="{TemplateBinding Property=Label}"  Canvas.Right="-10" Foreground="Black" FontWeight="SemiBold" FontSize="11"/>
+                </Grid>
+            </Canvas>
         </ContentControl>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="BackgroundEllipse" Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter TargetName="BackgroundEllipse" Property="RenderTransformOrigin" Value=".5,.5"/>
+                <Setter TargetName="BackgroundEllipse" Property="StrokeThickness" Value="2"/>
+                <Setter TargetName="BackgroundEllipse" Property="Stroke" Value="Yellow"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <BitmapImage x:Key="SplashScreenImage" UriSource="pack://application:,,,/Resources;component/files/splashscreen.png"/>

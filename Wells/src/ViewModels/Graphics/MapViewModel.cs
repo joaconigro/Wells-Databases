@@ -21,7 +21,7 @@ namespace Wells.View.ViewModels
         private readonly Random _Random = new Random();
         IMapView _Dialog;
         private bool showLabels;
-        private Pushpin selectedPushpin;
+        private CustomPushpin selectedPushpin;
         private Location centerLocation;
         private double pointSize;
         private double minPointSize;
@@ -36,10 +36,9 @@ namespace Wells.View.ViewModels
         private readonly List<Well> wells;
 
         public Location CenterLocation { get => centerLocation; set { SetValue(ref centerLocation, value); } }
-        public List<Pushpin> Pushpins { get; }
+        public List<CustomPushpin> Pushpins { get; }
         public List<Gradient> Gradients { get; private set; }
-        public Pushpin SelectedPushpin { get => selectedPushpin; set { SetValue(ref selectedPushpin, value); UpdateSelection(); } }
-        public bool ShowLabels { get => showLabels; set { SetValue(ref showLabels, value); } }
+        public CustomPushpin SelectedPushpin { get => selectedPushpin; set { SetValue(ref selectedPushpin, value); UpdateSelection(); } }
         public List<string> ClassificationNames => new List<string> { "Nada", "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
         public List<string> Functions => new List<string> { "Máximo", "Mínimo", "Promedio", "Última fecha" };
         public string SelectedClass { get => selectedClass; set { SetValue(ref selectedClass, value); NotifyPropertyChanged(nameof(Parameters)); } }
@@ -64,6 +63,16 @@ namespace Wells.View.ViewModels
                 };
             }
         }
+        public bool ShowLabels
+        {
+            get => showLabels;
+            set
+            {
+                SetValue(ref showLabels, value);
+                UpdateLabels();
+            }
+        }
+
 
         public double PointSize
         {
@@ -109,7 +118,7 @@ namespace Wells.View.ViewModels
         {
             Gradients = ManageColorMapsViewModel.ReadGradients();
             this.wells = wells.Where(w => w.HasGeographic).OrderBy(w => w.Name).ToList();
-            Pushpins = new List<Pushpin>();
+            Pushpins = new List<CustomPushpin>();
             showLabels = true;
             Initialize();
             InitializeData();
@@ -129,15 +138,10 @@ namespace Wells.View.ViewModels
 
         void InitializeData()
         {
+            var template = Application.Current.FindResource("CustomPushpinTemplate") as ControlTemplate;
             foreach (var w in wells)
             {
-                var p = new Pushpin
-                {
-                    Name = w.Name,
-                    Location = new Location(w.Latitude, w.Longitude),
-                    Template = Application.Current.FindResource("PushpinDefaultTemplate") as ControlTemplate,
-                    Background = new SolidColorBrush(SharedBaseView.GetRandomColor(_Random))
-                };
+                var p = new CustomPushpin(w, template) { Background = new SolidColorBrush(SharedBaseView.GetRandomColor(_Random)) };
                 p.MouseDown += new MouseButtonEventHandler(PushpinMouseDown);
                 Pushpins.Add(p);
             }
@@ -149,15 +153,15 @@ namespace Wells.View.ViewModels
         {
             if (IsClassified && !string.IsNullOrEmpty(SelectedParameter) && SelectedGradient != null)
             {
-                foreach (Pushpin p in Pushpins)
+                foreach (CustomPushpin p in Pushpins)
                 {
                     var well = wells.First(w => w.Name == p.Name);
-                    p.Tag = GetValue(well);
+                    p.Value = GetValue(well);
                 }
-                var minValue = Pushpins.Min(p => (double)p.Tag);
-                var maxValue = Pushpins.Max(p => (double)p.Tag);
+                var minValue = Pushpins.Min(p => p.Value);
+                var maxValue = Pushpins.Max(p => p.Value);
 
-                foreach (Pushpin p in Pushpins)
+                foreach (CustomPushpin p in Pushpins)
                 {
                     if (minPointSize.Equals(maxPointSize))
                     {
@@ -165,16 +169,16 @@ namespace Wells.View.ViewModels
                     }
                     else
                     {
-                        p.Width = minPointSize + MapTo((double)p.Tag, minValue, maxValue, minPointSize, maxPointSize);
+                        p.Width = minPointSize + MapTo(p.Value, minValue, maxValue, minPointSize, maxPointSize);
                     }
 
-                    var offset = MapTo((double)p.Tag, minValue, maxValue, 0.0, 1.0);
+                    var offset = MapTo(p.Value, minValue, maxValue, 0.0, 1.0);
                     p.Background = new SolidColorBrush(SelectedGradient.GetColor(offset));
                 }
             }
             else
             {
-                foreach (Pushpin p in Pushpins)
+                foreach (CustomPushpin p in Pushpins)
                 {
                     p.Width = PointSize;
                 }
@@ -190,36 +194,44 @@ namespace Wells.View.ViewModels
         {
             if (IsClassified && !string.IsNullOrEmpty(SelectedParameter))
             {
-                foreach (Pushpin p in Pushpins)
+                foreach (CustomPushpin p in Pushpins)
                 {
-                    var info = $"{selectedParameter} = { Convert.ToDouble(p.Tag).ToString("N2")}";
-                    p.ToolTip = new CustomTooltip(p.Name, info);
+                    var info = $"{selectedParameter} = { p.Value.ToString("N2")}";
+                    p.ToolTip = new CustomTooltip(p.Label, info);
                 }
             }
             else
             {
-                foreach (Pushpin p in Pushpins)
+                foreach (CustomPushpin p in Pushpins)
                 {
-                    p.ToolTip = new CustomTooltip(p.Name);
+                    p.ToolTip = new CustomTooltip(p.Label);
                 }
             }
         }
 
         void PushpinMouseDown(object sender, MouseButtonEventArgs e)
         {
-            SelectedPushpin = (Pushpin)sender;
+            SelectedPushpin = (CustomPushpin)sender;
             UpdateSelection();
         }
 
         void UpdateSelection()
         {
-            foreach (Pushpin p in Pushpins)
+            foreach (CustomPushpin p in Pushpins)
             {
-                p.Template = Application.Current.FindResource("PushpinDefaultTemplate") as ControlTemplate;
+                p.IsSelected = false;
             }
             if (SelectedPushpin != null)
             {
-                SelectedPushpin.Template = Application.Current.FindResource("PushpinSelectedTemplate") as ControlTemplate;
+                SelectedPushpin.IsSelected = true;
+            }
+        }
+
+        void UpdateLabels()
+        {
+            foreach (CustomPushpin p in Pushpins)
+            {
+                p.ShowLabel = showLabels;
             }
         }
 
@@ -275,7 +287,6 @@ namespace Wells.View.ViewModels
             }
             catch
             {
-                ShowErrorMessage("Uno o más de los pozos utilizados no tiene los datos seleccionados.");
                 return 0.0;
             }
         }
