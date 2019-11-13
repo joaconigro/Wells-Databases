@@ -56,6 +56,7 @@ namespace Wells.Base
 
         private static void Log(Exception ex, TraceEventType severity, string additionalInfo)
         {
+            LoggerManager.Log(ex.Message, severity);
             LoggerManager.Log("", severity);
             LoggerManager.Log(additionalInfo, severity);
             LoggerManager.Log(ex.StackTrace, severity);

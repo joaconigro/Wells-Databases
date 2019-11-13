@@ -1,4 +1,5 @@
-﻿using NPOI.XSSF.UserModel;
+﻿using Microsoft.VisualBasic;
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,8 @@ namespace Wells.View.ViewModels
         {
             IsNewCommandEnabled = true;
             IsRemoveCommandEnabled = true;
-            FilterCollection = new FilterCollection<Well>();
+            //_FilterCollection = new FilterCollection<Well>();
+            ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.Wells.All;
             _ShowWellPanel = true;
@@ -258,7 +260,7 @@ namespace Wells.View.ViewModels
 
         protected override void CreateWellFilter()
         {
-            var wellFilter = new WellFilter<Well>(Repository.Wells, true, WellType, WellProperty, SelectedWellName);
+            var wellFilter = new WellFilter<Well>(true, WellType, WellProperty, SelectedWellName);
             OnCreatingFilter(wellFilter);
         }
 

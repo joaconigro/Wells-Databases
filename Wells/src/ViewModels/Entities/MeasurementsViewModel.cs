@@ -11,6 +11,7 @@ using Wells.BaseView.ViewInterfaces;
 using Wells.View.Filters;
 using Wells.View.Importer;
 using Wells.Model;
+using Microsoft.VisualBasic;
 
 namespace Wells.View.ViewModels
 {
@@ -20,7 +21,8 @@ namespace Wells.View.ViewModels
         {
             IsNewCommandEnabled = true;
             IsRemoveCommandEnabled = true;
-            FilterCollection = new FilterCollection<Measurement>();
+            //_FilterCollection = new FilterCollection<Measurement>();
+            ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.Measurements.All;
             _ShowWellPanel = true;
@@ -155,7 +157,7 @@ namespace Wells.View.ViewModels
 
         protected override void CreateWellFilter()
         {
-            var wellFilter = new WellFilter<Measurement>(Repository.Measurements, false, WellType, WellProperty, SelectedWellName);
+            var wellFilter = new WellFilter<Measurement>(false, WellType, WellProperty, SelectedWellName);
             OnCreatingFilter(wellFilter);
         }
 

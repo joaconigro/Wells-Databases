@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Wells.Persistence.Repositories;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using Wells.Base;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
-    public abstract class BaseFilter<T> : IBaseFilter
+    public class BaseFilter<T> : IBaseFilter<T>
     {
-        protected IBussinessObjectRepository repository;
         protected bool isEnabled;
-        protected bool isEditable;
-
-        public bool IsEditable => isEditable;
+        public virtual bool IsEditable => true;
         public string DisplayPropertyName { get; set; }
-
-        public abstract string DisplayValue { get; }
+        public virtual string DisplayValue { get; }
 
         public virtual string Description
         {
@@ -38,20 +36,41 @@ namespace Wells.View.Filters
         }
         public string PropertyName { get; set; }
 
-        public abstract bool IsDateRangeFilter { get; }
+        public virtual bool IsDateRangeFilter { get; }
 
+        [XmlIgnore]
         public FilterCollection<T> ParentCollection { get; set; }
 
-        public abstract IEnumerable<T> Apply(IEnumerable<T> queryable);
+        public virtual IEnumerable<T> Apply(IEnumerable<T> queryable) { return null; }
 
-        public abstract void SetUpdatedValues(FilterViewModel filterViewModel);
-        protected BaseFilter(string name, string displayName, IBussinessObjectRepository repo)
+        public virtual void SetUpdatedValues(FilterViewModel filterViewModel) { }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public virtual void ReadXml(XmlReader reader)
+        {
+            reader.Read();
+            PropertyName = reader.ReadElementContentAsString();
+            DisplayPropertyName = reader.ReadElementContentAsString();
+            IsEnabled = reader.ReadElementContentAsBoolean();
+        }
+        public virtual void WriteXml(XmlWriter writer)
+        {
+            writer.Write(nameof(PropertyName), PropertyName);
+            writer.Write(nameof(DisplayPropertyName), DisplayPropertyName);
+            writer.Write(nameof(IsEnabled), IsEnabled);
+        }
+
+        public BaseFilter() { }
+
+        protected BaseFilter(string name, string displayName)
         {
             PropertyName = name;
             DisplayPropertyName = displayName;
-            repository = repo;
             IsEnabled = true;
-            isEditable = true;
         }
     }
 }

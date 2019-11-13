@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Wells.Base;
-using Wells.Persistence.Repositories;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
@@ -11,8 +11,7 @@ namespace Wells.View.Filters
     public class EnumFilter<T> : BaseFilter<T>
     {
         public int Value { get; set; }
-
-        readonly Type EnumType;
+        public Type EnumType { get; private set; }
         public override string DisplayValue => Common.GetEnumDescription(EnumType, Value);
 
         public override bool IsDateRangeFilter => false;
@@ -25,8 +24,10 @@ namespace Wells.View.Filters
             }
         }
 
-        public EnumFilter(string propertyName, string displayName, IBussinessObjectRepository repo, int value, Type enumType) :
-            base(propertyName, displayName, repo)
+        public EnumFilter() { }
+
+        public EnumFilter(string propertyName, string displayName, int value, Type enumType) :
+            base(propertyName, displayName)
         {
             Value = value;
             EnumType = enumType;
@@ -42,6 +43,20 @@ namespace Wells.View.Filters
         public override void SetUpdatedValues(FilterViewModel filterViewModel)
         {
             Value = filterViewModel.SelectedEnumValue;
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            Value = reader.ReadElementContentAsInt();
+            EnumType = reader.ReadContentAsType();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            writer.Write(nameof(Value), Value);
+            writer.Write(nameof(EnumType), EnumType);
         }
     }
 }

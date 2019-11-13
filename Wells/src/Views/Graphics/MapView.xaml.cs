@@ -43,13 +43,16 @@ namespace Wells.View
 
         public void UpdateMap()
         {
-            Map.Children.Clear();
-            foreach (var p in viewModel.Pushpins)
+            if (viewModel.Pushpins.Any())
             {
-                Map.Children.Add(p);
+                Map.Children.Clear();
+                foreach (var p in viewModel.Pushpins)
+                {
+                    Map.Children.Add(p);
+                }
+                var locs = viewModel.Pushpins.Select(p => p.Location);
+                Map.SetView(locs, new Thickness(10), viewModel.MapRotation, 18);
             }
-            var locs = viewModel.Pushpins.Select(p => p.Location);
-            Map.SetView(locs, new Thickness(10), viewModel.MapRotation, 18);
         }
 
         public void UpdateHeading(double heading)

@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Linq;
-using Wells.Persistence.Repositories;
+using System.Xml;
+using Wells.Base;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
@@ -21,8 +22,10 @@ namespace Wells.View.Filters
             }
         }
 
-        public BooleanFilter(string propertyName, string displayName, IBussinessObjectRepository repo, bool value) :
-            base(propertyName, displayName, repo)
+        public BooleanFilter() { }
+
+        public BooleanFilter(string propertyName, string displayName, bool value) :
+            base(propertyName, displayName)
         {
             Value = value;
         }
@@ -37,6 +40,19 @@ namespace Wells.View.Filters
         public override void SetUpdatedValues(FilterViewModel filterViewModel)
         {
             Value = filterViewModel.BooleanValue;
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            Value = reader.ReadElementContentAsBoolean();
+            reader.ReadEndElement();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            writer.Write(nameof(Value), Value);
         }
     }
 }

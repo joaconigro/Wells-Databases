@@ -3,8 +3,9 @@ using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using Wells.Base;
 using Wells.BaseView.Validators;
-using Wells.Persistence.Repositories;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
@@ -18,8 +19,10 @@ namespace Wells.View.Filters
 
         public override bool IsDateRangeFilter => false;
 
-        public NumericFilter(string propertyName, string displayName, IBussinessObjectRepository repo, double value, NumericFunctions function) :
-            base(propertyName, displayName, repo)
+        public NumericFilter() { }
+
+        public NumericFilter(string propertyName, string displayName, double value, NumericFunctions function) :
+            base(propertyName, displayName)
         {
             Value = value;
             Function = function;
@@ -65,6 +68,21 @@ namespace Wells.View.Filters
                     _ => $"{DisplayPropertyName} <= {DisplayValue}",
                 };
             }
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            Value = reader.ReadElementContentAsDouble();
+            Function = reader.ReadContentAsEnum<NumericFunctions>();
+            reader.ReadEndElement();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            writer.Write(nameof(Value), Value);
+            writer.Write(nameof(Function), Function);
         }
     }
 }

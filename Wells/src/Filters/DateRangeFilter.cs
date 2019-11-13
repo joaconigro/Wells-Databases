@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Wells.Persistence.Repositories;
+using System.Xml;
+using Wells.Base;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
@@ -16,15 +17,17 @@ namespace Wells.View.Filters
 
         public override bool IsDateRangeFilter => true;
 
-        public DateRangeFilter(string propertyName, string displayName, IBussinessObjectRepository repo, DateTime startDate) :
-            base(propertyName, displayName, repo)
+        public DateRangeFilter(string propertyName, string displayName, DateTime startDate) :
+            base(propertyName, displayName)
         {
             StartDate = startDate;
             EndDate = DateTime.Today;
         }
 
-        public DateRangeFilter(string propertyName, string displayName, IBussinessObjectRepository repo, DateTime startDate, DateTime endDate) :
-           base(propertyName, displayName, repo)
+        public DateRangeFilter() { }
+
+        public DateRangeFilter(string propertyName, string displayName, DateTime startDate, DateTime endDate) :
+           base(propertyName, displayName)
         {
             StartDate = startDate;
             EndDate = endDate;
@@ -49,5 +52,20 @@ namespace Wells.View.Filters
         }
 
         public override string Description => $"{DisplayPropertyName} entre {StartDate.ToString("dd/MM/yy")} y {EndDate.ToString("dd/MM/yy")}";
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            StartDate = reader.ReadContentAsDateTime();
+            EndDate = reader.ReadContentAsDateTime();
+            reader.ReadEndElement();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            writer.Write(nameof(StartDate), StartDate);
+            writer.Write(nameof(EndDate), EndDate);
+        }
     }
 }

@@ -79,40 +79,6 @@ namespace Wells.Persistence.Repositories
             }
         }
 
-
-        public IBussinessObjectRepository Repository<T>()
-        {
-            if (typeof(T) == typeof(Well))
-            {
-                return Wells;
-            }
-            else if (typeof(T) == typeof(SoilAnalysis))
-            {
-                return SoilAnalyses;
-            }
-            else if (typeof(T) == typeof(WaterAnalysis))
-            {
-                return WaterAnalyses;
-            }
-            else if (typeof(T) == typeof(FlnaAnalysis))
-            {
-                return FlnaAnalyses;
-            }
-            else if (typeof(T) == typeof(Measurement))
-            {
-                return Measurements;
-            }
-            else if (typeof(T) == typeof(Precipitation))
-            {
-                return Precipitations;
-            }
-            else if (typeof(T) == typeof(ExternalFile))
-            {
-                return ExternalFiles;
-            }
-            return null;
-        }
-
         public static bool IsInstatiated => Instance != null;
 
         public static RepositoryWrapper Instance { get; private set; }

@@ -1,11 +1,16 @@
-﻿using NPOI.XSSF.UserModel;
+﻿using Microsoft.VisualBasic;
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Serialization;
 using Wells.Base;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
@@ -187,14 +192,14 @@ namespace Wells.View.ViewModels
                 }, OnError);
             }
         }
-        
+
         private void CreateFilter(FilterViewModel vm)
         {
             var f = FilterFactory.CreateFilter<T>(vm);
             OnCreatingFilter(f);
         }
 
-        protected void OnCreatingFilter(BaseFilter<T> filter)
+        protected void OnCreatingFilter(IBaseFilter<T> filter)
         {
             if (filter != null)
             {
@@ -269,6 +274,7 @@ namespace Wells.View.ViewModels
         {
             NotifyPropertyChanged(nameof(Entities));
             NotifyPropertyChanged(nameof(FilterCollection));
+            SaveFilters(Information.TypeName(this));
         }
 
         public abstract ContextMenu GetContextMenu();
@@ -364,7 +370,58 @@ namespace Wells.View.ViewModels
             }
             sheetIndex = -1;
             return false;
+        }
 
+
+        public void ReadFilters(string filtersFilename)
+        {
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+            var filename = Path.Combine(dir, $"{filtersFilename}.wft");
+            FilterCollection = new FilterCollection<T>();
+
+            try
+            {
+                if (File.Exists(filename))
+                {
+                    var settings = new XmlReaderSettings { IgnoreWhitespace = true };
+                    using var stream = new StreamReader(filename);
+                    using var reader = XmlReader.Create(stream, settings);
+                    reader.MoveToContent();
+                    FilterCollection.ReadXml(reader);
+                }
+            }
+            catch(Exception ex)
+            {
+                ExceptionHandler.Handle(ex, false);
+            }
+        }
+
+        public void SaveFilters(string filtersFilename)
+        {
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            var filename = Path.Combine(dir, $"{filtersFilename}.wft");
+
+            var xml = new StringBuilder();
+            var settings = new XmlWriterSettings { Indent = true };
+            try
+            {
+                using (var writer = XmlWriter.Create(xml, settings))
+                {
+                    writer.WriteStartElement("FilterCollection");
+                    FilterCollection.WriteXml(writer);
+                    writer.WriteEndElement();
+                }
+                File.WriteAllText(filename, xml.ToString());
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Handle(ex, false);
+            }
         }
 
     }

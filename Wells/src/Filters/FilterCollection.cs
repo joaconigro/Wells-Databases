@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using Wells.Base;
 
 namespace Wells.View.Filters
 {
-    public class FilterCollection<T> : ObservableCollection<BaseFilter<T>>
+    public class FilterCollection<T> : ObservableCollection<IBaseFilter<T>>, IXmlSerializable
     {
-
-        protected string PropertyName;
-
         public EventHandler FiltersChanged { get; set; }
         public void RaiseCollectionChanged()
         {
@@ -27,6 +26,28 @@ namespace Wells.View.Filters
                 }
             }
             return queryable;
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            reader.MoveToContent();
+            reader.Read();
+            var list = reader.ReadElementContentAsList<IBaseFilter<T>>(FilterFactory.CreateFilter<T>);
+            foreach (var f in list)
+            {
+                Add(f);
+                f.ParentCollection = this;
+            }
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.Write(nameof(Items), Items);
         }
     }
 }

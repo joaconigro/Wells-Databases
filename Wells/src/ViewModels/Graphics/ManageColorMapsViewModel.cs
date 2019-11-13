@@ -67,7 +67,7 @@ namespace Wells.View.ViewModels
 
         protected override void SetCommandUpdates()
         {
-            Add(nameof(SelectedGradient), new List<ICommand> { RemoveGradientCommand, InvertGradientCommand });
+            Add(nameof(SelectedGradient), new List<ICommand> { RemoveGradientCommand, InvertGradientCommand, ExportGradientCommand });
         }
 
         public static List<Gradient> ReadGradients()
@@ -132,6 +132,43 @@ namespace Wells.View.ViewModels
                     Gradients.Add(grad);
                     SelectedGradient = grad;
                 }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand ImportGradientCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var filename = SharedBaseView.OpenFileDialog("Tablas de colores (*.wgr)|*.wgr", "Importar tabla...");
+                    if (!string.IsNullOrEmpty(filename))
+                    {
+                        var serializer = new XmlSerializer(typeof(Gradient));
+                        using var reader = new StreamReader(filename);
+                        var grad = (Gradient)serializer.Deserialize(reader);
+                        grad.DeserializeGradient();
+                        Gradients.Add(grad);
+                        SelectedGradient = grad;
+                    }                  
+                }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand ExportGradientCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var filename = SharedBaseView.SaveFileDialog("Tablas de colores (*.wgr)|*.wgr", "Exportar tabla...", SelectedGradient.Name);
+                    if (!string.IsNullOrEmpty(filename))
+                    {
+                        var serializer = new XmlSerializer(typeof(Gradient));
+                        using var writer = new StreamWriter(filename);
+                        serializer.Serialize(writer, SelectedGradient);
+                    }
+                }, (obj) => SelectedGradient != null, OnError);
             }
         }
 

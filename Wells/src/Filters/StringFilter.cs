@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Linq;
-using Wells.Persistence.Repositories;
+using System.Xml;
+using Wells.Base;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
@@ -21,8 +22,10 @@ namespace Wells.View.Filters
             }
         }
 
-        public StringFilter(string propertyName, string displayName, IBussinessObjectRepository repo, string value) :
-            base(propertyName, displayName, repo)
+        public StringFilter() { }
+
+        public StringFilter(string propertyName, string displayName, string value) :
+            base(propertyName, displayName)
         {
             Value = value;
         }
@@ -38,6 +41,19 @@ namespace Wells.View.Filters
         public override void SetUpdatedValues(FilterViewModel filterViewModel)
         {
             Value = filterViewModel.StringValue;
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            Value = reader.ReadElementContentAsString();
+            reader.ReadEndElement();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            writer.Write(nameof(Value), Value);
         }
     }
 }

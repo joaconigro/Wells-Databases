@@ -5,7 +5,7 @@
                     xmlns:converters="clr-namespace:Wells.BaseView.Converters"
                     xmlns:behaviors="clr-namespace:Wells.BaseView.Behaviors">
 
-    <!--Icon-->
+    <!--Icons-->
     <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/Resources;component/files/icon32x32.ico"/>
 
     <!--SystemTypes-->
@@ -73,11 +73,6 @@
         <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
 
-    <!--<Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    </Style>-->
-    
-
     <!--Converters-->
     <converters:DoubleStringConverter x:Key="DoubleConverter"/>
     <converters:IntegerStringConverter x:Key="IntegerConverter"/>
@@ -91,20 +86,8 @@
 
     <!--Behaviors-->
     <behaviors:DataGridBehavior x:Key="ColumnBrowsableBehavior"/>
-
-   
     
     <!--Images-->
-    <LinearGradientBrush x:Key="HeatScaleGradientBrush" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="White" Offset="0"/>
-        <GradientStop Color="Yellow" Offset="0.17"/>
-        <GradientStop Color="Orange" Offset="0.33"/>
-        <GradientStop Color="OrangeRed" Offset="0.6"/>
-        <GradientStop Color="Red" Offset="0.70"/>
-        <GradientStop Color="Brown" Offset="0.90"/>
-        <GradientStop Color="Black" Offset="1"/>
-    </LinearGradientBrush>
-
     <BitmapImage x:Key="SplashScreenImage" UriSource="pack://application:,,,/Resources;component/files/splashscreen.png"/>
 
 </ResourceDictionary>

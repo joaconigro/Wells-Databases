@@ -11,6 +11,7 @@ using Wells.BaseView.ViewInterfaces;
 using Wells.View.Filters;
 using Wells.View.Importer;
 using Wells.Model;
+using Microsoft.VisualBasic;
 
 namespace Wells.View.ViewModels
 {
@@ -20,7 +21,8 @@ namespace Wells.View.ViewModels
         {
             IsNewCommandEnabled = false;
             IsRemoveCommandEnabled = true;
-            FilterCollection = new FilterCollection<Precipitation>();
+            //_FilterCollection = new FilterCollection<Precipitation>();
+            ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.Precipitations.All;
             _ShowWellPanel = false;

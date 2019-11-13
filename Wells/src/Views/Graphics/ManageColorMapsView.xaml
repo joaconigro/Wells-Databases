@@ -26,10 +26,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <ListBox  Style="{StaticResource MarginStyle}" ItemsSource="{Binding Gradients}" SelectedItem="{Binding SelectedGradient}" Grid.Row="0" Grid.ColumnSpan="2"/>
                 <Button Content="Nueva..." Grid.Row="1" Grid.Column="0" Style="{StaticResource ButtonStyle}" Command="{Binding NewGradientCommand}"/>
                 <Button Content="Eliminar..." Grid.Row="1" Grid.Column="1" Style="{StaticResource ButtonStyle}" Command="{Binding RemoveGradientCommand}"/>
+                <Button Content="Importar..." Grid.Row="2" Grid.Column="0" Style="{StaticResource ButtonStyle}" Command="{Binding ImportGradientCommand}"/>
+                <Button Content="Exportar..." Grid.Row="2" Grid.Column="1" Style="{StaticResource ButtonStyle}" Command="{Binding ExportGradientCommand}"/>
             </Grid>
         </GroupBox>
 

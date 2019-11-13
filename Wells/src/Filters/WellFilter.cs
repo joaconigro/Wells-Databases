@@ -2,52 +2,68 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Xml;
+using Wells.Base;
 using Wells.Model;
-using Wells.Persistence.Repositories;
 using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
     class WellFilter<T> : BaseFilter<T>
     {
-        WellQueryProperty QueryProperty { get; }
-        WellTypes WellType { get; }
-        string WellName { get; }
-
-        readonly bool _ApplyToWellsOnly;
+        WellQueryProperty QueryProperty { get; set; }
+        WellTypes WellType { get; set; }
+        string WellName { get; set; }
+        bool ApplyToWellsOnly { get; set; }
         public override string DisplayValue => WellName;
-
+        public override bool IsEditable => false;
         public override bool IsDateRangeFilter => false;
-
         public override string Description => CreateDescription();
 
 
+        public WellFilter() { }
 
-
-        public WellFilter(IBussinessObjectRepository repo, bool applyToWellsOnly, int wellType, int wellProperty, string wellName) :
-            base("Well", string.Empty, repo)
+        public WellFilter(bool applyToWellsOnly, int wellType, int wellProperty, string wellName) :
+            base("Well", string.Empty)
         {
-            isEditable = false;
             WellType = (WellTypes)wellType;
             QueryProperty = (WellQueryProperty)wellProperty;
             WellName = wellName;
-            _ApplyToWellsOnly = applyToWellsOnly;
+            ApplyToWellsOnly = applyToWellsOnly;
         }
 
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            WellName = reader.ReadElementContentAsString();
+            WellType = reader.ReadContentAsEnum<WellTypes>();
+            QueryProperty = reader.ReadContentAsEnum<WellQueryProperty>();
+            ApplyToWellsOnly = reader.ReadElementContentAsBoolean();
+            reader.ReadEndElement();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            writer.Write(nameof(WellName), WellName);
+            writer.Write(nameof(WellType), WellType);
+            writer.Write(nameof(QueryProperty), QueryProperty);
+            writer.Write(nameof(ApplyToWellsOnly), ApplyToWellsOnly);
+        }
 
         public override IEnumerable<T> Apply(IEnumerable<T> queryable)
         {
-            if (_ApplyToWellsOnly)
+            if (ApplyToWellsOnly)
             {
                 return from o in queryable
-                       let w = ((o as object) as Well)
+                       let w = o as object as Well
                        where IsThisWell(w)
                        select o;
             }
             else
             {
                 return from o in queryable
-                       let w = (Well)(Interaction.CallByName(o, PropertyName, CallType.Get))
+                       let w = (Well)Interaction.CallByName(o, PropertyName, CallType.Get)
                        where IsThisWell(w)
                        select o;
             }
