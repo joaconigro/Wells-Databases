@@ -114,6 +114,18 @@ namespace Wells.BaseView
             return Color.FromArgb(selectedColor.A, selectedColor.R, selectedColor.G, selectedColor.B);
         }
 
+        public static Color ShowColorDialog()
+        {
+            using (var diag = new Cyotek.Windows.Forms.ColorPickerDialog())
+            {
+                if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    return Color.FromArgb(diag.Color.A, diag.Color.R, diag.Color.G, diag.Color.B);
+                }
+            }
+            return Colors.White;
+        }
+
         public static Color GetRandomColor(Random random)
         {
             var names = (IList)Enum.GetValues(typeof(System.Drawing.KnownColor));

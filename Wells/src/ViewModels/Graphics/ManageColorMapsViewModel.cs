@@ -1,21 +1,15 @@
-﻿using Microsoft.Maps.MapControl.WPF;
-using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
-using Wells.Model;
 using Wells.View.Graphics;
-using Wells.View.UserControls;
 
 namespace Wells.View.ViewModels
 {
@@ -28,20 +22,36 @@ namespace Wells.View.ViewModels
 
         public ObservableCollection<Gradient> Gradients { get; private set; }
         public Gradient SelectedGradient { get => selectedGradient; set { SetValue(ref selectedGradient, value); UpdateGradient(); } }
-        public string GradientName { get => gradientName; set { SetValue(ref gradientName, value); SelectedGradient.Name = gradientName; } }
+        public string GradientName { get => gradientName; set { SetValue(ref gradientName, value); UpdateGradientName(); } }
         public LinearGradientBrush RectangleFill { get => rectangleFill; set { SetValue(ref rectangleFill, value); } }
         public bool EnablePropertiesPanel => SelectedGradient != null;
-       
-        
+
+
         public void UpdateGradient()
         {
             if (SelectedGradient != null)
             {
-                GradientName = SelectedGradient.Name;
+                gradientName = SelectedGradient.Name;
                 RectangleFill = SelectedGradient.LinearGradient;
             }
+            NotifyPropertyChanged(nameof(GradientName));
             NotifyPropertyChanged(nameof(EnablePropertiesPanel));
             dialog.CreateSliders();
+        }
+
+        public void UpdateGradientName()
+        {
+            var list = Gradients.ToList();
+            if (SelectedGradient != null)
+            {
+                SelectedGradient.Name = gradientName;
+                Gradients.Clear();
+                foreach (var g in list)
+                {
+                    Gradients.Add(g);
+                }
+                SelectedGradient = Gradients.First(g => g.Name == gradientName);
+            }
         }
 
         public ManageColorMapsViewModel(IView view) : base(view)
@@ -136,7 +146,7 @@ namespace Wells.View.ViewModels
                         Gradients.Remove(SelectedGradient);
                         SelectedGradient = null;
                         UpdateGradient();
-                    }                    
+                    }
                 }, (obj) => SelectedGradient != null, OnError);
             }
         }

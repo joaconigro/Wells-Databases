@@ -7,11 +7,13 @@
         xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:base="clr-namespace:Wells.BaseView;assembly=BaseView"
         mc:Ignorable="d"
-        Title="Mapa" MinHeight="450" MinWidth="800" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner">
+        Title="Mapa" MinHeight="450" MinWidth="800" Style="{StaticResource ResizableDialogStyle}" WindowStartupLocation="CenterOwner"
+        ContentRendered="AfterContentRendered">
     <DockPanel >
         <Grid MaxWidth="300">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -20,13 +22,25 @@
                 <ListBox x:Name="DataListBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding Pushpins}" SelectedItem="{Binding SelectedPushpin}" Grid.Column="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox  Content="{Binding Label}" IsChecked="{Binding Visibility, Converter={StaticResource CollapsedVisibilityToBoolConverter}}"/>
+                            <CheckBox  IsChecked="{Binding Visibility, Converter={StaticResource CollapsedVisibilityToBoolConverter}}">
+                                <TextBlock Text="{Binding Label}"/>
+                            </CheckBox>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </GroupBox>          
+            </GroupBox>
 
-            <GroupBox Header="Clasificación" Grid.Row="1" Style="{StaticResource MarginStyle}">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Rotación:" Style="{StaticResource TextBlockStyle}" Grid.Column="0"/>
+                <TextBox Text="{base:CultureAwareBinding MapRotation, Converter={StaticResource DoubleConverter}, ConverterParameter=N1}"
+                             Grid.Column="1" Style="{StaticResource NumericTextBoxStyle}"/>
+            </Grid>
+
+            <GroupBox Header="Clasificación" Grid.Row="2" Style="{StaticResource MarginStyle}">
                 <Grid Name="WellOptions">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="90"/>
@@ -50,7 +64,7 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="Estilo" Style="{StaticResource MarginStyle}" Grid.Row="2">
+            <GroupBox Header="Estilo" Style="{StaticResource MarginStyle}" Grid.Row="3">
                 <StackPanel>
                     <CheckBox Content="Mostrar etiquetas" IsChecked="{Binding ShowLabels}" Style="{StaticResource CheckBoxStyle}"/>
                     <StackPanel Visibility="{Binding IsClassified, Converter={StaticResource BoolToCollapsedVisibilityConverter}}">
@@ -100,14 +114,13 @@
                 </StackPanel>
             </GroupBox>
 
-            <Button Content="Guardar imagen..." Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="3"/>
+            <Button Content="Guardar imagen..." Command="{Binding SaveImageCommand}" Style="{StaticResource ButtonStyle}" Grid.Row="4"/>
         </Grid>
 
        
         <Border Background="White" BorderThickness="1" BorderBrush="DarkGray" Style="{StaticResource MarginStyle}">
             <map:Map CredentialsProvider="WOJnujYuqbTJawU9xyL1~CtK34r6iupKgjel-l4eKgg~AjRoNW87EoNXYpTgLswgmA4dbMPqiaAGOxnBaaRBjcbKlLovYHKqZzTx2A0_214n" 
-                   x:Name="Map" Mode="Aerial" ZoomLevel="15" MouseDown="OnMapMouseDown"/>
-
+                   x:Name="Map" Mode="Aerial" MouseDown="OnMapMouseDown"/>
         </Border>
     </DockPanel>
 </Window>

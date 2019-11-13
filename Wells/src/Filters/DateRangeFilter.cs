@@ -12,7 +12,7 @@ namespace Wells.View.Filters
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public override string DisplayValue => $"Entre {StartDate.ToString("dd/MM/YY")} y {EndDate.ToString("dd/MM/YY")}";
+        public override string DisplayValue => $"Entre {StartDate.ToString("dd/MM/yy")} y {EndDate.ToString("dd/MM/yy")}";
 
         public override bool IsDateRangeFilter => true;
 
@@ -48,6 +48,6 @@ namespace Wells.View.Filters
             EndDate = filterViewModel.EndDate;
         }
 
-        public override string Description => $"{DisplayPropertyName} entre {StartDate.ToString("dd/MM/YY")} y {EndDate.ToString("dd/MM/YY")}";
+        public override string Description => $"{DisplayPropertyName} entre {StartDate.ToString("dd/MM/yy")} y {EndDate.ToString("dd/MM/yy")}";
     }
 }

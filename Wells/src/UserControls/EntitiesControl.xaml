@@ -79,7 +79,9 @@
                     <ListBox x:Name="FiltersListBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding FilterCollection}" SelectedItem="{Binding SelectedFilter}" Grid.Column="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsEnabled}" Content="{Binding Description}"/>
+                                <CheckBox IsChecked="{Binding IsEnabled}">
+                                    <TextBlock Text="{Binding Description}"/>
+                                </CheckBox>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

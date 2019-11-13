@@ -1,7 +1,7 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
+using System;
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using Wells.BaseView;
 using Wells.View.ViewModels;
 
@@ -19,8 +19,12 @@ namespace Wells.View
             viewModel = vm;
             viewModel.SetView(this);
             DataContext = viewModel;
+            Map.ViewChangeOnFrame += OnMapViewChangeOnFrame;
+        }
 
-            UpdateMap();
+        private void OnMapViewChangeOnFrame(object sender, MapEventArgs e)
+        {
+            Map.ZoomLevel = Math.Min(Map.ZoomLevel, 19.0);
         }
 
         #region IView
@@ -44,8 +48,13 @@ namespace Wells.View
             {
                 Map.Children.Add(p);
             }
-         
-            Map.Center = viewModel.CenterLocation;
+            var locs = viewModel.Pushpins.Select(p => p.Location);
+            Map.SetView(locs, new Thickness(10), viewModel.MapRotation, 18);
+        }
+
+        public void UpdateHeading(double heading)
+        {
+            Map.Heading = heading;
         }
 
         public void SaveImage(string filename)
@@ -69,6 +78,11 @@ namespace Wells.View
         {
             var diag = new ManageColorMapsView { Owner = this };
             return (bool)diag.ShowDialog();
+        }
+
+        private void AfterContentRendered(object sender, System.EventArgs e)
+        {
+            UpdateMap();
         }
     }
 }

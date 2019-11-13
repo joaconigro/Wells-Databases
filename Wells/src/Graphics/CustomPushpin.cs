@@ -1,9 +1,10 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Wells.Model;
 
-namespace Wells.BaseView
+namespace Wells.View.Graphics
 {
     public class CustomPushpin : Pushpin
     {
@@ -11,6 +12,13 @@ namespace Wells.BaseView
         {
             Template = template;
             ShowLabel = true;
+
+            Binding bindH = new Binding(nameof(ActualWidth))
+            {
+                Mode = BindingMode.OneWay,
+                Source = this
+            };
+            BindingOperations.SetBinding(this, CustomPushpin.HeightProperty, bindH);
         }
 
         public CustomPushpin(Well well, ControlTemplate template) : this(template)

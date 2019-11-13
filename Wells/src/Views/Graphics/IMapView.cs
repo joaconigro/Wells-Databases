@@ -3,6 +3,7 @@
     interface IMapView : IGraphicsView
     {
         void UpdateMap();
+        void UpdateHeading(double heading);
         bool ShowManageColorMapDialog();
     }
 }

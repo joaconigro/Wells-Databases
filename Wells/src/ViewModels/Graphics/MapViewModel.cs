@@ -1,5 +1,4 @@
-﻿using Microsoft.Maps.MapControl.WPF;
-using Microsoft.VisualBasic;
+﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Wells.BaseModel.Models;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
@@ -22,22 +22,22 @@ namespace Wells.View.ViewModels
         IMapView _Dialog;
         private bool showLabels;
         private CustomPushpin selectedPushpin;
-        private Location centerLocation;
         private double pointSize;
         private double minPointSize;
         private double maxPointSize;
         private const double lowerPointSize = 5.0;
-        private const double upperPointSize = 40.0;
+        private const double upperPointSize = 50.0;
         private string selectedClass;
         private string selectedParameter;
         private Gradient selectedGradient;
         private bool isClassified;
         private string selectedFunction;
+        private double mapRotation;
         private readonly List<Well> wells;
 
-        public Location CenterLocation { get => centerLocation; set { SetValue(ref centerLocation, value); } }
         public List<CustomPushpin> Pushpins { get; }
         public List<Gradient> Gradients { get; private set; }
+        public double MapRotation { get => mapRotation; set { SetValue(ref mapRotation, value); _Dialog.UpdateHeading(MapRotation); } }
         public CustomPushpin SelectedPushpin { get => selectedPushpin; set { SetValue(ref selectedPushpin, value); UpdateSelection(); } }
         public List<string> ClassificationNames => new List<string> { "Nada", "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
         public List<string> Functions => new List<string> { "Máximo", "Mínimo", "Promedio", "Última fecha" };
@@ -53,7 +53,7 @@ namespace Wells.View.ViewModels
             {
                 selectedParameter = string.Empty;
                 IsClassified = selectedClass != "Nada";
-                return selectedClass switch
+                var list = selectedClass switch
                 {
                     "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
                     "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
@@ -61,8 +61,14 @@ namespace Wells.View.ViewModels
                     "Análisis de suelos" => SoilAnalysis.DoubleProperties.Keys.ToList(),
                     _ => new List<string>()
                 };
+                if (list.Any())
+                {
+                    SelectedParameter = list.First();
+                }
+                return list;
             }
         }
+
         public bool ShowLabels
         {
             get => showLabels;
@@ -125,11 +131,9 @@ namespace Wells.View.ViewModels
 
             isClassified = false;
             selectedClass = "Nada";
+            selectedFunction = "Máximo";
             selectedGradient = Gradients.First();
 
-            var lat = this.wells.Average(w => w.Latitude);
-            var lon = this.wells.Average(w => w.Longitude);
-            CenterLocation = new Location(lat, lon);
             PointSize = 13.0;
             minPointSize = lowerPointSize;
             maxPointSize = upperPointSize;
@@ -139,9 +143,10 @@ namespace Wells.View.ViewModels
         void InitializeData()
         {
             var template = Application.Current.FindResource("CustomPushpinTemplate") as ControlTemplate;
+            var brush = new SolidColorBrush(SharedBaseView.GetRandomColor(_Random));
             foreach (var w in wells)
             {
-                var p = new CustomPushpin(w, template) { Background = new SolidColorBrush(SharedBaseView.GetRandomColor(_Random)) };
+                var p = new CustomPushpin(w, template) { Background = brush };
                 p.MouseDown += new MouseButtonEventHandler(PushpinMouseDown);
                 Pushpins.Add(p);
             }
@@ -241,13 +246,6 @@ namespace Wells.View.ViewModels
             UpdateSelection();
         }
 
-        protected override void SetCommandUpdates()
-        {
-            Add(nameof(SelectedPushpin), ChangeColorCommand);
-        }
-
-
-
         protected override void OnSetView(IView view)
         {
             base.OnSetView(view);
@@ -266,22 +264,22 @@ namespace Wells.View.ViewModels
                 if (SelectedClass == "Mediciones")
                 {
                     var propName = Measurement.DoubleProperties[SelectedParameter].Name;
-                    return well.Measurements.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                    return GetValue(well.Measurements, propName);
                 }
                 else if (SelectedClass == "Análisis de FLNA")
                 {
                     var propName = FlnaAnalysis.DoubleProperties[SelectedParameter].Name;
-                    return well.FlnaAnalyses.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                    return GetValue(well.FlnaAnalyses, propName);
                 }
                 else if (SelectedClass == "Análisis de agua")
                 {
                     var propName = WaterAnalysis.DoubleProperties[SelectedParameter].Name;
-                    return well.WaterAnalyses.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                    return GetValue(well.WaterAnalyses, propName);
                 }
                 else if (SelectedClass == "Análisis de suelos")
                 {
                     var propName = SoilAnalysis.DoubleProperties[SelectedParameter].Name;
-                    return well.SoilAnalyses.Max(m => (double)Interaction.CallByName(m, propName, CallType.Get));
+                    return GetValue(well.SoilAnalyses, propName);
                 }
                 else { return 0.0; }
             }
@@ -289,6 +287,30 @@ namespace Wells.View.ViewModels
             {
                 return 0.0;
             }
+        }
+
+        double GetValue(IEnumerable<IBusinessObject> objects, string propertyName)
+        {
+            if ((bool)!objects?.Any()) { return 0.0; }
+
+            if (SelectedFunction == "Máximo")
+            {
+                return objects.Max(m => (double)Interaction.CallByName(m, propertyName, CallType.Get));
+            }
+            else if (SelectedFunction == "Mínimo")
+            {
+                return objects.Min(m => (double)Interaction.CallByName(m, propertyName, CallType.Get));
+            }
+            else if (SelectedFunction == "Promedio")
+            {
+                return objects.Average(m => (double)Interaction.CallByName(m, propertyName, CallType.Get));
+            }
+            else if (SelectedFunction == "Última fecha")
+            {
+                var obj = objects.OrderBy(o => (DateTime)Interaction.CallByName(o, "Date", CallType.Get)).Last();
+                return (double)Interaction.CallByName(obj, propertyName, CallType.Get);
+            }
+            else { return 0.0; }
         }
 
         public ICommand SaveImageCommand
@@ -308,11 +330,25 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    var brush = SelectedPushpin.Background as SolidColorBrush;
-                    var currentColor = brush.Color.ToDrawingColor();
-                    var color = SharedBaseView.ShowColorDialog(currentColor);
-                    SelectedPushpin.Background = new SolidColorBrush(color);
-                }, (obj) => SelectedPushpin != null, OnError);
+                    if (SelectedPushpin != null)
+                    {
+                        var brush = SelectedPushpin.Background as SolidColorBrush;
+                        var currentColor = brush.Color.ToDrawingColor();
+                        var color = SharedBaseView.ShowColorDialog(currentColor);
+                        SelectedPushpin.Background = new SolidColorBrush(color);
+                    }
+                    else
+                    {
+                        var brush = Pushpins.First().Background as SolidColorBrush;
+                        var currentColor = brush.Color.ToDrawingColor();
+                        var color = SharedBaseView.ShowColorDialog(currentColor);
+                        foreach (var p in Pushpins)
+                        {
+                            p.Background = new SolidColorBrush(color);
+                        }
+                    }
+
+                }, (obj) => true, OnError);
             }
         }
 
