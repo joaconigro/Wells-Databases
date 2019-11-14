@@ -96,10 +96,8 @@ namespace Wells.View.ViewModels
             if (File.Exists(filename))
             {
                 var serializer = new XmlSerializer(typeof(List<PremadeSeriesInfoCollection>));
-                using (var reader = new StreamReader(filename))
-                {
-                    entities = (List<PremadeSeriesInfoCollection>)serializer.Deserialize(reader);
-                }
+                using var reader = new StreamReader(filename);
+                entities = (List<PremadeSeriesInfoCollection>)serializer.Deserialize(reader);
 
             }
             return entities;

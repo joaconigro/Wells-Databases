@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
-using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
+using Wells.Model;
 using Wells.View.Graphics;
 using Wells.View.ViewModels;
-using Wells.Model;
 
 namespace Wells.View
 {
@@ -43,18 +42,14 @@ namespace Wells.View
         }
         #endregion
 
-        private void AfterContentRendered(object sender, System.EventArgs e)
+        private void AfterContentRendered(object sender, EventArgs e)
         {
-            string connectionString = Application.Current.Resources["CILPConnection"].ToString();
-            if (!string.IsNullOrEmpty(connectionString))
+            Task.Run(() =>
             {
-                Task.Run(() =>
-                {
-                    viewModel.InitializeContext(connectionString);
-                    CreateViewModelsForPanels();
-                    CloseWaitingMessage();
-                });
-            }
+                viewModel.InitializeContext();
+                CreateViewModelsForPanels();
+                CloseWaitingMessage();
+            });
         }
 
         private void CreateViewModelsForPanels()
@@ -133,7 +128,7 @@ namespace Wells.View
 
         public bool OpenEditEntityDialog(EditWellViewModel viewModel)
         {
-            var diag = new EditWellView(viewModel) { Owner = this};
+            var diag = new EditWellView(viewModel) { Owner = this };
             return (bool)diag.ShowDialog();
         }
 

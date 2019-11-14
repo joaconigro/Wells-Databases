@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using Wells.BaseView;
+using Wells.Resources;
 using Wells.View.ViewModels;
 
 namespace Wells.View
@@ -19,6 +20,7 @@ namespace Wells.View
             viewModel = vm;
             viewModel.SetView(this);
             DataContext = viewModel;
+            Map.CredentialsProvider = new ApplicationIdCredentialsProvider(App.Settings.MapCredentialsProvider);
             Map.ViewChangeOnFrame += OnMapViewChangeOnFrame;
         }
 

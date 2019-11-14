@@ -7,7 +7,7 @@ using Wells.View.ViewModels;
 
 namespace Wells.View.Filters
 {
-    public class BaseFilter<T> : IBaseFilter<T>
+    public abstract class BaseFilter<T> : IBaseFilter<T>
     {
         protected bool isEnabled;
         public virtual bool IsEditable => true;
@@ -41,9 +41,9 @@ namespace Wells.View.Filters
         [XmlIgnore]
         public FilterCollection<T> ParentCollection { get; set; }
 
-        public virtual IEnumerable<T> Apply(IEnumerable<T> queryable) { return null; }
+        public abstract IEnumerable<T> Apply(IEnumerable<T> enumerable);
 
-        public virtual void SetUpdatedValues(FilterViewModel filterViewModel) { }
+        public abstract void SetUpdatedValues(FilterViewModel filterViewModel);
 
         public XmlSchema GetSchema()
         {
@@ -64,8 +64,7 @@ namespace Wells.View.Filters
             writer.Write(nameof(IsEnabled), IsEnabled);
         }
 
-        public BaseFilter() { }
-
+        protected BaseFilter() { }
         protected BaseFilter(string name, string displayName)
         {
             PropertyName = name;

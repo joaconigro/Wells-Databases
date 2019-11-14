@@ -86,8 +86,5 @@
 
     <!--Behaviors-->
     <behaviors:DataGridBehavior x:Key="ColumnBrowsableBehavior"/>
-    
-    <!--Images-->
-    <BitmapImage x:Key="SplashScreenImage" UriSource="pack://application:,,,/Resources;component/files/splashscreen.png"/>
 
 </ResourceDictionary>

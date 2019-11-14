@@ -29,19 +29,15 @@ namespace Wells.View.Graphics
 
         public void SerializeGradient()
         {
-            using (var stream = new StringWriter())
-            {
-                XamlWriter.Save(LinearGradient, stream);
-                LinearGradientString = stream.ToString();
-            }
+            using var stream = new StringWriter();
+            XamlWriter.Save(LinearGradient, stream);
+            LinearGradientString = stream.ToString();
         }
 
         public void DeserializeGradient()
         {
-            using (var stream = LinearGradientString.GetStream())
-            {
-                LinearGradient = (LinearGradientBrush)XamlReader.Load(stream);
-            }
+            using var stream = LinearGradientString.GetStream();
+            LinearGradient = (LinearGradientBrush)XamlReader.Load(stream);
         }
 
         public override string ToString()

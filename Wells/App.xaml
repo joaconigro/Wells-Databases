@@ -2,12 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Wells"
-             StartupUri="src/Views/MainWindow.xaml">
+             Startup="ApplicationStart" Exit="OnAppExit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/BaseView;component/src/WPFResources/ViewBaseResources.xaml" />
-                <ResourceDictionary Source="src/ConnectionStrings.xaml"/>
                 <ResourceDictionary Source="src/LocalResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

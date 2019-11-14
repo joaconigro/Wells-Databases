@@ -6,41 +6,22 @@
         xmlns:uc="clr-namespace:Wells.View.UserControls"
         mc:Ignorable="d"
         Title="Well Manager" Style="{StaticResource WindowsStyle}" WindowState="Maximized" Height="450" Width="800" ContentRendered="AfterContentRendered">
-    <!--<Window.Resources>
-        <ContextMenu  x:Key="WellsContextMenu" DataContext="{Binding Path=DataContext, ElementName=WellsControl}">
-            <MenuItem Header="Editar..." Command="{Binding EditEntityCommand}"/>
-            <Separator/>
-            <MenuItem Header="Gráficos">
-                <MenuItem Header="HTP vs tiempo" Command="{Binding EditEntityCommand}"/>
-                <MenuItem Header="As vs tiempo" Command="{Binding EditEntityCommand}"/>
-                <MenuItem Header="NO&#8323; vs tiempo" Command="{Binding EditEntityCommand}"/>
-            </MenuItem>
-            <Separator/>
-            <MenuItem Header="Eliminar" Command="{Binding RemoveEntityCommand}"/>
-        </ContextMenu>
-
-        <ContextMenu  x:Key="MeasurementsContextMenu" DataContext="{Binding Path=DataContext, ElementName=MeasurementsControl}">
-            <MenuItem Header="Editar..." Command="{Binding EditEntityCommand}"/>
-            <Separator/>
-            <MenuItem Header="Eliminar" Command="{Binding RemoveEntityCommand}"/>
-        </ContextMenu>
-    </Window.Resources>-->
-
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top"  Margin="0 4">
-            <MenuItem Header="_Gráficos">
+        <!--<Menu DockPanel.Dock="Top"  Margin="0 4">
+            <MenuItem Header="_Herramientas">
                 <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
                 <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
                 <Separator/>
                 <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
             </MenuItem>
-        </Menu>
+        </Menu>-->
         <Grid Style="{StaticResource MarginStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
+           
             <TabControl Grid.Row="0" Style="{StaticResource MarginStyle}">
                 <TabItem Header="Pozos" >
                     <uc:EntitiesControl x:Name="WellsControl"/>
@@ -66,6 +47,17 @@
                     <uc:EntitiesControl x:Name="PrecipitationsControl"/>
                 </TabItem>
             </TabControl>
+
+            <Canvas HorizontalAlignment="Right">
+                <Menu Margin="0 6 0 0" Canvas.Right="0" Canvas.Top="0">
+                    <MenuItem Header="_Herramientas" VerticalAlignment="Center">
+                        <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
+                        <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
+                    </MenuItem>
+                </Menu>
+            </Canvas>
         </Grid>
     </DockPanel>
 

@@ -83,12 +83,10 @@ namespace Wells.Persistence.Repositories
 
     public class EntityRemovedEventArgs<T> : EventArgs where T : class
     {
-        T Entity { get; }
-
-        IEnumerable<T> Entities { get; }
+        public T Entity { get; }
+        public IEnumerable<T> Entities { get; }
 
         public EntityRemovedEventArgs(T entity) { Entity = entity; }
-
         public EntityRemovedEventArgs(IEnumerable<T> entities) { Entities = entities; }
     }
 

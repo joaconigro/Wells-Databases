@@ -10,15 +10,15 @@
     <None Remove="files\Icon.ico" />
     <None Remove="files\icon128x128.ico" />
     <None Remove="files\icon32x32.ico" />
-    <None Remove="files\splashscreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base\Base.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="files\icon128x128.ico" />
     <Resource Include="files\icon32x32.ico" />
-    <Resource Include="files\splashscreen.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
 </Project>

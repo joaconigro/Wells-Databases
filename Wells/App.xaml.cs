@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Wells.BaseView;
+using Wells.Resources;
+using Wells.View;
+using Wells.View.Views;
 
 namespace Wells
 {
@@ -13,5 +12,59 @@ namespace Wells
     /// </summary>
     public partial class App : Application
     {
+        public static AppSettings Settings { get; private set; }
+
+        private void ApplicationStart(object sender, StartupEventArgs e)
+        {
+            try
+            {
+                AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+                Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                Settings = AppSettings.Initialize();
+
+                if (Settings != null)
+                {
+                    var splash = new SplashScreenView();
+                    if ((bool)splash.ShowDialog())
+                    {
+                        var mainWindow = new MainWindow();
+                        Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                        Current.MainWindow = mainWindow;
+                        MainWindow.Show();
+                    }
+                    else
+                    {
+                        Current.Shutdown(0);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentNullException("No se pudo leer el archivo de configuración.");
+                }
+            }
+            catch (Exception ex)
+            {
+                SharedBaseView.ShowErrorMessageBox(new WaitingView(""), ex.Message);
+                Current.Shutdown(-1);
+            }
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.IsTerminating)
+            {
+                SharedBaseView.ShowOkOnkyMessageBox(new WaitingView(""), "Application will shut down because irrecoverable error. More info: " +
+                    e.ExceptionObject.ToString(), "Unhandled Exception");
+            }
+            else
+            {
+                SharedBaseView.ShowOkOnkyMessageBox(new WaitingView(""), e.ExceptionObject.ToString(), "Unhandled Exception");
+            }
+        }
+
+        private void OnAppExit(object sender, ExitEventArgs e)
+        {
+            AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
+        }
     }
 }

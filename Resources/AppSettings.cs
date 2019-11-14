@@ -1,34 +1,43 @@
-﻿namespace Wells.Resources
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Wells.Base;
+
+namespace Wells.Resources
 {
     public class AppSettings
     {
-        static bool _UpgradeRequired = false;
-        static string _CurrentLanguage = "es-ES";
-
         private AppSettings() { }
 
-        public static void RestoreDefaultSettings()
-        {
-            //Not implemented yet.
-        }
+        public string MapCredentialsProvider { get; set; }
+        public Dictionary<string, string> ConnectionStrings { get; set; }
 
-        public static void UpgradeSettings()
-        {
-            //Not implemented yet.
-        }
+        [JsonIgnore]
+        public string CurrentConnectionString { get; set; }
 
-        public static string CurrentLanguage
+
+        public static AppSettings Initialize()
         {
-            get
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+            var filename = Path.Combine(dir, "AppSettings.was");
+
+            try
             {
-                return _CurrentLanguage;
+                if (File.Exists(filename))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var jsonString = File.ReadAllText(filename);
+                    return JsonSerializer.Deserialize<AppSettings>(jsonString, options);
+                }
+                return null;
             }
-            set
+            catch (Exception ex)
             {
-                _CurrentLanguage = value;
+                ExceptionHandler.Handle(ex, false);
+                return null;
             }
         }
-
-        public static bool UpgradeRequired => _UpgradeRequired;
     }
 }

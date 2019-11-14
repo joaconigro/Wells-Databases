@@ -10,12 +10,6 @@
     <ApplicationIcon>icon128x128.ico</ApplicationIcon>
   </PropertyGroup>
 
-    <ItemGroup>
-    <Page Update="src\ConnectionStrings.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Cyotek.Windows.Forms.ColorPicker" Version="1.7.2" />
     <PackageReference Include="FluentValidation" Version="8.5.1" />

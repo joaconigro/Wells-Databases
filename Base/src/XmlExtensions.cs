@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
@@ -11,10 +10,9 @@ namespace Wells.Base
     {
         public static void ForEach(this XmlReader reader, Action<XmlReader> action)
         {
-            var empty = reader.IsEmptyElement;
             var name = reader.Name;
             reader.Read();
-            if (!empty)
+            if (!reader.IsEmptyElement)
             {
                 while (reader.Name != name)
                 {
@@ -129,7 +127,6 @@ namespace Wells.Base
         public static void Write(this XmlWriter writer, string startElement, Type value)
         {
             writer.WriteStartElement(startElement);
-            var aname = value.Assembly.GetName();
             writer.WriteValue($"{value.FullName}|{value.Assembly.FullName}");
             writer.WriteEndElement();
         }

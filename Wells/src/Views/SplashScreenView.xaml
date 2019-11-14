@@ -1,0 +1,32 @@
+﻿<Window x:Class="Wells.View.Views.SplashScreenView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wells.View.Views"
+        mc:Ignorable="d"
+        Title="SplashScreenView" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None" Background="Transparent" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <StackPanel>
+        <Image Source="{StaticResource UnlpLogoImage}" Stretch="Uniform" MaxHeight="400"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="CILP" Style="{StaticResource ButtonStyle}" Grid.Column="0" Command="{Binding SelectConnectionStringCommand}" CommandParameter="CILP"/>
+            <Button Content="CIE" Style="{StaticResource ButtonStyle}" Grid.Column="1" Command="{Binding SelectConnectionStringCommand}" CommandParameter="CIE"/>
+            <Button Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding CloseModalViewCommand}"/>
+        </Grid>
+        <Grid>
+            <TextBlock Text="Cargando la base de datos..." HorizontalAlignment="Center" Margin="0 2" FontWeight="DemiBold" FontSize="20" Foreground="White">
+                <TextBlock.Effect>
+                    <BlurEffect Radius="4.0" KernelType="Gaussian"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock Text="Cargando la base de datos..." HorizontalAlignment="Center" Margin="0 2" FontWeight="DemiBold" FontSize="20"/>
+
+        </Grid>
+    </StackPanel>
+</Window>
