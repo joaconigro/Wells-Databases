@@ -19,14 +19,5 @@
             <Button Content="CIE" Style="{StaticResource ButtonStyle}" Grid.Column="1" Command="{Binding SelectConnectionStringCommand}" CommandParameter="CIE"/>
             <Button Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding CloseModalViewCommand}"/>
         </Grid>
-        <Grid>
-            <TextBlock Text="Cargando la base de datos..." HorizontalAlignment="Center" Margin="0 2" FontWeight="DemiBold" FontSize="20" Foreground="White">
-                <TextBlock.Effect>
-                    <BlurEffect Radius="4.0" KernelType="Gaussian"/>
-                </TextBlock.Effect>
-            </TextBlock>
-            <TextBlock Text="Cargando la base de datos..." HorizontalAlignment="Center" Margin="0 2" FontWeight="DemiBold" FontSize="20"/>
-
-        </Grid>
     </StackPanel>
 </Window>

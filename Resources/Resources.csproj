@@ -10,6 +10,7 @@
     <None Remove="files\Icon.ico" />
     <None Remove="files\icon128x128.ico" />
     <None Remove="files\icon32x32.ico" />
+    <None Remove="files\loading.gif" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
   <ItemGroup>
     <Resource Include="files\icon128x128.ico" />
     <Resource Include="files\icon32x32.ico" />
+    <Resource Include="files\loading.gif" />
   </ItemGroup>
 
 </Project>

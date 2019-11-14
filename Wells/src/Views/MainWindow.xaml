@@ -8,14 +8,6 @@
         Title="Well Manager" Style="{StaticResource WindowsStyle}" WindowState="Maximized" Height="450" Width="800" ContentRendered="AfterContentRendered">
 
     <DockPanel>
-        <!--<Menu DockPanel.Dock="Top"  Margin="0 4">
-            <MenuItem Header="_Herramientas">
-                <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
-                <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
-                <Separator/>
-                <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
-            </MenuItem>
-        </Menu>-->
         <Grid Style="{StaticResource MarginStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -49,8 +41,11 @@
             </TabControl>
 
             <Canvas HorizontalAlignment="Right">
-                <Menu Margin="0 6 0 0" Canvas.Right="0" Canvas.Top="0">
-                    <MenuItem Header="_Herramientas" VerticalAlignment="Center">
+                <Menu Style="{StaticResource MarginStyle}" Canvas.Right="0" Canvas.Top="0">
+                    <MenuItem VerticalAlignment="Center">
+                        <MenuItem.Header>
+                            <Image Source="{StaticResource GearImage}" Stretch="Uniform" Height="15"/>
+                        </MenuItem.Header>
                         <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
                         <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
                         <Separator/>
@@ -60,5 +55,4 @@
             </Canvas>
         </Grid>
     </DockPanel>
-
 </Window>

@@ -25,8 +25,6 @@ namespace Wells.View
 
             viewModel = new MainWindowViewModel(this);
             DataContext = viewModel;
-
-
         }
 
         #region IView

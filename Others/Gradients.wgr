@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfGradient xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Gradient>
+    <Name>Heat</Name>
+    <LinearGradientString>&lt;LinearGradientBrush xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"&gt;&lt;LinearGradientBrush.GradientStops&gt;&lt;GradientStop Color="#FFFFFFFF" Offset="-0" /&gt;&lt;GradientStop Color="#FFFEFF00" Offset="0.1542657342657343" /&gt;&lt;GradientStop Color="#FFFFA500" Offset="0.33000000000000007" /&gt;&lt;GradientStop Color="#FFFF4500" Offset="0.6" /&gt;&lt;GradientStop Color="#FFFF0000" Offset="0.7" /&gt;&lt;GradientStop Color="#FFA52A2A" Offset="0.9" /&gt;&lt;GradientStop Color="#FF670000" Offset="1" /&gt;&lt;/LinearGradientBrush.GradientStops&gt;&lt;/LinearGradientBrush&gt;</LinearGradientString>
+  </Gradient>
+  <Gradient>
+    <Name>Cold</Name>
+    <LinearGradientString>&lt;LinearGradientBrush xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"&gt;&lt;LinearGradientBrush.GradientStops&gt;&lt;GradientStop Color="#FFFFFFFF" Offset="-0" /&gt;&lt;GradientStop Color="#FF1CC7E2" Offset="0.2027972027972028" /&gt;&lt;GradientStop Color="#FF2E54D0" Offset="0.41083916083916083" /&gt;&lt;GradientStop Color="#FF282FC0" Offset="0.7062937062937062" /&gt;&lt;GradientStop Color="#FF0E0E66" Offset="1" /&gt;&lt;/LinearGradientBrush.GradientStops&gt;&lt;/LinearGradientBrush&gt;</LinearGradientString>
+  </Gradient>
+</ArrayOfGradient>

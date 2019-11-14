@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells.View"
         mc:Ignorable="d"
-        Title="Crear nuevo tipo de gráfico" Height="450" Width="500" WindowStartupLocation="CenterOwner" Style="{StaticResource ResizableDialogStyle}">
+        Title="Crear nuevo tipo de gráfico" MinHeight="450" MinWidth="500" WindowStartupLocation="CenterOwner" 
+        SizeToContent="WidthAndHeight" Style="{StaticResource DialogStyle}">
     <DockPanel Style="{StaticResource MarginStyle}">
         <GroupBox Header="Crear gráfico" DockPanel.Dock="Left">
             <DockPanel>
@@ -78,4 +79,3 @@
         </GroupBox>
     </DockPanel>
 </Window>
-

@@ -36,7 +36,7 @@ namespace Wells.View.ViewModels
         {
             IsEditing = false;
             IsWellSelectable = true;
-            Measurement = new Measurement();
+            Measurement = new Measurement { Date = DateTime.Today };
             InitializeMeasurement();
         }
 
