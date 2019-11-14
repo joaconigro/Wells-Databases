@@ -26,7 +26,6 @@ namespace Wells.View.ViewModels
         {
             IsNewCommandEnabled = true;
             IsRemoveCommandEnabled = true;
-            //_FilterCollection = new FilterCollection<Well>();
             ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.Wells.All;

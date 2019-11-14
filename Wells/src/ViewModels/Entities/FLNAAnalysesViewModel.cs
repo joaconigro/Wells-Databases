@@ -21,7 +21,6 @@ namespace Wells.View.ViewModels
         {
             IsNewCommandEnabled = false;
             IsRemoveCommandEnabled = true;
-            //FilterCollection = new FilterCollection<FlnaAnalysis>();
             ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.FlnaAnalyses.All;

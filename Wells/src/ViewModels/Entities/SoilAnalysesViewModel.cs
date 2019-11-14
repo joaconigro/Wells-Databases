@@ -21,7 +21,6 @@ namespace Wells.View.ViewModels
         {
             IsNewCommandEnabled = false;
             IsRemoveCommandEnabled = true;
-            //_FilterCollection = new FilterCollection<SoilAnalysis>();
             ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.SoilAnalyses.All;

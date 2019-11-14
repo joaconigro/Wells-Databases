@@ -50,6 +50,7 @@ namespace Wells.View.Filters
             base.ReadXml(reader);
             Value = reader.ReadElementContentAsInt();
             EnumType = reader.ReadContentAsType();
+            reader.ReadEndElement();
         }
 
         public override void WriteXml(XmlWriter writer)

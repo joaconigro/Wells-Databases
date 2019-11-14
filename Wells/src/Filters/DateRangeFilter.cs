@@ -56,8 +56,8 @@ namespace Wells.View.Filters
         public override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
-            StartDate = reader.ReadContentAsDateTime();
-            EndDate = reader.ReadContentAsDateTime();
+            StartDate = reader.ReadContentAsFormatedDateTime();
+            EndDate = reader.ReadContentAsFormatedDateTime();
             reader.ReadEndElement();
         }
 

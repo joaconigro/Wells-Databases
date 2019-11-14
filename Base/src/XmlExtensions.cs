@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -23,10 +24,13 @@ namespace Wells.Base
             }
         }
 
-        public static DateTime ReadContentAsDateTime(this XmlReader reader)
+        public static DateTime ReadContentAsFormatedDateTime(this XmlReader reader)
         {
-            var date = reader.ReadElementContentAsString();
-            return DateTime.Parse(date);
+            var stringDate = reader.ReadElementContentAsString();
+            string[] formats = { "dd/MM/yyyy" };
+            var ok = DateTime.TryParseExact(stringDate, formats, null, DateTimeStyles.None, out var date);
+            if (ok) { return date; }
+            return DateTime.Today;
         }
 
         public static T ReadContentAsEnum<T>(this XmlReader reader)
@@ -37,7 +41,8 @@ namespace Wells.Base
 
         public static Type ReadContentAsType(this XmlReader reader)
         {
-            var typeName = reader.ReadElementContentAsString();
+            var values = reader.ReadElementContentAsString().Split("|");
+            var typeName = $"{values[0]}, {values[1]}";
             return Type.GetType(typeName);
         }
 
@@ -124,7 +129,8 @@ namespace Wells.Base
         public static void Write(this XmlWriter writer, string startElement, Type value)
         {
             writer.WriteStartElement(startElement);
-            writer.WriteValue(value.FullName);
+            var aname = value.Assembly.GetName();
+            writer.WriteValue($"{value.FullName}|{value.Assembly.FullName}");
             writer.WriteEndElement();
         }
 
