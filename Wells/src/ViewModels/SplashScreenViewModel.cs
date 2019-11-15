@@ -19,8 +19,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    var conn = App.Settings.ConnectionStrings[param.ToString()];
-                    App.Settings.CurrentConnectionString = conn;
+                    App.Settings.SetConnectionString(param.ToString());
                     CloseModalViewCommand.Execute(true);
                 }, (obj) => App.Settings != null, OnError);
             }

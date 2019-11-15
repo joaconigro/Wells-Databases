@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
@@ -10,10 +9,10 @@ namespace Wells.View.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        RepositoryWrapper repository;
         IMainWindow mainWindow;
 
-        public bool RepositoryIsOpened { get; private set; }
+        public bool IsRepositoryOpened => RepositoryWrapper.IsInstatiated;
+        public string WindowTitle => $"Well Manager - Base de datos: {App.Settings.CurrentDbName}";
 
         public MainWindowViewModel(IView view) : base(null)
         {
@@ -27,27 +26,9 @@ namespace Wells.View.ViewModels
             mainWindow = (IMainWindow)view;
         }
 
-        public void InitializeContext()
-        {
-            try
-            {
-                mainWindow.ShowWaitingMessage("Abriendo la base de datos");
-                repository = RepositoryWrapper.Instantiate(App.Settings.CurrentConnectionString);
-                RepositoryIsOpened = repository != null;
-            }
-            catch (Exception ex)
-            {
-                OnError(ex);
-            }
-            finally
-            {
-                NotifyPropertyChanged(nameof(RepositoryIsOpened));
-            }
-        }
-
         protected override void SetCommandUpdates()
         {
-            Add(nameof(RepositoryIsOpened), OpenGraphicsViewCommand);
+            Add(nameof(IsRepositoryOpened), OpenGraphicsViewCommand);
         }
 
         public ICommand OpenGraphicsViewCommand
@@ -57,7 +38,7 @@ namespace Wells.View.ViewModels
                 return new RelayCommand((param) =>
                 {
                     mainWindow.OpenGraphicsView();
-                }, (obj) => RepositoryIsOpened, OnError);
+                }, (obj) => IsRepositoryOpened, OnError);
             }
         }
 

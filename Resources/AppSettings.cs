@@ -15,7 +15,10 @@ namespace Wells.Resources
         public Dictionary<string, string> ConnectionStrings { get; set; }
 
         [JsonIgnore]
-        public string CurrentConnectionString { get; set; }
+        public string CurrentConnectionString { get; private set; }
+
+        [JsonIgnore]
+        public string CurrentDbName { get; private set; }
 
 
         public static AppSettings Initialize()
@@ -37,6 +40,15 @@ namespace Wells.Resources
             {
                 ExceptionHandler.Handle(ex, false);
                 return null;
+            }
+        }
+
+        public void SetConnectionString(string key)
+        {
+            if (ConnectionStrings.ContainsKey(key))
+            {
+                CurrentConnectionString = ConnectionStrings[key];
+                CurrentDbName = key;
             }
         }
     }

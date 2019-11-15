@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Wells.BaseView;
+using Wells.Persistence.Repositories;
 using Wells.Resources;
 using Wells.View;
 using Wells.View.Views;
@@ -27,6 +28,7 @@ namespace Wells
                     var splash = new SplashScreenView();
                     if ((bool)splash.ShowDialog())
                     {
+                        RepositoryWrapper.Instantiate(Settings.CurrentConnectionString);
                         var mainWindow = new MainWindow();
                         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                         Current.MainWindow = mainWindow;

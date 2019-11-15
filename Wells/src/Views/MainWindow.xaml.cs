@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using Wells.Base;
+using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.Model;
 using Wells.View.Graphics;
@@ -44,9 +46,20 @@ namespace Wells.View
         {
             Task.Run(() =>
             {
-                viewModel.InitializeContext();
-                CreateViewModelsForPanels();
-                CloseWaitingMessage();
+                try
+                {
+                    ShowWaitingMessage("Abriendo la base de datos");
+                    CreateViewModelsForPanels();
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Handle(ex, false);
+                    SharedBaseView.ShowErrorMessageBox((Window)this, ex.Message);
+                }
+                finally
+                {
+                    CloseWaitingMessage();
+                }
             });
         }
 

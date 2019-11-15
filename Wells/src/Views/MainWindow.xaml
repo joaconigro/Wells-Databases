@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:Wells.View.UserControls"
         mc:Ignorable="d"
-        Title="Well Manager" Style="{StaticResource WindowsStyle}" WindowState="Maximized" Height="450" Width="800" ContentRendered="AfterContentRendered">
+        Title="{Binding WindowTitle}" Style="{StaticResource WindowsStyle}" WindowState="Maximized" MinHeight="450" MinWidth="800" ContentRendered="AfterContentRendered">
 
     <DockPanel>
         <Grid Style="{StaticResource MarginStyle}">
@@ -13,8 +13,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-           
-            <TabControl Grid.Row="0" Style="{StaticResource MarginStyle}">
+
+            <TabControl Grid.Row="0" Style="{StaticResource MarginStyle}" IsEnabled="{Binding IsRepositoryOpened}">
                 <TabItem Header="Pozos" >
                     <uc:EntitiesControl x:Name="WellsControl"/>
                 </TabItem>
