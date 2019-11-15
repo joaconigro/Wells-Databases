@@ -24,8 +24,6 @@ namespace Wells.View.ViewModels
 
         public WellsViewModel() : base(null)
         {
-            IsNewCommandEnabled = true;
-            IsRemoveCommandEnabled = true;
             ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.Wells.All;
@@ -53,9 +51,8 @@ namespace Wells.View.ViewModels
             }
         }
 
-        public override bool IsNewCommandEnabled { get; }
-
-        public override bool IsRemoveCommandEnabled { get; }
+        public override bool IsNewCommandEnabled => true;
+        public override bool IsEditCommandEnabled => true;
 
         public override ICommand NewEntityCommand
         {
@@ -94,7 +91,7 @@ namespace Wells.View.ViewModels
                 return new RelayCommand((param) =>
                 {
                     RemoveEntities(Repository.Wells);
-                }, (obj) => (SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any())) && IsRemoveCommandEnabled, OnError);
+                }, (obj) => SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any()), OnError);
             }
         }
 

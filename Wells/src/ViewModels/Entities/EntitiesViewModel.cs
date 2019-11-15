@@ -39,9 +39,9 @@ namespace Wells.View.ViewModels
         public int EntitiesCount => _EntitiesCount;
 
         public abstract bool IsNewCommandEnabled { get; }
-        public abstract bool IsRemoveCommandEnabled { get; }
-        public abstract ICommand NewEntityCommand { get; }
-        public abstract ICommand EditEntityCommand { get; }
+        public abstract bool IsEditCommandEnabled { get; }
+        public virtual ICommand NewEntityCommand { get; }
+        public virtual ICommand EditEntityCommand { get; }
         public abstract ICommand RemoveEntityCommand { get; }
         public ICommand ImportEntitiesCommand
         {

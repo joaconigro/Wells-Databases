@@ -7,7 +7,7 @@ namespace Wells.View.ViewModels
     public interface IEntitiesViewModel
     {
         bool IsNewCommandEnabled { get; }
-        bool IsRemoveCommandEnabled { get; }
+        bool IsEditCommandEnabled { get; }
         ICommand NewEntityCommand { get; }
         ICommand EditEntityCommand { get; }
         ICommand RemoveEntityCommand { get; }

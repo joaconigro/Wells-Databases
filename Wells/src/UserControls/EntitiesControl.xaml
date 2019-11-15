@@ -22,11 +22,11 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <Button Content="Eliminar" DockPanel.Dock="Right" Command="{Binding RemoveEntityCommand}" Visibility="{Binding IsRemoveCommandEnabled, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" IsEnabled="{Binding IsRemoveCommandEnabled}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Eliminar" DockPanel.Dock="Right" Command="{Binding RemoveEntityCommand}" Style="{StaticResource ButtonStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Button Content="Crear..." Command="{Binding NewEntityCommand}" Visibility="{Binding IsNewCommandEnabled, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" IsEnabled="{Binding IsNewCommandEnabled}" Style="{StaticResource ButtonStyle}"/>
                 <Button Content="Importar..." Command="{Binding ImportEntitiesCommand}" Style="{StaticResource ButtonStyle}"/>
-                <Button Content="Editar..." Command="{Binding EditEntityCommand}" Style="{StaticResource ButtonStyle}"/>
+                <Button Content="Editar..." Command="{Binding EditEntityCommand}" Style="{StaticResource ButtonStyle}" Visibility="{Binding IsEditCommandEnabled, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" IsEnabled="{Binding IsEditCommandEnabled}"/>
             </StackPanel>
         </DockPanel>
 

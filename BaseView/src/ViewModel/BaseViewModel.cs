@@ -119,7 +119,7 @@ namespace Wells.BaseView.ViewModel
             {
                 foreach (ICustomCommand command in commands[propertyName])
                 {
-                    command.OnCanExecuteChanged();
+                    command?.OnCanExecuteChanged();
                 }
             }
         }

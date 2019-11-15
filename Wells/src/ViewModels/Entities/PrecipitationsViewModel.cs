@@ -18,8 +18,6 @@ namespace Wells.View.ViewModels
     {
         public PrecipitationsViewModel() : base(null)
         {
-            IsNewCommandEnabled = false;
-            IsRemoveCommandEnabled = true;
             ReadFilters(Information.TypeName(this));
             Initialize();
             _Entities = Repository.Precipitations.All;
@@ -32,32 +30,8 @@ namespace Wells.View.ViewModels
             base.OnSetView(view);
         }
 
-        public override bool IsNewCommandEnabled { get; }
-
-        public override bool IsRemoveCommandEnabled { get; }
-
-        public override ICommand NewEntityCommand
-        {
-            get
-            {
-                return new RelayCommand((param) =>
-                {
-
-                }, (obj) => IsNewCommandEnabled, OnError);
-            }
-        }
-
-        public override ICommand EditEntityCommand
-        {
-            get
-            {
-                return new RelayCommand((param) =>
-                {
-
-                }, (obj) => SelectedEntity != null, OnError);
-            }
-        }
-
+        public override bool IsNewCommandEnabled => false;
+        public override bool IsEditCommandEnabled => false;
         public override ICommand RemoveEntityCommand
         {
             get
@@ -65,7 +39,7 @@ namespace Wells.View.ViewModels
                 return new RelayCommand((param) =>
                 {
                     RemoveEntities(Repository.Precipitations);
-                }, (obj) => (SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any())) && IsRemoveCommandEnabled, OnError);
+                }, (obj) => SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any()), OnError);
             }
         }
 
