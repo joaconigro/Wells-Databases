@@ -100,34 +100,76 @@ namespace Wells.View.ViewModels
             if (removeAxis) { _Dialog.RemoveAxis(aSeries.ScalesYAt); }
         }
 
+        List<DateModel> GetValues<T>(IEnumerable<T> list, string propertyName) where T : IBusinessObject
+        {
+            var values = (from o in list
+                          let param = Convert.ToDouble(Interaction.CallByName(o, propertyName, CallType.Get))
+                          let date = (DateTime)Interaction.CallByName(o, "Date", CallType.Get)
+                          where date >= MinimunDate && date <= MaximunDate && param != BusinessObject.NumericNullValue
+                          orderby date ascending
+                          select new DateModel(date, param)).ToList();
+
+            return values;
+        }
+
+        List<DateModel> GetValuesFromListName(Well well, string listName, string propertyName, string parameter)
+        {
+            var values = listName switch
+            {
+                "Mediciones" => GetValues(well.Measurements, propertyName),
+                "Análisis de FLNA" => GetValues(well.FlnaAnalyses, propertyName),
+                "Análisis de agua" => GetValues(well.WaterAnalyses, propertyName),
+                "Análisis de suelos" => GetValues(well.SoilAnalyses, propertyName),
+                _ => GetValues(RepositoryWrapper.Instance.Precipitations.All, nameof(Precipitation.Millimeters)),
+            };
+
+            return FilterAndValidateValues(values, well, parameter);
+        }
+
+        List<DateModel> FilterAndValidateValues(List<DateModel> values, Well well, string parameter)
+        {
+            if (well != null)
+            {
+                if (values.Count < 2)
+                {
+                    throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
+                }
+            }
+            else
+            {
+                var newValues = values.Where(v => v.Value > 0.0).ToList();
+
+                if (newValues.Count < 1)
+                {
+                    throw new Exception("No hay datos de precipitaciones para representar, por lo tanto no se dibujará la serie.");
+                }
+                else if (newValues.Count > 200)
+                {
+                    var filtered = new List<DateModel>();
+                    var aStep = Math.Max(1, newValues.Count / 150);
+                    for (int i = 0; i < newValues.Count; i += aStep)
+                    {
+                        filtered.Add(newValues[i]);
+                    }
+                    return filtered;
+                }
+            }
+            return values;
+        }
+
         protected ISeriesView CreateSeriesFromMeasurements(Well well, string parameter)
         {
             var series = CreateLineSeries();
             series.Title = $"{well.Name} - {parameter}";
 
             var propertyName = Measurement.Properties[parameter].Name;
-            var values = GetMeasurementsValues(well, propertyName, parameter);
+            var values = FilterAndValidateValues(GetValues(well.Measurements, propertyName), well, parameter);
 
             SetAxis(series, "metros");
 
             series.Values.AddRange(values);
-            _SeriesInfo.Add(series, new SeriesInfo(well, propertyName, parameter, GetMeasurementsValues));
+            _SeriesInfo.Add(series, new SeriesInfo(well, "Mediciones", propertyName, parameter, GetValuesFromListName));
             return series;
-        }
-
-        List<DateModel> GetMeasurementsValues(Well well, string propertyName, string parameter)
-        {
-            var values = (from m in well.Measurements
-                          let param = Convert.ToDouble(Interaction.CallByName(m, propertyName, CallType.Get))
-                          where m.Date >= MinimunDate && m.Date <= MaximunDate && param != BusinessObject.NumericNullValue
-                          orderby m.Date ascending
-                          select new DateModel(m.Date, param)).ToList();
-
-            if (values.Count < 2)
-            {
-                throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
-            }
-            return values;
         }
 
         protected ISeriesView CreateSeriesFromSoilAnalyses(Well well, string parameter)
@@ -135,36 +177,17 @@ namespace Wells.View.ViewModels
             var series = CreateLineSeries();
             series.Title = $"{well.Name} - {parameter}";
 
-
             var propertyName = SoilAnalysis.Properties[parameter].Name;
-            var values = GetSoilAnalysesValues(well, propertyName, parameter);
-
+            var values = FilterAndValidateValues(GetValues(well.SoilAnalyses, propertyName), well, parameter);
 
             var units = SoilAnalysis.GetChemicalAnalysisUnits(propertyName);
             if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
 
             series.Values.AddRange(values);
-            _SeriesInfo.Add(series, new SeriesInfo(well, propertyName, parameter, GetSoilAnalysesValues));
+            _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de suelos", propertyName, parameter, GetValuesFromListName));
             return series;
         }
-
-
-        List<DateModel> GetSoilAnalysesValues(Well well, string propertyName, string parameter)
-        {
-            var values = (from a in well.SoilAnalyses
-                          let param = Convert.ToDouble(Interaction.CallByName(a, propertyName, CallType.Get))
-                          where a.Date >= MinimunDate && a.Date <= MaximunDate && param != BusinessObject.NumericNullValue
-                          orderby a.Date ascending
-                          select new DateModel(a.Date, param)).ToList();
-
-            if (values.Count < 2)
-            {
-                throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
-            }
-            return values;
-        }
-
 
         protected ISeriesView CreateSeriesFromWaterAnalyses(Well well, string parameter)
         {
@@ -173,108 +196,44 @@ namespace Wells.View.ViewModels
 
 
             var propertyName = WaterAnalysis.Properties[parameter].Name;
-            var values = GetWaterAnalysesValues(well, propertyName, parameter);
-
+            var values = FilterAndValidateValues(GetValues(well.WaterAnalyses, propertyName), well, parameter);
 
             var units = WaterAnalysis.GetChemicalAnalysisUnits(propertyName);
             if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
 
             series.Values.AddRange(values);
-            _SeriesInfo.Add(series, new SeriesInfo(well, propertyName, parameter, GetWaterAnalysesValues));
+            _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de agua", propertyName, parameter, GetValuesFromListName));
             return series;
         }
-
-
-        List<DateModel> GetWaterAnalysesValues(Well well, string propertyName, string parameter)
-        {
-            var values = (from a in well.WaterAnalyses
-                          let param = Convert.ToDouble(Interaction.CallByName(a, propertyName, CallType.Get))
-                          where a.Date >= MinimunDate && a.Date <= MaximunDate && param != BusinessObject.NumericNullValue
-                          orderby a.Date ascending
-                          select new DateModel(a.Date, param)).ToList();
-
-            if (values.Count < 2)
-            {
-                throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
-            }
-            return values;
-        }
-
 
         protected ISeriesView CreateSeriesFromFlnaAnalyses(Well well, string parameter)
         {
             var series = CreateLineSeries();
             series.Title = $"{well.Name} - {parameter}";
 
-
             var propertyName = FlnaAnalysis.Properties[parameter].Name;
-            var values = GetFlnaAnalysesValues(well, propertyName, parameter);
-
+            var values = FilterAndValidateValues(GetValues(well.FlnaAnalyses, propertyName), well, parameter);
 
             var units = FlnaAnalysis.GetChemicalAnalysisUnits(propertyName);
             if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
-
             series.Values.AddRange(values);
-            _SeriesInfo.Add(series, new SeriesInfo(well, propertyName, parameter, GetFlnaAnalysesValues));
+            _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de FLNA", propertyName, parameter, GetValuesFromListName));
             return series;
         }
-
-        List<DateModel> GetFlnaAnalysesValues(Well well, string propertyName, string parameter)
-        {
-            var values = (from a in well.FlnaAnalyses
-                          let param = Convert.ToDouble(Interaction.CallByName(a, propertyName, CallType.Get))
-                          where a.Date >= MinimunDate && a.Date <= MaximunDate && param != BusinessObject.NumericNullValue
-                          orderby a.Date ascending
-                          select new DateModel(a.Date, param)).ToList();
-
-            if (values.Count < 2)
-            {
-                throw new Exception($"Hay menos de dos datos de {parameter} para representar en el pozo {well.Name}, por lo tanto no se puede dibujar la línea.");
-
-            }
-            return values;
-        }
-
 
         protected ISeriesView CreateSeriesFromPrecipitations()
         {
             var series = CreateColumnSeries();
             series.Title = "Precipitaciones";
 
-            var values = GetPrecipitationsValues();
+            var values = FilterAndValidateValues(GetValues(RepositoryWrapper.Instance.Precipitations.All, nameof(Precipitation.Millimeters)), null, string.Empty);
             SetAxis(series, "mm");
 
             series.Values.AddRange(values);
-            _SeriesInfo.Add(series, new SeriesInfo(GetPrecipitationsValues));
+            _SeriesInfo.Add(series, new SeriesInfo(GetValuesFromListName));
             return series;
-        }
-
-
-        List<DateModel> GetPrecipitationsValues()
-        {
-            var values = (from p in RepositoryWrapper.Instance.Precipitations.All
-                          where p.PrecipitationDate >= MinimunDate && p.PrecipitationDate <= MaximunDate
-                          orderby p.PrecipitationDate ascending
-                          select new DateModel(p.PrecipitationDate, p.Millimeters)).ToList();
-
-            if (values.Count < 1)
-            {
-                throw new Exception("No hay datos de precipitaciones para representar, por lo tanto no se dibujará la serie.");
-            }
-            else if (values.Count > 200)
-            {
-                var aStep = Math.Max(1, values.Count / 150);
-                var newValues = new List<DateModel>();
-                for (int i = 0; i < values.Count; i += aStep)
-                {
-                    newValues.Add(values[i]);
-                }
-                return newValues;
-            }
-
-            return values;
         }
 
 
@@ -326,40 +285,30 @@ namespace Wells.View.ViewModels
             public Well Well { get; }
             public string PropertyName { get; }
             public string ParameterName { get; }
-            public Func<Well, string, string, List<DateModel>> GetWellValuesFunc { get; }
-            public Func<List<DateModel>> GetPrecipitationValuesFunc { get; }
-            public bool IsFromWell { get; }
+            public string ListName { get; }
+            public Func<Well, string, string, string, List<DateModel>> GetValuesFunc { get; }
 
-            public SeriesInfo(Well well, string propertyName, string parameterName, Func<Well, string, string, List<DateModel>> func)
+            public SeriesInfo(Well well, string listName, string propertyName, string parameterName, Func<Well, string, string, string, List<DateModel>> func)
             {
                 Well = well;
+                ListName = listName;
                 PropertyName = propertyName;
                 ParameterName = parameterName;
-                GetWellValuesFunc = func;
-                GetPrecipitationValuesFunc = null;
-                IsFromWell = true;
+                GetValuesFunc = func;
             }
 
-            public SeriesInfo(Func<List<DateModel>> func)
+            public SeriesInfo(Func<Well, string, string, string, List<DateModel>> func)
             {
                 Well = null;
+                ListName = "Precipitaciones";
                 PropertyName = string.Empty;
                 ParameterName = string.Empty;
-                GetWellValuesFunc = null;
-                GetPrecipitationValuesFunc = func;
-                IsFromWell = false;
+                GetValuesFunc = func;
             }
 
             public List<DateModel> GetValues()
             {
-                if (IsFromWell)
-                {
-                    return GetWellValuesFunc.Invoke(Well, PropertyName, ParameterName);
-                }
-                else
-                {
-                    return GetPrecipitationValuesFunc.Invoke();
-                }
+                return GetValuesFunc.Invoke(Well, ListName, PropertyName, ParameterName);
             }
         }
     }

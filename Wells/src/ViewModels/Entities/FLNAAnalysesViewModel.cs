@@ -26,6 +26,7 @@ namespace Wells.View.ViewModels
             _Entities = Repository.FlnaAnalyses.All;
             _ShowWellPanel = true;
             RepositoryWrapper.Instance.Wells.OnEntityRemoved += OnWellRemoved;
+            RepositoryWrapper.Instance.FlnaAnalyses.OnEntityRemoved += OnEntitiesRemoved;
         }
 
         protected override void OnSetView(IView view)
@@ -89,13 +90,8 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar este análisis?", "Eliminar"))
-                    {
-                        Repository.FlnaAnalyses.Remove(SelectedEntity);
-                        RepositoryWrapper.Instance.SaveChanges();
-                        UpdateEntites();
-                    }
-                }, (obj) => SelectedEntity != null && IsRemoveCommandEnabled, OnError);
+                    RemoveEntities(Repository.FlnaAnalyses);
+                }, (obj) => (SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any())) && IsRemoveCommandEnabled, OnError);
             }
         }
 

@@ -1,17 +1,17 @@
-﻿using NPOI.XSSF.UserModel;
+﻿using Microsoft.VisualBasic;
+using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Wells.Persistence.Repositories;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
+using Wells.Model;
+using Wells.Persistence.Repositories;
 using Wells.View.Filters;
 using Wells.View.Importer;
-using Wells.Model;
-using Microsoft.VisualBasic;
 
 namespace Wells.View.ViewModels
 {
@@ -26,6 +26,7 @@ namespace Wells.View.ViewModels
             _Entities = Repository.WaterAnalyses.All;
             _ShowWellPanel = true;
             RepositoryWrapper.Instance.Wells.OnEntityRemoved += OnWellRemoved;
+            RepositoryWrapper.Instance.WaterAnalyses.OnEntityRemoved += OnEntitiesRemoved;
         }
 
         protected override void OnSetView(IView view)
@@ -89,13 +90,8 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar este análisis?", "Eliminar"))
-                    {
-                        Repository.WaterAnalyses.Remove(SelectedEntity);
-                        RepositoryWrapper.Instance.SaveChanges();
-                        UpdateEntites();
-                    }
-                }, (obj) => SelectedEntity != null && IsRemoveCommandEnabled, OnError);
+                    RemoveEntities(Repository.WaterAnalyses);
+                }, (obj) => (SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any())) && IsRemoveCommandEnabled, OnError);
             }
         }
 
@@ -133,7 +129,7 @@ namespace Wells.View.ViewModels
             var menu = new ContextMenu();
             var piperMenuItem = new MenuItem { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
             menu.Items.Add(piperMenuItem);
-            
+
             menu.Items.Add(new Separator());
 
             var editWellMenuItem = new MenuItem { Header = "Editar pozo...", Command = EditWellCommand };

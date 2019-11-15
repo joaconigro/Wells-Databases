@@ -1,17 +1,16 @@
-﻿using NPOI.XSSF.UserModel;
+﻿using Microsoft.VisualBasic;
+using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Wells.Persistence.Repositories;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
-using Wells.View.Filters;
-using Wells.View.Importer;
 using Wells.Model;
-using Microsoft.VisualBasic;
+using Wells.Persistence.Repositories;
+using Wells.View.Importer;
 
 namespace Wells.View.ViewModels
 {
@@ -25,6 +24,7 @@ namespace Wells.View.ViewModels
             Initialize();
             _Entities = Repository.Precipitations.All;
             _ShowWellPanel = false;
+            RepositoryWrapper.Instance.Precipitations.OnEntityRemoved += OnEntitiesRemoved;
         }
 
         protected override void OnSetView(IView view)
@@ -64,13 +64,8 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar este dato?", "Eliminar"))
-                    {
-                        Repository.Precipitations.Remove(SelectedEntity);
-                        RepositoryWrapper.Instance.SaveChanges();
-                        UpdateEntites();
-                    }
-                }, (obj) => SelectedEntity != null && IsRemoveCommandEnabled, OnError);
+                    RemoveEntities(Repository.Precipitations);
+                }, (obj) => (SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any())) && IsRemoveCommandEnabled, OnError);
             }
         }
 
@@ -117,7 +112,8 @@ namespace Wells.View.ViewModels
         }
 
 
-        protected override void CreateWellFilter() { 
+        protected override void CreateWellFilter()
+        {
             //No need to implement.
         }
 

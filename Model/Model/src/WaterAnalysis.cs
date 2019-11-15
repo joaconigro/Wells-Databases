@@ -13,7 +13,7 @@ namespace Wells.Model
 
         public override ChemicalAnalysisType GetChemicalAnalysisType(string propertyName)
         {
-            return WaterAnalysisTypes[propertyName];
+            return WaterAnalysisTypes[propertyName.ToLowerInvariant()];
         }
 
         #region Properties
@@ -194,7 +194,7 @@ namespace Wells.Model
 
         public static string GetChemicalAnalysisUnits(string propertyName)
         {
-            return WaterAnalysisTypes[propertyName].Unit;
+            return WaterAnalysisTypes[propertyName.ToLowerInvariant()].Unit;
         }
     }
 }

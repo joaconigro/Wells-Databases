@@ -59,7 +59,7 @@ namespace Wells.Model
                 while (!string.IsNullOrEmpty(line))
                 {
                     var split = line.Trim().Split(new char[] { (char)9 }, StringSplitOptions.RemoveEmptyEntries);
-                    dict.Add(split[1], new ChemicalAnalysisType(split[1], split[0], split[2], split[3]));
+                    dict.Add(split[1].ToLowerInvariant(), new ChemicalAnalysisType(split[1], split[0], split[2], split[3]));
                     line = sr.ReadLine();
                 }
             }

@@ -1,17 +1,17 @@
-﻿using NPOI.XSSF.UserModel;
+﻿using Microsoft.VisualBasic;
+using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Wells.Persistence.Repositories;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
+using Wells.Model;
+using Wells.Persistence.Repositories;
 using Wells.View.Filters;
 using Wells.View.Importer;
-using Wells.Model;
-using Microsoft.VisualBasic;
 
 namespace Wells.View.ViewModels
 {
@@ -26,6 +26,7 @@ namespace Wells.View.ViewModels
             _Entities = Repository.SoilAnalyses.All;
             _ShowWellPanel = true;
             RepositoryWrapper.Instance.Wells.OnEntityRemoved += OnWellRemoved;
+            RepositoryWrapper.Instance.SoilAnalyses.OnEntityRemoved += OnEntitiesRemoved;
         }
 
         protected override void OnSetView(IView view)
@@ -56,7 +57,7 @@ namespace Wells.View.ViewModels
                 }, (obj) => IsNewCommandEnabled, OnError);
             }
         }
-        
+
         public override ICommand EditEntityCommand
         {
             get
@@ -89,13 +90,8 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar este análisis?", "Eliminar"))
-                    {
-                        Repository.SoilAnalyses.Remove(SelectedEntity);
-                        RepositoryWrapper.Instance.SaveChanges();
-                        UpdateEntites();
-                    }
-                }, (obj) => SelectedEntity != null && IsRemoveCommandEnabled, OnError);
+                    RemoveEntities(Repository.SoilAnalyses);
+                }, (obj) => (SelectedEntity != null || (SelectedEntities != null && SelectedEntities.Any())) && IsRemoveCommandEnabled, OnError);
             }
         }
 

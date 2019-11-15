@@ -111,7 +111,7 @@ namespace Wells.View.Importer
                     row = sheet.GetRow(i);
                     var prec = new Precipitation
                     {
-                        PrecipitationDate = ParseStringDate(ReadCellAsDateString(row, 0)),
+                        Date = ParseStringDate(ReadCellAsDateString(row, 0)),
                         Millimeters = ReadCellAsDouble(row, 1)
                     };
 
@@ -591,16 +591,16 @@ namespace Wells.View.Importer
         {
             var header = sheet.CreateRow(0);
 
-            header.CreateCell(0).SetCellValue(Precipitation.GetDisplayName(nameof(Precipitation.PrecipitationDate)));
+            header.CreateCell(0).SetCellValue(Precipitation.GetDisplayName(nameof(Precipitation.Date)));
             header.CreateCell(1).SetCellValue(Precipitation.GetDisplayName(nameof(Precipitation.Millimeters)));
         }
 
         static void WritePrecipitation(Precipitation precipitation, ISheet sheet, int rowIndex, ICellStyle cellDateStyle)
         {
             var row = sheet.CreateRow(rowIndex);
-            row.CreateCell(0).SetCellValue(precipitation.PrecipitationDate);
+            row.CreateCell(0).SetCellValue(precipitation.Date);
             var cell = row.CreateCell(0, CellType.Numeric);
-            cell.SetCellValue(precipitation.PrecipitationDate);
+            cell.SetCellValue(precipitation.Date);
             cell.CellStyle = cellDateStyle;
             row.CreateCell(1, CellType.Numeric).SetCellValue(precipitation.Millimeters);
         }

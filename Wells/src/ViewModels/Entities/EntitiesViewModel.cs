@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
-using System.Xml.Serialization;
 using Wells.Base;
+using Wells.BaseModel.Models;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
@@ -23,7 +23,7 @@ using Wells.View.UserControls;
 
 namespace Wells.View.ViewModels
 {
-    public abstract class EntitiesViewModel<T> : BaseViewModel, IEntitiesViewModel
+    public abstract class EntitiesViewModel<T> : BaseViewModel, IEntitiesViewModel where T : IBusinessObject
     {
         protected RepositoryWrapper Repository;
         protected IEntitiesControl Control;
@@ -264,6 +264,7 @@ namespace Wells.View.ViewModels
         protected override void SetCommandUpdates()
         {
             Add(nameof(SelectedEntity), new List<ICommand> { EditEntityCommand, RemoveEntityCommand });
+            Add(nameof(SelectedEntities), RemoveEntityCommand);
             Add(nameof(SelectedFilter), new List<ICommand> { EditFilterCommand, RemoveFilterCommand });
             Add(nameof(WellType), AddWellFilterCommand);
             Add(nameof(WellProperty), AddWellFilterCommand);
@@ -296,6 +297,12 @@ namespace Wells.View.ViewModels
             Control.MainWindow.CloseWaitingMessage();
         }
 
+        protected void OnEntitiesRemoved(object sender, EntityRemovedEventArgs<T> eventArgs)
+        {
+            RepositoryWrapper.Instance.SaveChanges();
+            UpdateEntites();
+        }
+
         void ExportRejectedToExcel()
         {
             if (SharedBaseView.ShowYesNoMessageBox(MainWindow, $"No se pudieron importar {ExcelReader.RejectedRows.Count - 1} registro(s). " +
@@ -305,6 +312,21 @@ namespace Wells.View.ViewModels
                 if (!string.IsNullOrEmpty(filename))
                 {
                     ExcelReader.ExportRejected(filename);
+                }
+            }
+        }
+
+        protected void RemoveEntities(IRepositoryBase<T> repository)
+        {
+            if (SharedBaseView.ShowYesNoMessageBox(MainWindow, "¿Está seguro de eliminar esto(s) dato(s)?", "Eliminar"))
+            {
+                if (SelectedEntities != null && SelectedEntities.Any())
+                {
+                    repository.RemoveRange(SelectedEntities);
+                }
+                else if (SelectedEntity != null)
+                {
+                    repository.Remove(SelectedEntity);
                 }
             }
         }
@@ -390,7 +412,7 @@ namespace Wells.View.ViewModels
                     FilterCollection.ReadXml(reader);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ExceptionHandler.Handle(ex, false);
             }

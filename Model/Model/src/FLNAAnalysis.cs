@@ -12,15 +12,15 @@ namespace Wells.Model
 
         public override ChemicalAnalysisType GetChemicalAnalysisType(string propertyName)
         {
-            return FlnaAnalysisTypes[propertyName];
+            return FlnaAnalysisTypes[propertyName.ToLowerInvariant()];
         }
 
         #region Properties
-        [DisplayName("GRO (%)"), Browsable(true)]
-        public double Gro { get; set; }
-
         [DisplayName("DRO (%)"), Browsable(true)]
         public double Dro { get; set; }
+
+        [DisplayName("GRO (%)"), Browsable(true)]
+        public double Gro { get; set; }
 
         [DisplayName("MRO (%)"), Browsable(true)]
         public double Mro { get; set; }

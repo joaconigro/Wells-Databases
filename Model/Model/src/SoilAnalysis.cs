@@ -13,7 +13,7 @@ namespace Wells.Model
 
         public override ChemicalAnalysisType GetChemicalAnalysisType(string propertyName)
         {
-            return SoilAnalysisTypes[propertyName];
+            return SoilAnalysisTypes[propertyName.ToLowerInvariant()];
         }
 
 
@@ -24,12 +24,12 @@ namespace Wells.Model
         [DisplayName("pH (mg/Kg)"), Browsable(true)]
         public double Ph { get; set; }
 
-        [DisplayName("GRO (mg/Kg)"), Browsable(true)]
-        public double Gro { get; set; }
-
         [DisplayName("DRO (mg/Kg)"), Browsable(true)]
         public double Dro { get; set; }
 
+        [DisplayName("GRO (mg/Kg)"), Browsable(true)]
+        public double Gro { get; set; }
+        
         [DisplayName("MRO (mg/Kg)"), Browsable(true)]
         public double Mro { get; set; }
 

@@ -9,12 +9,11 @@ namespace Wells.Model
 {
     public class Precipitation : BusinessObject
     {
-
         public Precipitation() { }
         
         #region Properties
         [Required, DisplayName("Fecha"), Browsable(true)]
-        public DateTime PrecipitationDate { get; set; }
+        public DateTime Date { get; set; }
 
         [Required, DisplayName("Milímetros"), Browsable(true)]
         public double Millimeters { get; set; }
@@ -40,7 +39,7 @@ namespace Wells.Model
 
         public override int CompareTo(IBusinessObject other)
         {
-            return PrecipitationDate.CompareTo((other as Precipitation).PrecipitationDate);
+            return Date.CompareTo((other as Precipitation).Date);
         }
 
         public static string GetDisplayName(string propertyName)

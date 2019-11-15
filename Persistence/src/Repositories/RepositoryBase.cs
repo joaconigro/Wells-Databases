@@ -81,7 +81,7 @@ namespace Wells.Persistence.Repositories
         protected virtual void OnAddingOrUpdating() { }
     }
 
-    public class EntityRemovedEventArgs<T> : EventArgs where T : class
+    public class EntityRemovedEventArgs<T> : EventArgs
     {
         public T Entity { get; }
         public IEnumerable<T> Entities { get; }
