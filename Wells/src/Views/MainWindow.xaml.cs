@@ -108,13 +108,13 @@ namespace Wells.View
 
         public void OpenGraphicsView()
         {
-            var diag = new CustomGraphicsView { Owner = this };
+            var diag = new ChartGraphicsView { Owner = this };
             diag.Show();
         }
 
-        public void OpenGraphicsView(Well well, PremadeSeriesInfoCollection series)
+        public void OpenGraphicsView(Well well, SeriesInfoCollection series)
         {
-            var diag = new PremadeGraphicsView(well, series) { Owner = this };
+            var diag = new ChartGraphicsView(well, series) { Owner = this };
             diag.Show();
         }
 
@@ -132,7 +132,7 @@ namespace Wells.View
 
         public void OpenCreatePremadeGraphicView()
         {
-            var diag = new CreatePremadeGraphicView { Owner = this };
+            var diag = new CreateGraphicView { Owner = this };
             diag.ShowDialog();
             PremadeGraphicsChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -162,7 +162,7 @@ namespace Wells.View
         void ShowWaitingMessage(string message);
         void CloseWaitingMessage();
         void OpenGraphicsView();
-        void OpenGraphicsView(Well well, PremadeSeriesInfoCollection series);
+        void OpenGraphicsView(Well well, SeriesInfoCollection series);
         void OpenGraphicsView(PiperSchoellerGraphicViewModel viewModel);
         void OpenGraphicsView(MapViewModel viewModel);
         void OpenCreatePremadeGraphicView();

@@ -2,19 +2,19 @@
 
 namespace Wells.View.Graphics
 {
-    public class PremadeSeriesInfoCollection
+    public class SeriesInfoCollection
     {
         public string Title { get; set; }
-        public List<PremadeSeriesInfo> Values { get; set; }
+        public List<SeriesInfo> Values { get; set; }
 
-        public PremadeSeriesInfoCollection() { Values = new List<PremadeSeriesInfo>(); }
+        public SeriesInfoCollection() { Values = new List<SeriesInfo>(); }
 
-        public void Add(PremadeSeriesInfo item)
+        public void Add(SeriesInfo item)
         {
             Values.Add(item);
         }
 
-        public void Remove(PremadeSeriesInfo item)
+        public void Remove(SeriesInfo item)
         {
             Values.Remove(item);
         }

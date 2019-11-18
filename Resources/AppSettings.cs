@@ -20,11 +20,16 @@ namespace Wells.Resources
         [JsonIgnore]
         public string CurrentDbName { get; private set; }
 
-
+        public static string SettingsDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
+        
         public static AppSettings Initialize()
         {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-            var filename = Path.Combine(dir, "AppSettings.was");
+            if (!Directory.Exists(SettingsDirectory))
+            {
+                Directory.CreateDirectory(SettingsDirectory);
+            }
+
+            var filename = Path.Combine(SettingsDirectory, "AppSettings.was");
 
             try
             {

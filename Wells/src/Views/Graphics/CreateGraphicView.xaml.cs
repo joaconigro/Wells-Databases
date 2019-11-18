@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.View.ViewModels;
 
@@ -8,13 +7,13 @@ namespace Wells.View
     /// <summary>
     /// Interaction logic for CreatePremadeGraphicView.xaml
     /// </summary>
-    public partial class CreatePremadeGraphicView : Window, IView
+    public partial class CreateGraphicView : Window, IView
     {
-        readonly CreatePremadeGraphicViewModel viewModel;
-        public CreatePremadeGraphicView()
+        readonly CreateGraphicViewModel viewModel;
+        public CreateGraphicView()
         {
             InitializeComponent();
-            viewModel = new CreatePremadeGraphicViewModel(this);
+            viewModel = new CreateGraphicViewModel(this);
             DataContext = viewModel;
         }
 

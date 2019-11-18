@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
+using Wells.Resources;
 using Wells.View.Graphics;
 
 namespace Wells.View.ViewModels
@@ -72,8 +73,7 @@ namespace Wells.View.ViewModels
 
         public static List<Gradient> ReadGradients()
         {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-            var filename = Path.Combine(dir, "Gradients.wgr");
+            var filename = Path.Combine(AppSettings.SettingsDirectory, "Gradients.wgr");
 
             var gradients = new List<Gradient>();
             if (File.Exists(filename))
@@ -92,13 +92,7 @@ namespace Wells.View.ViewModels
 
         public void SaveGradients()
         {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-            var filename = Path.Combine(dir, "Gradients.wgr");
+            var filename = Path.Combine(AppSettings.SettingsDirectory, "Gradients.wgr");
 
             foreach (var g in Gradients)
             {

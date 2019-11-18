@@ -62,6 +62,12 @@ namespace Wells.Base
             LoggerManager.Log(ex.StackTrace, severity);
         }
 
+        public static void Log(string  message, TraceEventType severity, string title)
+        {
+            LoggerManager.Log(title, severity);
+            LoggerManager.Log(message, severity);
+        }
+
         public static string GetString(Exception ex)
         {
             var msg = new StringBuilder();

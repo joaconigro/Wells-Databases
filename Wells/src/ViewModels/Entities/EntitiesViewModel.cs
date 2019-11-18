@@ -17,6 +17,7 @@ using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
 using Wells.Model;
 using Wells.Persistence.Repositories;
+using Wells.Resources;
 using Wells.View.Filters;
 using Wells.View.Importer;
 using Wells.View.UserControls;
@@ -397,8 +398,7 @@ namespace Wells.View.ViewModels
 
         public void ReadFilters(string filtersFilename)
         {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-            var filename = Path.Combine(dir, $"{filtersFilename}.wft");
+            var filename = Path.Combine(AppSettings.SettingsDirectory, $"{filtersFilename}.wft");
             FilterCollection = new FilterCollection<T>();
 
             try
@@ -420,13 +420,7 @@ namespace Wells.View.ViewModels
 
         public void SaveFilters(string filtersFilename)
         {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-            var filename = Path.Combine(dir, $"{filtersFilename}.wft");
+            var filename = Path.Combine(AppSettings.SettingsDirectory, $"{filtersFilename}.wft");
 
             var xml = new StringBuilder();
             var settings = new XmlWriterSettings { Indent = true };

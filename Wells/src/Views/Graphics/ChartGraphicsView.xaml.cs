@@ -8,18 +8,40 @@ using Wells.View.ViewModels;
 namespace Wells.View
 {
     /// <summary>
-    /// Interaction logic for PremadeGraphicsView.xaml
+    /// Interaction logic for CustomGraphicsView.xaml
     /// </summary>
-    public partial class PremadeGraphicsView : Window, IChartGraphicsView
+    public partial class ChartGraphicsView : Window, IChartGraphicsView
     {
-        readonly PremadeGraphicsViewModel viewModel;
-        public PremadeGraphicsView(Model.Well well, PremadeSeriesInfoCollection series)
+        readonly ChartGraphicsViewModel viewModel;
+        public ChartGraphicsView()
+        {
+            InitializeComponent();
+            viewModel = new ChartGraphicsViewModel(this);
+            DataContext = viewModel;
+            MainChart.AxisY.CollectionChanged += OnAxisYCollectionChanged;
+        }
+
+        public ChartGraphicsView(Model.Well well, SeriesInfoCollection series)
         {
             InitializeComponent();
 
-            viewModel = new PremadeGraphicsViewModel(this, well, series);
+            viewModel = new ChartGraphicsViewModel(this, well, series);
             DataContext = viewModel;
         }
+
+        private void OnAxisYCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var axis in MainChart.AxisY)
+            {
+                axis.LabelFormatter = viewModel.YFormatter;
+                axis.FontSize = 12;
+            }
+            if (MainChart.AxisY.Any())
+            {
+                MainChart.AxisY[0].Position = LiveCharts.AxisPosition.LeftBottom;
+            }
+        }
+
 
         #region IView
         public void CloseView(bool? dialogResult)
@@ -31,7 +53,7 @@ namespace Wells.View
         public void CloseView()
         {
             Close();
-        }
+        }     
         #endregion
 
 
@@ -69,11 +91,11 @@ namespace Wells.View
                 MainChart.AxisY.RemoveAt(axisIndex);
             }
 
-            foreach (var axis in MainChart.AxisY)
-            {
-                axis.LabelFormatter = viewModel.YFormatter;
-                axis.FontSize = 12;
-            }
+            //foreach (var axis in MainChart.AxisY)
+            //{
+            //    axis.LabelFormatter = viewModel.YFormatter;
+            //    axis.FontSize = 12;
+            //}
         }
 
         public void ResetZoom()

@@ -14,5 +14,10 @@ namespace Wells.View
         }
 
         public string Message { get => MessageTextBlock.Text; set => MessageTextBlock.Text = value; }
+
+        private void OnViewClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            gifImage.StopAnimation();
+        }
     }
 }

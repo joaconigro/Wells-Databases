@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
+using Wells.Base;
 using Wells.BaseView;
 using Wells.Persistence.Repositories;
 using Wells.Resources;
@@ -55,13 +57,13 @@ namespace Wells
         {
             if (e.IsTerminating)
             {
-                SharedBaseView.ShowOkOnkyMessageBox(new WaitingView(""), "Application will shut down because irrecoverable error. More info: " +
-                    e.ExceptionObject.ToString(), "Unhandled Exception");
+                SharedBaseView.ShowErrorMessageBox(new WaitingView(""), "Application will shut down because irrecoverable error. More info: " + e.ExceptionObject.ToString());
             }
             else
             {
-                SharedBaseView.ShowOkOnkyMessageBox(new WaitingView(""), e.ExceptionObject.ToString(), "Unhandled Exception");
+                SharedBaseView.ShowErrorMessageBox(new WaitingView(""), e.ExceptionObject.ToString());
             }
+            ExceptionHandler.Log(e.ExceptionObject.ToString(), TraceEventType.Critical, "Unhandled Exception");
         }
 
         private void OnAppExit(object sender, ExitEventArgs e)

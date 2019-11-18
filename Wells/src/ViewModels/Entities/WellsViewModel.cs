@@ -19,7 +19,7 @@ namespace Wells.View.ViewModels
 {
     public class WellsViewModel : EntitiesViewModel<Well>
     {
-        private List<PremadeSeriesInfoCollection> _PremadeGraphics;
+        private List<SeriesInfoCollection> _PremadeGraphics;
         private readonly MenuItem filesMenuItem;
 
         public WellsViewModel() : base(null)
@@ -28,7 +28,7 @@ namespace Wells.View.ViewModels
             Initialize();
             _Entities = Repository.Wells.All;
             _ShowWellPanel = true;
-            _PremadeGraphics = CreatePremadeGraphicViewModel.ReadPremadeGraphics();
+            _PremadeGraphics = CreateGraphicViewModel.ReadPremadeGraphics();
             filesMenuItem = new MenuItem { Header = "Archivos" };
             RepositoryWrapper.Instance.Wells.OnEntityRemoved += OnEntitiesRemoved;
         }
@@ -101,7 +101,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    MainWindow.OpenGraphicsView(SelectedEntity, param as PremadeSeriesInfoCollection);
+                    MainWindow.OpenGraphicsView(SelectedEntity, param as SeriesInfoCollection);
                 }, (obj) => SelectedEntity != null, OnError);
             }
         }
@@ -193,15 +193,16 @@ namespace Wells.View.ViewModels
 
             menu.Items.Add(new Separator());
             var graphicsMenuItem = new MenuItem { Header = "Gráficos" };
-            var mapMenuItem = new MenuItem { Header = "Mostrar en mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
+            var mapMenuItem = new MenuItem { Header = "Mapa...", Command = OpenMapCommand, CommandParameter = SelectedEntities };
             graphicsMenuItem.Items.Add(mapMenuItem);
             graphicsMenuItem.Items.Add(new Separator());
 
             var piperMenuItem = new MenuItem { Header = "Piper-Schöeller", Command = OpenPiperShoellerGraphicCommand, CommandParameter = SelectedEntities };
             graphicsMenuItem.Items.Add(piperMenuItem);
+            graphicsMenuItem.Items.Add(new Separator());
+
             foreach (var pg in _PremadeGraphics)
             {
-                graphicsMenuItem.Items.Add(new Separator());
                 var aMenuItem = new MenuItem { Header = pg.Title, Command = OpenPremadeGraphicCommand, CommandParameter = pg };
                 graphicsMenuItem.Items.Add(aMenuItem);
             }
@@ -249,7 +250,7 @@ namespace Wells.View.ViewModels
 
         void OnPremadeGraphicsChanged(object sender, EventArgs args)
         {
-            _PremadeGraphics = CreatePremadeGraphicViewModel.ReadPremadeGraphics();
+            _PremadeGraphics = CreateGraphicViewModel.ReadPremadeGraphics();
             Control.UpdateRowContextMenu();
         }
 
