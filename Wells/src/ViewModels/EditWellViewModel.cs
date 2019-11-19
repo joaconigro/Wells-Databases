@@ -150,7 +150,7 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro de eliminar este pozo?", "Eliminar"))
+                    if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro de eliminar este pozo? Esta operación no se puede deshacer.", "Eliminar"))
                     {
                         RemoveAll();
                         RepositoryWrapper.Instance.SaveChanges();
@@ -217,16 +217,71 @@ namespace Wells.View.ViewModels
             {
                 return new RelayCommand((param) =>
                 {
-                    var measurement = (param as Measurement);
-                    if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar esta medición?", "Borrar medición"))
+                    if(param is Measurement measurement)
                     {
-                        Measurements.Remove(measurement);
+                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar esta medición? Esta operación no se puede deshacer.", "Borrar medición"))
+                        {
+                            Measurements.Remove(measurement);
+                            RepositoryWrapper.Instance.Measurements.Remove(measurement);
+                        }
                     }
                 }, (obj) => true, OnError);
             }
         }
 
+        public ICommand DeleteSoilAnalysisCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if (param is SoilAnalysis analysis)
+                    {
+                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este análisis? Esta operación no se puede deshacer.", "Borrar análisis"))
+                        {
+                            SoilAnalyses.Remove(analysis);
+                            RepositoryWrapper.Instance.SoilAnalyses.Remove(analysis);
+                        }
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
 
+        public ICommand DeleteWaterAnalysisCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if (param is WaterAnalysis analysis)
+                    {
+                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este análisis? Esta operación no se puede deshacer.", "Borrar análisis"))
+                        {
+                            WaterAnalyses.Remove(analysis);
+                            RepositoryWrapper.Instance.WaterAnalyses.Remove(analysis);
+                        }
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand DeleteFlnaAnalysisCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    if (param is FlnaAnalysis analysis)
+                    {
+                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este análisis? Esta operación no se puede deshacer.", "Borrar análisis"))
+                        {
+                            FlnaAnalyses.Remove(analysis);
+                            RepositoryWrapper.Instance.FlnaAnalyses.Remove(analysis);
+                        }
+                    }
+                }, (obj) => true, OnError);
+            }
+        }
 
         public ICommand NewExternalLinkCommand
         {
@@ -269,9 +324,10 @@ namespace Wells.View.ViewModels
                     if (param != null)
                     {
                         var file = param as ExternalFile;
-                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este archivo?", "Borrar archivo"))
+                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este archivo? Esta operación no se puede deshacer.", "Borrar archivo"))
                         {
                             Files.Remove(file);
+                            RepositoryWrapper.Instance.ExternalFiles.Remove(file);
                         }
                     }
                 }, (obj) => true, OnError);

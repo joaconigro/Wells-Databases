@@ -20,11 +20,12 @@
 
             <StackPanel DockPanel.Dock="Top">
                 <Button Name="NewEntityButton" Content="{Binding NewText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" Style="{StaticResource ButtonStyle}"
-                    Command="{Binding NewEntityCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" Visibility="{Binding NewEntityVisibility}"/>
+                    Command="{Binding NewEntityCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" 
+                        Visibility="{Binding NewEntityVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}"/>
                 <Button Name="EditEntityButton" Content="Editar..." Style="{StaticResource ButtonStyle}"
                     Command="{Binding EditEntityCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}" CommandParameter="{Binding ElementName=EntitiesListview, Path=SelectedItem}"
                         IsEnabled="{Binding ElementName=EntitiesListview, Path=SelectedItem, Converter={StaticResource ObjectBoolConverter}}"
-                        Visibility="{Binding EditEntityVisibility}"/>
+                        Visibility="{Binding EditEntityVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntitiesManagerControl}}}"/>
             </StackPanel>
 
         </DockPanel>

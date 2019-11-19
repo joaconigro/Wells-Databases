@@ -68,28 +68,31 @@
                 <TextBox Name="LongitudTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{base:CultureAwareBinding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
             </Grid>
         </GroupBox>
-        <GroupBox Name="ContentGroupBox" Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">
-            <TabControl Name="ContentTabControl">
-                <TabItem Name="MeasurementsTab" Header="Mediciones">
-                    <uc:EntitiesManagerControl x:Name="MeasurementsEntityControl" ObjectsSource="{Binding Measurements}" 
-                                                  NewEntityCommand="{Binding NewMeasurementCommand, Mode=OneWay}"
-                                                  EditEntityCommand="{Binding EditMeasurementCommand, Mode=OneWay}"
-                                                  DeleteEntityCommand ="{Binding DeleteMeasurementCommand, Mode=OneWay}"
-                                               NewEntityVisibility="Visible" NewText="Nueva..."/>
+        <GroupBox Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">
+            <TabControl>
+                <TabItem Header="Mediciones">
+                    <uc:EntitiesManagerControl ObjectsSource="{Binding Measurements}" 
+                                               NewEntityCommand="{Binding NewMeasurementCommand, Mode=OneWay}"
+                                               EditEntityCommand="{Binding EditMeasurementCommand, Mode=OneWay}"
+                                               DeleteEntityCommand ="{Binding DeleteMeasurementCommand, Mode=OneWay}"
+                                               NewEntityVisibility="Visible" NewText="Crear..."/>
                 </TabItem>
-                <TabItem Name="SoilAnalysesTab" Header="Análisis de suelo">
-                    <uc:EntitiesManagerControl x:Name="SoilAnalysisEntityControl" ObjectsSource="{Binding SoilAnalyses, Mode=OneWay}"
-                                               NewEntityVisibility="Hidden" EditEntityVisibility="Hidden"/>
+                <TabItem Header="Análisis de suelo">
+                    <uc:EntitiesManagerControl ObjectsSource="{Binding SoilAnalyses, Mode=OneWay}"
+                                               NewEntityVisibility="Collapsed" EditEntityVisibility="Collapsed"
+                                               DeleteEntityCommand ="{Binding DeleteSoilAnalysisCommand, Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Name="WaterAnalysisTab" Header="Análisis de agua">
-                    <uc:EntitiesManagerControl x:Name="WaterAnalysisEntityControl" ObjectsSource="{Binding WaterAnalyses, Mode=OneWay}"
-                                               NewEntityVisibility="Hidden" EditEntityVisibility="Hidden"/>
+                <TabItem Header="Análisis de agua">
+                    <uc:EntitiesManagerControl ObjectsSource="{Binding WaterAnalyses, Mode=OneWay}"
+                                               NewEntityVisibility="Collapsed" EditEntityVisibility="Collapsed"
+                                               DeleteEntityCommand ="{Binding DeleteWaterAnalysisCommand, Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Name="FLNAAnalysisTab" Header="Análisis FLNA">
-                    <uc:EntitiesManagerControl x:Name="FLNAAnalysisEntityControl" ObjectsSource="{Binding FLNAAnalyses, Mode=OneWay}"
-                                               NewEntityVisibility="Hidden" EditEntityVisibility="Hidden"/>
+                <TabItem Header="Análisis FLNA">
+                    <uc:EntitiesManagerControl ObjectsSource="{Binding FlnaAnalyses, Mode=OneWay}"
+                                               NewEntityVisibility="Collapsed" EditEntityVisibility="Collapsed"
+                                               DeleteEntityCommand ="{Binding DeleteFlnaAnalysisCommand, Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Name="ExternalLinksTab" Header="Archivos externos">
+                <TabItem Header="Archivos externos">
                     <uc:EntitiesManagerControl x:Name="ExternalLinksEntityControl" ObjectsSource="{Binding Files, Mode=OneWay}"
                                                    NewEntityCommand="{Binding NewExternalLinkCommand, Mode=OneWay}"
                                                    EditEntityCommand="{Binding OpenExternalLinkCommand, Mode=OneWay}"

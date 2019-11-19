@@ -35,7 +35,7 @@ namespace Wells.View.UserControls
            typeof(Visibility), typeof(EntitiesManagerControl), new PropertyMetadata(Visibility.Visible));
 
         public static readonly DependencyProperty NewTextProperty = DependencyProperty.Register(nameof(NewText),
-           typeof(string), typeof(EntitiesManagerControl), new PropertyMetadata("Nuevo..."));
+           typeof(string), typeof(EntitiesManagerControl), new PropertyMetadata("Crear..."));
 
         public ICommand NewEntityCommand { get => (ICommand)GetValue(NewEntityCommandProperty); set => SetValue(NewEntityCommandProperty, value); }
         public ICommand EditEntityCommand { get => (ICommand)GetValue(EditEntityCommandProperty); set => SetValue(EditEntityCommandProperty, value); }

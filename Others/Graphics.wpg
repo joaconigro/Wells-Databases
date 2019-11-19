@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfSeriesInfoCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SeriesInfoCollection>
+    <Title>Concentración Arsénico</Title>
+    <Values>
+      <SeriesInfo>
+        <IsFromWell>true</IsFromWell>
+        <DisplayXName>Fecha</DisplayXName>
+        <DisplayYName>Arsénico (mg/l)</DisplayYName>
+        <ListName>Análisis de agua</ListName>
+        <IsDateBased>true</IsDateBased>
+        <HexColor>#FFDE202C</HexColor>
+      </SeriesInfo>
+    </Values>
+  </SeriesInfoCollection>
+  <SeriesInfoCollection>
+    <Title>Concentración HTP</Title>
+    <Values>
+      <SeriesInfo>
+        <IsFromWell>true</IsFromWell>
+        <DisplayXName>Fecha</DisplayXName>
+        <DisplayYName>Hidrocarburos totales (EPA 8015) (mg/l)</DisplayYName>
+        <ListName>Análisis de agua</ListName>
+        <IsDateBased>true</IsDateBased>
+        <HexColor>#FFFF0009</HexColor>
+      </SeriesInfo>
+    </Values>
+  </SeriesInfoCollection>
+  <SeriesInfoCollection>
+    <Title>Concentración Nitratos</Title>
+    <Values>
+      <SeriesInfo>
+        <IsFromWell>true</IsFromWell>
+        <DisplayXName>Fecha</DisplayXName>
+        <DisplayYName>Nitratos (mg/l)</DisplayYName>
+        <ListName>Análisis de agua</ListName>
+        <IsDateBased>true</IsDateBased>
+        <HexColor>#FFD4722A</HexColor>
+      </SeriesInfo>
+    </Values>
+  </SeriesInfoCollection>
+  <SeriesInfoCollection>
+    <Title>Cota y prof. agua más precipitaciones</Title>
+    <Values>
+      <SeriesInfo>
+        <IsFromWell>true</IsFromWell>
+        <DisplayXName>Fecha</DisplayXName>
+        <DisplayYName>Cota Agua (m)</DisplayYName>
+        <ListName>Mediciones</ListName>
+        <IsDateBased>true</IsDateBased>
+        <HexColor>#FF0294FC</HexColor>
+      </SeriesInfo>
+      <SeriesInfo>
+        <IsFromWell>true</IsFromWell>
+        <DisplayXName>Fecha</DisplayXName>
+        <DisplayYName>Profundidad Agua (m)</DisplayYName>
+        <ListName>Mediciones</ListName>
+        <IsDateBased>true</IsDateBased>
+        <HexColor>#FF0000B1</HexColor>
+      </SeriesInfo>
+      <SeriesInfo>
+        <IsFromWell>false</IsFromWell>
+        <DisplayXName />
+        <DisplayYName />
+        <ListName>Precipitaciones</ListName>
+        <IsDateBased>true</IsDateBased>
+        <HexColor>#FF864FAF</HexColor>
+      </SeriesInfo>
+    </Values>
+  </SeriesInfoCollection>
+  <SeriesInfoCollection>
+    <Title>FLNA vs Agua</Title>
+    <Values>
+      <SeriesInfo>
+        <IsFromWell>true</IsFromWell>
+        <DisplayXName>Cota Agua (m)</DisplayXName>
+        <DisplayYName>Cota FLNA (m)</DisplayYName>
+        <ListName>Mediciones</ListName>
+        <IsDateBased>false</IsDateBased>
+        <HexColor>#FFF0590E</HexColor>
+      </SeriesInfo>
+    </Values>
+  </SeriesInfoCollection>
+</ArrayOfSeriesInfoCollection>
