@@ -205,11 +205,11 @@ namespace Wells.View.ViewModels
             if(values != null)
             {
                 var series = CreateLineSeries();
-                series.Title = $"{well.Name} - {displayNameY} vs {displayNameX}";
                 SetAxis(series, "metros");
 
                 series.Values.AddRange(values);
                 _SeriesInfo.Add(series, new SeriesInfo(well, "Mediciones", propertyXName, displayNameX, propertyYName, displayNameY, GetValuesFromListName));
+                series.Title = _SeriesInfo[series].ToString();
                 return series;
             }
             return null;            
@@ -224,13 +224,13 @@ namespace Wells.View.ViewModels
             if (values != null)
             {
                 var series = CreateLineSeries();
-                series.Title = $"{well.Name} - {displayNameY} vs {displayNameX}";
 
                 var units = SoilAnalysis.GetChemicalAnalysisUnits(propertyYName);
                 if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
                 series.Values.AddRange(values);
                 _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de suelos", propertyXName, displayNameX, propertyYName, displayNameY, GetValuesFromListName));
+                series.Title = _SeriesInfo[series].ToString();
                 return series;
             }
             return null;
@@ -245,13 +245,13 @@ namespace Wells.View.ViewModels
             if (values != null)
             {
                 var series = CreateLineSeries();
-                series.Title = $"{well.Name} - {displayNameY} vs {displayNameX}";
 
                 var units = WaterAnalysis.GetChemicalAnalysisUnits(propertyYName);
                 if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
                 series.Values.AddRange(values);
                 _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de agua", propertyXName, displayNameX, propertyYName, displayNameY, GetValuesFromListName));
+                series.Title = _SeriesInfo[series].ToString();
                 return series;
             }
             return null;
@@ -266,13 +266,13 @@ namespace Wells.View.ViewModels
             if (values != null)
             {
                 var series = CreateLineSeries();
-                series.Title = $"{well.Name} - {displayNameY} vs {displayNameX}";
 
                 var units = FlnaAnalysis.GetChemicalAnalysisUnits(propertyYName);
                 if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
 
                 series.Values.AddRange(values);
                 _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de FLNA", propertyXName, displayNameX, propertyYName, displayNameY, GetValuesFromListName));
+                series.Title = _SeriesInfo[series].ToString();
                 return series;
             }
             return null;
@@ -285,12 +285,12 @@ namespace Wells.View.ViewModels
             if (values != null)
             {
                 var series = CreateColumnSeries();
-                series.Title = "Precipitaciones";
                 SetAxis(series, "mm");
 
                 series.Values.AddRange(values);
                 _SeriesInfo.Add(series, new SeriesInfo(null, "Precipitaciones", nameof(Precipitation.Date), "Fecha", 
                     nameof(Precipitation.Millimeters), "Milímetros", GetValuesFromListName));
+                series.Title = _SeriesInfo[series].ToString();
                 return series;
             }
             return null;

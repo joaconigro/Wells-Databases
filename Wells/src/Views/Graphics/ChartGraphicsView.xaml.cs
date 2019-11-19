@@ -90,12 +90,6 @@ namespace Wells.View
             {
                 MainChart.AxisY.RemoveAt(axisIndex);
             }
-
-            //foreach (var axis in MainChart.AxisY)
-            //{
-            //    axis.LabelFormatter = viewModel.YFormatter;
-            //    axis.FontSize = 12;
-            //}
         }
 
         public void ResetZoom()

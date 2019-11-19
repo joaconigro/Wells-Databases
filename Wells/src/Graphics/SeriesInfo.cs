@@ -81,6 +81,7 @@ namespace Wells.View.Graphics
                Func<Well, string, string, string, string, List<DateModel>> func)
         {
             Well = well;
+            IsFromWell = well != null;
             ListName = listName;
             PropertyXName = propertyXName;
             DisplayXName = displayXName;
@@ -101,7 +102,14 @@ namespace Wells.View.Graphics
             {
                 if (Well != null)
                 {
-                    return $"{Well.Name} - {DisplayYName} vs {DisplayXName}";
+                    if (IsDateBased)
+                    {
+                        return $"{Well.Name} - {DisplayYName}";
+                    }
+                    else
+                    {
+                        return $"{Well.Name} - {DisplayYName} vs {DisplayXName}";
+                    }
                 }
                 else
                 {

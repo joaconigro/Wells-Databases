@@ -15,8 +15,8 @@ Fisico químico	Fluorides	SM 4500 F D	mg/l
 HTP	DRO	EPA 8015	mg/l
 HTP	GRO	EPA 8015	mg/l
 HTP	MRO	EPA 8015	mg/l
-HTP	TotalHydrocarbons_EPA8015	EPA 8015	mg/l
-HTP	TotalHydrocarbons_TNRCC1005	TNRCC 1005	mg/l
+HTP	TotalHydrocarbonsEPA8015	EPA 8015	mg/l
+HTP	TotalHydrocarbonsTNRCC1005	TNRCC 1005	mg/l
 BTEX	Benzene	EPA 8015	mg/l
 BTEX	Tolueno	EPA 8015	mg/l
 BTEX	Ethylbenzene	EPA 8015	mg/l

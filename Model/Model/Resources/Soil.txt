@@ -3,8 +3,8 @@ pH	PH	EPA 9045 A/C	mg/Kg
 HTP	DRO	EPA 8015	mg/Kg
 HTP	GRO	EPA 8015	mg/Kg
 HTP	MRO	EPA 8015	mg/Kg
-HTP	TotalHydrocarbons_EPA8015	EPA 8015	mg/Kg
-HTP	TotalHydrocarbons_TNRCC1005	TNRCC 1005	mg/Kg
+HTP	TotalHydrocarbonsEPA8015	EPA 8015	mg/Kg
+HTP	TotalHydrocarbonsTNRCC1005	TNRCC 1005	mg/Kg
 HTP	OilsAndFats	SM 5520 D	mg/Kg
 Hidrocarburos Fracción alifática	C6_C8Aliphatic	TNRCC 1006	mg/Kg
 Hidrocarburos Fracción alifática	C8_C10Aliphatic	TNRCC 1006	mg/Kg
