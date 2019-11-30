@@ -50,6 +50,8 @@
                         <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
                         <Separator/>
                         <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Abrir carpeta de registros..." Command="{Binding OpenLogsDirectoryCommand}"/>
                     </MenuItem>
                 </Menu>
             </Canvas>

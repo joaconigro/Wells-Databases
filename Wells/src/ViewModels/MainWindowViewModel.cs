@@ -1,9 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows.Input;
 using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
 using Wells.Model;
 using Wells.Persistence.Repositories;
+using Wells.Resources;
 
 namespace Wells.View.ViewModels
 {
@@ -60,6 +63,25 @@ namespace Wells.View.ViewModels
                 return new RelayCommand((param) =>
                 {
                     mainWindow.ShowManageColorMapDialog();
+                }, (obj) => true, OnError);
+            }
+        }
+
+        public ICommand OpenLogsDirectoryCommand
+        {
+            get
+            {
+                return new RelayCommand((param) =>
+                {
+                    var dir = Path.Combine(AppSettings.SettingsDirectory, "Log");
+                    if (Directory.Exists(dir))
+                    {
+                        Process.Start("explorer.exe", dir);
+                    }
+                    else
+                    {
+                        SharedBaseView.ShowOkOnkyMessageBox(View, "La carpeta de registros no se creó todavía.", "Carpeta inexistente");
+                    }
                 }, (obj) => true, OnError);
             }
         }
