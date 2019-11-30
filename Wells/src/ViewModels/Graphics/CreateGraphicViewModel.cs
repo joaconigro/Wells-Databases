@@ -39,7 +39,7 @@ namespace Wells.View.ViewModels
             Add(nameof(Title), new EmptyStringValidator("Título"));
         }
 
-        public List<string> SeriesDataNames => new List<string> { "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public List<string> SeriesDataNames => new List<string> { "Mediciones", "Análisis de agua" };
         public List<string> FromOptions => new List<string> { "Pozos", "Precipitaciones" };
 
         public string Title { get => title; set { SetValue(ref title, value); } }
@@ -77,9 +77,7 @@ namespace Wells.View.ViewModels
                 return selectedSeriesDataName switch
                 {
                     "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
-                    "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
-                    "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
-                    _ => SoilAnalysis.DoubleProperties.Keys.ToList(),
+                    _ => WaterAnalysis.DoubleProperties.Keys.ToList(),
                 };
             }
         }

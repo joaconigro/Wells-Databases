@@ -39,7 +39,7 @@ namespace Wells.View.ViewModels
         public List<Gradient> Gradients { get; private set; }
         public double MapRotation { get => mapRotation; set { SetValue(ref mapRotation, value); _Dialog.UpdateHeading(MapRotation); } }
         public CustomPushpin SelectedPushpin { get => selectedPushpin; set { SetValue(ref selectedPushpin, value); UpdateSelection(); } }
-        public List<string> ClassificationNames => new List<string> { "Nada", "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public List<string> ClassificationNames => new List<string> { "Nada", "Mediciones", "Análisis de agua" };
         public List<string> Functions => new List<string> { "Máximo", "Mínimo", "Promedio", "Última fecha" };
         public string SelectedClass { get => selectedClass; set { SetValue(ref selectedClass, value); NotifyPropertyChanged(nameof(Parameters)); } }
         public string SelectedFunction { get => selectedFunction; set { SetValue(ref selectedFunction, value); ChangePushpinAttributes(); } }
@@ -56,9 +56,7 @@ namespace Wells.View.ViewModels
                 var list = selectedClass switch
                 {
                     "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
-                    "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
                     "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
-                    "Análisis de suelos" => SoilAnalysis.DoubleProperties.Keys.ToList(),
                     _ => new List<string>()
                 };
                 if (list.Any())
@@ -266,20 +264,10 @@ namespace Wells.View.ViewModels
                     var propName = Measurement.DoubleProperties[SelectedParameter].Name;
                     return GetValue(well.Measurements, propName);
                 }
-                else if (SelectedClass == "Análisis de FLNA")
-                {
-                    var propName = FlnaAnalysis.DoubleProperties[SelectedParameter].Name;
-                    return GetValue(well.FlnaAnalyses, propName);
-                }
                 else if (SelectedClass == "Análisis de agua")
                 {
                     var propName = WaterAnalysis.DoubleProperties[SelectedParameter].Name;
                     return GetValue(well.WaterAnalyses, propName);
-                }
-                else if (SelectedClass == "Análisis de suelos")
-                {
-                    var propName = SoilAnalysis.DoubleProperties[SelectedParameter].Name;
-                    return GetValue(well.SoilAnalyses, propName);
                 }
                 else { return 0.0; }
             }

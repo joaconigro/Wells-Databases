@@ -64,10 +64,4 @@ namespace Wells.BaseModel.Models
 
         public abstract int CompareTo(IBusinessObject other);       
     }
-
-    public enum WellType
-    {
-        [Description("Pozo")] MeasurementWell,
-        [Description("Sondeo")] Sounding
-    }
 }

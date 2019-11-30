@@ -27,14 +27,6 @@
                     <uc:EntitiesControl x:Name="WaterAnalysesControl"/>
                 </TabItem>
 
-                <TabItem Header="Análisis de suelo" >
-                    <uc:EntitiesControl x:Name="SoilAnalysesControl"/>
-                </TabItem>
-
-                <TabItem Header="Análisis de FLNA" >
-                    <uc:EntitiesControl x:Name="FLNAAnalysesControl"/>
-                </TabItem>
-
                 <TabItem Header="Precipitaciones" >
                     <uc:EntitiesControl x:Name="PrecipitationsControl"/>
                 </TabItem>

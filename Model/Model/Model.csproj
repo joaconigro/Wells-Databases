@@ -6,8 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\FLNA.txt" />
-    <None Remove="Resources\Soil.txt" />
     <None Remove="Resources\Water.txt" />
   </ItemGroup>
 
@@ -16,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\FLNA.txt" />
-    <Resource Include="Resources\Soil.txt" />
     <Resource Include="Resources\Water.txt" />
   </ItemGroup>
 

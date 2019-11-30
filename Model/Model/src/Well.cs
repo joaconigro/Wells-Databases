@@ -9,9 +9,7 @@ namespace Wells.Model
     {
         public Well()
         {
-            SoilAnalyses = new List<SoilAnalysis>();
             WaterAnalyses = new List<WaterAnalysis>();
-            FlnaAnalyses = new List<FlnaAnalysis>();
             Measurements = new List<Measurement>();
             Files = new List<ExternalFile>();
         }
@@ -20,20 +18,14 @@ namespace Wells.Model
         public string Name { get; set; }
 
         #region Properties
-        [DisplayName("X"), Browsable(true)]
-        public double X { get; set; }
-
-        [DisplayName("Y"), Browsable(true)]
-        public double Y { get; set; }
-
-        [DisplayName("Cota (m.s.n.m.)"), Browsable(true)]
-        public double Z { get; set; }
-
         [DisplayName("Latitud"), Browsable(true)]
         public double Latitude { get; set; }
 
         [DisplayName("Longitud"), Browsable(true)]
         public double Longitude { get; set; }
+
+        [DisplayName("Cota (m.s.n.m.)"), Browsable(true)]
+        public double Z { get; set; }        
 
         [DisplayName("Altura del brocal (m)"), Browsable(true)]
         public double Height { get; set; }
@@ -50,10 +42,6 @@ namespace Wells.Model
         [Browsable(false)]
         public bool HasZ => !Z.Equals(NumericNullValue);
 
-        [DisplayName("Tipo"), Browsable(true)]
-        public WellType WellType { get; set; }
-
-
         [DisplayName("Existe"), Browsable(true)]
         public bool Exists { get; set; }
 
@@ -62,13 +50,7 @@ namespace Wells.Model
 
         #region Lazy-loaded properties
         [Browsable(false)]
-        public virtual List<SoilAnalysis> SoilAnalyses { get; set; }
-
-        [Browsable(false)]
         public virtual List<WaterAnalysis> WaterAnalyses { get; set; }
-
-        [Browsable(false)]
-        public virtual List<FlnaAnalysis> FlnaAnalyses { get; set; }
 
         [Browsable(false)]
         public virtual List<Measurement> Measurements { get; set; }

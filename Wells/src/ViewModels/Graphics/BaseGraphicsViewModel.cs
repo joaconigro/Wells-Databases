@@ -153,9 +153,7 @@ namespace Wells.View.ViewModels
             var values = listName switch
             {
                 "Mediciones" => GetValues(well.Measurements, propertyXName, propertyYName),
-                "Análisis de FLNA" => GetValues(well.FlnaAnalyses, propertyXName, propertyYName),
                 "Análisis de agua" => GetValues(well.WaterAnalyses, propertyXName, propertyYName),
-                "Análisis de suelos" => GetValues(well.SoilAnalyses, propertyXName, propertyYName),
                 _ => GetValues(RepositoryWrapper.Instance.Precipitations.All, propertyXName, propertyYName),
             };
 
@@ -215,27 +213,6 @@ namespace Wells.View.ViewModels
             return null;            
         }
 
-        protected ISeriesView CreateSeriesFromSoilAnalyses(Well well, string displayNameX, string displayNameY)
-        {
-            var propertyXName = SoilAnalysis.Properties[displayNameX].Name;
-            var propertyYName = SoilAnalysis.Properties[displayNameY].Name;
-            var values = FilterAndValidateValues(GetValues(well.SoilAnalyses, propertyXName, propertyYName), well, displayNameY);
-
-            if (values != null)
-            {
-                var series = CreateLineSeries();
-
-                var units = SoilAnalysis.GetChemicalAnalysisUnits(propertyYName);
-                if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
-
-                series.Values.AddRange(values);
-                _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de suelos", propertyXName, displayNameX, propertyYName, displayNameY, GetValuesFromListName));
-                series.Title = _SeriesInfo[series].ToString();
-                return series;
-            }
-            return null;
-        }
-
         protected ISeriesView CreateSeriesFromWaterAnalyses(Well well, string displayNameX, string displayNameY)
         {
             var propertyXName = WaterAnalysis.Properties[displayNameX].Name;
@@ -251,27 +228,6 @@ namespace Wells.View.ViewModels
 
                 series.Values.AddRange(values);
                 _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de agua", propertyXName, displayNameX, propertyYName, displayNameY, GetValuesFromListName));
-                series.Title = _SeriesInfo[series].ToString();
-                return series;
-            }
-            return null;
-        }
-
-        protected ISeriesView CreateSeriesFromFlnaAnalyses(Well well, string displayNameX, string displayNameY)
-        {
-            var propertyXName = FlnaAnalysis.Properties[displayNameX].Name;
-            var propertyYName = FlnaAnalysis.Properties[displayNameY].Name;
-            var values = FilterAndValidateValues(GetValues(well.FlnaAnalyses, propertyXName, propertyYName), well, displayNameY);
-
-            if (values != null)
-            {
-                var series = CreateLineSeries();
-
-                var units = FlnaAnalysis.GetChemicalAnalysisUnits(propertyYName);
-                if (!string.IsNullOrEmpty(units)) { SetAxis(series, units); }
-
-                series.Values.AddRange(values);
-                _SeriesInfo.Add(series, new SeriesInfo(well, "Análisis de FLNA", propertyXName, displayNameX, propertyYName, displayNameY, GetValuesFromListName));
                 series.Title = _SeriesInfo[series].ToString();
                 return series;
             }

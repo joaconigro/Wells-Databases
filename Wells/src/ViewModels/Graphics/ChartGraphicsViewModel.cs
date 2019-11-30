@@ -25,7 +25,7 @@ namespace Wells.View.ViewModels
 
         public string Title { get; }
         public bool IsEditable { get; }
-        public List<string> SeriesDataNames => new List<string> { "Mediciones", "Análisis de FLNA", "Análisis de agua", "Análisis de suelos" };
+        public List<string> SeriesDataNames => new List<string> { "Mediciones", "Análisis de agua" };
         public List<string> FromOptions => new List<string> { "Pozos", "Precipitaciones" };
         public List<string> WellNames => RepositoryWrapper.Instance.Wells.Names;
         public bool ShowWellOptions => SelectedFromOption == 0 ? true : false;
@@ -76,9 +76,7 @@ namespace Wells.View.ViewModels
                 return selectedSeriesDataName switch
                 {
                     "Mediciones" => Measurement.DoubleProperties.Keys.ToList(),
-                    "Análisis de FLNA" => FlnaAnalysis.DoubleProperties.Keys.ToList(),
-                    "Análisis de agua" => WaterAnalysis.DoubleProperties.Keys.ToList(),
-                    _ => SoilAnalysis.DoubleProperties.Keys.ToList(),
+                    _ => WaterAnalysis.DoubleProperties.Keys.ToList(),
                 };
             }
         }
@@ -179,9 +177,7 @@ namespace Wells.View.ViewModels
                 genericSeries = listName switch
                 {
                     "Mediciones" => CreateSeriesFromMeasurements(well, xParam, yParam),
-                    "Análisis de FLNA" => CreateSeriesFromFlnaAnalyses(well, xParam, yParam),
-                    "Análisis de agua" => CreateSeriesFromWaterAnalyses(well, xParam, yParam),
-                    _ => CreateSeriesFromSoilAnalyses(well, xParam, yParam),
+                    _ => CreateSeriesFromWaterAnalyses(well, xParam, yParam),
                 };
             }
             else

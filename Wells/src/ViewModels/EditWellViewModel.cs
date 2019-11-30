@@ -18,8 +18,6 @@ namespace Wells.View.ViewModels
     public class EditWellViewModel : BaseViewModel
     {
         private string wellName;
-        private double x;
-        private double y;
         private double z;
         private double latitude;
         private double longitude;
@@ -28,17 +26,11 @@ namespace Wells.View.ViewModels
         private bool exists;
         private double bottom;
         private IEditWellView dialog;
-        private ObservableCollection<SoilAnalysis> soilAnalyses;
         private ObservableCollection<WaterAnalysis> waterAnalyses;
-        private ObservableCollection<FlnaAnalysis> flnaAnalyses;
         private ObservableCollection<Measurement> measurements;
         private ObservableCollection<ExternalFile> files;
 
         public string WellName { get => wellName; set { SetValue(ref wellName, value); } }
-
-
-        public double X { get => x; set { SetValue(ref x, value); } }
-        public double Y { get => y; set { SetValue(ref y, value); } }
         public double Z { get => z; set { SetValue(ref z, value); } }
         public double Latitude { get => latitude; set { SetValue(ref latitude, value); } }
         public double Longitude { get => longitude; set { SetValue(ref longitude, value); } }
@@ -46,15 +38,11 @@ namespace Wells.View.ViewModels
         public double Height { get => height; set { SetValue(ref height, value); } }
         public bool Exists { get => exists; set { SetValue(ref exists, value); } }
         public double Bottom { get => bottom; set { SetValue(ref bottom, value); } }
-        public ObservableCollection<SoilAnalysis> SoilAnalyses { get => soilAnalyses; set { SetValue(ref soilAnalyses, value); } }
         public ObservableCollection<WaterAnalysis> WaterAnalyses { get => waterAnalyses; set { SetValue(ref waterAnalyses, value); } }
-        public ObservableCollection<FlnaAnalysis> FlnaAnalyses { get => flnaAnalyses; set { SetValue(ref flnaAnalyses, value); } }
         public ObservableCollection<Measurement> Measurements { get => measurements; set { SetValue(ref measurements, value); } }
         public ObservableCollection<ExternalFile> Files { get => files; set { SetValue(ref files, value); } }
 
         public bool IsEditing { get; }
-
-        public List<string> WellTypes => Common.EnumDescriptionsToList(typeof(WellType));
 
 
         public Well Well { get; }
@@ -84,18 +72,13 @@ namespace Wells.View.ViewModels
         void InitializeWell()
         {
             WellName = Well.Name;
-            X = Well.X;
-            Y = Well.Y;
             Z = Well.Z;
             Latitude = Well.Latitude;
             Longitude = Well.Longitude;
-            Type = (int)Well.WellType;
             Height = Well.Height;
             Exists = Well.Exists;
             Bottom = Well.Bottom;
-            SoilAnalyses = new ObservableCollection<SoilAnalysis>(Well.SoilAnalyses.OrderBy(i => i.Date));
             WaterAnalyses = new ObservableCollection<WaterAnalysis>(Well.WaterAnalyses.OrderBy(i => i.Date));
-            FlnaAnalyses = new ObservableCollection<FlnaAnalysis>(Well.FlnaAnalyses.OrderBy(i => i.Date));
             Measurements = new ObservableCollection<Measurement>(Well.Measurements.OrderBy(i => i.Date));
             Files = new ObservableCollection<ExternalFile>(Well.Files.OrderBy(i => i.CompleteFilename));
         }
@@ -104,18 +87,13 @@ namespace Wells.View.ViewModels
         void SaveWell()
         {
             Well.Name = WellName;
-            Well.X = X;
-            Well.Y = Y;
             Well.Z = Z;
             Well.Latitude = Latitude;
             Well.Longitude = Longitude;
-            Well.WellType = (WellType)Type;
             Well.Bottom = Bottom;
             Well.Exists = Exists;
             Well.Height = Height;
-            Well.SoilAnalyses = SoilAnalyses.ToList();
             Well.WaterAnalyses = WaterAnalyses.ToList();
-            Well.FlnaAnalyses = FlnaAnalyses.ToList();
             Well.Measurements = Measurements.ToList();
             Well.Files = Files.ToList();
         }
@@ -136,9 +114,7 @@ namespace Wells.View.ViewModels
         void RemoveAll()
         {
             RepositoryWrapper.Instance.Measurements.RemoveRange(Well.Measurements);
-            RepositoryWrapper.Instance.SoilAnalyses.RemoveRange(Well.SoilAnalyses);
             RepositoryWrapper.Instance.WaterAnalyses.RemoveRange(Well.WaterAnalyses);
-            RepositoryWrapper.Instance.FlnaAnalyses.RemoveRange(Well.FlnaAnalyses);
             RepositoryWrapper.Instance.ExternalFiles.RemoveRange(Well.Files);
             RepositoryWrapper.Instance.Wells.Remove(Well);
         }
@@ -229,23 +205,6 @@ namespace Wells.View.ViewModels
             }
         }
 
-        public ICommand DeleteSoilAnalysisCommand
-        {
-            get
-            {
-                return new RelayCommand((param) =>
-                {
-                    if (param is SoilAnalysis analysis)
-                    {
-                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este análisis? Esta operación no se puede deshacer.", "Borrar análisis"))
-                        {
-                            SoilAnalyses.Remove(analysis);
-                            RepositoryWrapper.Instance.SoilAnalyses.Remove(analysis);
-                        }
-                    }
-                }, (obj) => true, OnError);
-            }
-        }
 
         public ICommand DeleteWaterAnalysisCommand
         {
@@ -265,23 +224,6 @@ namespace Wells.View.ViewModels
             }
         }
 
-        public ICommand DeleteFlnaAnalysisCommand
-        {
-            get
-            {
-                return new RelayCommand((param) =>
-                {
-                    if (param is FlnaAnalysis analysis)
-                    {
-                        if (SharedBaseView.ShowYesNoMessageBox(View, "¿Desea borrar este análisis? Esta operación no se puede deshacer.", "Borrar análisis"))
-                        {
-                            FlnaAnalyses.Remove(analysis);
-                            RepositoryWrapper.Instance.FlnaAnalyses.Remove(analysis);
-                        }
-                    }
-                }, (obj) => true, OnError);
-            }
-        }
 
         public ICommand NewExternalLinkCommand
         {

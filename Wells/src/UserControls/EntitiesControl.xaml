@@ -46,11 +46,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <GroupBox Header="Pozos/Sondeos" Style="{StaticResource MarginStyle}" Visibility="{Binding ShowWellPanel, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" Grid.Column="0" MinWidth="300">
+            <GroupBox Header="Pozos" Style="{StaticResource MarginStyle}" Visibility="{Binding ShowWellPanel, Converter={StaticResource BoolToCollapsedVisibilityConverter}}" Grid.Column="0" MinWidth="300">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -58,15 +56,10 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Tipo: " Grid.Row="0" Grid.Column="0" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox Grid.Column="1" Grid.Row="0" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellTypes, Mode=OneTime}" SelectedIndex="{Binding WellType, Mode=TwoWay}"/>
-                    <TextBlock Text="Propiedad: " Grid.Row="1" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
-                    <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellProperties, Mode=OneTime}" SelectedIndex="{Binding WellProperty}"/>
 
-
-                    <TextBlock Text="Pozo/Sondeo: " Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToHiddenVisibilityConverter}, Mode=OneWay}" />
-                    <ComboBox Grid.Column="1" IsEditable="True" Grid.Row="2" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellNames, Mode=OneTime}" SelectedValue="{Binding SelectedWellName, Mode=OneWayToSource}" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToHiddenVisibilityConverter}, Mode=OneWay}"/>
-                    <Button Content="Agregar filtro" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonStyle}" Command="{Binding AddWellFilterCommand}"/>
+                    <TextBlock Text="Pozo: " Grid.Row="0" Grid.Column="0" Style="{StaticResource TextBlockStyle}" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToHiddenVisibilityConverter}, Mode=OneWay}" />
+                    <ComboBox Grid.Column="1" IsEditable="True" Grid.Row="0" Style="{StaticResource MarginStyle}" ItemsSource="{Binding WellNames, Mode=OneTime}" SelectedValue="{Binding SelectedWellName, Mode=OneWayToSource}" Visibility="{Binding WellNamesVisible, Converter={StaticResource BoolToHiddenVisibilityConverter}, Mode=OneWay}"/>
+                    <Button Content="Agregar filtro" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonStyle}" Command="{Binding AddWellFilterCommand}"/>
                 </Grid>
             </GroupBox>
 

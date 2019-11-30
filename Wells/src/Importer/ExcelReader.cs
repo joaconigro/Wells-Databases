@@ -38,21 +38,17 @@ namespace Wells.View.Importer
                     var well = new Well
                     {
                         Name = ReadCellAsString(row, 0).ToUpper(CultureInfo.InvariantCulture),
-                        X = ReadCellAsDouble(row, 1),
-                        Y = ReadCellAsDouble(row, 2),
+                        Latitude = ReadCellAsDouble(row, 1),
+                        Longitude = ReadCellAsDouble(row, 2),
                         Z = ReadCellAsDouble(row, 3),
-                        Latitude = ReadCellAsDouble(row, 4),
-                        Longitude = ReadCellAsDouble(row, 5)
                     };
-                    var wellType = ReadCellAsDouble(row, 6);
-                    well.WellType = (wellType == 1 ? WellType.Sounding : WellType.MeasurementWell);
-                    well.Height = ReadCellAsDouble(row, 7);
-                    var exists = ReadCellAsString(row, 8).ToUpper(CultureInfo.InvariantCulture);
+                    well.Height = ReadCellAsDouble(row, 4);
+                    var exists = ReadCellAsString(row, 5).ToUpper(CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(exists))
                     {
                         well.Exists = exists == "SI" ? true : false;
                     }
-                    well.Bottom = ReadCellAsDouble(row, 9);
+                    well.Bottom = ReadCellAsDouble(row, 6);
 
                     if (IsValid(well, wells, out var reason))
                     {
@@ -61,7 +57,7 @@ namespace Wells.View.Importer
                     }
                     else
                     {
-                        RejectedRows.Add(CreateRejectedRow(row, 10, i, reason));
+                        RejectedRows.Add(CreateRejectedRow(row, 7, i, reason));
                     }
 
                     progress?.Report(i / maxCount * 100);
@@ -151,8 +147,8 @@ namespace Wells.View.Importer
                     {
                         Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
                         Date = ParseStringDate(ReadCellAsDateString(row, 1)),
-                        FlnaDepth = ReadCellAsDouble(row, 2),
-                        WaterDepth = ReadCellAsDouble(row, 3),
+                        WaterDepth = ReadCellAsDouble(row, 2),
+                        Caudal = ReadCellAsDouble(row, 3),
                         Comment = ReadCellAsString(row, 4)
                     };
 
@@ -175,55 +171,6 @@ namespace Wells.View.Importer
 
             return measurements;
         }
-
-        public static List<FlnaAnalysis> ReadFlnaAnalysis(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
-        {
-            var sheet = workbook.GetSheetAt(sheetIndex);
-            IRow row;
-            List<FlnaAnalysis> analyses = new List<FlnaAnalysis>();
-            int indexError = 1;
-            CreateRejectedRows(sheet.GetRow(0));
-
-            try
-            {
-                var maxCount = sheet.LastRowNum;
-                for (int i = 1; i < maxCount + 1; i++)
-                {
-                    indexError = i;
-                    row = sheet.GetRow(i);
-                    var analysis = new FlnaAnalysis
-                    {
-                        Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
-                        Date = ParseStringDate(ReadCellAsDateString(row, 1))
-                    };
-
-                    int j = 2;
-                    foreach (var p in FlnaAnalysis.DoubleProperties.Keys.ToList())
-                    {
-                        Interaction.CallByName(analysis, FlnaAnalysis.DoubleProperties[p].Name, CallType.Set, ReadCellAsDouble(row, j));
-                        j += 1;
-                    }
-
-                    if (analysis.Well != null)
-                    {
-                        analyses.Add(analysis);
-                    }
-                    else
-                    {
-                        RejectedRows.Add(CreateRejectedRow(row, j, i, RejectedReasons.WellNotFound));
-                    }
-
-                    progress?.Report(i / maxCount * 100);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error leyendo la fila " + indexError.ToString(), ex);
-            }
-
-            return analyses;
-        }
-
 
         public static List<WaterAnalysis> ReadWaterAnalysis(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
         {
@@ -250,55 +197,6 @@ namespace Wells.View.Importer
                     foreach (var p in WaterAnalysis.DoubleProperties.Keys.ToList())
                     {
                         Interaction.CallByName(analysis, WaterAnalysis.DoubleProperties[p].Name, CallType.Set, ReadCellAsDouble(row, j));
-                        j += 1;
-                    }
-
-                    if (analysis.Well != null)
-                    {
-                        analyses.Add(analysis);
-                    }
-                    else
-                    {
-                        RejectedRows.Add(CreateRejectedRow(row, j, i, RejectedReasons.WellNotFound));
-                    }
-
-                    progress?.Report(i / maxCount * 100);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error leyendo la fila " + indexError.ToString(), ex);
-            }
-
-            return analyses;
-        }
-
-
-        public static List<SoilAnalysis> ReadSoilAnalysis(IWorkbook workbook, int sheetIndex, IProgress<int> progress)
-        {
-            var sheet = workbook.GetSheetAt(sheetIndex);
-            IRow row;
-            List<SoilAnalysis> analyses = new List<SoilAnalysis>();
-            int indexError = 1;
-            CreateRejectedRows(sheet.GetRow(0));
-
-            try
-            {
-                var maxCount = sheet.LastRowNum;
-                for (int i = 1; i < maxCount + 1; i++)
-                {
-                    indexError = i;
-                    row = sheet.GetRow(i);
-                    var analysis = new SoilAnalysis
-                    {
-                        Well = GetWell(ReadCellAsString(row, 0)?.ToUpper(CultureInfo.InvariantCulture)),
-                        Date = ParseStringDate(ReadCellAsDateString(row, 1))
-                    };
-
-                    int j = 2;
-                    foreach (var p in SoilAnalysis.DoubleProperties.Keys.ToList())
-                    {
-                        Interaction.CallByName(analysis, SoilAnalysis.DoubleProperties[p].Name, CallType.Set, ReadCellAsDouble(row, j));
                         j += 1;
                     }
 
@@ -423,17 +321,9 @@ namespace Wells.View.Importer
             {
                 ExportPrecipitations(entities.Cast<Precipitation>().ToList(), sheet, style);
             }
-            else if (typeof(T) == typeof(FlnaAnalysis))
-            {
-                ExportFlnaAnalyses(entities.Cast<FlnaAnalysis>().ToList(), sheet, style);
-            }
             else if (typeof(T) == typeof(WaterAnalysis))
             {
                 ExportWaterAnalyses(entities.Cast<WaterAnalysis>().ToList(), sheet, style);
-            }
-            else if (typeof(T) == typeof(SoilAnalysis))
-            {
-                ExportSoilAnalyses(entities.Cast<SoilAnalysis>().ToList(), sheet, style);
             }
 
             using var stream = File.Open(filename, FileMode.Create, FileAccess.Write);
@@ -451,48 +341,6 @@ namespace Wells.View.Importer
             cell.CellStyle = cellDateStyle;
             return row;
         }
-
-        #region Export Soil analyses
-        static void ExportSoilAnalyses(List<SoilAnalysis> soilAnalyses, ISheet sheet, ICellStyle cellDateStyle)
-        {
-            WriteSoilAnalysisHeader(sheet);
-            int row = 1;
-            foreach (var w in soilAnalyses)
-            {
-                WriteSoilAnalysis(w, sheet, row, cellDateStyle);
-                row++;
-            }
-        }
-
-        static void WriteSoilAnalysisHeader(ISheet sheet)
-        {
-            var header = sheet.CreateRow(0);
-
-            header.CreateCell(0).SetCellValue(SoilAnalysis.GetDisplayName(nameof(SoilAnalysis.WellName)));
-            header.CreateCell(1).SetCellValue(SoilAnalysis.GetDisplayName(nameof(SoilAnalysis.Date)));
-
-            int i = 2;
-            foreach (var p in SoilAnalysis.DoubleProperties.Keys.ToList())
-            {
-                header.CreateCell(i).SetCellValue(p);
-                i += 1;
-            }
-        }
-
-        static void WriteSoilAnalysis(SoilAnalysis analysis, ISheet sheet, int rowIndex, ICellStyle cellDateStyle)
-        {
-            var row = CreateAnalysisRow(analysis, sheet, rowIndex, cellDateStyle);
-
-            int i = 2;
-            foreach (var p in SoilAnalysis.DoubleProperties.Keys.ToList())
-            {
-                row.CreateCell(i, CellType.Numeric).SetCellValue((double)Interaction.CallByName(analysis, SoilAnalysis.DoubleProperties[p].Name, CallType.Get));
-                i += 1;
-            }
-        }
-        #endregion
-
-       
 
         #region Export Water analyses
         static void ExportWaterAnalyses(List<WaterAnalysis> waterAnalyses, ISheet sheet, ICellStyle cellDateStyle)
@@ -530,46 +378,6 @@ namespace Wells.View.Importer
             foreach (var p in WaterAnalysis.DoubleProperties.Keys.ToList())
             {
                 row.CreateCell(i, CellType.Numeric).SetCellValue((double)Interaction.CallByName(analysis, WaterAnalysis.DoubleProperties[p].Name, CallType.Get));
-                i += 1;
-            }
-        }
-        #endregion
-
-        #region Export Flna analyses
-        static void ExportFlnaAnalyses(List<FlnaAnalysis> flnaAnalyses, ISheet sheet, ICellStyle cellDateStyle)
-        {
-            WriteFlnaAnalysisHeader(sheet);
-            int row = 1;
-            foreach (var w in flnaAnalyses)
-            {
-                WriteFlnaAnalysis(w, sheet, row, cellDateStyle);
-                row++;
-            }
-        }
-
-        static void WriteFlnaAnalysisHeader(ISheet sheet)
-        {
-            var header = sheet.CreateRow(0);
-
-            header.CreateCell(0).SetCellValue(FlnaAnalysis.GetDisplayName(nameof(FlnaAnalysis.WellName)));
-            header.CreateCell(1).SetCellValue(FlnaAnalysis.GetDisplayName(nameof(FlnaAnalysis.Date)));
-
-            int i = 2;
-            foreach (var p in FlnaAnalysis.DoubleProperties.Keys.ToList())
-            {
-                header.CreateCell(i).SetCellValue(p);
-                i += 1;
-            }
-        }
-
-        static void WriteFlnaAnalysis(FlnaAnalysis analysis, ISheet sheet, int rowIndex, ICellStyle cellDateStyle)
-        {
-            var row = CreateAnalysisRow(analysis, sheet, rowIndex, cellDateStyle);
-
-            int i = 2;
-            foreach (var p in FlnaAnalysis.DoubleProperties.Keys.ToList())
-            {
-                row.CreateCell(i, CellType.Numeric).SetCellValue((double)Interaction.CallByName(analysis, FlnaAnalysis.DoubleProperties[p].Name, CallType.Get));
                 i += 1;
             }
         }
@@ -624,8 +432,8 @@ namespace Wells.View.Importer
             int i = 0;
             header.CreateCell(i).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.WellName)));
             header.CreateCell(++i).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.Date)));
-            header.CreateCell(++i).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.FlnaDepth)));
             header.CreateCell(++i).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.WaterDepth)));
+            header.CreateCell(++i).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.Caudal)));
             header.CreateCell(++i).SetCellValue(Measurement.GetDisplayName(nameof(Measurement.Comment)));
         }
 
@@ -637,8 +445,8 @@ namespace Wells.View.Importer
             var cell= row.CreateCell(++i, CellType.Numeric);
             cell.SetCellValue(measurement.Date);
             cell.CellStyle = cellDateStyle;
-            row.CreateCell(++i, CellType.Numeric).SetCellValue(measurement.FlnaDepth);
             row.CreateCell(++i, CellType.Numeric).SetCellValue(measurement.WaterDepth);
+            row.CreateCell(++i, CellType.Numeric).SetCellValue(measurement.Caudal);
             row.CreateCell(++i).SetCellValue(measurement.Comment);
         }
         #endregion
@@ -660,12 +468,9 @@ namespace Wells.View.Importer
             var header = sheet.CreateRow(0);
             int i = 0;
             header.CreateCell(i).SetCellValue(Well.GetDisplayName(nameof(Well.Name)));
-            header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.X)));
-            header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Y)));
-            header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Z)));
             header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Latitude)));
             header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Longitude)));
-            header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.WellType)));
+            header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Z)));
             header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Height)));
             header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Exists)));
             header.CreateCell(++i).SetCellValue(Well.GetDisplayName(nameof(Well.Bottom)));
@@ -676,12 +481,9 @@ namespace Wells.View.Importer
             var row = sheet.CreateRow(rowIndex);
             int i = 0;
             row.CreateCell(i).SetCellValue(well.Name);
-            row.CreateCell(++i, CellType.Numeric).SetCellValue(well.X);
-            row.CreateCell(++i, CellType.Numeric).SetCellValue(well.Y);
-            row.CreateCell(++i, CellType.Numeric).SetCellValue(well.Z);
             row.CreateCell(++i, CellType.Numeric).SetCellValue(well.Latitude);
             row.CreateCell(++i, CellType.Numeric).SetCellValue(well.Longitude);
-            row.CreateCell(++i, CellType.Numeric).SetCellValue((int)well.WellType);
+            row.CreateCell(++i, CellType.Numeric).SetCellValue(well.Z);           
             row.CreateCell(++i, CellType.Numeric).SetCellValue(well.Height);
             row.CreateCell(++i).SetCellValue(well.Exists ? "SI" : "NO");
             row.CreateCell(++i, CellType.Numeric).SetCellValue(well.Bottom);

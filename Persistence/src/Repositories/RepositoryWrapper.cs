@@ -11,9 +11,7 @@ namespace Wells.Persistence.Repositories
         private PrecipitationsRepository precipitations;
         private ExternalFilesRepository externalFiles;
         private MeasurementsRepository measurements;
-        private SoilAnalysesRepository soilAnalyses;
         private WaterAnalysesRepository waterAnalyses;
-        private FlnaAnalysesRepository flnaAnalyses;
         private WellsRepository wells;
 
         public PrecipitationsRepository Precipitations
@@ -42,31 +40,13 @@ namespace Wells.Persistence.Repositories
                 return measurements;
             }
         }
-
-        public SoilAnalysesRepository SoilAnalyses
-        {
-            get
-            {
-                if (soilAnalyses == null) { soilAnalyses = new SoilAnalysesRepository(Context); }
-                return soilAnalyses;
-            }
-        }
-
+        
         public WaterAnalysesRepository WaterAnalyses
         {
             get
             {
                 if (waterAnalyses == null) { waterAnalyses = new WaterAnalysesRepository(Context); }
                 return waterAnalyses;
-            }
-        }
-
-        public FlnaAnalysesRepository FlnaAnalyses
-        {
-            get
-            {
-                if (flnaAnalyses == null) { flnaAnalyses = new FlnaAnalysesRepository(Context); }
-                return flnaAnalyses;
             }
         }
 

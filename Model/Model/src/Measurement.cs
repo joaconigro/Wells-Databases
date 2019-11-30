@@ -26,46 +26,12 @@ namespace Wells.Model
         public DateTime Date { get; set; }
 
 
-        [DisplayName("Profundidad FLNA (m)"), Browsable(true)]
-        public double FlnaDepth { get; set; }
-
-
         [DisplayName("Profundidad Agua (m)"), Browsable(true)]
         public double WaterDepth { get; set; }
 
 
         [Browsable(false)]
         public bool HasWater => WaterDepth != NumericNullValue;
-
-
-        [Browsable(false)]
-        public bool HasFlna => FlnaDepth != NumericNullValue;
-
-        [DisplayName("Espesor FLNA (m)"), Browsable(true)]
-        public double FlnaThickness
-        {
-            get
-            {
-                if (HasFlna && HasWater) { return WaterDepth - FlnaDepth; }
-                return NumericNullValue;
-            }
-        }
-
-
-        [DisplayName("Cota FLNA (m)"), Browsable(true)]
-        public double FlnaElevation
-        {
-            get
-            {
-                if (HasFlna && Well != null)
-                {
-                    if (Well.HasHeight && Well.HasZ) { return Well.Z + Well.Height - FlnaDepth; }
-                    else if (Well.HasZ) { return Well.Z - FlnaDepth; }
-                    return -FlnaDepth;
-                }
-                return NumericNullValue;
-            }
-        }
 
 
         [DisplayName("Cota Agua (m)"), Browsable(true)]
@@ -82,6 +48,11 @@ namespace Wells.Model
                 return NumericNullValue;
             }
         }
+
+
+        [DisplayName("Caudal"), Browsable(true)]
+        public double Caudal { get; set; }
+
 
         [DisplayName("Observaciones"), Browsable(true)]
         public string Comment { get; set; }

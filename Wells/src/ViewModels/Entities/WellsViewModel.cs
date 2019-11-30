@@ -256,7 +256,7 @@ namespace Wells.View.ViewModels
 
         protected override void CreateWellFilter()
         {
-            var wellFilter = new WellFilter<Well>(true, WellType, WellProperty, SelectedWellName);
+            var wellFilter = new WellFilter<Well>(true, SelectedWellName);
             OnCreatingFilter(wellFilter);
         }
 

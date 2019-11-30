@@ -15,7 +15,7 @@ namespace Wells.View.ViewModels
         IMainWindow mainWindow;
 
         public bool IsRepositoryOpened => RepositoryWrapper.IsInstatiated;
-        public string WindowTitle => $"Well Manager - Base de datos: {App.Settings.CurrentDbName}";
+        public string WindowTitle => $"Wells - Base de datos: {App.Settings.CurrentDbName}";
 
         public MainWindowViewModel(IView view) : base(null)
         {

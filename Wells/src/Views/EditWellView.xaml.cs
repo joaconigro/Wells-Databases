@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.View.ViewModels;
 
@@ -32,7 +31,7 @@ namespace Wells.View
         public void CloseView()
         {
             Close();
-        }       
+        }
         #endregion
 
         public bool ShowEditMeasurementDialog(EditMeasurementViewModel vm)

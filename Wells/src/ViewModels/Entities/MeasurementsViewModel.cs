@@ -149,7 +149,7 @@ namespace Wells.View.ViewModels
 
         protected override void CreateWellFilter()
         {
-            var wellFilter = new WellFilter<Measurement>(false, WellType, WellProperty, SelectedWellName);
+            var wellFilter = new WellFilter<Measurement>(false, SelectedWellName);
             OnCreatingFilter(wellFilter);
         }
 

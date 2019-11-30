@@ -9,15 +9,5 @@
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
     <StackPanel>
         <Image Source="{StaticResource UnlpLogoImage}" Stretch="Uniform" MaxHeight="400"/>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button Content="CILP" Style="{StaticResource ButtonStyle}" Grid.Column="0" Command="{Binding SelectConnectionStringCommand}" CommandParameter="CILP"/>
-            <Button Content="CIE" Style="{StaticResource ButtonStyle}" Grid.Column="1" Command="{Binding SelectConnectionStringCommand}" CommandParameter="CIE"/>
-            <Button Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding CloseModalViewCommand}"/>
-        </Grid>
     </StackPanel>
 </Window>

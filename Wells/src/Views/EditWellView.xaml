@@ -24,22 +24,18 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="WellNameTextBlock" Text="Nombre:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Name="WellNameTextBox" Style="{StaticResource MarginStyle}" HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding IsEditing, Converter={StaticResource InverseBooleanConverter}}" Text="{Binding WellName, Mode=TwoWay}"/>
-                <CheckBox Name="ExistsCheckBox" Content="Existe" Style="{StaticResource MarginStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="5" IsChecked="{Binding Exists, Mode=TwoWay}"/>
-                <TextBlock Name="WellTypeTextBlock" Text="Tipo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
-                <ComboBox Name="WellTypeComboBox" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" ItemsSource="{Binding WellTypes, Mode=OneWay}" SelectedIndex="{Binding Type, Mode=TwoWay}"/>
-                <TextBlock Name="HeightTextBlock" Text="Altura:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="HeightTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{base:CultureAwareBinding Height, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
-                <TextBlock Name="BottomTextBlock" Text="Fondo:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="BottomTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{base:CultureAwareBinding Bottom, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBlock Text="Nombre:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
+                <TextBox Style="{StaticResource MarginStyle}" HorizontalContentAlignment="Left" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding IsEditing, Converter={StaticResource InverseBooleanConverter}}" Text="{Binding WellName, Mode=TwoWay}"/>
+                <CheckBox Content="Existe" Style="{StaticResource MarginStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding Exists, Mode=TwoWay}"/>
+                <TextBlock Text="Altura:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{base:CultureAwareBinding Height, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBlock Text="Fondo:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
+                <TextBox Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{base:CultureAwareBinding Bottom, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
             </Grid>
         </GroupBox>
         <GroupBox Name="WellCoordinatesGroupBox" Header="Coordenadas" Grid.Row="1">
@@ -54,18 +50,13 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="XTextBlock" Text="X:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Name="XTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="1" Text="{base:CultureAwareBinding X, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
-                <TextBlock Name="YTextBlock" Text="Y:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
-                <TextBox Name="YTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="3" Text="{base:CultureAwareBinding Y, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
-                <TextBlock Name="ZTextBlock" Text="Z:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="4"/>
-                <TextBox Name="ZTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="0" Grid.Column="5" Text="{base:CultureAwareBinding Z, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
-                <TextBlock Name="LatitudeTextBlock" Text="Latitud:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="LatitudeTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{base:CultureAwareBinding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
-                <TextBlock Name="LongitudTextBlock" Text="Longitud:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="LongitudTextBox" Style="{StaticResource NumericTextBoxStyle}" Grid.Row="1" Grid.Column="3" Text="{base:CultureAwareBinding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
+                <TextBlock Text="Z:" Style="{StaticResource TextBlockStyle}" Grid.Column="4"/>
+                <TextBox Style="{StaticResource NumericTextBoxStyle}" Grid.Column="5" Text="{base:CultureAwareBinding Z, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N3}"/>
+                <TextBlock Text="Latitud:" Style="{StaticResource TextBlockStyle}" Grid.Column="0"/>
+                <TextBox Style="{StaticResource NumericTextBoxStyle}" Grid.Column="1" Text="{base:CultureAwareBinding Latitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
+                <TextBlock Text="Longitud:" Style="{StaticResource TextBlockStyle}" Grid.Column="2"/>
+                <TextBox Style="{StaticResource NumericTextBoxStyle}" Grid.Column="3" Text="{base:CultureAwareBinding Longitude, Mode=TwoWay, Converter={StaticResource DoubleConverter}, ConverterParameter=N6}"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="Contenido" VerticalAlignment="Stretch" Grid.Row="2">
@@ -77,21 +68,13 @@
                                                DeleteEntityCommand ="{Binding DeleteMeasurementCommand, Mode=OneWay}"
                                                NewEntityVisibility="Visible" NewText="Crear..."/>
                 </TabItem>
-                <TabItem Header="Análisis de suelo">
-                    <uc:EntitiesManagerControl ObjectsSource="{Binding SoilAnalyses, Mode=OneWay}"
-                                               NewEntityVisibility="Collapsed" EditEntityVisibility="Collapsed"
-                                               DeleteEntityCommand ="{Binding DeleteSoilAnalysisCommand, Mode=OneWay}"/>
-                </TabItem>
+               
                 <TabItem Header="Análisis de agua">
                     <uc:EntitiesManagerControl ObjectsSource="{Binding WaterAnalyses, Mode=OneWay}"
                                                NewEntityVisibility="Collapsed" EditEntityVisibility="Collapsed"
                                                DeleteEntityCommand ="{Binding DeleteWaterAnalysisCommand, Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Header="Análisis FLNA">
-                    <uc:EntitiesManagerControl ObjectsSource="{Binding FlnaAnalyses, Mode=OneWay}"
-                                               NewEntityVisibility="Collapsed" EditEntityVisibility="Collapsed"
-                                               DeleteEntityCommand ="{Binding DeleteFlnaAnalysisCommand, Mode=OneWay}"/>
-                </TabItem>
+                
                 <TabItem Header="Archivos externos">
                     <uc:EntitiesManagerControl x:Name="ExternalLinksEntityControl" ObjectsSource="{Binding Files, Mode=OneWay}"
                                                    NewEntityCommand="{Binding NewExternalLinkCommand, Mode=OneWay}"

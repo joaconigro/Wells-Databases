@@ -183,13 +183,7 @@ namespace Wells.View.ViewModels
                     OnFiltersChanged(null, EventArgs.Empty);
                 }, (obj) =>
                 {
-                    if (WellType > 0 || WellProperty > 0)
-                    {
-                        if (WellProperty != 1) { return true; }
-                        if (WellProperty == 1 && !string.IsNullOrEmpty(SelectedWellName)) { return true; }
-                        return false;
-                    }
-                    return false;
+                    return !string.IsNullOrEmpty(SelectedWellName);
                 }, OnError);
             }
         }
@@ -267,8 +261,6 @@ namespace Wells.View.ViewModels
             Add(nameof(SelectedEntity), new List<ICommand> { EditEntityCommand, RemoveEntityCommand });
             Add(nameof(SelectedEntities), RemoveEntityCommand);
             Add(nameof(SelectedFilter), new List<ICommand> { EditFilterCommand, RemoveFilterCommand });
-            Add(nameof(WellType), AddWellFilterCommand);
-            Add(nameof(WellProperty), AddWellFilterCommand);
             Add(nameof(SelectedWellName), AddWellFilterCommand);
         }
 
@@ -341,26 +333,10 @@ namespace Wells.View.ViewModels
 
         public List<string> WellNames => Repository.Wells.Names;
 
-
-        public List<string> WellTypes => Common.EnumDescriptionsToList(typeof(WellTypes));
-
-
-        public List<string> WellProperties => Common.EnumDescriptionsToList(typeof(WellQueryProperty));
-
-
-        public int WellType { get => wellType; set { SetValue(ref wellType, value); } }
-
-
-        public int WellProperty { get => wellProperty; set { SetValue(ref wellProperty, value); NotifyPropertyChanged(nameof(WellNamesVisible)); } }
-
-
         public string SelectedWellName { get => selectedWellName; set { SetValue(ref selectedWellName, value); } }
 
-        private int wellType;
-        private int wellProperty;
         private string selectedWellName;
 
-        public bool WellNamesVisible => wellProperty == (int)WellQueryProperty.Name;
 
 
         public virtual string WellExistsInfo => string.Empty;

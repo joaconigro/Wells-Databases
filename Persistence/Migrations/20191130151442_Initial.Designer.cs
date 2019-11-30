@@ -10,14 +10,14 @@ using Wells.Persistence;
 namespace Wells.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191105153010_Initial")]
+    [Migration("20191130151442_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -48,89 +48,19 @@ namespace Wells.Persistence.Migrations
                     b.ToTable("ExternalFiles");
                 });
 
-            modelBuilder.Entity("Wells.Model.FlnaAnalysis", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Benzene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C10_C12")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C12_C16")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C16_C21")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C17_Pristano")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C18_Fitano")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C21_C35")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C6_C8")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C8_C10")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Dro")
-                        .HasColumnType("float");
-
-                    b.Property<double>("DynamicViscosity")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Ethylbenzene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Gro")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Mro")
-                        .HasColumnType("float");
-
-                    b.Property<double>("RealDensity")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Tolueno")
-                        .HasColumnType("float");
-
-                    b.Property<string>("WellId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Xylenes")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WellId");
-
-                    b.ToTable("FlnaAnalyses");
-                });
-
             modelBuilder.Entity("Wells.Model.Measurement", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Caudal")
+                        .HasColumnType("float");
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<double>("FlnaDepth")
-                        .HasColumnType("float");
 
                     b.Property<double>("WaterDepth")
                         .HasColumnType("float");
@@ -151,187 +81,15 @@ namespace Wells.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("Millimeters")
                         .HasColumnType("float");
-
-                    b.Property<DateTime>("PrecipitationDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Precipitations");
-                });
-
-            modelBuilder.Entity("Wells.Model.SoilAnalysis", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Acenafthene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Acenaphthylene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Anthracene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Arsenic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Benzene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BenzoAAnthracene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BenzoAPyrene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BenzoBFluoranthene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BenzoGhiPerylene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BenzoKFluoranthene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C10_C12Aliphatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C10_C12Aromatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C12_C16Aliphatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C12_C16Aromatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C16_C21Aliphatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C16_C21Aromatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C21_C35Aliphatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C21_C35Aromatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C6_C8Aliphatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C6_C8Aromatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C8_C10Aliphatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("C8_C10Aromatic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Cadmium")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Copper")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Crysene")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("DibenzoAhAnthracene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Dro")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Ethylbenzene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Fenanthrene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Fluoranthene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Fluorene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Gro")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Humidity")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Indeno123CdPyrene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Lead")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Mercury")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Mro")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Naphthalene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Nickel")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OilsAndFats")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Ph")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Pyrene")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Selenium")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Tolueno")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TotalChrome")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TotalHydrocarbonsEpa8015")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TotalHydrocarbonsTnrcc1005")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TotalXylene")
-                        .HasColumnType("float");
-
-                    b.Property<string>("WellId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("XyleneO")
-                        .HasColumnType("float");
-
-                    b.Property<double>("XylenePm")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Zinc")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WellId");
-
-                    b.ToTable("SoilAnalyses");
                 });
 
             modelBuilder.Entity("Wells.Model.WaterAnalysis", b =>
@@ -526,15 +284,6 @@ namespace Wells.Persistence.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WellType")
-                        .HasColumnType("int");
-
-                    b.Property<double>("X")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Y")
-                        .HasColumnType("float");
-
                     b.Property<double>("Z")
                         .HasColumnType("float");
 
@@ -552,28 +301,10 @@ namespace Wells.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Wells.Model.FlnaAnalysis", b =>
-                {
-                    b.HasOne("Wells.Model.Well", "Well")
-                        .WithMany("FlnaAnalyses")
-                        .HasForeignKey("WellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Wells.Model.Measurement", b =>
                 {
                     b.HasOne("Wells.Model.Well", "Well")
                         .WithMany("Measurements")
-                        .HasForeignKey("WellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Wells.Model.SoilAnalysis", b =>
-                {
-                    b.HasOne("Wells.Model.Well", "Well")
-                        .WithMany("SoilAnalyses")
                         .HasForeignKey("WellId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -29,14 +29,14 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Name="SelectedWellTextBlock" Text="Pozo:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="0"/>
-                <ComboBox Name="WellsComboBox" Style="{StaticResource MarginStyle}" ItemsSource="{Binding Wells}" SelectedItem="{Binding SelectedWell, Mode=TwoWay}"
+                <ComboBox Style="{StaticResource MarginStyle}" ItemsSource="{Binding Wells}" SelectedItem="{Binding SelectedWell, Mode=TwoWay}"
                           IsEnabled="{Binding IsWellSelectable}" Grid.Row="0" Grid.Column="1"/>
-                <TextBlock Name="DateTextBlock" Text="Fecha:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
-                <DatePicker Name="MeasurementDatePicker" Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" SelectedDate="{Binding Date, Mode=TwoWay}"/>
-                <TextBlock Name="FLNADepthTextBlock" Text="Profundidad FLNA:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="FLNADepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{base:CultureAwareBinding FlnaDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
-                <TextBlock Name="WaterDepthTextBlock" Text="Profundidad agua:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="WaterDepthTextBox" Style="{StaticResource NumericTextBoxStyle}" Text="{base:CultureAwareBinding WaterDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
+                <TextBlock Text="Fecha:" Style="{StaticResource TextBlockStyle}" Grid.Row="0" Grid.Column="2"/>
+                <DatePicker Style="{StaticResource MarginStyle}" Grid.Row="0" Grid.Column="3" SelectedDate="{Binding Date, Mode=TwoWay}"/>
+                <TextBlock Text="Profundidad agua:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Style="{StaticResource NumericTextBoxStyle}" Text="{base:CultureAwareBinding WaterDepth, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+                <TextBlock Text="Caudal:" Style="{StaticResource TextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
+                <TextBox Style="{StaticResource NumericTextBoxStyle}" Text="{base:CultureAwareBinding Caudal, Converter={StaticResource DoubleConverter}, ConverterParameter=N3, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
                 
                 <TextBlock Name="CommentTextBlock" Text="Observaciones:" Style="{StaticResource TextBlockStyle}" Grid.Row="2" Grid.Column="0"/>
                 <TextBox Name="CommentTextBox" Margin="4" Text="{Binding Comment, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" 

@@ -61,51 +61,6 @@ namespace Wells.Model.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FLNA	GRO	EPA 8013	%
-        ///FLNA	DRO	EPA 8014	%
-        ///FLNA	MRO	EPA 8015	%
-        ///FLNA	Benzene	EPA 8260	%
-        ///FLNA	Tolueno	EPA 8260	%
-        ///FLNA	Ethylbenzene	EPA 8260	%
-        ///FLNA	Xylenes	EPA 8260	%
-        ///FLNA	C6_C8	TNRCC 1006	%
-        ///FLNA	C8_C10	TNRCC 1006	%
-        ///FLNA	C10_C12	TNRCC 1006	%
-        ///FLNA	C12_C16	TNRCC 1006	%
-        ///FLNA	C16_C21	TNRCC 1006	%
-        ///FLNA	C21_C35	TNRCC 1006	%
-        ///FLNA	C17_Pristano	CALCULO	N/A
-        ///FLNA	C18_Fitano	CALCULO	N/A
-        ///FLNA	RealDensity	ASTM 1298	g/cm3
-        ///FLNA	DynamicViscosity	ASTM 445/65	cP.
-        /// </summary>
-        internal static string FLNA {
-            get {
-                return ResourceManager.GetString("FLNA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Humedad	Humidity	Pérdida de peso a 105ºC	%
-        ///pH	PH	EPA 9045 A/C	mg/Kg
-        ///HTP	DRO	EPA 8015	mg/Kg
-        ///HTP	GRO	EPA 8015	mg/Kg
-        ///HTP	MRO	EPA 8015	mg/Kg
-        ///HTP	TotalHydrocarbons_EPA8015	EPA 8015	mg/Kg
-        ///HTP	TotalHydrocarbons_TNRCC1005	TNRCC 1005	mg/Kg
-        ///HTP	OilsAndFats	SM 5520 D	mg/Kg
-        ///Hidrocarburos Fracción alifática	C6_C8Aliphatic	TNRCC 1006	mg/Kg
-        ///Hidrocarburos Fracción alifática	C8_C10Aliphatic	TNRCC 1006	mg/Kg
-        ///Hidrocarburos Fracción alifática	C10_C12Aliphatic	TNRCC 1006	mg/Kg
-        ///Hidrocarburos Fracción alifática	C12_C16 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Soil {
-            get {
-                return ResourceManager.GetString("Soil", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Fisico químico	PH	SM 4500 H+ B	UpH
         ///Fisico químico	Conductivity	SM 2510 B REVISION 2011	uS/cm
         ///Fisico químico	DryWaste	SM 2540 B	mg/l
