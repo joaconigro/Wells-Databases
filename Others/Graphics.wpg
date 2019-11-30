@@ -14,19 +14,6 @@
     </Values>
   </SeriesInfoCollection>
   <SeriesInfoCollection>
-    <Title>Concentración HTP</Title>
-    <Values>
-      <SeriesInfo>
-        <IsFromWell>true</IsFromWell>
-        <DisplayXName>Fecha</DisplayXName>
-        <DisplayYName>Hidrocarburos totales (EPA 8015) (mg/l)</DisplayYName>
-        <ListName>Análisis de agua</ListName>
-        <IsDateBased>true</IsDateBased>
-        <HexColor>#FFFF0009</HexColor>
-      </SeriesInfo>
-    </Values>
-  </SeriesInfoCollection>
-  <SeriesInfoCollection>
     <Title>Concentración Nitratos</Title>
     <Values>
       <SeriesInfo>
@@ -67,18 +54,5 @@
         <HexColor>#FF864FAF</HexColor>
       </SeriesInfo>
     </Values>
-  </SeriesInfoCollection>
-  <SeriesInfoCollection>
-    <Title>FLNA vs Agua</Title>
-    <Values>
-      <SeriesInfo>
-        <IsFromWell>true</IsFromWell>
-        <DisplayXName>Cota Agua (m)</DisplayXName>
-        <DisplayYName>Cota FLNA (m)</DisplayYName>
-        <ListName>Mediciones</ListName>
-        <IsDateBased>false</IsDateBased>
-        <HexColor>#FFF0590E</HexColor>
-      </SeriesInfo>
-    </Values>
-  </SeriesInfoCollection>
+  </SeriesInfoCollection>  
 </ArrayOfSeriesInfoCollection>
