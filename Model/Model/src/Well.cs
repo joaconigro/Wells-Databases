@@ -27,7 +27,7 @@ namespace Wells.Model
         [DisplayName("Cota (m.s.n.m.)"), Browsable(true)]
         public double Z { get; set; }        
 
-        [DisplayName("Altura del brocal (m)"), Browsable(true)]
+        [DisplayName("Boca de pozo (m)"), Browsable(true)]
         public double Height { get; set; }
 
         [DisplayName("Fondo (m.b.b.p.)"), Browsable(true)]

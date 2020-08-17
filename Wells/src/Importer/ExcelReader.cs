@@ -43,12 +43,14 @@ namespace Wells.View.Importer
                         Z = ReadCellAsDouble(row, 3),
                     };
                     well.Height = ReadCellAsDouble(row, 4);
-                    var exists = ReadCellAsString(row, 5).ToUpper(CultureInfo.InvariantCulture);
+                    
+                    well.Bottom = ReadCellAsDouble(row, 5);
+
+                    var exists = ReadCellAsString(row, 6).ToUpper(CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(exists))
                     {
                         well.Exists = exists == "SI" ? true : false;
                     }
-                    well.Bottom = ReadCellAsDouble(row, 6);
 
                     if (IsValid(well, wells, out var reason))
                     {

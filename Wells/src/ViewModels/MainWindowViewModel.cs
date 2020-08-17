@@ -85,5 +85,20 @@ namespace Wells.View.ViewModels
                 }, (obj) => true, OnError);
             }
         }
+
+        public ICommand RecreateDBCommand
+        {
+            get
+            {
+                return new AsyncCommand(async () =>
+                {
+                    if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro que desea eliminar completamente la base de datos?","¿Eliminar base de datos?"))
+                    {
+                        mainWindow.ShowWaitingMessage("Por favor, espere un momento");
+                        await RepositoryWrapper.Instance.DropSchema(App.Settings.CurrentConnectionString);
+                    }
+                }, () => true, OnError, () => { mainWindow.CloseWaitingMessage(); });
+            }
+        }
     }
 }
