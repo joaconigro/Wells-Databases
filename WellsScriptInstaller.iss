@@ -36,7 +36,7 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\Trabajo\Observatorio\Wells\Wells\bin\Release\netcoreapp3.0\win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
+Source: "D:\Trabajo\Observatorio\Wells\Wells\bin\Release\netcoreapp3.1\win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
 Source: "D:\Trabajo\Observatorio\Wells\Others\AppSettings.was"; DestDir: "{commonappdata}\WellManager"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\Trabajo\Observatorio\Wells\Others\Gradients.wgr"; DestDir: "{commonappdata}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
 Source: "D:\Trabajo\Observatorio\Wells\Others\Graphics.wpg"; DestDir: "{commonappdata}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist

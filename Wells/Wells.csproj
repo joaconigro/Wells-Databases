@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>Wells.View</RootNamespace>
@@ -10,6 +10,8 @@
     <ApplicationIcon>icon128x128.ico</ApplicationIcon>
     <Version>1.2.0</Version>
     <Description>Programa para administrar información de pozos, sus mediciones y datos de análisis químicos.</Description>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
