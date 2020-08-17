@@ -63,6 +63,11 @@ namespace Wells.Persistence.Repositories
             OnEntityRemoved?.Invoke(this, new EntityRemovedEventArgs<T>(entities));
         }
 
+        public void RaiseEntitiesRemoved()
+        {
+            OnEntityRemoved?.Invoke(this, new EntityRemovedEventArgs<T>());
+        }
+
         public void Update(T entity)
         {
             Context.Set<T>().Update(entity);
@@ -86,6 +91,7 @@ namespace Wells.Persistence.Repositories
         public T Entity { get; }
         public IEnumerable<T> Entities { get; }
 
+        public EntityRemovedEventArgs() { }
         public EntityRemovedEventArgs(T entity) { Entity = entity; }
         public EntityRemovedEventArgs(IEnumerable<T> entities) { Entities = entities; }
     }

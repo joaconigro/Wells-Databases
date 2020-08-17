@@ -212,7 +212,8 @@ namespace Wells.BaseView.ViewModel
                 var results = new List<ValidationResult>();
                 foreach (var v in validators[propertyName])
                 {
-                    results.Add(v.Validate(value));
+                    var context = new ValidationContext<T>(value);
+                    results.Add(v.Validate(context));
                 }
 
                 validationResults[propertyName] = results;

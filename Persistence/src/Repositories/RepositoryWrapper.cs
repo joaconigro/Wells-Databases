@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-using Wells.Model;
 
 namespace Wells.Persistence.Repositories
 {
@@ -100,6 +99,16 @@ namespace Wells.Persistence.Repositories
             return Instance;
         }
 
+        public async Task DropSchema(string connectionString)
+        {
+            await Context.Database.EnsureDeletedAsync();
+            Instantiate(connectionString);
+            Precipitations?.RaiseEntitiesRemoved();
+            ExternalFiles?.RaiseEntitiesRemoved();
+            WaterAnalyses?.RaiseEntitiesRemoved();
+            Measurements?.RaiseEntitiesRemoved();
+            Wells?.RaiseEntitiesRemoved();
+        }
 
         public void SaveChanges()
         {

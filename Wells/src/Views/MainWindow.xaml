@@ -52,6 +52,8 @@
                         <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
                         <Separator/>
                         <MenuItem Header="Abrir carpeta de registros..." Command="{Binding OpenLogsDirectoryCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Recrear base de datos" Command="{Binding RecreateDBCommand}"/>
                     </MenuItem>
                 </Menu>
             </Canvas>
