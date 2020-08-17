@@ -398,17 +398,28 @@ namespace Wells.View.ViewModels
         {
             var filename = Path.Combine(AppSettings.SettingsDirectory, $"{filtersFilename}.wft");
 
-            var xml = new StringBuilder();
-            var settings = new XmlWriterSettings { Indent = true };
             try
             {
-                using (var writer = XmlWriter.Create(xml, settings))
+                if (FilterCollection.Any())
                 {
-                    writer.WriteStartElement("FilterCollection");
-                    FilterCollection.WriteXml(writer);
-                    writer.WriteEndElement();
+                    var xml = new StringBuilder();
+                    var settings = new XmlWriterSettings { Indent = true };
+
+                    using (var writer = XmlWriter.Create(xml, settings))
+                    {
+                        writer.WriteStartElement("FilterCollection");
+                        FilterCollection.WriteXml(writer);
+                        writer.WriteEndElement();
+                    }
+                    File.WriteAllText(filename, xml.ToString());
                 }
-                File.WriteAllText(filename, xml.ToString());
+                else
+                {
+                    if (File.Exists(filename))
+                    {
+                        File.Delete(filename);
+                    }
+                }
             }
             catch (Exception ex)
             {

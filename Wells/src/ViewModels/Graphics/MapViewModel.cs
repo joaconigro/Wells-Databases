@@ -158,7 +158,7 @@ namespace Wells.View.ViewModels
             {
                 foreach (CustomPushpin p in Pushpins)
                 {
-                    var well = wells.First(w => w.Name == p.Name);
+                    var well = wells.First(w => w.Name == p.Label);
                     p.Value = GetValue(well);
                 }
                 var minValue = Pushpins.Min(p => p.Value);

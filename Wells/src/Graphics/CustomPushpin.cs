@@ -23,14 +23,12 @@ namespace Wells.View.Graphics
 
         public CustomPushpin(Well well, ControlTemplate template) : this(template)
         {
-            Name = well.Name;
             Label = well.Name;
             Location = new Location(well.Latitude, well.Longitude);
         }
 
         public CustomPushpin(string name, double latitude, double longitude, ControlTemplate template) : this(template)
         {
-            Name = name;
             Label = name;
             Location = new Location(latitude, longitude);
         }
