@@ -2,8 +2,8 @@
 using System;
 using System.Linq;
 using System.Windows;
+using Wells.Base;
 using Wells.BaseView;
-using Wells.Resources;
 using Wells.View.ViewModels;
 
 namespace Wells.View
@@ -52,8 +52,15 @@ namespace Wells.View
                 {
                     Map.Children.Add(p);
                 }
-                var locs = viewModel.Pushpins.Select(p => p.Location);
-                Map.SetView(locs, new Thickness(10), viewModel.MapRotation, 18);
+                var locs = viewModel.Pushpins.Select(p => p.Location).ToList();
+                try
+                {
+                    Map.SetView(locs, new Thickness(10), viewModel.MapRotation, 18);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.Handle(ex, false);
+                }
             }
         }
 
