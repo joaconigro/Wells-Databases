@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using Wells.BaseModel.Attributes;
 using Wells.BaseModel.Models;
 
 namespace Wells.Model
@@ -26,7 +27,7 @@ namespace Wells.Model
         public DateTime Date { get; set; }
 
 
-        [DisplayName("Profundidad Agua (m)"), Browsable(true)]
+        [DisplayName("Profundidad Agua (m)"), Browsable(true), NullValue()]
         public double WaterDepth { get; set; }
 
 
@@ -34,7 +35,7 @@ namespace Wells.Model
         public bool HasWater => WaterDepth != NumericNullValue;
 
 
-        [DisplayName("Cota Agua (m)"), Browsable(true)]
+        [DisplayName("Cota Agua (m)"), Browsable(true), NullValue()]
         public double WaterElevation
         {
             get
@@ -50,7 +51,7 @@ namespace Wells.Model
         }
 
 
-        [DisplayName("Caudal"), Browsable(true)]
+        [DisplayName("Caudal"), Browsable(true), NullValue()]
         public double Caudal { get; set; }
 
 

@@ -49,7 +49,7 @@ namespace Wells.View.Importer
                     var exists = ReadCellAsString(row, 6).ToUpper(CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(exists))
                     {
-                        well.Exists = exists == "SI" ? true : false;
+                        well.Exists = exists == "SI";
                     }
 
                     if (IsValid(well, wells, out var reason))
@@ -588,7 +588,6 @@ namespace Wells.View.Importer
         [Description("Nombre duplicado")] DuplicatedName,
         [Description("Pozo sin nombre")] WellNameEmpty,
         [Description("Pozo no encontrado")] WellNotFound,
-        [Description("Profundidad de FLNA mayor al del agua")] FLNADepthGreaterThanWaterDepth,
         [Description("Fecha duplicada")] DuplicatedDate,
         [Description("Desconocido")] Unknown
     }

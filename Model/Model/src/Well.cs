@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using Wells.BaseModel.Attributes;
 using Wells.BaseModel.Models;
 
 namespace Wells.Model
@@ -18,19 +19,19 @@ namespace Wells.Model
         public string Name { get; set; }
 
         #region Properties
-        [DisplayName("Latitud"), Browsable(true)]
+        [DisplayName("Latitud"), Browsable(true), NullValue()]
         public double Latitude { get; set; }
 
-        [DisplayName("Longitud"), Browsable(true)]
+        [DisplayName("Longitud"), Browsable(true), NullValue()]
         public double Longitude { get; set; }
 
-        [DisplayName("Cota (m.s.n.m.)"), Browsable(true)]
+        [DisplayName("Cota (msnm)"), Browsable(true), NullValue()]
         public double Z { get; set; }        
 
-        [DisplayName("Boca de pozo (m)"), Browsable(true)]
+        [DisplayName("Boca de pozo (m)"), Browsable(true), NullValue()]
         public double Height { get; set; }
 
-        [DisplayName("Fondo (m.b.b.p.)"), Browsable(true)]
+        [DisplayName("Fondo (mbbp)"), Browsable(true), NullValue()]
         public double Bottom { get; set; }
 
         [Browsable(false)]

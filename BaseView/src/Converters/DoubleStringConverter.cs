@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
+using Wells.BaseModel.Models;
 
 namespace Wells.BaseView.Converters
 {
@@ -12,6 +13,10 @@ namespace Wells.BaseView.Converters
             if (Information.IsNumeric(value))
             {
                 var dbl = Convert.ToDouble(value, culture);
+                if (double.Equals(dbl, BusinessObject.NumericNullValue))
+                {
+                    return "n/d";
+                }
                 if (parameter != null) { return dbl.ToString(parameter.ToString(), culture); }
                 return dbl.ToString(culture);
             }
@@ -25,6 +30,10 @@ namespace Wells.BaseView.Converters
                 var str = (string)value;
                 bool ok = double.TryParse(str, NumberStyles.Any, culture, out double doubleValue);
                 if (ok) { return doubleValue; }
+            }
+            else if (value.ToString().ToLower().Trim() == "n/d")
+            {
+                return BusinessObject.NumericNullValue;
             }
             return 0.0;
         }

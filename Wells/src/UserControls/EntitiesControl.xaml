@@ -92,7 +92,6 @@
 
         <DockPanel Grid.Row="4">
             <TextBlock Text="{Binding EntitiesCount, Converter={StaticResource IntegerConverter}, StringFormat=Registros: {0}}" DockPanel.Dock="Left"/>
-            <TextBlock Text="  (-9999 = N/D)" TextAlignment="Right" DockPanel.Dock="Right" />
             <TextBlock Text="{Binding WellExistsInfo}" TextAlignment="Right" DockPanel.Dock="Right" />
         </DockPanel>
 
