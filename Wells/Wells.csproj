@@ -8,7 +8,7 @@
     <RootNamespace>Wells.View</RootNamespace>
     <ApplicationManifest>App.manifest</ApplicationManifest>
     <ApplicationIcon>icon128x128.ico</ApplicationIcon>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Description>Programa para administrar información de pozos, sus mediciones y datos de análisis químicos.</Description>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
