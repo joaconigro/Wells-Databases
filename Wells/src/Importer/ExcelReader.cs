@@ -50,7 +50,7 @@ namespace Wells.View.Importer
                     var exists = ReadCellAsString(row, 8).ToUpper(CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(exists))
                     {
-                        well.Exists = exists == "SI" ? true : false;
+                        well.Exists = exists == "SI";
                     }
                     well.Bottom = ReadCellAsDouble(row, 9);
 
@@ -153,7 +153,8 @@ namespace Wells.View.Importer
                         Date = ParseStringDate(ReadCellAsDateString(row, 1)),
                         FlnaDepth = ReadCellAsDouble(row, 2),
                         WaterDepth = ReadCellAsDouble(row, 3),
-                        Comment = ReadCellAsString(row, 4)
+                        FlnaThickness = ReadCellAsDouble(row, 4),
+                        Comment = ReadCellAsString(row, 5)
                     };
 
                     if (meas.Well != null)
@@ -784,7 +785,6 @@ namespace Wells.View.Importer
         [Description("Nombre duplicado")] DuplicatedName,
         [Description("Pozo sin nombre")] WellNameEmpty,
         [Description("Pozo no encontrado")] WellNotFound,
-        [Description("Profundidad de FLNA mayor al del agua")] FLNADepthGreaterThanWaterDepth,
         [Description("Fecha duplicada")] DuplicatedDate,
         [Description("Desconocido")] Unknown
     }

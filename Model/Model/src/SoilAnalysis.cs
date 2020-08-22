@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using Wells.BaseModel.Attributes;
 using Wells.BaseModel.Models;
 
 namespace Wells.Model
@@ -18,157 +19,157 @@ namespace Wells.Model
 
 
         #region Properties
-        [DisplayName("Humedad (%)"), Browsable(true)]
+        [DisplayName("Humedad (%)"), Browsable(true), NullValue()]
         public double Humidity { get; set; }
 
-        [DisplayName("pH (mg/Kg)"), Browsable(true)]
+        [DisplayName("pH (mg/Kg)"), Browsable(true), NullValue()]
         public double Ph { get; set; }
 
-        [DisplayName("DRO (mg/Kg)"), Browsable(true)]
+        [DisplayName("DRO (mg/Kg)"), Browsable(true), NullValue()]
         public double Dro { get; set; }
 
-        [DisplayName("GRO (mg/Kg)"), Browsable(true)]
+        [DisplayName("GRO (mg/Kg)"), Browsable(true), NullValue()]
         public double Gro { get; set; }
         
-        [DisplayName("MRO (mg/Kg)"), Browsable(true)]
+        [DisplayName("MRO (mg/Kg)"), Browsable(true), NullValue()]
         public double Mro { get; set; }
 
-        [DisplayName("Hidrocarburos totales (EPA 8015) (mg/Kg)"), Browsable(true)]
+        [DisplayName("Hidrocarburos totales (EPA 8015) (mg/Kg)"), Browsable(true), NullValue()]
         public double TotalHydrocarbonsEpa8015 { get; set; }
 
-        [DisplayName("Hidrocarburos totales (TNRCC 1005) (mg/Kg)"), Browsable(true)]
+        [DisplayName("Hidrocarburos totales (TNRCC 1005) (mg/Kg)"), Browsable(true), NullValue()]
         public double TotalHydrocarbonsTnrcc1005 { get; set; }
 
-        [DisplayName("Aceites y grasas (mg/Kg)"), Browsable(true)]
+        [DisplayName("Aceites y grasas (mg/Kg)"), Browsable(true), NullValue()]
         public double OilsAndFats { get; set; }
 
-        [DisplayName("> C6 - C8 (F. alifática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C6 - C8 (F. alifática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C6_C8Aliphatic { get; set; }
 
-        [DisplayName("> C8 - C10 (F. alifática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C8 - C10 (F. alifática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C8_C10Aliphatic { get; set; }
 
-        [DisplayName("> C10 - C12 (F. alifática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C10 - C12 (F. alifática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C10_C12Aliphatic { get; set; }
 
-        [DisplayName("> C12 - C16 (F. alifática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C12 - C16 (F. alifática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C12_C16Aliphatic { get; set; }
 
-        [DisplayName("> C16 - C21 (F. alifática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C16 - C21 (F. alifática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C16_C21Aliphatic { get; set; }
 
-        [DisplayName("> C21 - C35 (F. alifática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C21 - C35 (F. alifática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C21_C35Aliphatic { get; set; }
 
-        [DisplayName("> C6 - C8 (F. aromática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C6 - C8 (F. aromática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C6_C8Aromatic { get; set; }
 
-        [DisplayName("> C8 - C10 (F. aromática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C8 - C10 (F. aromática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C8_C10Aromatic { get; set; }
 
-        [DisplayName("> C10 - C12 (F. aromática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C10 - C12 (F. aromática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C10_C12Aromatic { get; set; }
 
-        [DisplayName("> C12 - C16 (F. aromática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C12 - C16 (F. aromática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C12_C16Aromatic { get; set; }
 
-        [DisplayName("> C16 - C21 (F. aromática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C16 - C21 (F. aromática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C16_C21Aromatic { get; set; }
 
-        [DisplayName("> C21 - C35 (F. aromática) (mg/Kg)"), Browsable(true)]
+        [DisplayName("> C21 - C35 (F. aromática) (mg/Kg)"), Browsable(true), NullValue()]
         public double C21_C35Aromatic { get; set; }
 
-        [DisplayName("Benceno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Benceno (mg/Kg)"), Browsable(true), NullValue()]
         public double Benzene { get; set; }
 
-        [DisplayName("Tolueno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Tolueno (mg/Kg)"), Browsable(true), NullValue()]
         public double Tolueno { get; set; }
 
-        [DisplayName("Etilbenceno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Etilbenceno (mg/Kg)"), Browsable(true), NullValue()]
         public double Ethylbenzene { get; set; }
 
-        [DisplayName("Xileno (o) (mg/l)"), Browsable(true)]
+        [DisplayName("Xileno (o) (mg/l)"), Browsable(true), NullValue()]
         public double XyleneO { get; set; }
 
-        [DisplayName("Xileno (p-m) (mg/l)"), Browsable(true)]
+        [DisplayName("Xileno (p-m) (mg/l)"), Browsable(true), NullValue()]
         public double XylenePm { get; set; }
 
-        [DisplayName("Xileno total (mg/l)"), Browsable(true)]
+        [DisplayName("Xileno total (mg/l)"), Browsable(true), NullValue()]
         public double TotalXylene { get; set; }
 
-        [DisplayName("Naftaleno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Naftaleno (mg/Kg)"), Browsable(true), NullValue()]
         public double Naphthalene { get; set; }
 
-        [DisplayName("Acenafteno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Acenafteno (mg/Kg)"), Browsable(true), NullValue()]
         public double Acenafthene { get; set; }
 
-        [DisplayName("Acenaftileno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Acenaftileno (mg/Kg)"), Browsable(true), NullValue()]
         public double Acenaphthylene { get; set; }
 
-        [DisplayName("Fluoreno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Fluoreno (mg/Kg)"), Browsable(true), NullValue()]
         public double Fluorene { get; set; }
 
-        [DisplayName("Antraceno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Antraceno (mg/Kg)"), Browsable(true), NullValue()]
         public double Anthracene { get; set; }
 
-        [DisplayName("Fenantreno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Fenantreno (mg/Kg)"), Browsable(true), NullValue()]
         public double Fenanthrene { get; set; }
 
-        [DisplayName("Fluoranteno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Fluoranteno (mg/Kg)"), Browsable(true), NullValue()]
         public double Fluoranthene { get; set; }
 
-        [DisplayName("Pireno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Pireno (mg/Kg)"), Browsable(true), NullValue()]
         public double Pyrene { get; set; }
 
-        [DisplayName("Criseno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Criseno (mg/Kg)"), Browsable(true), NullValue()]
         public double Crysene { get; set; }
 
-        [DisplayName("Benzo(a)antraceno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Benzo(a)antraceno (mg/Kg)"), Browsable(true), NullValue()]
         public double BenzoAAnthracene { get; set; }
 
-        [DisplayName("Benzo(a)pireno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Benzo(a)pireno (mg/Kg)"), Browsable(true), NullValue()]
         public double BenzoAPyrene { get; set; }
 
-        [DisplayName("Benzo(b)fluoranteno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Benzo(b)fluoranteno (mg/Kg)"), Browsable(true), NullValue()]
         public double BenzoBFluoranthene { get; set; }
 
-        [DisplayName("Benzo(g,h,i)perileno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Benzo(g,h,i)perileno (mg/Kg)"), Browsable(true), NullValue()]
         public double BenzoGhiPerylene { get; set; }
 
-        [DisplayName("Benzo(k)fluoranteno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Benzo(k)fluoranteno (mg/Kg)"), Browsable(true), NullValue()]
         public double BenzoKFluoranthene { get; set; }
 
-        [DisplayName("Dibenzo(a,h)antraceno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Dibenzo(a,h)antraceno (mg/Kg)"), Browsable(true), NullValue()]
         public double DibenzoAhAnthracene { get; set; }
 
-        [DisplayName("Indeno(1,2,3-cd)pireno (mg/Kg)"), Browsable(true)]
+        [DisplayName("Indeno(1,2,3-cd)pireno (mg/Kg)"), Browsable(true), NullValue()]
         public double Indeno123CdPyrene { get; set; }
 
-        [DisplayName("Arsénico (mg/Kg)"), Browsable(true)]
+        [DisplayName("Arsénico (mg/Kg)"), Browsable(true), NullValue()]
         public double Arsenic { get; set; }
 
-        [DisplayName("Cadmio (mg/Kg)"), Browsable(true)]
+        [DisplayName("Cadmio (mg/Kg)"), Browsable(true), NullValue()]
         public double Cadmium { get; set; }
 
-        [DisplayName("Cobre (mg/Kg)"), Browsable(true)]
+        [DisplayName("Cobre (mg/Kg)"), Browsable(true), NullValue()]
         public double Copper { get; set; }
 
-        [DisplayName("Cromo total (mg/Kg)"), Browsable(true)]
+        [DisplayName("Cromo total (mg/Kg)"), Browsable(true), NullValue()]
         public double TotalChrome { get; set; }
 
-        [DisplayName("Mercurio (mg/Kg)"), Browsable(true)]
+        [DisplayName("Mercurio (mg/Kg)"), Browsable(true), NullValue()]
         public double Mercury { get; set; }
 
-        [DisplayName("Níquel (mg/Kg)"), Browsable(true)]
+        [DisplayName("Níquel (mg/Kg)"), Browsable(true), NullValue()]
         public double Nickel { get; set; }
 
-        [DisplayName("Plomo (mg/Kg)"), Browsable(true)]
+        [DisplayName("Plomo (mg/Kg)"), Browsable(true), NullValue()]
         public double Lead { get; set; }
 
-        [DisplayName("Selenio (mg/Kg)"), Browsable(true)]
+        [DisplayName("Selenio (mg/Kg)"), Browsable(true), NullValue()]
         public double Selenium { get; set; }
 
-        [DisplayName("Zinc (mg/Kg)"), Browsable(true)]
+        [DisplayName("Zinc (mg/Kg)"), Browsable(true), NullValue()]
         public double Zinc { get; set; }
         #endregion
 

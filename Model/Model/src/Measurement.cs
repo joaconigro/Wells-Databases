@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using Wells.BaseModel.Attributes;
 using Wells.BaseModel.Models;
 
 namespace Wells.Model
@@ -26,11 +27,11 @@ namespace Wells.Model
         public DateTime Date { get; set; }
 
 
-        [DisplayName("Profundidad FLNA (m)"), Browsable(true)]
+        [DisplayName("Profundidad FLNA (mbbp)"), Browsable(true), NullValue("")]
         public double FlnaDepth { get; set; }
 
 
-        [DisplayName("Profundidad Agua (m)"), Browsable(true)]
+        [DisplayName("Profundidad Agua (mbbp)"), Browsable(true), NullValue()]
         public double WaterDepth { get; set; }
 
 
@@ -41,18 +42,11 @@ namespace Wells.Model
         [Browsable(false)]
         public bool HasFlna => FlnaDepth != NumericNullValue;
 
-        [DisplayName("Espesor FLNA (m)"), Browsable(true)]
-        public double FlnaThickness
-        {
-            get
-            {
-                if (HasFlna && HasWater) { return WaterDepth - FlnaDepth; }
-                return NumericNullValue;
-            }
-        }
+        [DisplayName("Espesor FLNA (m)"), Browsable(true), NullValue()]
+        public double FlnaThickness { get; set; }
 
 
-        [DisplayName("Cota FLNA (m)"), Browsable(true)]
+        [DisplayName("Cota FLNA (msnm)"), Browsable(true), NullValue()]
         public double FlnaElevation
         {
             get
@@ -68,7 +62,7 @@ namespace Wells.Model
         }
 
 
-        [DisplayName("Cota Agua (m)"), Browsable(true)]
+        [DisplayName("Cota Agua (msnm)"), Browsable(true), NullValue()]
         public double WaterElevation
         {
             get

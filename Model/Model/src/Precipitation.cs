@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Wells.BaseModel.Attributes;
 using Wells.BaseModel.Models;
 
 namespace Wells.Model
@@ -15,7 +16,7 @@ namespace Wells.Model
         [Required, DisplayName("Fecha"), Browsable(true)]
         public DateTime Date { get; set; }
 
-        [Required, DisplayName("Milímetros"), Browsable(true)]
+        [Required, DisplayName("Milímetros"), Browsable(true), NullValue()]
         public double Millimeters { get; set; }
         #endregion
 

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.View.ViewModels;
 

@@ -18,7 +18,7 @@ namespace Wells.View.ViewModels
         private double flnaDepth;
         private double waterDepth;
         private string comment;
-
+        private double flnaThickness;
 
         public string WellName { get => selectedWell?.Name; }
         public List<Well> Wells => RepositoryWrapper.Instance.Wells.All.ToList();
@@ -27,6 +27,7 @@ namespace Wells.View.ViewModels
         public DateTime Date { get => date; set { SetValue(ref date, value); } }
         public double FlnaDepth { get => flnaDepth; set { SetValue(ref flnaDepth, value); } }
         public double WaterDepth { get => waterDepth; set { SetValue(ref waterDepth, value); } }
+        public double FlnaThickness { get => flnaThickness; set { SetValue(ref flnaThickness, value); } }
         public string Comment { get => comment; set { SetValue(ref comment, value); } }
         public bool IsEditing { get; }
         public bool IsWellSelectable { get; }
@@ -62,6 +63,7 @@ namespace Wells.View.ViewModels
             Date = Measurement.Date;
             FlnaDepth = Measurement.FlnaDepth;
             WaterDepth = Measurement.WaterDepth;
+            FlnaThickness = Measurement.FlnaThickness;
             Comment = Measurement.Comment;
         }
 
@@ -71,6 +73,7 @@ namespace Wells.View.ViewModels
             Measurement.Date = Date;
             Measurement.FlnaDepth = FlnaDepth;
             Measurement.WaterDepth = WaterDepth;
+            Measurement.FlnaThickness = FlnaThickness;
             Measurement.Comment = Comment;
         }
 

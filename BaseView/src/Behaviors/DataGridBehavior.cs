@@ -114,6 +114,20 @@ namespace Wells.BaseView.Behaviors
                     Mode = BindingMode.TwoWay,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 };
+            } 
+            else if (Common.IsNumericType(e.PropertyType))
+            {
+                if (!Common.IsIntegerNumericType(e.PropertyType))
+                {
+                    (e.Column as DataGridTextColumn).Binding = new CultureAwareBinding
+                    {
+                        Path = new PropertyPath(e.PropertyName),
+                        Converter = new DoubleStringConverter(),
+                        Mode = BindingMode.OneWay,
+                        StringFormat = "N3",
+                        ConverterParameter = "N3"
+                    };
+                }
             }
 
         }
