@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cyotek.Windows.Forms.ColorPicker" Version="1.7.2" />
-    <PackageReference Include="FluentValidation" Version="9.1.3" />
+    <PackageReference Include="FluentValidation" Version="9.2.2" />
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
   </ItemGroup>
 
