@@ -373,26 +373,33 @@ namespace Wells.View.ViewModels
         protected bool OpenExcelFile(ref XSSFWorkbook workbook, out int sheetIndex)
         {
             var filename = SharedBaseView.OpenFileDialog("Archivos de Excel|*.xlsx", "Importar Excel");
-            if (!string.IsNullOrEmpty(filename))
+            try
             {
-                workbook = new XSSFWorkbook(filename);
-                if (workbook.NumberOfSheets > 1)
+                if (!string.IsNullOrEmpty(filename))
                 {
-                    List<string> sheets = new List<string>();
-                    for (int i = 0; i < workbook.NumberOfSheets; i++)
+                    workbook = new XSSFWorkbook(filename);
+                    if (workbook.NumberOfSheets > 1)
                     {
-                        sheets.Add(workbook.GetSheetName(i));
+                        List<string> sheets = new List<string>();
+                        for (int i = 0; i < workbook.NumberOfSheets; i++)
+                        {
+                            sheets.Add(workbook.GetSheetName(i));
+                        }
+                        sheetIndex = MainWindow.SelectSheetDialog(sheets);
                     }
-                    sheetIndex = MainWindow.SelectSheetDialog(sheets);
+                    else
+                    {
+                        sheetIndex = 0;
+                    }
+                    return sheetIndex > -1;
                 }
-                else
-                {
-                    sheetIndex = 0;
-                }
-                return sheetIndex > -1;
+                sheetIndex = -1;
+                return false;
             }
-            sheetIndex = -1;
-            return false;
+            catch
+            {
+                throw new Exception($"No se puede abrir el archivo {filename}. Probablemente está en uso por otra aplicación.");
+            }
         }
 
 

@@ -11,6 +11,8 @@ namespace Wells.Persistence.Repositories
 
         private Dictionary<string, Well> _Wells;
 
+        public override IQueryable<Well> All => Context.Wells.OrderBy(p => p.Name).AsQueryable();
+
         public Dictionary<string, Well> Wells
         {
             get

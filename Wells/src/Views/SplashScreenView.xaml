@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wells.View.Views"
         mc:Ignorable="d"
-        Title="SplashScreenView" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None" Background="Transparent" 
+        Title="SplashScreenView" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None" Background="#FFCEDDE2" 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
-    <StackPanel>
+    <StackPanel Margin="4">
         <Image Source="{StaticResource UnlpLogoImage}" Stretch="Uniform" MaxHeight="400"/>
         <Grid>
             <Grid.ColumnDefinitions>

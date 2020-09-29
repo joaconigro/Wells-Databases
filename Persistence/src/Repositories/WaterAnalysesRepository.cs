@@ -1,10 +1,16 @@
-﻿using Wells.Model;
+﻿using System.Linq;
+using Wells.Model;
 
 namespace Wells.Persistence.Repositories
 {
     public class WaterAnalysesRepository : RepositoryBase<WaterAnalysis>, IBussinessObjectRepository
     {
         public WaterAnalysesRepository(ApplicationDbContext context) : base(context) { }
+
+        public override IQueryable<WaterAnalysis> All => Context.WaterAnalyses.ToList()
+            .OrderBy(p => p.WellName)
+            .ThenBy(p => p.Date)
+            .AsQueryable();
 
         public override bool ContainsName(string name)
         {
@@ -24,6 +30,6 @@ namespace Wells.Persistence.Repositories
         public override WaterAnalysis FindByName(string name)
         {
             return null;
-        }       
+        }
     }
 }

@@ -7,6 +7,11 @@ namespace Wells.Persistence.Repositories
     {
         public MeasurementsRepository(ApplicationDbContext context) : base(context) { }
 
+        public override IQueryable<Measurement> All => Context.Measurements.ToList()
+            .OrderBy(p => p.WellName)
+            .ThenBy(p => p.Date)
+            .AsQueryable();
+
         public override bool ContainsName(string name)
         {
             return true;

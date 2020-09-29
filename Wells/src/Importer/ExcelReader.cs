@@ -73,7 +73,7 @@ namespace Wells.View.Importer
             }
 
             return newWells;
-        }      
+        }
 
         static bool IsValid(Well well, Dictionary<string, Well> wells, out RejectedReasons reason)
         {
@@ -114,9 +114,6 @@ namespace Wells.View.Importer
                         Date = ParseStringDate(ReadCellAsDateString(row, 0)),
                         Millimeters = ReadCellAsDouble(row, 1)
                     };
-
-
-                    prec.Millimeters = prec.Millimeters == BusinessObject.NumericNullValue ? 0 : prec.Millimeters;
 
                     precipitations.Add(prec);
 
@@ -493,7 +490,7 @@ namespace Wells.View.Importer
         }
         #endregion
 
-       
+
 
         #region Export Water analyses
         static void ExportWaterAnalyses(List<WaterAnalysis> waterAnalyses, ISheet sheet, ICellStyle cellDateStyle)
@@ -635,7 +632,7 @@ namespace Wells.View.Importer
             var row = sheet.CreateRow(rowIndex);
             int i = 0;
             row.CreateCell(i).SetCellValue(measurement.WellName);
-            var cell= row.CreateCell(++i, CellType.Numeric);
+            var cell = row.CreateCell(++i, CellType.Numeric);
             cell.SetCellValue(measurement.Date);
             cell.CellStyle = cellDateStyle;
             row.CreateCell(++i, CellType.Numeric).SetCellValue(measurement.FlnaDepth);
@@ -758,18 +755,15 @@ namespace Wells.View.Importer
                     default:
                         double result;
                         var stringValue = cell.StringCellValue;
-                        bool isLowerThan = false;
                         if (stringValue.Contains("<"))
                         {
-                            stringValue = stringValue.Replace("<", "");
-                            isLowerThan = true;
+                            return BusinessObject.NumericNullValue;
                         }
                         if (double.TryParse(stringValue, out result))
                         {
-                            if (isLowerThan) { result -= result * 0.1; }
+                            return result;
                         }
-                        return result;
-
+                        return BusinessObject.NumericNullValue;
                 }
             }
             return BusinessObject.NumericNullValue;
