@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 using Wells.Model;
 
 namespace Wells.Persistence
@@ -68,6 +70,17 @@ namespace Wells.Persistence
             builder
                 .UseLazyLoadingProxies()
                 .UseSqlServer(connectionString);
+
+            return builder.Options;
+        }
+
+        public static DbContextOptions GetSqliteOptions(string dbName)
+        {
+            var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager", $"{dbName}.db");
+            var builder = new DbContextOptionsBuilder();
+            builder
+                .UseLazyLoadingProxies()
+                .UseSqlite($"DataSource={dbFilename}.db");
 
             return builder.Options;
         }

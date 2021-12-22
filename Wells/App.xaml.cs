@@ -30,7 +30,7 @@ namespace Wells
                     var splash = new SplashScreenView();
                     if ((bool)splash.ShowDialog())
                     {
-                        RepositoryWrapper.Instantiate(Settings.CurrentConnectionString);
+                        RepositoryWrapper.Instantiate(Settings.CurrentConnectionString, Settings.CurrentDbName);
                         var mainWindow = new MainWindow();
                         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                         Current.MainWindow = mainWindow;

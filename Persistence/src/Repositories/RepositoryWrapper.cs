@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Wells.Persistence.Repositories
@@ -87,25 +88,46 @@ namespace Wells.Persistence.Repositories
             Context = repositoryContext;
         }
 
-        public static RepositoryWrapper Instantiate(string connectionString)
+        public static RepositoryWrapper Instantiate(string connectionString, string dbName)
         {
             var context = new ApplicationDbContext(connectionString);
             context.Database.Migrate();
             Instance = new RepositoryWrapper(context);
+
+
             if (Instance == null)
             {
-                throw new ArgumentNullException("El repositorio se pudo ser instanciado.");
+                throw new ArgumentNullException("El repositorio no pudo ser instanciado.");
+            }
+
+            var sqliteOptions = ApplicationDbContext.GetSqliteOptions(dbName);
+            var sqliteContext = new ApplicationDbContext(sqliteOptions);
+            var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager", $"{dbName}.db");
+            if (!File.Exists(dbFilename))
+            {
+                sqliteContext.Database.Migrate();
+                var sqliteInstance = new RepositoryWrapper(sqliteContext);
+                sqliteContext.Precipitations.AddRange(Instance.Precipitations.All);
+                sqliteContext.Files.AddRange(Instance.ExternalFiles.All);
+                sqliteContext.WaterAnalyses.AddRange(Instance.WaterAnalyses.All);
+                sqliteContext.SoilAnalyses.AddRange(Instance.SoilAnalyses.All);
+                sqliteContext.FlnaAnalyses.AddRange(Instance.FlnaAnalyses.All);
+                sqliteContext.Measurements.AddRange(Instance.Measurements.All);
+                sqliteContext.Wells.AddRange(Instance.Wells.All);
+                sqliteInstance.SaveChanges();
             }
             return Instance;
         }
 
-        public async Task DropSchema(string connectionString)
+        public async Task DropSchema(string connectionString, string dbName)
         {
             await Context.Database.EnsureDeletedAsync();
-            Instantiate(connectionString);
+            Instantiate(connectionString, dbName);
             Precipitations?.RaiseEntitiesRemoved();
             ExternalFiles?.RaiseEntitiesRemoved();
             WaterAnalyses?.RaiseEntitiesRemoved();
+            FlnaAnalyses?.RaiseEntitiesRemoved();
+            SoilAnalyses?.RaiseEntitiesRemoved();
             Measurements?.RaiseEntitiesRemoved();
             Wells?.RaiseEntitiesRemoved();
         }

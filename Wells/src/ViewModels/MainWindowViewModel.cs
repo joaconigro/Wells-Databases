@@ -95,7 +95,7 @@ namespace Wells.View.ViewModels
                     if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro que desea eliminar completamente la base de datos?", "¿Eliminar base de datos?"))
                     {
                         mainWindow.ShowWaitingMessage("Por favor, espere un momento");
-                        await RepositoryWrapper.Instance.DropSchema(App.Settings.CurrentConnectionString);
+                        await RepositoryWrapper.Instance.DropSchema(App.Settings.CurrentConnectionString, App.Settings.CurrentDbName);
                     }
                 }, () => true, OnError, () => { mainWindow.CloseWaitingMessage(); });
             }
