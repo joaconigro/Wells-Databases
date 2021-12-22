@@ -9,8 +9,6 @@ namespace Wells.Resources
 {
     public class AppSettings
     {
-        private AppSettings() { }
-
         public string MapCredentialsProvider { get; set; }
         public Dictionary<string, string> ConnectionStrings { get; set; }
 

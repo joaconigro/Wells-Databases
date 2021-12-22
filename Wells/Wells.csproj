@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>Wells.View</RootNamespace>
@@ -16,21 +16,21 @@
 
   <ItemGroup>
     <PackageReference Include="Cyotek.Windows.Forms.ColorPicker" Version="1.7.2" />
-    <PackageReference Include="FluentValidation" Version="9.2.2" />
+    <PackageReference Include="FluentValidation" Version="10.3.6" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Maps.MapControl.WPF" Version="1.0.0.3" />
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
-    <PackageReference Include="NPOI" Version="2.5.1" />
+    <PackageReference Include="NPOI" Version="2.5.5" />
   </ItemGroup>
 
   <ItemGroup>
