@@ -49,6 +49,7 @@ namespace Wells
             catch (Exception ex)
             {
                 SharedBaseView.ShowErrorMessageBox(new WaitingView(""), ex.Message);
+                ExceptionHandler.Log(ex, TraceEventType.Critical, String.Empty);
                 Current.Shutdown(-1);
             }
         }

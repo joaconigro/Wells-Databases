@@ -90,32 +90,36 @@ namespace Wells.Persistence.Repositories
 
         public static RepositoryWrapper Instantiate(string connectionString, string dbName)
         {
-            var context = new ApplicationDbContext(connectionString);
-            context.Database.Migrate();
-            Instance = new RepositoryWrapper(context);
+            var sqlDbContext = new SqlDbContext(connectionString);
+            var sqlExists = sqlDbContext.Database.CanConnect();
+            
 
+            var sqliteContext = new SqliteDbContext(dbName);
+            if (!File.Exists(sqliteContext.DbFilename))
+            {
+                sqliteContext.Database.Migrate();
+                Instance = new RepositoryWrapper(sqliteContext);
+                if (sqlExists)
+                {
+                    sqliteContext.Precipitations.AddRange(sqlDbContext.Precipitations);
+                    sqliteContext.Files.AddRange(sqlDbContext.Files);
+                    sqliteContext.WaterAnalyses.AddRange(sqlDbContext.WaterAnalyses);
+                    sqliteContext.SoilAnalyses.AddRange(sqlDbContext.SoilAnalyses);
+                    sqliteContext.FlnaAnalyses.AddRange(sqlDbContext.FlnaAnalyses);
+                    sqliteContext.Measurements.AddRange(sqlDbContext.Measurements);
+                    sqliteContext.Wells.AddRange(sqlDbContext.Wells);
+
+                    sqlDbContext.Database.EnsureDeleted();
+                }
+
+                Instance.SaveChanges();
+            }
 
             if (Instance == null)
             {
                 throw new ArgumentNullException("El repositorio no pudo ser instanciado.");
             }
 
-            var sqliteOptions = ApplicationDbContext.GetSqliteOptions(dbName);
-            var sqliteContext = new ApplicationDbContext(sqliteOptions);
-            var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager", $"{dbName}.db");
-            if (!File.Exists(dbFilename))
-            {
-                sqliteContext.Database.Migrate();
-                var sqliteInstance = new RepositoryWrapper(sqliteContext);
-                sqliteContext.Precipitations.AddRange(Instance.Precipitations.All);
-                sqliteContext.Files.AddRange(Instance.ExternalFiles.All);
-                sqliteContext.WaterAnalyses.AddRange(Instance.WaterAnalyses.All);
-                sqliteContext.SoilAnalyses.AddRange(Instance.SoilAnalyses.All);
-                sqliteContext.FlnaAnalyses.AddRange(Instance.FlnaAnalyses.All);
-                sqliteContext.Measurements.AddRange(Instance.Measurements.All);
-                sqliteContext.Wells.AddRange(Instance.Wells.All);
-                sqliteInstance.SaveChanges();
-            }
             return Instance;
         }
 

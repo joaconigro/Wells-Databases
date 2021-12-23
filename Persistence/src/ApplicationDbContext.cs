@@ -5,16 +5,11 @@ using Wells.Model;
 
 namespace Wells.Persistence
 {
-    public class ApplicationDbContext : DbContext
+    public abstract class ApplicationDbContext : DbContext
     {
-        private readonly string connectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=CILP_DB;Integrated Security=True;MultipleActiveResultSets=True";
+        protected string connectionString;
 
         #region Constructor
-        public ApplicationDbContext(DbContextOptions options) :
-        base(options)
-        {
-        }
-
         public ApplicationDbContext(string connectionString)
         {
             this.connectionString = connectionString;
@@ -53,37 +48,6 @@ namespace Wells.Persistence
             modelBuilder.Entity<Precipitation>().ToTable("Precipitations");
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder
-                    .UseLazyLoadingProxies()
-                    .UseSqlServer(connectionString);
-            }
-        }
-
-
-        public static DbContextOptions GetSqlOptions(string connectionString)
-        {
-            var builder = new DbContextOptionsBuilder();
-            builder
-                .UseLazyLoadingProxies()
-                .UseSqlServer(connectionString);
-
-            return builder.Options;
-        }
-
-        public static DbContextOptions GetSqliteOptions(string dbName)
-        {
-            var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager", $"{dbName}.db");
-            var builder = new DbContextOptionsBuilder();
-            builder
-                .UseLazyLoadingProxies()
-                .UseSqlite($"DataSource={dbFilename}.db");
-
-            return builder.Options;
-        }
         #endregion Methods
 
 
