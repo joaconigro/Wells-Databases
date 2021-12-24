@@ -115,6 +115,21 @@ namespace Wells.Persistence.Repositories
             Wells?.RaiseEntitiesRemoved();
         }
 
+        public async Task ChangeSchema(string dbName)
+        {
+            await SaveChangesAsync();
+            await Context.DisposeAsync();
+
+            Instantiate(dbName);
+            precipitations = new PrecipitationsRepository(Context);
+            externalFiles = new ExternalFilesRepository(Context);
+            waterAnalyses = new WaterAnalysesRepository(Context);
+            flnaAnalyses = new FlnaAnalysesRepository(Context);
+            soilAnalyses = new SoilAnalysesRepository(Context);
+            measurements = new MeasurementsRepository(Context);
+            wells = new WellsRepository(Context);
+        }
+
         public void SaveChanges()
         {
             Context.SaveChanges();

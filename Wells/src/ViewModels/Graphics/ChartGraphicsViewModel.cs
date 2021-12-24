@@ -118,7 +118,7 @@ namespace Wells.View.ViewModels
 
         protected override void SetCommandUpdates()
         {
-            Add(nameof(SelectedSerie), RemoveSeriesCommand);
+            //Add(nameof(SelectedSerie), RemoveSeriesCommand);
         }
 
         public ChartGraphicsViewModel(IView view) : base(view)

@@ -39,7 +39,7 @@ namespace Wells.DbMigrator
 
         public List<string> DbNames { get; private set; }
 
-        public string SelectedDb { get => selectedDb; set => selectedDb = value; }
+        public string SelectedDb { get => selectedDb; set => SetValue(ref selectedDb, value); }
 
         protected override void Initialize()
         {
@@ -73,7 +73,7 @@ namespace Wells.DbMigrator
 
         public ICommand MigrateDbCommand
         {
-            get => new RelayCommand((param) =>
+            get => new AsyncCommand(async () =>
             {
                 if (RemoveDbAfterMigrate && !SharedBaseView.ShowYesNoMessageBox(mainWindow, "Seleccionó la opción 'Eliminar la base de datos SQL después de migrar', por lo tanto se eliminará la base de datos SQL. Esta operación no se puede deshacer. ¿Desea continuar?", "Advertencia"))
                 {
@@ -96,15 +96,22 @@ namespace Wells.DbMigrator
                     sqliteContext.Measurements.AddRange(sqlDbContext.Measurements);
                     sqliteContext.Wells.AddRange(sqlDbContext.Wells);
 
-                    sqliteContext.SaveChanges();
+                    await sqliteContext.SaveChangesAsync();
 
                     if (RemoveDbAfterMigrate)
                     {
-                        sqlDbContext.Database.EnsureDeleted();
+                        await sqlDbContext.Database.EnsureCreatedAsync();
                     }
+
+                    SetDbContexts();
                 }
                 mainWindow.CloseWaitingMessage();
-            }, (obj) => !string.IsNullOrEmpty(SelectedDb), OnError);
+            }, () => !string.IsNullOrEmpty(SelectedDb), OnError, () => 
+            { 
+                mainWindow.CloseWaitingMessage();
+                NotifyPropertyChanged(nameof(DbNames));
+                SelectedDb = string.Empty;
+            });
         }
     }
 }

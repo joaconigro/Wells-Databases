@@ -45,7 +45,7 @@
       <SeriesInfo>
         <IsFromWell>true</IsFromWell>
         <DisplayXName>Fecha</DisplayXName>
-        <DisplayYName>Cota Agua (m)</DisplayYName>
+        <DisplayYName>Cota Agua (msnm)</DisplayYName>
         <ListName>Mediciones</ListName>
         <IsDateBased>true</IsDateBased>
         <HexColor>#FF0294FC</HexColor>
@@ -53,7 +53,7 @@
       <SeriesInfo>
         <IsFromWell>true</IsFromWell>
         <DisplayXName>Fecha</DisplayXName>
-        <DisplayYName>Profundidad Agua (m)</DisplayYName>
+        <DisplayYName>Profundidad Agua (mbbp)</DisplayYName>
         <ListName>Mediciones</ListName>
         <IsDateBased>true</IsDateBased>
         <HexColor>#FF0000B1</HexColor>
@@ -73,8 +73,8 @@
     <Values>
       <SeriesInfo>
         <IsFromWell>true</IsFromWell>
-        <DisplayXName>Cota Agua (m)</DisplayXName>
-        <DisplayYName>Cota FLNA (m)</DisplayYName>
+        <DisplayXName>Cota Agua (msnm)</DisplayXName>
+        <DisplayYName>Cota FLNA (msnm)</DisplayYName>
         <ListName>Mediciones</ListName>
         <IsDateBased>false</IsDateBased>
         <HexColor>#FFF0590E</HexColor>

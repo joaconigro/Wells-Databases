@@ -41,21 +41,26 @@
             </TabControl>
 
             <Canvas HorizontalAlignment="Right">
-                <Menu Style="{StaticResource MarginStyle}" Canvas.Right="0" Canvas.Top="0">
-                    <MenuItem VerticalAlignment="Center">
-                        <MenuItem.Header>
-                            <Image Source="{StaticResource GearImage}" Stretch="Uniform" Height="15"/>
-                        </MenuItem.Header>
-                        <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
-                        <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Abrir carpeta de registros..." Command="{Binding OpenLogsDirectoryCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Recrear base de datos" Command="{Binding RecreateDBCommand}"/>
-                    </MenuItem>
-                </Menu>
+                <StackPanel Orientation="Horizontal" Canvas.Right="0" Canvas.Top="0" VerticalAlignment="Stretch" Margin="0,-2,0,0">
+                    <TextBlock Text="Base de datos:" Style="{StaticResource TextBlockStyle}"/>
+                    <ComboBox ItemsSource="{Binding DbNames}" SelectedItem="{Binding SelectedDb}" Style="{StaticResource MarginStyle}" MinWidth="75"/>
+                    <Menu Style="{StaticResource MarginStyle}" VerticalAlignment="Center">
+                        <MenuItem VerticalAlignment="Center">
+                            <MenuItem.Header>
+                                <Image Source="{StaticResource GearImage}" Stretch="Uniform" Height="15"/>
+                            </MenuItem.Header>
+                            <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
+                            <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Abrir carpeta de registros..." Command="{Binding OpenLogsDirectoryCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Recrear base de datos" Command="{Binding RecreateDBCommand}"/>
+                        </MenuItem>
+                    </Menu>
+                </StackPanel>
+                
             </Canvas>
         </Grid>
     </DockPanel>

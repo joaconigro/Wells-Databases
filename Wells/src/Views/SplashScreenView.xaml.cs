@@ -1,33 +1,31 @@
-﻿using System.Windows;
-using Wells.BaseView.ViewInterfaces;
-using Wells.View.ViewModels;
+﻿using System.Timers;
+using System.Windows;
 
 namespace Wells.View.Views
 {
     /// <summary>
     /// Interaction logic for SplashScreenView.xaml
     /// </summary>
-    public partial class SplashScreenView : Window, IView
+    public partial class SplashScreenView : Window
     {
-        readonly SplashScreenViewModel viewModel;
+        private Timer timer;
         public SplashScreenView()
         {
             InitializeComponent();
-            viewModel = new SplashScreenViewModel(this);
-            DataContext = viewModel;
         }
 
-        #region IView
-        public void CloseView(bool? dialogResult)
+        private void Window_ContentRendered(object sender, System.EventArgs e)
         {
-            DialogResult = dialogResult;
-            Close();
+            timer = new Timer(2000);
+            timer.Elapsed += (s, e) =>
+            {
+                timer.Stop();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Close();
+                });
+            };
+            timer.Start();
         }
-
-        public void CloseView()
-        {
-            Close();
-        }
-        #endregion
     }
 }

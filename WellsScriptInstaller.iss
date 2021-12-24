@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Wells Manager"
-#define MyAppVersion "1.3.1"
+#define MyAppVersion "2.0.0"
 #define MyAppPublisher "Joaco's Software"
 #define MyAppPublisherFolder "Joaco's Software"
 #define MyAppExeName "Wells.exe"
@@ -36,14 +36,20 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\Trabajo\Observatorio\Wells\Wells\bin\Release\netcoreapp3.1\win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
-Source: "D:\Trabajo\Observatorio\Wells\Others\AppSettings.was"; DestDir: "{commonappdata}\WellManager"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\Trabajo\Observatorio\Wells\Others\Gradients.wgr"; DestDir: "{commonappdata}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
-Source: "D:\Trabajo\Observatorio\Wells\Others\Graphics.wpg"; DestDir: "{commonappdata}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
+Source: "D:\Trabajo\Observatorio\Wells\Wells\bin\Release\net6.0-windows\win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
+Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.exe"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.dll"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.pdb"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.runtimeconfig.json"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.deps.json"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\Others\AppSettings.was"; DestDir: "{userdocs}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
+Source: "D:\Trabajo\Observatorio\Wells\Others\Gradients.wgr"; DestDir: "{userdocs}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
+Source: "D:\Trabajo\Observatorio\Wells\Others\Graphics.wpg"; DestDir: "{userdocs}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{commonprograms}\{#MyAppPublisherFolder}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{commonprograms}\{#MyAppPublisherFolder}\{#MyAppName}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{commonprograms}\{#MyAppPublisherFolder}\{#MyAppName}\Asistente de migración"; Filename: "{app}\DBMigrator.exe"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]

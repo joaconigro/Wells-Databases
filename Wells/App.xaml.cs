@@ -28,18 +28,13 @@ namespace Wells
                 if (Settings != null)
                 {
                     var splash = new SplashScreenView();
-                    if ((bool)splash.ShowDialog())
-                    {
-                        RepositoryWrapper.Instantiate(Settings.CurrentDbName);
-                        var mainWindow = new MainWindow();
-                        Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-                        Current.MainWindow = mainWindow;
-                        MainWindow.Show();
-                    }
-                    else
-                    {
-                        Current.Shutdown(0);
-                    }
+                    splash.ShowDialog();
+                    
+                    RepositoryWrapper.Instantiate(Settings.CurrentDbName);
+                    var mainWindow = new MainWindow();
+                    Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                    Current.MainWindow = mainWindow;
+                    MainWindow.Show();
                 }
                 else
                 {

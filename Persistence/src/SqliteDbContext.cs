@@ -10,7 +10,7 @@ namespace Wells.Persistence
         #region Constructor
         public SqliteDbContext(string connectionString) : base(connectionString)
         {
-            DbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager", $"{connectionString}.db");
+            DbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "WellManager", $"{connectionString}.db");
             base.connectionString = $"DataSource={DbFilename}.db";
         }
 

@@ -6,18 +6,8 @@
         xmlns:local="clr-namespace:Wells.View.Views"
         mc:Ignorable="d"
         Title="SplashScreenView" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None" Background="#FFCEDDE2" 
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" ContentRendered="Window_ContentRendered">
     <StackPanel Margin="4">
         <Image Source="{StaticResource UnlpLogoImage}" Stretch="Uniform" MaxHeight="400"/>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button Content="CILP" Style="{StaticResource ButtonStyle}" Grid.Column="0" Command="{Binding SelectConnectionStringCommand}" CommandParameter="CILP"/>
-            <Button Content="CIE" Style="{StaticResource ButtonStyle}" Grid.Column="1" Command="{Binding SelectConnectionStringCommand}" CommandParameter="CIE"/>
-            <Button Content="Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="2" Command="{Binding CloseModalViewCommand}"/>
-        </Grid>
     </StackPanel>
 </Window>

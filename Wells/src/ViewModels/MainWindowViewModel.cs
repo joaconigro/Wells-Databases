@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using Wells.BaseView;
@@ -16,6 +18,17 @@ namespace Wells.View.ViewModels
 
         public bool IsRepositoryOpened => RepositoryWrapper.IsInstatiated;
         public string WindowTitle => $"Well Manager - Base de datos: {App.Settings.CurrentDbName}";
+        public List<string> DbNames => App.Settings.DbNames;
+        public string SelectedDb
+        {
+            get => App.Settings.CurrentDbName;
+            set
+            {
+                App.Settings.SetCurrentDb(value);
+                ChangeDBCommand.Execute(null);
+            }
+        }
+
 
         public MainWindowViewModel(IView view) : base(view)
         {
@@ -94,10 +107,24 @@ namespace Wells.View.ViewModels
                     if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro que desea eliminar completamente la base de datos?", "¿Eliminar base de datos?"))
                     {
                         mainWindow.ShowWaitingMessage("Por favor, espere un momento");
-                        await RepositoryWrapper.Instance.DropSchema(App.Settings.CurrentDbName);
+                        await RepositoryWrapper.Instance.DropSchema(SelectedDb);
                     }
                 }, () => true, OnError, () => { mainWindow.CloseWaitingMessage(); });
             }
         }
+
+        public ICommand ChangeDBCommand
+        {
+            get
+            {
+                return new AsyncCommand(async () =>
+                {
+                    mainWindow.ShowWaitingMessage("Por favor, espere un momento");
+                    await RepositoryWrapper.Instance.ChangeSchema(SelectedDb);
+                    mainWindow.RaiseRepositoryChanged(RepositoryWrapper.Instance);
+                }, () => true, OnError, () => { mainWindow.CloseWaitingMessage(); });
+            }
+        }
+        
     }
 }

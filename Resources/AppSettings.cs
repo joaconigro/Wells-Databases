@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Wells.Base;
 
 namespace Wells.Resources
@@ -11,15 +10,12 @@ namespace Wells.Resources
     {
         public string MapCredentialsProvider { get; set; }
         public Dictionary<string, string> ConnectionStrings { get; set; }
+        public List<string> DbNames { get; set; }
 
-        [JsonIgnore]
-        public string CurrentConnectionString { get; private set; }
+        public string CurrentDbName { get; set; }
 
-        [JsonIgnore]
-        public string CurrentDbName { get; private set; }
+        public static string SettingsDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "WellManager");
 
-        public static string SettingsDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "WellManager");
-        
         public static AppSettings Initialize()
         {
             if (!Directory.Exists(SettingsDirectory))
@@ -46,13 +42,28 @@ namespace Wells.Resources
             }
         }
 
-        public void SetConnectionString(string key)
+        void Save()
         {
-            if (ConnectionStrings.ContainsKey(key))
+            var filename = Path.Combine(SettingsDirectory, "AppSettings.was");
+            try
             {
-                CurrentConnectionString = ConnectionStrings[key];
-                CurrentDbName = key;
+                if (File.Exists(filename))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var jsonString = JsonSerializer.Serialize(this, options);
+                    File.WriteAllText(filename, jsonString);
+                }
             }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Handle(ex, false);
+            }
+        }
+
+        public void SetCurrentDb(string key)
+        {
+            CurrentDbName = key;
+            Save();
         }
     }
 }

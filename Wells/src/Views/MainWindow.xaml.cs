@@ -137,6 +137,11 @@ namespace Wells.View
             PremadeGraphicsChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        public void RaiseRepositoryChanged(object instance)
+        {
+            CreateViewModelsForPanels();
+        }
+
         public bool OpenEditEntityDialog(EditWellViewModel viewModel)
         {
             var diag = new EditWellView(viewModel) { Owner = this };
@@ -169,7 +174,8 @@ namespace Wells.View
         void ShowManageColorMapDialog();
         bool OpenEditEntityDialog(EditWellViewModel viewModel);
         bool OpenEditEntityDialog(EditMeasurementViewModel viewModel);
-
+        void RaiseRepositoryChanged(object instance);
+        
         event EventHandler PremadeGraphicsChanged;
     }
 }
