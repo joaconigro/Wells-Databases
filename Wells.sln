@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.452
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "View", "View", "{CB43C4FD-105E-46B2-919A-2BCC0399BB7F}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseView", "BaseView\BaseView.csproj", "{DF7BCB0F-DFF8-4026-BB04-5256C621BB94}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wells", "Wells\Wells.csproj", "{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBMigrator", "DBMigrator\DBMigrator.csproj", "{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,18 @@ Global
 		{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3}.Release|x64.Build.0 = Release|Any CPU
 		{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3}.Release|x86.ActiveCfg = Release|Any CPU
 		{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3}.Release|x86.Build.0 = Release|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Debug|x64.Build.0 = Debug|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Release|x64.ActiveCfg = Release|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Release|x64.Build.0 = Release|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +145,7 @@ Global
 		{2C0C712C-FA6E-40F8-A7A9-02683A0A0488} = {BC4A4D78-D82B-42D5-B439-1D4BB7A7FE99}
 		{DF7BCB0F-DFF8-4026-BB04-5256C621BB94} = {CB43C4FD-105E-46B2-919A-2BCC0399BB7F}
 		{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3} = {CB43C4FD-105E-46B2-919A-2BCC0399BB7F}
+		{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180} = {CB43C4FD-105E-46B2-919A-2BCC0399BB7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14E7FD5C-91AF-428C-9854-5A64E2B1C892}

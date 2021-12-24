@@ -88,32 +88,11 @@ namespace Wells.Persistence.Repositories
             Context = repositoryContext;
         }
 
-        public static RepositoryWrapper Instantiate(string connectionString, string dbName)
+        public static RepositoryWrapper Instantiate(string dbName)
         {
-            var sqlDbContext = new SqlDbContext(connectionString);
-            var sqlExists = sqlDbContext.Database.CanConnect();
-            
-
             var sqliteContext = new SqliteDbContext(dbName);
-            if (!File.Exists(sqliteContext.DbFilename))
-            {
-                sqliteContext.Database.Migrate();
-                Instance = new RepositoryWrapper(sqliteContext);
-                if (sqlExists)
-                {
-                    sqliteContext.Precipitations.AddRange(sqlDbContext.Precipitations);
-                    sqliteContext.Files.AddRange(sqlDbContext.Files);
-                    sqliteContext.WaterAnalyses.AddRange(sqlDbContext.WaterAnalyses);
-                    sqliteContext.SoilAnalyses.AddRange(sqlDbContext.SoilAnalyses);
-                    sqliteContext.FlnaAnalyses.AddRange(sqlDbContext.FlnaAnalyses);
-                    sqliteContext.Measurements.AddRange(sqlDbContext.Measurements);
-                    sqliteContext.Wells.AddRange(sqlDbContext.Wells);
-
-                    sqlDbContext.Database.EnsureDeleted();
-                }
-
-                Instance.SaveChanges();
-            }
+            sqliteContext.Database.Migrate();
+            Instance = new RepositoryWrapper(sqliteContext); 
 
             if (Instance == null)
             {
@@ -123,10 +102,10 @@ namespace Wells.Persistence.Repositories
             return Instance;
         }
 
-        public async Task DropSchema(string connectionString, string dbName)
+        public async Task DropSchema(string dbName)
         {
             await Context.Database.EnsureDeletedAsync();
-            Instantiate(connectionString, dbName);
+            Instantiate(dbName);
             Precipitations?.RaiseEntitiesRemoved();
             ExternalFiles?.RaiseEntitiesRemoved();
             WaterAnalyses?.RaiseEntitiesRemoved();

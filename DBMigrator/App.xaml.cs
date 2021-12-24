@@ -3,12 +3,10 @@ using System.Diagnostics;
 using System.Windows;
 using Wells.Base;
 using Wells.BaseView;
-using Wells.Persistence.Repositories;
+using Wells.DbMigrator;
 using Wells.Resources;
-using Wells.View;
-using Wells.View.Views;
 
-namespace Wells
+namespace DBMigrator
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -27,19 +25,10 @@ namespace Wells
 
                 if (Settings != null)
                 {
-                    var splash = new SplashScreenView();
-                    if ((bool)splash.ShowDialog())
-                    {
-                        RepositoryWrapper.Instantiate(Settings.CurrentDbName);
-                        var mainWindow = new MainWindow();
-                        Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-                        Current.MainWindow = mainWindow;
-                        MainWindow.Show();
-                    }
-                    else
-                    {
-                        Current.Shutdown(0);
-                    }
+                    var mainWindow = new MainWindow();
+                    Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                    Current.MainWindow = mainWindow;
+                    MainWindow.Show();
                 }
                 else
                 {
@@ -49,7 +38,7 @@ namespace Wells
             catch (Exception ex)
             {
                 SharedBaseView.ShowErrorMessageBox(new WaitingView(""), ex.Message);
-                ExceptionHandler.Log(ex, TraceEventType.Critical, String.Empty);
+                ExceptionHandler.Log(ex, TraceEventType.Critical, string.Empty);
                 Current.Shutdown(-1);
             }
         }

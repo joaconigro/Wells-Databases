@@ -17,9 +17,8 @@ namespace Wells.View.ViewModels
         public bool IsRepositoryOpened => RepositoryWrapper.IsInstatiated;
         public string WindowTitle => $"Well Manager - Base de datos: {App.Settings.CurrentDbName}";
 
-        public MainWindowViewModel(IView view) : base(null)
+        public MainWindowViewModel(IView view) : base(view)
         {
-            SetView(view);
             ChemicalAnalysis.CreateParamtersDictionary();
             Initialize();
         }
@@ -95,7 +94,7 @@ namespace Wells.View.ViewModels
                     if (SharedBaseView.ShowYesNoMessageBox(View, "¿Está seguro que desea eliminar completamente la base de datos?", "¿Eliminar base de datos?"))
                     {
                         mainWindow.ShowWaitingMessage("Por favor, espere un momento");
-                        await RepositoryWrapper.Instance.DropSchema(App.Settings.CurrentConnectionString, App.Settings.CurrentDbName);
+                        await RepositoryWrapper.Instance.DropSchema(App.Settings.CurrentDbName);
                     }
                 }, () => true, OnError, () => { mainWindow.CloseWaitingMessage(); });
             }
