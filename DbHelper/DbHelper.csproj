@@ -5,9 +5,10 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Wells.DbMigrator</RootNamespace>
+    <RootNamespace>Wells.DbHelper</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Version>2.0.0</Version>
+    <ApplicationIcon>icon128x128.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,6 +18,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702;CS8618</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon128x128.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BaseView\BaseView.csproj" />

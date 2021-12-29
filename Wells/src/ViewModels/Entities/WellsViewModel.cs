@@ -265,5 +265,10 @@ namespace Wells.View.ViewModels
             _Entities = Repository.Wells.All;
             NotifyPropertyChanged(nameof(Entities));
         }
+
+        public override void RemoveEventHandlers()
+        {
+            RepositoryWrapper.Instance.Wells.OnEntityRemoved -= OnEntitiesRemoved;
+        }
     }
 }

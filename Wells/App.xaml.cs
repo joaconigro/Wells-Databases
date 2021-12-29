@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using Wells.Base;
 using Wells.BaseView;
@@ -64,7 +65,16 @@ namespace Wells
 
         private void OnAppExit(object sender, ExitEventArgs e)
         {
+            CleanRemovedDatabases();
             AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
+        }
+
+        private void CleanRemovedDatabases()
+        {
+            foreach (var db in Settings.ToRemoveDbNames)
+            {
+                RepositoryWrapper.DropSchema(db);
+            }
         }
     }
 }

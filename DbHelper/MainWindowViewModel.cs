@@ -1,4 +1,4 @@
-﻿using DBMigrator;
+﻿using DbHelper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
@@ -8,8 +8,10 @@ using Wells.BaseView;
 using Wells.BaseView.ViewInterfaces;
 using Wells.BaseView.ViewModel;
 using Wells.Persistence;
+using Wells.Persistence.Repositories;
+using Wells.Resources;
 
-namespace Wells.DbMigrator
+namespace Wells.DbHelper
 {
     internal class MainWindowViewModel : BaseViewModel
     {
@@ -106,12 +108,32 @@ namespace Wells.DbMigrator
                     SetDbContexts();
                 }
                 mainWindow.CloseWaitingMessage();
+                SharedBaseView.ShowOkOnkyMessageBox(mainWindow, "Migración completada exitosamente", "Proceso finalizado");
             }, () => !string.IsNullOrEmpty(SelectedDb), OnError, () => 
             { 
                 mainWindow.CloseWaitingMessage();
                 NotifyPropertyChanged(nameof(DbNames));
                 SelectedDb = string.Empty;
             });
+        }
+
+        public ICommand ImportDBFromZipCommand
+        {
+            get
+            {
+                return new RelayCommand((obj) =>
+                {
+                    var filename = SharedBaseView.OpenFileDialog("DB backup|*.wzp", "Importar base de datos");
+                    if (SharedBaseView.ShowYesNoMessageBox(mainWindow, "Esto puede sobreescribir base de datos existentes con el mismo nombre. ¿Desea continuar?", "Advertencia"))
+                    {
+                        mainWindow.ShowWaitingMessage("Por favor, espere un momento");
+                        var dbName = RepositoryWrapper.ImportDbFromZip(filename, AppSettings.SettingsDirectory);
+                        App.Settings.SetCurrentDb(dbName);
+                        mainWindow.CloseWaitingMessage();
+                        SharedBaseView.ShowOkOnkyMessageBox(mainWindow, "Importación completada exitosamente", "Proceso finalizado");
+                    }
+                }, (obj) => true, OnError, () => { mainWindow.CloseWaitingMessage(); });
+            }
         }
     }
 }

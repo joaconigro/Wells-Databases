@@ -102,6 +102,24 @@ namespace Wells.BaseView
             ShowOkOnkyMessageBox((Window)view, message, title);
         }
 
+        public static string ShowInputBox(Window owner, string message, string title)
+        {
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                var inputBox = new InputView() { WindowTitle = title, Message = message, Owner = owner };
+                if (inputBox.ShowDialog() == true)
+                {
+                    return inputBox.Input;
+                }
+                return null;
+            });
+        }
+
+        public static string ShowInputBox(IView owner, string message, string title)
+        {
+            return ShowInputBox((Window)owner, message, title);
+        }
+
         public static Color ShowColorDialog(System.Drawing.Color selectedColor)
         {
             using (var diag = new Cyotek.Windows.Forms.ColorPickerDialog { Color = selectedColor })

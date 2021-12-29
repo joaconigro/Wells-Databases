@@ -43,20 +43,24 @@
             <Canvas HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal" Canvas.Right="0" Canvas.Top="0" VerticalAlignment="Stretch" Margin="0,-2,0,0">
                     <TextBlock Text="Base de datos:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox ItemsSource="{Binding DbNames}" SelectedItem="{Binding SelectedDb}" Style="{StaticResource MarginStyle}" MinWidth="75"/>
+                    <ComboBox ItemsSource="{Binding DbNames, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDb}" Style="{StaticResource MarginStyle}" MinWidth="75"/>
                     <Menu Style="{StaticResource MarginStyle}" VerticalAlignment="Center">
                         <MenuItem VerticalAlignment="Center">
                             <MenuItem.Header>
                                 <Image Source="{StaticResource GearImage}" Stretch="Uniform" Height="15"/>
                             </MenuItem.Header>
+                            <MenuItem Header="Nueva base de datos" Command="{Binding CreateNewCommand}"/>
+                            <MenuItem Header="Importar base de datos" Command="{Binding ImportDBFromZipCommand}"/>
+                            <MenuItem Header="Exportar base de datos" Command="{Binding ExportDBToZipCommand}"/>
+                            <MenuItem Header="Resetear base de datos" Command="{Binding RecreateDBCommand}"/>
+                            <MenuItem Header="Eliminar base de datos" Command="{Binding RemoveDBCommand}"/>
+                            <Separator/>
                             <MenuItem Header="Nuevo tipo de gráfico..." Command="{Binding OpenCreatePremadeGraphicViewCommand}"/>
                             <MenuItem Header="Gráfico personalizado..." Command="{Binding OpenGraphicsViewCommand}"/>
                             <Separator/>
                             <MenuItem Header="Administrar tablas de color..." Command="{Binding ManageColorMapsCommand}"/>
                             <Separator/>
                             <MenuItem Header="Abrir carpeta de registros..." Command="{Binding OpenLogsDirectoryCommand}"/>
-                            <Separator/>
-                            <MenuItem Header="Recrear base de datos" Command="{Binding RecreateDBCommand}"/>
                         </MenuItem>
                     </Menu>
                 </StackPanel>

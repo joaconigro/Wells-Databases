@@ -152,5 +152,11 @@ namespace Wells.View.ViewModels
             _Entities = Repository.WaterAnalyses.All;
             NotifyPropertyChanged(nameof(Entities));
         }
+
+        public override void RemoveEventHandlers()
+        {
+            RepositoryWrapper.Instance.Wells.OnEntityRemoved -= OnWellRemoved;
+            RepositoryWrapper.Instance.WaterAnalyses.OnEntityRemoved -= OnEntitiesRemoved;
+        }
     }
 }

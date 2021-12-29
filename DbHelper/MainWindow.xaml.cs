@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Wells.BaseView.ViewInterfaces;
 
-namespace Wells.DbMigrator
+namespace Wells.DbHelper
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

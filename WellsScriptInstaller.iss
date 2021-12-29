@@ -37,11 +37,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "D:\Trabajo\Observatorio\Wells\Wells\bin\Release\net6.0-windows\win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
-Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.exe"; DestDir: "{app}";
-Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.dll"; DestDir: "{app}";
-Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.pdb"; DestDir: "{app}";
-Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.runtimeconfig.json"; DestDir: "{app}";
-Source: "D:\Trabajo\Observatorio\Wells\DBMigrator\bin\Release\net6.0-windows\win-x64\DBMigrator.deps.json"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DbHelper\bin\Release\net6.0-windows\win-x64\DbHelper.exe"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DbHelper\bin\Release\net6.0-windows\win-x64\DbHelper.dll"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DbHelper\bin\Release\net6.0-windows\win-x64\DbHelper.pdb"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DbHelper\bin\Release\net6.0-windows\win-x64\DbHelper.runtimeconfig.json"; DestDir: "{app}";
+Source: "D:\Trabajo\Observatorio\Wells\DbHelper\bin\Release\net6.0-windows\win-x64\DbHelper.deps.json"; DestDir: "{app}";
 Source: "D:\Trabajo\Observatorio\Wells\Others\AppSettings.was"; DestDir: "{userdocs}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
 Source: "D:\Trabajo\Observatorio\Wells\Others\Gradients.wgr"; DestDir: "{userdocs}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
 Source: "D:\Trabajo\Observatorio\Wells\Others\Graphics.wpg"; DestDir: "{userdocs}\WellManager"; Flags: onlyifdoesntexist skipifsourcedoesntexist
@@ -49,7 +49,7 @@ Source: "D:\Trabajo\Observatorio\Wells\Others\Graphics.wpg"; DestDir: "{userdocs
 
 [Icons]
 Name: "{commonprograms}\{#MyAppPublisherFolder}\{#MyAppName}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{commonprograms}\{#MyAppPublisherFolder}\{#MyAppName}\Asistente de migración"; Filename: "{app}\DBMigrator.exe"
+Name: "{commonprograms}\{#MyAppPublisherFolder}\{#MyAppName}\DB Helper"; Filename: "{app}\DbHelper.exe"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]

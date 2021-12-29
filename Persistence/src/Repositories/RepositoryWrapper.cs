@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Threading.Tasks;
 
 namespace Wells.Persistence.Repositories
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private readonly ApplicationDbContext Context;
+        private ApplicationDbContext Context;
         private PrecipitationsRepository precipitations;
         private ExternalFilesRepository externalFiles;
         private MeasurementsRepository measurements;
@@ -102,7 +103,7 @@ namespace Wells.Persistence.Repositories
             return Instance;
         }
 
-        public async Task DropSchema(string dbName)
+        public async Task ResetSchema(string dbName)
         {
             await Context.Database.EnsureDeletedAsync();
             Instantiate(dbName);
@@ -115,11 +116,22 @@ namespace Wells.Persistence.Repositories
             Wells?.RaiseEntitiesRemoved();
         }
 
+        public static void DropSchema(string dbName)
+        {
+            var sqliteContext = new SqliteDbContext(dbName);
+            sqliteContext.Database.EnsureDeleted();
+        }
+
         public async Task ChangeSchema(string dbName)
         {
             await SaveChangesAsync();
-            await Context.DisposeAsync();
+            await CloseConnection();
 
+            Reinstantiate(dbName);
+        }
+
+        public void Reinstantiate(string dbName)
+        {
             Instantiate(dbName);
             precipitations = new PrecipitationsRepository(Context);
             externalFiles = new ExternalFilesRepository(Context);
@@ -128,6 +140,14 @@ namespace Wells.Persistence.Repositories
             soilAnalyses = new SoilAnalysesRepository(Context);
             measurements = new MeasurementsRepository(Context);
             wells = new WellsRepository(Context);
+        }
+
+        public async Task CloseConnection()
+        {
+            await Context.Database.CloseConnectionAsync();
+            await Context.DisposeAsync();
+            Context = null;
+            GC.Collect();
         }
 
         public void SaveChanges()
@@ -139,5 +159,35 @@ namespace Wells.Persistence.Repositories
         {
             return await Context.SaveChangesAsync();
         }
+
+        public void SaveDbToZip(string filename)
+        {
+            string dbFilename =  (Context as SqliteDbContext).DbFilename;
+            string newFilename = $"{Path.GetFileName(dbFilename)}";
+
+            var tempDbFile =  Path.Combine(Path.GetTempPath(), newFilename);
+
+            File.Copy(dbFilename, tempDbFile, true);
+
+            using ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Create);
+            archive.CreateEntryFromFile(tempDbFile, newFilename);
+
+            if (File.Exists(tempDbFile))
+            {
+                File.Delete(tempDbFile);
+            }
+        }
+
+        public static string ImportDbFromZip(string filename, string dbPath)
+        {
+            using ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
+            var dbEntry = archive.Entries[0].FullName;
+            var dbFilename = Path.Combine(dbPath, dbEntry);
+
+            archive.ExtractToDirectory(dbPath, true);
+            
+            var dbName = Path.GetFileNameWithoutExtension(dbEntry);
+            return dbName;
+        }   
     }
 }

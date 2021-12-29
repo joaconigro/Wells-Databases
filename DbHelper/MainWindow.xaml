@@ -1,0 +1,36 @@
+﻿<Window x:Class="Wells.DbHelper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DbHelper"
+        mc:Ignorable="d"
+        Title="DB Helper" Style="{StaticResource DialogStyle}" ShowInTaskbar="True" WindowStartupLocation="CenterScreen" Height="190" Width="400">
+    <TabControl Style="{StaticResource MarginStyle}">
+        <TabItem Header="Migraciones">
+            <Grid Style="{StaticResource MarginStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Seleccione una base de datos para migrar de SQL a SQLite" Style="{StaticResource MarginStyle}"/>
+                <ComboBox Style="{StaticResource MarginStyle}" ItemsSource="{Binding DbNames}" SelectedItem="{Binding SelectedDb}" Grid.Row="1"/>
+                <CheckBox Content="Eliminar la base de datos SQL después de migrar" Grid.Row="2" IsChecked="{Binding RemoveDbAfterMigrate}" Style="{StaticResource CheckBoxStyle}"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Bottom">
+                    <Button Content="Migrar" Style="{StaticResource ButtonStyle}" Command="{Binding MigrateDbCommand}"/>
+                    <Button Content="Cerrar" Style="{StaticResource ButtonStyle}" Command="{Binding CloseNonModalViewCommand}"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Importaciones">
+            <StackPanel Orientation="Horizontal" Style="{StaticResource MarginStyle}" MaxHeight="30" VerticalAlignment="Top">
+                <TextBlock Text="Cargue un archivo:" Style="{StaticResource MarginStyle}" VerticalAlignment="Center"/>
+                <Button Content="Abrir archivo *.wzp" Style="{StaticResource ButtonStyle}" Command="{Binding ImportDBFromZipCommand}"/>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+
+</Window>

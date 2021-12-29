@@ -16,5 +16,6 @@ namespace Wells.View.ViewModels
         ContextMenu GetContextMenu();
 
         void SetSelectedItems(IEnumerable<object> entities);
+        void RemoveEventHandlers();
     }
 }

@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Windows;
 using Wells.Base;
 using Wells.BaseView;
-using Wells.DbMigrator;
+using Wells.DbHelper;
 using Wells.Resources;
 
-namespace DBMigrator
+namespace DbHelper
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Wells.DbMigrator
+namespace Wells.DbHelper
 {
     /// <summary>
     /// Interaction logic for WaitingView.xaml

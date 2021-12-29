@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Wells.Base;
 
 namespace Wells.Resources
@@ -11,6 +13,9 @@ namespace Wells.Resources
         public string MapCredentialsProvider { get; set; }
         public Dictionary<string, string> ConnectionStrings { get; set; }
         public List<string> DbNames { get; set; }
+        
+        [JsonIgnore]
+        public List<string> ToRemoveDbNames { get; set; } = new List<string>();
 
         public string CurrentDbName { get; set; }
 
@@ -63,6 +68,30 @@ namespace Wells.Resources
         public void SetCurrentDb(string key)
         {
             CurrentDbName = key;
+            if (!DbNames.Exists(s => s == key))
+            {
+                DbNames.Add(key);
+            }
+            Save();
+        }
+
+        public void RemoveDb(string db)
+        {
+            if (DbNames.Exists(s => s == db))
+            {
+                DbNames.Remove(db);
+                ToRemoveDbNames.Add(db);
+            }
+
+            if (DbNames.Any())
+            {
+                CurrentDbName = DbNames.First();
+            } 
+            else
+            {
+                CurrentDbName = null;
+            }
+
             Save();
         }
     }

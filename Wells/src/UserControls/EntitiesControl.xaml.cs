@@ -97,6 +97,11 @@ namespace Wells.View.UserControls
             RowContextMenu = viewModel.GetContextMenu();
         }
 
+        public void RemoveViewModelEventHandlers()
+        {
+            _ViewModel?.RemoveEventHandlers();
+        }
+
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var items = (from object o in (sender as DataGrid).SelectedItems

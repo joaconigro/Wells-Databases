@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
-namespace Wells.DbMigrator.Graphics
+namespace Wells.DbHelper.Graphics
 {
     public class GifImage : Image
     {

@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseView", "BaseView\BaseVi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wells", "Wells\Wells.csproj", "{0B3FB554-2515-45F5-8A53-BD0BB58D8ED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBMigrator", "DBMigrator\DBMigrator.csproj", "{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbHelper", "DbHelper\DbHelper.csproj", "{FB30BBE6-1C7C-4A0A-A2ED-BF4E3997B180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

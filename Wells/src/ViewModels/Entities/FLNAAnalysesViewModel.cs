@@ -127,5 +127,11 @@ namespace Wells.View.ViewModels
             _Entities = Repository.FlnaAnalyses.All;
             NotifyPropertyChanged(nameof(Entities));
         }
+
+        public override void RemoveEventHandlers()
+        {
+            RepositoryWrapper.Instance.Wells.OnEntityRemoved -= OnWellRemoved;
+            RepositoryWrapper.Instance.FlnaAnalyses.OnEntityRemoved -= OnEntitiesRemoved;
+        }
     }
 }

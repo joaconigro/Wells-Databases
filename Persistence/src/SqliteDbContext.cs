@@ -11,7 +11,7 @@ namespace Wells.Persistence
         public SqliteDbContext(string connectionString) : base(connectionString)
         {
             DbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "WellManager", $"{connectionString}.db");
-            base.connectionString = $"DataSource={DbFilename}.db";
+            base.connectionString = $"DataSource={DbFilename}";
         }
 
         public SqliteDbContext() { }

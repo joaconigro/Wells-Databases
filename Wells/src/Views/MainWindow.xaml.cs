@@ -76,6 +76,19 @@ namespace Wells.View
             });
         }
 
+        public void RemoveEventHandlers()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                WellsControl?.RemoveViewModelEventHandlers();
+                MeasurementsControl?.RemoveViewModelEventHandlers();
+                WaterAnalysesControl?.RemoveViewModelEventHandlers();
+                SoilAnalysesControl?.RemoveViewModelEventHandlers();
+                FLNAAnalysesControl?.RemoveViewModelEventHandlers();
+                PrecipitationsControl?.RemoveViewModelEventHandlers();
+            });
+        }
+
         public int SelectSheetDialog(List<string> sheets)
         {
             return Application.Current.Dispatcher.Invoke(() =>
@@ -175,7 +188,8 @@ namespace Wells.View
         bool OpenEditEntityDialog(EditWellViewModel viewModel);
         bool OpenEditEntityDialog(EditMeasurementViewModel viewModel);
         void RaiseRepositoryChanged(object instance);
-        
+        void RemoveEventHandlers();
+
         event EventHandler PremadeGraphicsChanged;
     }
 }

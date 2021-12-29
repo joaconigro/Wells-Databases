@@ -458,5 +458,6 @@ namespace Wells.View.ViewModels
             }
         }
 
+        public abstract void RemoveEventHandlers();
     }
 }
